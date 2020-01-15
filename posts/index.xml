@@ -5,8 +5,118 @@
         <description>Recent content in Posts on Shaocheng.Li</description>
         <generator>Hugo -- gohugo.io</generator>
         <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-        <lastBuildDate>Wed, 08 Jan 2020 08:00:00 +0800</lastBuildDate>
+        <lastBuildDate>Wed, 15 Jan 2020 14:31:11 +0800</lastBuildDate>
         <atom:link href="https://exbob.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+        
+        <item>
+            <title>Markdown Syntax Guide</title>
+            <link>https://exbob.github.io/posts/2020/01/markdown-syntax-guide/</link>
+            <pubDate>Wed, 15 Jan 2020 14:31:11 +0800</pubDate>
+            
+            <guid>https://exbob.github.io/posts/2020/01/markdown-syntax-guide/</guid>
+            <description>This article offers a sample of basic Markdown syntax that can be used in Hugo content files, also it shows whether basic HTML elements are decorated with CSS in a Hugo theme.
+Headings The following HTML &amp;lt;h1&amp;gt;—&amp;lt;h6&amp;gt; elements represent six levels of section headings. &amp;lt;h1&amp;gt; is the highest section level while &amp;lt;h6&amp;gt; is the lowest.
+H1 H2 H3 H4 H5 H6 Paragraph Xerum, quo qui aut unt expliquam qui dolut labo.</description>
+            <content type="html"><![CDATA[
+
+<p>This article offers a sample of basic Markdown syntax that can be used in Hugo content files, also it shows whether basic HTML elements are decorated with CSS in a Hugo theme.</p>
+
+<h1 id="headings">Headings</h1>
+
+<p>The following HTML <code>&lt;h1&gt;</code>—<code>&lt;h6&gt;</code> elements represent six levels of section headings. <code>&lt;h1&gt;</code> is the highest section level while <code>&lt;h6&gt;</code> is the lowest.</p>
+
+<h1 id="h1">H1</h1>
+
+<h2 id="h2">H2</h2>
+
+<h3 id="h3">H3</h3>
+
+<h4 id="h4">H4</h4>
+
+<h5 id="h5">H5</h5>
+
+<h6 id="h6">H6</h6>
+
+<h1 id="paragraph">Paragraph</h1>
+
+<p>Xerum, quo qui aut unt expliquam qui dolut labo. Aque venitatiusda cum, voluptionse latur sitiae dolessi aut parist aut dollo enim qui voluptate ma dolestendit peritin re plis aut quas inctum laceat est volestemque commosa as cus endigna tectur, offic to cor sequas etum rerum idem sintibus eiur? Quianimin porecus evelectur, cum que nis nust voloribus ratem aut omnimi, sitatur? Quiatem. Nam, omnis sum am facea corem alique molestrunt et eos evelece arcillit ut aut eos eos nus, sin conecerem erum fuga. Ri oditatquam, ad quibus unda veliamenimin cusam et facea ipsamus es exerum sitate dolores editium rerore eost, temped molorro ratiae volorro te reribus dolorer sperchicium faceata tiustia prat.</p>
+
+<p>Itatur? Quiatae cullecum rem ent aut odis in re eossequodi nonsequ idebis ne sapicia is sinveli squiatum, core et que aut hariosam ex eat.</p>
+
+<h1 id="blockquotes">Blockquotes</h1>
+
+<p>The blockquote element represents content that is quoted from another source, optionally with a citation which must be within a footer or cite element, and optionally with in-line changes such as annotations and abbreviations.</p>
+
+<h2 id="blockquote-without-attribution">Blockquote without attribution</h2>
+
+<blockquote>
+<p>Tiam, ad mint andaepu dandae nostion secatur sequo quae. Note that you can use Markdown syntax within a blockquote.</p>
+</blockquote>
+
+<h2 id="blockquote-with-attribution">Blockquote with attribution</h2>
+
+<blockquote>
+<p>Don&rsquo;t communicate by sharing memory, share memory by communicating. — Rob Pike1</p>
+</blockquote>
+
+<h1 id="tables">Tables</h1>
+
+<p>Tables aren&rsquo;t part of the core Markdown spec, but Hugo supports supports them out-of-the-box.</p>
+
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Age</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Bob</td>
+<td>27</td>
+</tr>
+
+<tr>
+<td>Alice</td>
+<td>23</td>
+</tr>
+</tbody>
+</table>
+
+<h1 id="code-blocks">Code Blocks</h1>
+
+<p>Code block with backticks</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">html
+<span style="color:#75715e">&lt;!DOCTYPE html&gt;</span>
+&lt;<span style="color:#f92672">html</span> <span style="color:#a6e22e">lang</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;en&#34;</span>&gt;
+&lt;<span style="color:#f92672">head</span>&gt;
+  &lt;<span style="color:#f92672">meta</span> <span style="color:#a6e22e">charset</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;UTF-8&#34;</span>&gt;
+  &lt;<span style="color:#f92672">title</span>&gt;Example HTML5 Document&lt;/<span style="color:#f92672">title</span>&gt;
+&lt;/<span style="color:#f92672">head</span>&gt;
+&lt;<span style="color:#f92672">body</span>&gt;
+  &lt;<span style="color:#f92672">p</span>&gt;Test&lt;/<span style="color:#f92672">p</span>&gt;
+&lt;/<span style="color:#f92672">body</span>&gt;
+&lt;/<span style="color:#f92672">html</span>&gt;</code></pre></div>
+<h1 id="list-types">List Types</h1>
+
+<p>Ordered List</p>
+
+<ol>
+<li>First item</li>
+<li>Second item</li>
+<li>Third item</li>
+</ol>
+
+<p>Unordered List</p>
+
+<ul>
+<li>List item</li>
+<li>Another item</li>
+<li>And another item</li>
+</ul>
+]]></content>
+        </item>
         
         <item>
             <title>ip 命令学习笔记</title>

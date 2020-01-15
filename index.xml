@@ -6,10 +6,21 @@
     <description>Recent content on Shaocheng.Li</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-    <lastBuildDate>Wed, 08 Jan 2020 08:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 15 Jan 2020 14:31:11 +0800</lastBuildDate>
     
 	<atom:link href="https://exbob.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Markdown Syntax Guide</title>
+      <link>https://exbob.github.io/posts/2020/01/markdown-syntax-guide/</link>
+      <pubDate>Wed, 15 Jan 2020 14:31:11 +0800</pubDate>
+      
+      <guid>https://exbob.github.io/posts/2020/01/markdown-syntax-guide/</guid>
+      <description>This article offers a sample of basic Markdown syntax that can be used in Hugo content files, also it shows whether basic HTML elements are decorated with CSS in a Hugo theme.
+Headings The following HTML &amp;lt;h1&amp;gt;—&amp;lt;h6&amp;gt; elements represent six levels of section headings. &amp;lt;h1&amp;gt; is the highest section level while &amp;lt;h6&amp;gt; is the lowest.
+H1 H2 H3 H4 H5 H6 Paragraph Xerum, quo qui aut unt expliquam qui dolut labo.</description>
+    </item>
     
     <item>
       <title>ip 命令学习笔记</title>
@@ -123,17 +134,6 @@ openssl enc -aes-128-cbc -in file -out file.enc -kfile passphrase.txt  </descrip
 中间的路由器上是 Linux 系统，有两张网卡，eth0 作为 LAN 口连接内网，wan 作为 WAN 口连接公网。要实现软路由功能，使内网的设备可以通过 WAN 口上网。首先需要开启内核的 IP 转发功能，可以用 sysctl 命令或者直接查看 /proc/sys/net/ipv4/ip_forward 文件获得当前系统的 ip_forward 是否开启：
 ~# sysctl net.ipv4.ip_forward net.ipv4.ip_forward = 0 ~# cat /proc/sys/net/ipv4/ip_forward 0  Linux 系统默认是禁止 IP 转发的，所有返回 0 ，可以用 sysctl 命令或者直接向 /proc/sys/net/ipv4/ip_forward 文件写 1 来开启 IP 转发，如果要永久开启，可以在 /etc/sysctl.conf 文件中修改配置：
 ~# cat /etc/sysctl.conf | grep ip_forward net.</description>
-    </item>
-    
-    <item>
-      <title>用 timedatectl 管理系统时间</title>
-      <link>https://exbob.github.io/posts/2018/09/%E7%94%A8-timedatectl-%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E6%97%B6%E9%97%B4/</link>
-      <pubDate>Mon, 24 Sep 2018 08:00:00 +0800</pubDate>
-      
-      <guid>https://exbob.github.io/posts/2018/09/%E7%94%A8-timedatectl-%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E6%97%B6%E9%97%B4/</guid>
-      <description>查看当前系统时间：
-$ timedatectl status Local time: Thu 2018-09-20 09:42:53 CST Universal time: Thu 2018-09-20 01:42:53 UTC RTC time: Thu 2018-09-20 01:42:53 Time zone: Asia/Chongqing (CST, +0800) Network time on: yes NTP synchronized: yes RTC in local TZ: no RTC in local TZ: no 表示 RTC 时钟不是用本地时间，而是使用 UTC 时间，可以改成使用本地时间，但是并不推荐这么做：
-$ timedatectl set-local-rtc 1 $ timedatectl Local time: Thu 2018-09-20 03:57:58 CEST Universal time: Thu 2018-09-20 01:57:58 UTC RTC time: Thu 2018-09-20 03:57:59 Time zone: Europe/Paris (CEST, +0200) Network time on: yes NTP synchronized: yes RTC in local TZ: yes Warning: The system is configured to read the RTC time in the local time zone.</description>
     </item>
     
   </channel>

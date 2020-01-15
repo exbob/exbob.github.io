@@ -3,18 +3,18 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://exbob.github.io/posts/2020/01/ip-%E5%91%BD%E4%BB%A4%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
-    <lastmod>2020-01-08T08:00:00+08:00</lastmod>
+    <loc>https://exbob.github.io/posts/2020/01/markdown-syntax-guide/</loc>
+    <lastmod>2020-01-15T14:31:11+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://exbob.github.io/posts/</loc>
-    <lastmod>2020-01-08T08:00:00+08:00</lastmod>
+    <lastmod>2020-01-15T14:31:11+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://exbob.github.io/</loc>
-    <lastmod>2020-01-08T08:00:00+08:00</lastmod>
+    <lastmod>2020-01-15T14:31:11+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
@@ -25,6 +25,31 @@
                 hreflang="en"
                 href="https://exbob.github.io/"
                 />
+  </url>
+  
+  <url>
+    <loc>https://exbob.github.io/tags/</loc>
+    <lastmod>2020-01-15T14:31:11+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="fr"
+                href="https://exbob.github.io/fr/tags/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://exbob.github.io/tags/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://exbob.github.io/tags/untagged/</loc>
+    <lastmod>2020-01-15T14:31:11+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://exbob.github.io/posts/2020/01/ip-%E5%91%BD%E4%BB%A4%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
+    <lastmod>2020-01-08T08:00:00+08:00</lastmod>
   </url>
   
   <url>
@@ -713,20 +738,6 @@
                 rel="alternate"
                 hreflang="en"
                 href="https://exbob.github.io/categories/"
-                />
-  </url>
-  
-  <url>
-    <loc>https://exbob.github.io/tags/</loc>
-    <xhtml:link
-                rel="alternate"
-                hreflang="fr"
-                href="https://exbob.github.io/fr/tags/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="https://exbob.github.io/tags/"
                 />
   </url>
   
