@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="Shaocheng.Li ">
+<meta name="description" content="dd的作用是转换和拷贝文件，我们可以利用它来分割文件，相关的选项如下：
+ if=filename：输入的文件名
+ of=finename：输出的文件名
+ bs=bytes：一次读写的字节数，默认是512bytes
+ skip=blocks:拷贝前，跳过的输入文件的前blocks块，块的大小有bs决定
+ count=blocks：只拷贝输入文件的前blocks块
+  例如，现在有一个文件file，大小为116616字节：
+[root]# du -b file 116616 file  将其分割为两文件file1和file2，那我们就设置每块为1024字节，将file的前60块放入file1，余下的放入file2：
+[root]# dd if=file bs=1024 count=60 skip=0 of=file1 [root]# dd if=file bs=1024 count=60 skip=60 of=file2  然后用cat将两个文件合并为file.bak，要注意文件的顺序：
+[root]# cat file1 file2 &amp;gt; file.bak  可以用md5sum验证一下file和file.bak：
+[root]# md5sum file 3ff53f7c30421ace632eefff36148a70 file [root]# md5sum file.bak 3ff53f7c30421ace632eefff36148a70 file.bak  可以证明两个文件时完全相同的。
+为了方便分割、合并文件，我写了两个脚本：
+ddf.sh
+#ddf.sh：分割文件，分割后的文件以数字结尾，例如file分割为两个文件：file1和file2 #!/bin/sh #使用脚本是第一参数是要分割的文件名 Filename=$1 Filesize=0 Path=`pwd` #验证文件名是否正确，然后计算文件的大小 if [ -z $Filename ];then echo &amp;quot;Error:The file name can not be empty&amp;quot; exit fi if [ -e $Filename ];then Filesize=`du -b $Filename | awk &#39;{print $1}&#39;` if [ $Filesize == 0 ];then echo &amp;quot;Error:The File size is zero!" />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#252627" />
+<link rel="canonical" href="http://exbob.github.io/posts/2011/07/linux%E4%B8%8B%E5%88%86%E5%89%B2%E5%90%88%E5%B9%B6%E6%96%87%E4%BB%B6dd%E5%92%8Ccat/" />
+
+
+    <title>
+        
+            Linux下分割、合并文件——dd和cat :: Shaocheng.Li  — Hello Friends
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="http://exbob.github.io/main.min.73f55a8d452be4a71b2960620b80252cf69abd84d63fe7501abf0a39b1a70a78.css">
+
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="http://exbob.github.io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="http://exbob.github.io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="http://exbob.github.io/favicon-16x16.png">
+    <link rel="manifest" href="http://exbob.github.io/site.webmanifest">
+    <link rel="mask-icon" href="http://exbob.github.io/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="http://exbob.github.io/favicon.ico">
+    <meta name="msapplication-TileColor" content="#252627">
+    <meta name="theme-color" content="#252627">
+
+<meta itemprop="name" content="Linux下分割、合并文件——dd和cat">
+<meta itemprop="description" content="dd的作用是转换和拷贝文件，我们可以利用它来分割文件，相关的选项如下：
+ if=filename：输入的文件名
+ of=finename：输出的文件名
+ bs=bytes：一次读写的字节数，默认是512bytes
+ skip=blocks:拷贝前，跳过的输入文件的前blocks块，块的大小有bs决定
+ count=blocks：只拷贝输入文件的前blocks块
+  例如，现在有一个文件file，大小为116616字节：
+[root]# du -b file 116616 file  将其分割为两文件file1和file2，那我们就设置每块为1024字节，将file的前60块放入file1，余下的放入file2：
+[root]# dd if=file bs=1024 count=60 skip=0 of=file1 [root]# dd if=file bs=1024 count=60 skip=60 of=file2  然后用cat将两个文件合并为file.bak，要注意文件的顺序：
+[root]# cat file1 file2 &gt; file.bak  可以用md5sum验证一下file和file.bak：
+[root]# md5sum file 3ff53f7c30421ace632eefff36148a70 file [root]# md5sum file.bak 3ff53f7c30421ace632eefff36148a70 file.bak  可以证明两个文件时完全相同的。
+为了方便分割、合并文件，我写了两个脚本：
+ddf.sh
+#ddf.sh：分割文件，分割后的文件以数字结尾，例如file分割为两个文件：file1和file2 #!/bin/sh #使用脚本是第一参数是要分割的文件名 Filename=$1 Filesize=0 Path=`pwd` #验证文件名是否正确，然后计算文件的大小 if [ -z $Filename ];then echo &quot;Error:The file name can not be empty&quot; exit fi if [ -e $Filename ];then Filesize=`du -b $Filename | awk &#39;{print $1}&#39;` if [ $Filesize == 0 ];then echo &quot;Error:The File size is zero!">
+
+
+<meta itemprop="datePublished" content="2011-07-26T08:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2011-07-26T08:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="463">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="http://exbob.github.io"/>
+
+<meta name="twitter:title" content="Linux下分割、合并文件——dd和cat"/>
+<meta name="twitter:description" content="dd的作用是转换和拷贝文件，我们可以利用它来分割文件，相关的选项如下：
+ if=filename：输入的文件名
+ of=finename：输出的文件名
+ bs=bytes：一次读写的字节数，默认是512bytes
+ skip=blocks:拷贝前，跳过的输入文件的前blocks块，块的大小有bs决定
+ count=blocks：只拷贝输入文件的前blocks块
+  例如，现在有一个文件file，大小为116616字节：
+[root]# du -b file 116616 file  将其分割为两文件file1和file2，那我们就设置每块为1024字节，将file的前60块放入file1，余下的放入file2：
+[root]# dd if=file bs=1024 count=60 skip=0 of=file1 [root]# dd if=file bs=1024 count=60 skip=60 of=file2  然后用cat将两个文件合并为file.bak，要注意文件的顺序：
+[root]# cat file1 file2 &gt; file.bak  可以用md5sum验证一下file和file.bak：
+[root]# md5sum file 3ff53f7c30421ace632eefff36148a70 file [root]# md5sum file.bak 3ff53f7c30421ace632eefff36148a70 file.bak  可以证明两个文件时完全相同的。
+为了方便分割、合并文件，我写了两个脚本：
+ddf.sh
+#ddf.sh：分割文件，分割后的文件以数字结尾，例如file分割为两个文件：file1和file2 #!/bin/sh #使用脚本是第一参数是要分割的文件名 Filename=$1 Filesize=0 Path=`pwd` #验证文件名是否正确，然后计算文件的大小 if [ -z $Filename ];then echo &quot;Error:The file name can not be empty&quot; exit fi if [ -e $Filename ];then Filesize=`du -b $Filename | awk &#39;{print $1}&#39;` if [ $Filesize == 0 ];then echo &quot;Error:The File size is zero!"/>
+
+
+
+
+
+    <meta property="article:published_time" content="2011-07-26 08:00:00 &#43;0800 CST" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="http://exbob.github.io/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$ cd /home/</span>
+            <span class="logo__cursor" style=""></span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="http://exbob.github.io/about/">About</a></li><li><a href="http://exbob.github.io/posts/">Posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>3 minutes
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            <h1 class="post-title">
+                <a href="http://exbob.github.io/posts/2011/07/linux%E4%B8%8B%E5%88%86%E5%89%B2%E5%90%88%E5%B9%B6%E6%96%87%E4%BB%B6dd%E5%92%8Ccat/">Linux下分割、合并文件——dd和cat</a>
+            </h1>
+
+            
+
+            <div class="post-content">
+                <p>dd的作用是转换和拷贝文件，我们可以利用它来分割文件，相关的选项如下：</p>
+
+<ul>
+<li><p>if=filename：输入的文件名</p></li>
+
+<li><p>of=finename：输出的文件名</p></li>
+
+<li><p>bs=bytes：一次读写的字节数，默认是512bytes</p></li>
+
+<li><p>skip=blocks:拷贝前，跳过的输入文件的前blocks块，块的大小有bs决定</p></li>
+
+<li><p>count=blocks：只拷贝输入文件的前blocks块</p></li>
+</ul>
+
+<p>例如，现在有一个文件file，大小为116616字节：</p>
+
+<pre><code>[root]# du -b file  
+116616  file  
+</code></pre>
+
+<p>将其分割为两文件file1和file2，那我们就设置每块为1024字节，将file的前60块放入file1，余下的放入file2：</p>
+
+<pre><code>[root]# dd if=file bs=1024 count=60 skip=0  of=file1  
+[root]# dd if=file bs=1024 count=60 skip=60 of=file2  
+</code></pre>
+
+<p>然后用cat将两个文件合并为file.bak，要注意文件的顺序：</p>
+
+<pre><code>[root]# cat file1 file2 &gt; file.bak  
+</code></pre>
+
+<p>可以用md5sum验证一下file和file.bak：</p>
+
+<pre><code>[root]# md5sum file  
+3ff53f7c30421ace632eefff36148a70  file  
+[root]# md5sum file.bak  
+3ff53f7c30421ace632eefff36148a70  file.bak  
+</code></pre>
+
+<p>可以证明两个文件时完全相同的。</p>
+
+<p>为了方便分割、合并文件，我写了两个脚本：</p>
+
+<p>ddf.sh</p>
+
+<pre><code>#ddf.sh：分割文件，分割后的文件以数字结尾，例如file分割为两个文件：file1和file2  
+#!/bin/sh  
+
+#使用脚本是第一参数是要分割的文件名  
+Filename=$1     
+Filesize=0  
+
+Path=`pwd`  
+
+#验证文件名是否正确，然后计算文件的大小  
+if [ -z $Filename ];then  
+    echo &quot;Error:The file name can not be empty&quot;  
+    exit  
+fi  
+if [ -e $Filename ];then  
+    Filesize=`du -b $Filename | awk '{print $1}'`  
+    if [ $Filesize == 0 ];then  
+        echo &quot;Error:The File size is zero!&quot;  
+        exit  
+    fi  
+    echo &quot;The file size is $Filesize Byte&quot;  
+    echo &quot;Plese enter the subfile size(KB):&quot;  
+else  
+    echo &quot;Error:$Filename does not exist!&quot;  
+    exit   
+fi  
+
+#输入分割后每个文件的大小，单位是KB  
+read Subfilesize  
+if [ -z $Subfilesize ];then  
+    echo &quot;Error:Input can not be empty&quot;  
+    exit  
+fi  
+
+echo $Subfilesize | grep '^[0-9]\+$' &gt;&gt; /dev/null  
+if [ $? -ne 0 ];then  
+    echo &quot;Error:The Input is not a number!&quot;  
+    exit  
+elif [ $Subfilesize -eq 0 ];then  
+    echo &quot;Error:The Subfile size is zero!&quot;  
+    exit  
+fi  
+
+#计算需要分割为几个文件  
+SubfileByte=`expr $Subfilesize \* 1024`  
+Subfilenum=`expr $Filesize / $SubfileByte`  
+if [ `expr $Filesize % $Subfilesize` -ne 0 ];then  
+    Subfilenum=`expr $Subfilenum + 1`  
+fi  
+
+#将文件分割  
+echo &quot;$Filename will be divided into $Subfilenum&quot;   
+i=1  
+skipnum=0  
+while [ $i -le $Subfilenum ]  
+do  
+    echo &quot;$Filename$i&quot;  
+    dd if=$Filename of=&quot;$Path/$Filename$i&quot; bs=1024 count=$Subfilesize skip=$skipnum  
+    i=`expr $i + 1`  
+    skipnum=`expr $skipnum + $Subfilesize`  
+done  
+echo &quot;$Filename has been divided into $Subfilenum&quot;  
+echo &quot;Done !&quot;  
+</code></pre>
+
+<p>caf.sh</p>
+
+<pre><code>#caf.sh:合并文件，需要合并的文件要放在一个文件夹里  
+#       文件名分为两个部分，第一部分都相同，第二部分必须是从1开始的连续数字，例如file1，file2，file3  
+#       合并后的文件名为file.bak  
+#!/bin/sh  
+
+#输入文件名的第一部分  
+echo &quot;Please enter file name:&quot;  
+read Filename  
+if [ -z $Filename ];then  
+    echo &quot;Error:File name can not be empty&quot;  
+    exit  
+fi  
+
+#输入待合并文件的个数  
+echo &quot;Please enter the number of subfiles:&quot;   
+read Subfilenum  
+if [ -z $Subfilenum ];then  
+    echo &quot;Error:The number of subfiles can not be empty&quot;  
+    exit  
+fi  
+echo $Subfilenum | grep '^[0-9]\+$' &gt; /dev/null  
+if [ $? -ne 0 ];then  
+        echo &quot;Error:Input must be a number&quot;  
+exit  
+fi  
+if [ $Subfilenum -eq 0 ];then  
+        echo &quot;Error:The number of subfiles can not be zero&quot;  
+exit  
+fi  
+
+
+#合并文件  
+i=1  
+Newfile=$Filename\.bak  
+while [ $i -le $Subfilenum ]  
+do  
+    Subfilename=$Filename$i  
+        if [ -e $Subfilename ];then  
+            echo &quot;$Subfilename done!&quot;  
+            cat $Subfilename &gt;&gt; $Newfile  
+            i=`expr $i + 1`  
+        else  
+            echo &quot;Error:$Subfilename does not exist&quot;  
+            rm -rf $Newfile  
+            exit  
+        fi  
+done  
+
+
+echo &quot;Subfiles be merged into $Newfile&quot;  
+echo &quot;Success!&quot;  
+</code></pre>
+
+<p>用这两个脚本完成对file的分割、合并：</p>
+
+<pre><code>[root]# ./ddf.sh file   
+The file size is 116616 Byte  
+Plese enter the subfile size(KB):  
+60  
+file will be divided into 2  
+file1  
+记录了60+0 的读入  
+记录了60+0 的写出  
+61440字节(61 kB)已复制，0.0352612 秒，1.7 MB/秒  
+file2  
+记录了53+1 的读入  
+记录了53+1 的写出  
+55176字节(55 kB)已复制，0.0316272 秒，1.7 MB/秒  
+file has been divided into 2  
+Done !  
+[root]# ls  
+caf.sh  ddf.sh  file  file1  file2  
+[root]# ./caf.sh   
+Please enter file name:  
+file  
+Please enter the number of subfiles:  
+2  
+file1 done!  
+file2 done!  
+Subfiles be merged into file.bak  
+Success!  
+[root]# ls  
+caf.sh  ddf.sh  file  file1  file2  file.bak
+</code></pre>
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>463 Words</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2011-07-26 08:00 &#43;0800</p>
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h"></span>
+                    <hr />
+                </div>
+
+                <div class="pagination__buttons">
+                    
+                        <span class="button previous">
+                            <a href="http://exbob.github.io/posts/2011/07/linux%E7%B3%BB%E7%BB%9F%E6%96%87%E6%9C%AC%E6%A8%A1%E5%BC%8F%E4%B8%8B%E7%9A%84%E6%88%AA%E5%B1%8F/">
+                                <span class="button__icon">←</span>
+                                <span class="button__text">Linux系统文本模式下的截屏</span>
+                            </a>
+                        </span>
+                    
+
+                    
+                        <span class="button next">
+                            <a href="http://exbob.github.io/posts/2011/07/%E5%A6%82%E4%BD%95%E5%9C%A8linux%E7%B3%BB%E7%BB%9F%E4%B8%8B%E5%88%B6%E4%BD%9Cramdisk/">
+                                <span class="button__text">如何在Linux系统下制作RamDisk</span>
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    
+                </div>
+            </div>
+        
+
+        
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2020</span>
+            
+                <span><a href="http://exbob.github.io">Shaocheng.Li</a></span>
+            
+            <span><a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></span>
+            <span> <a href="http://exbob.github.io/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>
+        </div>
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="http://exbob.github.io/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+
+
+
+    </body>
+</html>

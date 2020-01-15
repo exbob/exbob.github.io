@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="Shaocheng.Li ">
+<meta name="description" content="1.CPU 主频 CPU 的主频是指 CPU 核心的时钟频率，它是 CPU 执行指令的最小时间单位。CPU 内部有时钟管理模块，通过外部振荡器（获取其他时钟电路）输入一个特定的频率（外频），经过内部的 PLL 电路（倍频器）锁定到一个很高的频率，再经过不同的分频，供给不同的模块和总线使用，供给 CPU 的就称为主频,就是通常所说的“主频 = 外频 x 倍频”。目前桌面 X86 CPU 的外频由主板供给，通常是 100MHz ，倍频通常是固定设置的。如果要超频，通常是在主板的 BIOS 中修改倍频因子，也有特殊情况可以增加外频。
+X86-Linux 体系有三种硬件时钟：
+ Real Time Clock(RTC) ，实时时钟，通常位于 CMOS ，独立工作 Programmalbe Interval Timer(PIT) ，可编程的间隔定时器，通常由 8254 芯片实现 Time Stamp Counter(TSC) ，时间戳控制器，记录 CPU 时钟周期  Linux 内核在计算 CPU 主频时会用到 PIT 和 TSC 。以下是在 kernel 3.4 版本中分析。
+2.Programmalbe Interval Timer (PIT) Programmalbe Interval Timer (PIT) 是现代计算机的重要组成部分，尤其是在多任务环境中。 PIT 是用 8253&amp;frasl;8254 芯片实现的，由于历史原因，外接的晶振频率是 1." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#252627" />
+<link rel="canonical" href="http://exbob.github.io/posts/2018/08/linux-%E7%B3%BB%E7%BB%9F%E5%A6%82%E4%BD%95%E8%8E%B7%E5%8F%96-cpu-%E4%B8%BB%E9%A2%91/" />
+
+
+    <title>
+        
+            Linux 系统如何获取 CPU 主频 :: Shaocheng.Li  — Hello Friends
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="http://exbob.github.io/main.min.73f55a8d452be4a71b2960620b80252cf69abd84d63fe7501abf0a39b1a70a78.css">
+
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="http://exbob.github.io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="http://exbob.github.io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="http://exbob.github.io/favicon-16x16.png">
+    <link rel="manifest" href="http://exbob.github.io/site.webmanifest">
+    <link rel="mask-icon" href="http://exbob.github.io/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="http://exbob.github.io/favicon.ico">
+    <meta name="msapplication-TileColor" content="#252627">
+    <meta name="theme-color" content="#252627">
+
+<meta itemprop="name" content="Linux 系统如何获取 CPU 主频">
+<meta itemprop="description" content="1.CPU 主频 CPU 的主频是指 CPU 核心的时钟频率，它是 CPU 执行指令的最小时间单位。CPU 内部有时钟管理模块，通过外部振荡器（获取其他时钟电路）输入一个特定的频率（外频），经过内部的 PLL 电路（倍频器）锁定到一个很高的频率，再经过不同的分频，供给不同的模块和总线使用，供给 CPU 的就称为主频,就是通常所说的“主频 = 外频 x 倍频”。目前桌面 X86 CPU 的外频由主板供给，通常是 100MHz ，倍频通常是固定设置的。如果要超频，通常是在主板的 BIOS 中修改倍频因子，也有特殊情况可以增加外频。
+X86-Linux 体系有三种硬件时钟：
+ Real Time Clock(RTC) ，实时时钟，通常位于 CMOS ，独立工作 Programmalbe Interval Timer(PIT) ，可编程的间隔定时器，通常由 8254 芯片实现 Time Stamp Counter(TSC) ，时间戳控制器，记录 CPU 时钟周期  Linux 内核在计算 CPU 主频时会用到 PIT 和 TSC 。以下是在 kernel 3.4 版本中分析。
+2.Programmalbe Interval Timer (PIT) Programmalbe Interval Timer (PIT) 是现代计算机的重要组成部分，尤其是在多任务环境中。 PIT 是用 8253&frasl;8254 芯片实现的，由于历史原因，外接的晶振频率是 1.">
+
+
+<meta itemprop="datePublished" content="2018-08-07T08:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2018-08-07T08:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="1208">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="http://exbob.github.io"/>
+
+<meta name="twitter:title" content="Linux 系统如何获取 CPU 主频"/>
+<meta name="twitter:description" content="1.CPU 主频 CPU 的主频是指 CPU 核心的时钟频率，它是 CPU 执行指令的最小时间单位。CPU 内部有时钟管理模块，通过外部振荡器（获取其他时钟电路）输入一个特定的频率（外频），经过内部的 PLL 电路（倍频器）锁定到一个很高的频率，再经过不同的分频，供给不同的模块和总线使用，供给 CPU 的就称为主频,就是通常所说的“主频 = 外频 x 倍频”。目前桌面 X86 CPU 的外频由主板供给，通常是 100MHz ，倍频通常是固定设置的。如果要超频，通常是在主板的 BIOS 中修改倍频因子，也有特殊情况可以增加外频。
+X86-Linux 体系有三种硬件时钟：
+ Real Time Clock(RTC) ，实时时钟，通常位于 CMOS ，独立工作 Programmalbe Interval Timer(PIT) ，可编程的间隔定时器，通常由 8254 芯片实现 Time Stamp Counter(TSC) ，时间戳控制器，记录 CPU 时钟周期  Linux 内核在计算 CPU 主频时会用到 PIT 和 TSC 。以下是在 kernel 3.4 版本中分析。
+2.Programmalbe Interval Timer (PIT) Programmalbe Interval Timer (PIT) 是现代计算机的重要组成部分，尤其是在多任务环境中。 PIT 是用 8253&frasl;8254 芯片实现的，由于历史原因，外接的晶振频率是 1."/>
+
+
+
+
+
+    <meta property="article:published_time" content="2018-08-07 08:00:00 &#43;0800 CST" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="http://exbob.github.io/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$ cd /home/</span>
+            <span class="logo__cursor" style=""></span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="http://exbob.github.io/about/">About</a></li><li><a href="http://exbob.github.io/posts/">Posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>6 minutes
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            <h1 class="post-title">
+                <a href="http://exbob.github.io/posts/2018/08/linux-%E7%B3%BB%E7%BB%9F%E5%A6%82%E4%BD%95%E8%8E%B7%E5%8F%96-cpu-%E4%B8%BB%E9%A2%91/">Linux 系统如何获取 CPU 主频</a>
+            </h1>
+                <hr />
+                <aside id="toc">
+                <div class="toc-title">Table of Contents</div>
+                    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#1-cpu-主频">1.CPU 主频</a></li>
+<li><a href="#2-programmalbe-interval-timer-pit">2.Programmalbe Interval Timer (PIT)</a></li>
+<li><a href="#3-time-stamp-counter-tsc">3.Time Stamp Counter (TSC)</a></li>
+<li><a href="#4-计算主频">4.计算主频</a></li>
+<li><a href="#5-proc-cpuinfo">5./proc/cpuinfo</a></li>
+<li><a href="#6-bogomips">6.BogoMIPS</a></li>
+<li><a href="#参考">参考</a></li>
+</ul></li>
+</ul>
+</nav>
+                </aside>
+                <hr />
+
+            
+
+            <div class="post-content">
+                
+
+<h2 id="1-cpu-主频">1.CPU 主频</h2>
+
+<p>CPU 的主频是指 CPU 核心的时钟频率，它是 CPU 执行指令的最小时间单位。CPU 内部有时钟管理模块，通过外部振荡器（获取其他时钟电路）输入一个特定的频率（外频），经过内部的 PLL 电路（倍频器）锁定到一个很高的频率，再经过不同的分频，供给不同的模块和总线使用，供给 CPU 的就称为主频,就是通常所说的“主频 = 外频 x 倍频”。目前桌面 X86 CPU 的外频由主板供给，通常是 100MHz ，倍频通常是固定设置的。如果要超频，通常是在主板的 BIOS 中修改倍频因子，也有特殊情况可以增加外频。</p>
+
+<p>X86-Linux 体系有三种硬件时钟：</p>
+
+<ul>
+<li>Real Time Clock(RTC) ，实时时钟，通常位于 CMOS ，独立工作</li>
+<li>Programmalbe Interval Timer(PIT) ，可编程的间隔定时器，通常由 8254 芯片实现</li>
+<li>Time Stamp Counter(TSC) ，时间戳控制器，记录 CPU 时钟周期</li>
+</ul>
+
+<p>Linux 内核在计算 CPU 主频时会用到 PIT 和 TSC 。以下是在 kernel 3.4 版本中分析。</p>
+
+<h2 id="2-programmalbe-interval-timer-pit">2.Programmalbe Interval Timer (PIT)</h2>
+
+<p>Programmalbe Interval Timer (PIT) 是现代计算机的重要组成部分，尤其是在多任务环境中。 PIT 是用 <sup>8253</sup>&frasl;<sub>8254</sub> 芯片实现的，由于历史原因，外接的晶振频率是 1.193182 MHz ，Linux 内核里的定义在 <code>include/linux/timex.h</code> 文件：</p>
+
+<pre><code>/* The clock frequency of the i8253/i8254 PIT */
+#define PIT_TICK_RATE 1193182ul
+</code></pre>
+
+<p><sup>8253</sup>&frasl;<sub>8254</sub> 内置三个独立的 16 位减法计数器用于分频，每个计数器有一个输出用于特定的功能，示意图如下：</p>
+
+<p><img src="http://exbob.github.io/images/2018-08-07/2018-08-07_1.png" alt="" /></p>
+
+<ol>
+<li>Channel 0 ：PIT Channel 0 的输出连接在中断控制器上，因此它会产生 “IRQ 0”。通常在引导阶段，BIOS 将 Channel 0 设置为 65535 或 0（转换为65536），这将提供 18.2065Hz 的输出频率（每 54.9254ms 一次的中断）。 Channel 0 可能是最有用的 PIT 通道，因为它是唯一连接到 IRQ 的通道，可以用它产生定时中断。选择工作模式时，要注意 IRQ0 是由 Channel 0 输出电压的上升沿产生的。</li>
+<li>Channel 1 ：PIT Channel 1 的输出曾被用于刷新 DRAM 或 RAM 。通常，RAM 中的每个位由一个电容器组成，该电容器保持代表该位状态的微小电荷，但是由于泄漏，这些电容器需要定期“刷新”，以便它们不会忘记自己的状态。在以后的机器上，DRAM 刷新是通过专用硬件完成的，不再使用 PIT 。在大规模集成电路中实现的现代计算机上，PIT Channel 1 不再可用。</li>
+<li>Channel 2 ：PIT Channel 2 的输出连接在蜂鸣器上，因此输出的频率决定了蜂鸣器产生的声音的频率。这是唯一可以通过软件控制门信号的通道（通过I/O 端口 0x61 的 bit0），也可以用软件读取其输出。</li>
+</ol>
+
+<p>PIT 的 <sup>8253</sup>&frasl;<sub>8254</sub> 芯片有四个寄存器，包括三个数据寄存器和一个模式控制寄存器，它们的地址和功能描述：</p>
+
+<table>
+<thead>
+<tr>
+<th>I/O port</th>
+<th>Usage</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>0x40</td>
+<td>Channel 0 data port (read/write)</td>
+</tr>
+
+<tr>
+<td>0x41</td>
+<td>Channel 1 data port (read/write)</td>
+</tr>
+
+<tr>
+<td>0x42</td>
+<td>Channel 2 data port (read/write)</td>
+</tr>
+
+<tr>
+<td>0x43</td>
+<td>Mode/Command register (write only, a read is ignored)</td>
+</tr>
+</tbody>
+</table>
+
+<p>模式控制寄存器的格式：</p>
+
+<p><img src="http://exbob.github.io/images/2018-08-07/2018-08-07_2.jpg" alt="" /></p>
+
+<p>编程方式是先在模式控制寄存器中设置计数器、读写方式和工作模式，然后向相应的计数器中写入初始值。</p>
+
+<h2 id="3-time-stamp-counter-tsc">3.Time Stamp Counter (TSC)</h2>
+
+<p>时间戳控制器 Time Stamp Counter (TSC) 是 X86 CPU 里的一个 64 位寄存器，自 Pentium 开始引入，用于记录 CPU 复位后的周期数，CPU 内部时钟每产生一个时钟周期，该寄存器就加一，也就是 CPU 主频的节拍记录器。我们可以用单位时间内 TSC 记录的时钟周期个数来推算 CPU 的实际频率，比如一秒内 TSC 的值增长了 1000 ，那么主频就是 1KHz 。在单核 CPU 上，TSC 是一个简单高效的获取高精度 CPU 时序信息的方式，但是在多核 CPU 、休眠操作系统上，这个方式无法提供准确信息，依赖 TSC 会降低软件的可移植性。在 Windows 平台上，微软反对使用 TSC 进行高精度计时，在 POSIX 系统上，程序可以使用 <code>clock_gettime()</code> 函数读取 CLOCK_MONOTONIC 时钟的值来获得类似的功能。在 Linux 的内核上，可以用启动参数 <code>notsc</code> 禁用 TSC 。</p>
+
+<p>X86 CPU 提供了 RDTSC 指令来读取 TSC 的值，低 32 位存放在 EAX 寄存器，高 32 位存放在 EDX 寄存器:</p>
+
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>操作码</th>
+<th>说明</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>RDTSC</td>
+<td>0F 31</td>
+<td>将 TSC 的值读入 EDX:EAX</td>
+</tr>
+</tbody>
+</table>
+
+<p>在内核源码的 <code>arch/x86/include/asm/msr.h</code> 文件中提供了读取方法：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C {.line-numbers}" data-lang="C {.line-numbers}">#ifdef CONFIG_X86_64
+#define DECLARE_ARGS(val, low, high)	unsigned low, high
+#define EAX_EDX_VAL(val, low, high)	((low) | ((u64)(high) &lt;&lt; 32))
+#define EAX_EDX_ARGS(val, low, high)	&#34;a&#34; (low), &#34;d&#34; (high)
+#define EAX_EDX_RET(val, low, high)	&#34;=a&#34; (low), &#34;=d&#34; (high)
+#else
+#define DECLARE_ARGS(val, low, high)	unsigned long long val
+#define EAX_EDX_VAL(val, low, high)	(val)
+#define EAX_EDX_ARGS(val, low, high)	&#34;A&#34; (val)
+#define EAX_EDX_RET(val, low, high)	&#34;=A&#34; (val)
+#endif
+static __always_inline unsigned long long __native_read_tsc(void)
+{
+    DECLARE_ARGS(val, low, high);
+    asm volatile(&#34;rdtsc&#34; : EAX_EDX_RET(val, low, high));
+    return EAX_EDX_VAL(val, low, high);
+}</code></pre></div>
+<p>我们可以在用户空间用 C 语言内联汇编实现同样的功能：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C {.line-numbers}" data-lang="C {.line-numbers}">#include &lt;stdio.h&gt;
+int main()
+{
+    unsigned int low=0, high=0;
+    asm volatile(&#34;rdtsc&#34; : &#34;=a&#34;(low), &#34;=d&#34;(high));
+    printf(&#34;0x%x 0x%x\n&#34;,high,low);
+}</code></pre></div>
+<h2 id="4-计算主频">4.计算主频</h2>
+
+<p>Linux 内核在初始化阶段用 TSC 来计算 CPU 主频。我们可以在 dmesg 中找到类似的信息：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell {.line-numbers}" data-lang="shell {.line-numbers}">$ dmesg | grep -E &#34;TSC|tsc&#34;
+tsc: Fast TSC calibration using PIT
+tsc: Detected 3192.872 MHz processor
+TSC deadline timer enabled
+tsc: Refined TSC clocksource calibration: 3192.747 MHz
+Switched to clocksource tsc</code></pre></div>
+<p>前缀的 tsc 是模块的名称，有些内核可能没有这个，没有关系，我们从 <code>Detected 3192.872 MHz processor</code> 入手，这是在 <code>arch/x86/kernel/tsc.c</code> 文件的 <code>tsc_init()</code> 函数中打印的信息，属于内核的时钟子系统，它通过如下路径调用：</p>
+
+<pre><code>start_kernel() -&gt; time_init() —&gt; x86_late_time_init() -&gt; tsc_init()
+</code></pre>
+
+<p>这个函数执行的是 TSC 模块的初始化工作，然后校准 TSC 频率，设置为 CPU 主频，判断 TSC 频率是否可靠，用 TSC 频率计算 lpj 等，我们先关注这一段：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C {.line-numbers}" data-lang="C {.line-numbers}">unsigned int __read_mostly cpu_khz;
+EXPORT_SYMBOL(cpu_khz);
+unsigned int __read_mostly tsc_khz;
+EXPORT_SYMBOL(tsc_khz);
+
+void __init tsc_init(void)
+{
+    ...
+    tsc_khz = x86_platform.calibrate_tsc();
+    cpu_khz = tsc_khz;
+    if (!tsc_khz) {
+        mark_tsc_unstable(&#34;could not calculate TSC khz&#34;);
+        return;
+    }
+    printk(&#34;Detected %lu.%03lu MHz processor.\n&#34;,
+            (unsigned long)cpu_khz / 1000,
+            (unsigned long)cpu_khz % 1000);
+    ...
+}</code></pre></div>
+<p>其中的 <code>x86_platform.calibrate_tsc()</code> 调用的是 <code>native_calibrate_tsc()</code> 函数，它的功能是校准 tsc ，获取 tsc 频率。首先用 PIT 快速校准 TSC ，它的原理是用 PIT 记录一段时间，再测量这段时间内 TSC 的变换量，就可以计算出主频，通过 <code>quick_pit_calibrate()</code> 函数实现：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C {.line-numbers}" data-lang="C {.line-numbers}">/*
+  读取 PIT 的 MSB ，判断 MSB 是否等于参数 val
+*/
+static inline int pit_verify_msb(unsigned char val)
+{
+    /* Ignore LSB */
+    inb(0x42);
+    return inb(0x42) == val;
+}
+/*
+  这个函数通过一个 for 循环不断的读取和判断 PIT 和 TSC ，最终用 *tscp 返回 MSB==val 时的 TSC 的值，*deltap 返回是增量（ delta ：希腊字母第四个）
+*/
+static inline int pit_expect_msb(unsigned char val, u64 *tscp, unsigned long *deltap)
+{
+    int count;
+    u64 tsc = 0, prev_tsc = 0;
+    for (count = 0; count &lt; 50000; count++) {
+        if (!pit_verify_msb(val)) // PIT 的 MSB 等于 val 时跳出循环
+            break;
+        prev_tsc = tsc;
+        tsc = get_cycles(); //读取 tsc 的值，最终是调用上一章提到的 __native_read_tsc() 函数
+    }
+    *deltap = get_cycles() - prev_tsc;
+    *tscp = tsc;
+    return count &gt; 5;
+}
+
+/*
+  这个宏确定的是迭代次数，也就是获取多少次 PIT 的 MSB 。
+  我们的目标是最大错误率为 500ppm（实际上真正的误差要小得多），但是耗时不能超过 50ms ，
+  MAX_QUICK_PIT_MS * PIT_TICK_RATE / 1000  得到的是 50ms 内的时钟周期个数，也就是计数器减少的数值，
+  最后除以 256 是因为我们只取 MSB 。 
+*/
+#define MAX_QUICK_PIT_MS 50
+#define MAX_QUICK_PIT_ITERATIONS (MAX_QUICK_PIT_MS * PIT_TICK_RATE / 1000 / 256) //=233
+static unsigned long quick_pit_calibrate(void)
+{
+    int i;
+    u64 tsc, delta;
+    unsigned long d1, d2;
+
+    /* 关闭蜂鸣器 */
+    outb((inb(0x61) &amp; ~0x02) | 0x01, 0x61);
+    /*
+      计数器 2 , 读写方式是先低后高，工作模式是 0 , 二进制计数
+      当计数器工作模式设为 0 后，该计数器的输出信号立即变为低电平，且计数过程中一直保持低电平。在经初值寄存器赋初值后，开始计数，在每个 CLK 时钟下降沿，计数器进行减 1 计数，当计数减到 0 时，OUT 输出信号变为高电平，且一直保持到该计数器重新赋初值。该信号可以作为中断请求信号。
+      0 模式无自动装入计数初始值的功能，若要继续计数，则需要重新写入计数初始值。在计数期间，装入新的初始值，计数器会在初始值写入后重新开始计数。
+    */
+    outb(0xb0, 0x43);
+
+    /* 从 0xffff 开始计数 */
+    outb(0xff, 0x42);
+    outb(0xff, 0x42);
+
+    /*
+      这里需要一个微小的延时，最简单的方法是第一次 PIT
+    */
+    pit_verify_msb(0);
+
+    /*
+      下面通过一个迭代过程测量出一段时间(50ms)内 TSC 的增长
+      每次循环，PIT 都会减少 256 , i 次循环就是 (I * 256 / PIT_TICK_RATE) 秒
+      delta 记录的是循环过程中 TSC 数值的增长
+      循环结束后，用这两个数值计算主频
+    */
+    if (pit_expect_msb(0xff, &amp;tsc, &amp;d1)) {
+        for (i = 1; i &lt;= MAX_QUICK_PIT_ITERATIONS; i++) {
+            if (!pit_expect_msb(0xff-i, &amp;delta, &amp;d2))
+                break;
+            delta -= tsc;
+            if (d1+d2 &gt;= delta &gt;&gt; 11) //确保误差小于 500ppm ，不理解
+                continue;
+            if (!pit_verify_msb(0xfe - i))  //再次检测 PIT 的 MSB ，确保 PIT 的值已经是 0xfe-i
+                break;
+            goto success;
+        }
+    }
+    printk(&#34;Fast TSC calibration failed\n&#34;);
+    return 0;
+success:
+    /*
+	  kHz = ticks / time-in-seconds / 1000;
+	  kHz = (t2 - t1) / (I * 256 / PIT_TICK_RATE) / 1000
+	  kHz = ((t2 - t1) * PIT_TICK_RATE) / (I * 256 * 1000)
+      主频通过 delta 返回
+    */
+    delta *= PIT_TICK_RATE;
+    do_div(delta, i*256*1000); // do_div() 是内核的 64 位除法函数，结果保持在第一参数，返回余数
+    printk(&#34;Fast TSC calibration using PIT\n&#34;);
+    return delta;
+}</code></pre></div>
+<p>通常用 PIT 快速校准 TSC 都会成功，直接用返回值作为 tsc_khz ，并赋予 cpu_khz 作为主频。如果失败，会继续用一种复杂的方式计算 PIT 和 TSC 。</p>
+
+<h2 id="5-proc-cpuinfo">5./proc/cpuinfo</h2>
+
+<p>在用户空间，我们是通过 <code>/proc/cpuinfo</code> 文件获得 CPU 主频的。proc 文件系统中的文件，必须在内核源码的某个位置创建并使用 <code>file_operations</code> 声明，cpuinfo 的声明位于 <code>fs/proc/cpuinfo.c</code> 文件：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C {.line-numbers}" data-lang="C {.line-numbers}">    static const struct file_operations proc_cpuinfo_operations = {
+        .open		= cpuinfo_open,
+        .read		= seq_read,
+        .llseek		= seq_lseek,
+        .release	= seq_release,
+    };
+
+    static int __init proc_cpuinfo_init(void)
+    {
+        proc_create(&#34;cpuinfo&#34;, 0, NULL, &amp;proc_cpuinfo_operations);
+        return 0;
+    }</code></pre></div>
+<p>然后在 <code>arch/x86/kernel/cpu/proc.c</code> 文件中有很多 <code>show_cpuinfo_*()</code> 函数，比如 <code>static int show_cpuinfo(struct seq_file *m, void *v)</code> ，它们会调用 <code>seq_printf()</code> 函数把信息输出到 /proc/cpuinfo 文件中:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C {.line-numbers}" data-lang="C {.line-numbers}">    static int show_cpuinfo(struct seq_file *m, void *v)
+    {
+        struct cpuinfo_x86 *c = v;
+        unsigned int cpu;
+        int i;
+
+        cpu = c-&gt;cpu_index;
+        seq_printf(m, &#34;processor\t: %u\n&#34;
+            &#34;vendor_id\t: %s\n&#34;
+            &#34;cpu family\t: %d\n&#34;
+            &#34;model\t\t: %u\n&#34;
+            &#34;model name\t: %s\n&#34;,
+            cpu,
+            c-&gt;x86_vendor_id[0] ? c-&gt;x86_vendor_id : &#34;unknown&#34;,
+            c-&gt;x86,
+            c-&gt;x86_model,
+            c-&gt;x86_model_id[0] ? c-&gt;x86_model_id : &#34;unknown&#34;);
+        ...
+    }</code></pre></div>
+<p>可以看出大部分 CPU 信息都是通过 <code>struct cpuinfo_x86 *c</code> 结构获取的，这个结构的声明在 <code>arch/x86/include/asm/processor.h</code> 文件，在这个文件中搜索该结构的引用，会找到 <code>extern void cpu_detect(struct cpuinfo_x86 *c);</code> 等类似的函数，这些函数内通过 <code>cpuid()</code> 函数从硬件寄存器上读取信息，然后填充 <code>struct cpuinfo_x86 *c</code> 结构 ，这是一个内联函数 ：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C {.line-numbers}" data-lang="C {.line-numbers}">    static inline void cpuid(unsigned int op,
+                unsigned int *eax, unsigned int *ebx,
+                unsigned int *ecx, unsigned int *edx)
+    {
+        *eax = op;
+        *ecx = 0;
+        __cpuid(eax, ebx, ecx, edx);
+    }</code></pre></div>
+<p>函数内的 <code>__cpuid()</code> 是封装了 <code>native_cpuid()</code> 函数的宏定义，也在这个文件里定义：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C {.line-numbers}" data-lang="C {.line-numbers}">    static inline void native_cpuid(unsigned int *eax, unsigned int *ebx,
+                    unsigned int *ecx, unsigned int *edx)
+    {
+        /* ecx is often an input as well as an output. */
+        asm volatile(&#34;cpuid&#34;
+            : &#34;=a&#34; (*eax),
+            &#34;=b&#34; (*ebx),
+            &#34;=c&#34; (*ecx),
+            &#34;=d&#34; (*edx)
+            : &#34;0&#34; (*eax), &#34;2&#34; (*ecx)
+            : &#34;memory&#34;);
+    }</code></pre></div>
+<p>这里是通过汇编指令读取相应的寄存器，这些指令属于 CPUID ，是 X86 架构的处理器补充指令，用于发现处理器的详细信息，参考<a href="https://zh.wikipedia.org/wiki/CPUID" target="_blank">https://zh.wikipedia.org/wiki/CPUID</a>。</p>
+
+<p>还有一些信息不是通过 CUPID 获取的，比如 CPU 主频（CPU frequency），在 <code>arch/x86/kernel/cpu/proc.c</code> 文件的 <code>show_cpuinfo()</code> 函数中可以看到：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-C {.line-numbers}" data-lang="C {.line-numbers}">if (cpu_has(c, X86_FEATURE_TSC)) {
+	unsigned int freq = cpufreq_quick_get(cpu);
+	if (!freq)
+		freq = cpu_khz;
+	seq_printf(m, &#34;cpu MHz\t\t: %u.%03u\n&#34;, freq / 1000, (freq % 1000));
+}</code></pre></div>
+<p>它是先调用 <code>cpufreq_quick_get()</code> 函数返回一个值，这是 cpufrep 模块的一个函数，它的返回值与 sysfs 中 <code>/sys/devices/system/cpu/cpu[n]/cpufreq/</code> 目录下的 scaling_cur_freq 完全一致，而且可以动态变化。如果调用失败，就把 cpu_khz 作为 CPU 主频。</p>
+
+<p>CPU 的主频是可以动态调节的。主频越高，功耗也越高，为了节省 CPU 的功耗和减少发热，我们可以根据当前 CPU 的负载情况，动态地提供刚好足够的主频给 CPU 。Linux 内核提供了一套框架来完成这个目标，这就是 cpufrep 子系统。</p>
+
+<p>cpufrep 子系统在用户空间提供了 sysfs 接口，都位于 <code>/sys/devices/system/cpu</code> 目录下：</p>
+
+<pre><code>/sys/devices/system/cpu$ ls
+cpu0  cpu2  cpufreq  kernel_max  modalias  online    power    probe    uevent
+cpu1  cpu3  cpuidle  microcode   offline   possible  present  release
+</code></pre>
+
+<h2 id="6-bogomips">6.BogoMIPS</h2>
+
+<p>在 <code>/proc/cpuinfo</code> 中可以看到一个参数 bogomips ，在 dmesg 中也可以看到类似的信息：</p>
+
+<pre><code>[    0.000001] Calibrating delay loop (skipped), value calculated using timer frequency.. 6385.48 BogoMIPS (lpj=12770964)
+</code></pre>
+
+<p>从字面意思也可以理解， BogoMIPS 就是伪百万次指令每秒，每秒钟可以执行几百万条指令，是一种衡量 CPU 速度的不科学方法。这条信息来自于内核 <code>init/calibrate.c</code> 文件的 <code>calibrate_delay()</code> 函数。</p>
+
+<h2 id="参考">参考</h2>
+
+<ul>
+<li><a href="http://www.expreview.com/57334.html" target="_blank">CPU 频率</a></li>
+<li><a href="https://wiki.osdev.org/Programmable_Interval_Timer" target="_blank">Programmable Interval Timer</a></li>
+<li><a href="https://wiki.archlinux.org/index.php/CPU_frequency_scaling" target="_blank">CPU frequency scaling</a></li>
+</ul>
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>1208 Words</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2018-08-07 08:00 &#43;0800</p>
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h"></span>
+                    <hr />
+                </div>
+
+                <div class="pagination__buttons">
+                    
+                        <span class="button previous">
+                            <a href="http://exbob.github.io/posts/2018/09/%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8-dnf-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+                                <span class="button__icon">←</span>
+                                <span class="button__text">包管理器 dnf 学习笔记</span>
+                            </a>
+                        </span>
+                    
+
+                    
+                        <span class="button next">
+                            <a href="http://exbob.github.io/posts/2018/07/linux-%E5%86%85%E6%A0%B8%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95/">
+                                <span class="button__text">Linux 内核调试方法</span>
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    
+                </div>
+            </div>
+        
+
+        
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2020</span>
+            
+                <span><a href="http://exbob.github.io">Shaocheng.Li</a></span>
+            
+            <span><a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></span>
+            <span> <a href="http://exbob.github.io/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>
+        </div>
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="http://exbob.github.io/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+
+
+
+    </body>
+</html>

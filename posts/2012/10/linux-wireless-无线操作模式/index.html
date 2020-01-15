@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="Shaocheng.Li ">
+<meta name="description" content="原文： Wireless Operating Modes
+Translated by Bob
+2012-10-27
+Email：gexbob@gmail.com
+Blog：http://shaocheng.li
+一个 WNIC （Wireless Network Interface Controller，无线网络接口控制器）总是运行在如下几种模式之一。这些模式设定了无线连接的主要功能。有时也可能同时运行在两种模式。
+Station (STA) 基本模式 任何无线驱动都能运行在这种模式。因此它被称作默认模式。两个 STA 模式的 WNIC 无法相互连接。它们需要第三个 AP 模式的 WNIC 来管理无线网络！STA 模式的 WNIC 通过发送管理数据帧来连接 AP 模式的 WNIC 。这个过程叫做认证（authentication）和关联（association）。当 AP 发送关联成功的回复后，这个 STA 就成为了无线网络的一部分。
+AccessPoint (AP) 基本模式 在一个已经被管理的无线网络中，Access Point 是作为主设备存在的。它通过管理和维护 STA 列表来聚合网络。它还管理安全策略。这个网络就以 AP 的 MAC 地址命名。同时还会为 AP 设置一个可读的名字 SSID 。
+Linux 下使用 AP 模式需要用到 hostapd ，当前至少是 0.6 版本，最好通过 git 获得。http://wireless.erley.org
+Monitor (MON) 模式 Monitor 模式是一个被动模式，不会传输数据帧。所有的输入包都交给主机处理，不会进行任何过滤。这个模式被用来监视网络。" />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#252627" />
+<link rel="canonical" href="http://exbob.github.io/posts/2012/10/linux-wireless-%E6%97%A0%E7%BA%BF%E6%93%8D%E4%BD%9C%E6%A8%A1%E5%BC%8F/" />
+
+
+    <title>
+        
+            Linux Wireless —— 无线操作模式 :: Shaocheng.Li  — Hello Friends
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="http://exbob.github.io/main.min.73f55a8d452be4a71b2960620b80252cf69abd84d63fe7501abf0a39b1a70a78.css">
+
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="http://exbob.github.io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="http://exbob.github.io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="http://exbob.github.io/favicon-16x16.png">
+    <link rel="manifest" href="http://exbob.github.io/site.webmanifest">
+    <link rel="mask-icon" href="http://exbob.github.io/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="http://exbob.github.io/favicon.ico">
+    <meta name="msapplication-TileColor" content="#252627">
+    <meta name="theme-color" content="#252627">
+
+<meta itemprop="name" content="Linux Wireless —— 无线操作模式">
+<meta itemprop="description" content="原文： Wireless Operating Modes
+Translated by Bob
+2012-10-27
+Email：gexbob@gmail.com
+Blog：http://shaocheng.li
+一个 WNIC （Wireless Network Interface Controller，无线网络接口控制器）总是运行在如下几种模式之一。这些模式设定了无线连接的主要功能。有时也可能同时运行在两种模式。
+Station (STA) 基本模式 任何无线驱动都能运行在这种模式。因此它被称作默认模式。两个 STA 模式的 WNIC 无法相互连接。它们需要第三个 AP 模式的 WNIC 来管理无线网络！STA 模式的 WNIC 通过发送管理数据帧来连接 AP 模式的 WNIC 。这个过程叫做认证（authentication）和关联（association）。当 AP 发送关联成功的回复后，这个 STA 就成为了无线网络的一部分。
+AccessPoint (AP) 基本模式 在一个已经被管理的无线网络中，Access Point 是作为主设备存在的。它通过管理和维护 STA 列表来聚合网络。它还管理安全策略。这个网络就以 AP 的 MAC 地址命名。同时还会为 AP 设置一个可读的名字 SSID 。
+Linux 下使用 AP 模式需要用到 hostapd ，当前至少是 0.6 版本，最好通过 git 获得。http://wireless.erley.org
+Monitor (MON) 模式 Monitor 模式是一个被动模式，不会传输数据帧。所有的输入包都交给主机处理，不会进行任何过滤。这个模式被用来监视网络。">
+
+
+<meta itemprop="datePublished" content="2012-10-27T08:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2012-10-27T08:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="150">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="http://exbob.github.io"/>
+
+<meta name="twitter:title" content="Linux Wireless —— 无线操作模式"/>
+<meta name="twitter:description" content="原文： Wireless Operating Modes
+Translated by Bob
+2012-10-27
+Email：gexbob@gmail.com
+Blog：http://shaocheng.li
+一个 WNIC （Wireless Network Interface Controller，无线网络接口控制器）总是运行在如下几种模式之一。这些模式设定了无线连接的主要功能。有时也可能同时运行在两种模式。
+Station (STA) 基本模式 任何无线驱动都能运行在这种模式。因此它被称作默认模式。两个 STA 模式的 WNIC 无法相互连接。它们需要第三个 AP 模式的 WNIC 来管理无线网络！STA 模式的 WNIC 通过发送管理数据帧来连接 AP 模式的 WNIC 。这个过程叫做认证（authentication）和关联（association）。当 AP 发送关联成功的回复后，这个 STA 就成为了无线网络的一部分。
+AccessPoint (AP) 基本模式 在一个已经被管理的无线网络中，Access Point 是作为主设备存在的。它通过管理和维护 STA 列表来聚合网络。它还管理安全策略。这个网络就以 AP 的 MAC 地址命名。同时还会为 AP 设置一个可读的名字 SSID 。
+Linux 下使用 AP 模式需要用到 hostapd ，当前至少是 0.6 版本，最好通过 git 获得。http://wireless.erley.org
+Monitor (MON) 模式 Monitor 模式是一个被动模式，不会传输数据帧。所有的输入包都交给主机处理，不会进行任何过滤。这个模式被用来监视网络。"/>
+
+
+
+
+
+    <meta property="article:published_time" content="2012-10-27 08:00:00 &#43;0800 CST" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="http://exbob.github.io/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$ cd /home/</span>
+            <span class="logo__cursor" style=""></span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="http://exbob.github.io/about/">About</a></li><li><a href="http://exbob.github.io/posts/">Posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>One minute
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            <h1 class="post-title">
+                <a href="http://exbob.github.io/posts/2012/10/linux-wireless-%E6%97%A0%E7%BA%BF%E6%93%8D%E4%BD%9C%E6%A8%A1%E5%BC%8F/">Linux Wireless —— 无线操作模式</a>
+            </h1>
+
+            
+
+            <div class="post-content">
+                
+
+<p>原文：
+<a href="http://linuxwireless.org/en/users/Documentation/modes" target="_blank">Wireless Operating Modes</a></p>
+
+<p>Translated by Bob</p>
+
+<p>2012-10-27</p>
+
+<p>Email：gexbob@gmail.com</p>
+
+<p>Blog：<a href="http://shaocheng.li" target="_blank">http://shaocheng.li</a></p>
+
+<hr />
+
+<p>一个 WNIC （Wireless Network Interface Controller，无线网络接口控制器）总是运行在如下几种模式之一。这些模式设定了无线连接的主要功能。有时也可能同时运行在两种模式。</p>
+
+<h2 id="station-sta-基本模式">Station (STA) 基本模式</h2>
+
+<p>任何无线驱动都能运行在这种模式。因此它被称作默认模式。两个 STA 模式的 WNIC 无法相互连接。它们需要第三个 AP 模式的 WNIC 来管理无线网络！STA 模式的 WNIC 通过发送管理数据帧来连接 AP 模式的 WNIC 。这个过程叫做认证（authentication）和关联（association）。当 AP 发送关联成功的回复后，这个 STA 就成为了无线网络的一部分。</p>
+
+<h2 id="accesspoint-ap-基本模式">AccessPoint (AP) 基本模式</h2>
+
+<p>在一个已经被管理的无线网络中，Access Point 是作为主设备存在的。它通过管理和维护 STA 列表来聚合网络。它还管理安全策略。这个网络就以 AP 的 MAC 地址命名。同时还会为 AP 设置一个可读的名字 SSID 。</p>
+
+<p><em>Linux 下使用 AP 模式需要用到 hostapd ，当前至少是 0.6 版本，最好通过 git 获得。<a href="http://wireless.erley.org" target="_blank">http://wireless.erley.org</a></em></p>
+
+<h2 id="monitor-mon-模式">Monitor (MON) 模式</h2>
+
+<p>Monitor 模式是一个被动模式，不会传输数据帧。所有的输入包都交给主机处理，不会进行任何过滤。这个模式被用来监视网络。</p>
+
+<p>对于 mac80211 ，除了常规设备，它可能还有一个处于 Monitor 模式的网络设备，用于检测和使用网络。可是，不是所有的硬件都支持这个功能，因为不是所有的硬件都能配置为在其他模式下显示所有的数据包。Monitor 模式接口总是工作在“尽可能(best effort)”的基础上。</p>
+
+<p>对于 mac80211 ，也可以在 Monitor 模式下发送数据包，这叫做数据包注入。用于想在用户空间实施 MLME 工作的应用程序，例如支持 IEEE 802.11 的非标准 MAC 扩展。</p>
+
+<h2 id="ad-hoc-ibss-模式">Ad-Hoc (IBSS) 模式</h2>
+
+<p>Ad-Hoc 模式也叫 IBBS (Independent Basic Service Set) 模式，用于创建无需 AP 的无线网络。IBSS 网络中的每个节点都管理自己的网络。 Ad-Hoc 用于在没有可用 AP 的情况下使两台或更多的电脑相互连接。</p>
+
+<h2 id="wireless-distribution-system-wds-模式">Wireless Distribution System (WDS) 模式</h2>
+
+<p>分发系统 (Distribution System) 是通过有线连接到 AP 。无线分发系统 (Wireless Distribution System) 是通过无线的方式完成相同的工作。WDS 作为多个关联 AP 之间的共同途径，可被用于替代综合布线。阅读 <a href="http://linuxwireless.org/en/users/Documentation/iw#Setting_up_a_WDS_peer" target="_blank">iw WDS</a> 文档可以详细了解怎样使能这个模式，也要重新理解使用 <a href="http://linuxwireless.org/en/users/Documentation/iw#Using_4-address_for_AP_and_client_mode" target="_blank">4-address mode</a> 。</p>
+
+<h2 id="mesh">Mesh</h2>
+
+<p>Mesh 接口被用于允许多个设备之间通过动态的建立智能路由来相互沟通。</p>
+
+<p>查看 <a href="http://en.wikipedia.org/wiki/IEEE_802.11s" target="_blank">Wikipedia&rsquo;s entry on 802.11s</a> 和 <a href="http://en.wikipedia.org/wiki/Wireless_mesh_network" target="_blank">Wireless mesh network(WMN)</a>。</p>
+
+<p>为了实现 mesh 的 portal 功能，可以为常规网口桥接一个 mesh 接口。</p>
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>150 Words</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2012-10-27 08:00 &#43;0800</p>
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h"></span>
+                    <hr />
+                </div>
+
+                <div class="pagination__buttons">
+                    
+                        <span class="button previous">
+                            <a href="http://exbob.github.io/posts/2012/10/awk-%E5%AE%9E%E4%BE%8B%E7%BB%83%E4%B9%A0/">
+                                <span class="button__icon">←</span>
+                                <span class="button__text">awk 实例练习</span>
+                            </a>
+                        </span>
+                    
+
+                    
+                        <span class="button next">
+                            <a href="http://exbob.github.io/posts/2012/10/linux-%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%94%B5%E6%BA%90%E7%AE%A1%E7%90%86/">
+                                <span class="button__text">Linux 系统的电源管理</span>
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    
+                </div>
+            </div>
+        
+
+        
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2020</span>
+            
+                <span><a href="http://exbob.github.io">Shaocheng.Li</a></span>
+            
+            <span><a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></span>
+            <span> <a href="http://exbob.github.io/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>
+        </div>
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="http://exbob.github.io/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+
+
+
+    </body>
+</html>

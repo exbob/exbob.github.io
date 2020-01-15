@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="Shaocheng.Li ">
+<meta name="description" content="0. 准备  Raspberry Pi 3 Model B 32GB Class10 TF 卡（官方推荐 8GB 以上）和读卡器 5V2A USB 电源，比如 iPad 电源适配器 microUSB 电源线 HDMI 数据线 显示器 USB 键盘  1. 安装系统 下载 Raspbian jessie lite ：2017-04-10-raspbian-jessie-lite.img ，这是一个官方支持的精简系统，基于 Debian 开发，只有文本界面。
+将 TF 卡插入 MacBook ，在终端里用 df 命令可以看到 TF 卡已经被挂载：
+[22:16]~/ ❯ df Filesystem 512-blocks Used Available Capacity iused ifree %iused Mounted on /dev/disk1 487830528 299357448 187961080 62% 1687373 4293279906 0% / devfs 377 377 0 100% 654 0 100% /dev map -hosts 0 0 0 100% 0 0 100% /net map auto_home 0 0 0 100% 0 0 100% /home /dev/disk3s1 60612608 226616 60385992 1% 76 4294967203 0% /Volumes/Pi  然后卸载：" />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#252627" />
+<link rel="canonical" href="http://exbob.github.io/posts/2017/05/raspberrypi-3-%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/" />
+
+
+    <title>
+        
+            RaspberryPi 3 使用笔记 :: Shaocheng.Li  — Hello Friends
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="http://exbob.github.io/main.min.73f55a8d452be4a71b2960620b80252cf69abd84d63fe7501abf0a39b1a70a78.css">
+
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="http://exbob.github.io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="http://exbob.github.io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="http://exbob.github.io/favicon-16x16.png">
+    <link rel="manifest" href="http://exbob.github.io/site.webmanifest">
+    <link rel="mask-icon" href="http://exbob.github.io/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="http://exbob.github.io/favicon.ico">
+    <meta name="msapplication-TileColor" content="#252627">
+    <meta name="theme-color" content="#252627">
+
+<meta itemprop="name" content="RaspberryPi 3 使用笔记">
+<meta itemprop="description" content="0. 准备  Raspberry Pi 3 Model B 32GB Class10 TF 卡（官方推荐 8GB 以上）和读卡器 5V2A USB 电源，比如 iPad 电源适配器 microUSB 电源线 HDMI 数据线 显示器 USB 键盘  1. 安装系统 下载 Raspbian jessie lite ：2017-04-10-raspbian-jessie-lite.img ，这是一个官方支持的精简系统，基于 Debian 开发，只有文本界面。
+将 TF 卡插入 MacBook ，在终端里用 df 命令可以看到 TF 卡已经被挂载：
+[22:16]~/ ❯ df Filesystem 512-blocks Used Available Capacity iused ifree %iused Mounted on /dev/disk1 487830528 299357448 187961080 62% 1687373 4293279906 0% / devfs 377 377 0 100% 654 0 100% /dev map -hosts 0 0 0 100% 0 0 100% /net map auto_home 0 0 0 100% 0 0 100% /home /dev/disk3s1 60612608 226616 60385992 1% 76 4294967203 0% /Volumes/Pi  然后卸载：">
+
+
+<meta itemprop="datePublished" content="2017-05-09T08:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2017-05-09T08:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="2639">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="http://exbob.github.io"/>
+
+<meta name="twitter:title" content="RaspberryPi 3 使用笔记"/>
+<meta name="twitter:description" content="0. 准备  Raspberry Pi 3 Model B 32GB Class10 TF 卡（官方推荐 8GB 以上）和读卡器 5V2A USB 电源，比如 iPad 电源适配器 microUSB 电源线 HDMI 数据线 显示器 USB 键盘  1. 安装系统 下载 Raspbian jessie lite ：2017-04-10-raspbian-jessie-lite.img ，这是一个官方支持的精简系统，基于 Debian 开发，只有文本界面。
+将 TF 卡插入 MacBook ，在终端里用 df 命令可以看到 TF 卡已经被挂载：
+[22:16]~/ ❯ df Filesystem 512-blocks Used Available Capacity iused ifree %iused Mounted on /dev/disk1 487830528 299357448 187961080 62% 1687373 4293279906 0% / devfs 377 377 0 100% 654 0 100% /dev map -hosts 0 0 0 100% 0 0 100% /net map auto_home 0 0 0 100% 0 0 100% /home /dev/disk3s1 60612608 226616 60385992 1% 76 4294967203 0% /Volumes/Pi  然后卸载："/>
+
+
+
+
+
+    <meta property="article:published_time" content="2017-05-09 08:00:00 &#43;0800 CST" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="http://exbob.github.io/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$ cd /home/</span>
+            <span class="logo__cursor" style=""></span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="http://exbob.github.io/about/">About</a></li><li><a href="http://exbob.github.io/posts/">Posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>13 minutes
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            <h1 class="post-title">
+                <a href="http://exbob.github.io/posts/2017/05/raspberrypi-3-%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/">RaspberryPi 3 使用笔记</a>
+            </h1>
+                <hr />
+                <aside id="toc">
+                <div class="toc-title">Table of Contents</div>
+                    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#0-准备">0. 准备</a></li>
+<li><a href="#1-安装系统">1. 安装系统</a></li>
+<li><a href="#2-第一次启动">2. 第一次启动</a>
+<ul>
+<li><a href="#2-1-配置语言-时区和键盘布局">2.1. 配置语言、时区和键盘布局</a></li>
+<li><a href="#2-2-配置-wi-fi">2.2. 配置 Wi-Fi</a></li>
+<li><a href="#2-3-开启-ssh">2.3. 开启 SSH</a></li>
+<li><a href="#2-4-更换源">2.4. 更换源</a></li>
+<li><a href="#2-5-替换-vim">2.5. 替换 Vim</a></li>
+<li><a href="#2-6-设置-ssh-证书登录">2.6. 设置 SSH 证书登录</a></li>
+<li><a href="#2-7-系统时间">2.7. 系统时间</a></li>
+<li><a href="#2-8-配置以太网">2.8. 配置以太网</a></li>
+</ul></li>
+<li><a href="#3-硬件编程开发">3. 硬件编程开发</a>
+<ul>
+<li><a href="#3-1-下载安装">3.1. 下载安装</a></li>
+<li><a href="#3-2-wiringpi-的管脚编码">3.2. WiringPi 的管脚编码</a></li>
+<li><a href="#3-3-gpio">3.3. GPIO</a></li>
+<li><a href="#3-4-spi">3.4. SPI</a></li>
+<li><a href="#3-5-uart">3.5. UART</a></li>
+</ul></li>
+<li><a href="#4-搭建-nas-服务">4. 搭建 NAS 服务</a>
+<ul>
+<li><a href="#4-1-硬件配置">4.1. 硬件配置</a></li>
+<li><a href="#4-2-文件共享">4.2. 文件共享</a></li>
+<li><a href="#4-3-ftp-服务器">4.3. FTP 服务器</a></li>
+</ul></li>
+<li><a href="#5-移植-uci">5. 移植 UCI</a></li>
+<li><a href="#6-web-开发">6. Web 开发</a>
+<ul>
+<li><a href="#6-1-安装-nginx">6.1. 安装 Nginx</a></li>
+<li><a href="#6-2-安装-django">6.2. 安装 Django</a></li>
+<li><a href="#6-3-安装-uwsgi">6.3. 安装 uWSGI</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+                </aside>
+                <hr />
+
+            
+
+            <div class="post-content">
+                
+
+<h2 id="0-准备">0. 准备</h2>
+
+<p><img src="http://exbob.github.io/images/2017-05-09/2017-05-09_1.jpg" alt="" /></p>
+
+<ul>
+<li>Raspberry Pi 3 Model B</li>
+<li>32GB Class10 TF 卡（官方推荐 8GB 以上）和读卡器</li>
+<li>5V2A USB 电源，比如 iPad 电源适配器</li>
+<li>microUSB 电源线</li>
+<li>HDMI 数据线</li>
+<li>显示器</li>
+<li>USB 键盘</li>
+</ul>
+
+<h2 id="1-安装系统">1. 安装系统</h2>
+
+<p>下载 <a href="https://www.raspberrypi.org/downloads/raspbian/" target="_blank">Raspbian jessie lite</a> ：2017-04-10-raspbian-jessie-lite.img ，这是一个官方支持的精简系统，基于 Debian 开发，只有文本界面。</p>
+
+<p>将 TF 卡插入 MacBook ，在终端里用 df 命令可以看到 TF 卡已经被挂载：</p>
+
+<pre><code>[22:16]~/ ❯ df
+Filesystem    512-blocks      Used Available Capacity iused      ifree %iused  Mounted on
+/dev/disk1     487830528 299357448 187961080    62% 1687373 4293279906    0%   /
+devfs                377       377         0   100%     654          0  100%   /dev
+map -hosts             0         0         0   100%       0          0  100%   /net
+map auto_home          0         0         0   100%       0          0  100%   /home
+/dev/disk3s1    60612608    226616  60385992     1%      76 4294967203    0%   /Volumes/Pi
+</code></pre>
+
+<p>然后卸载：</p>
+
+<pre><code>[22:39]~/ ❯ diskutil unmount /dev/disk3s1
+Volume Pi on disk3s1 unmounted
+</code></pre>
+
+<p>使用 dd 命令将系统镜像写入:</p>
+
+<pre><code>[23:43]~/ ❯ sudo dd bs=4m if=2017-04-10-raspbian-jessie-lite.img of=/dev/rdisk3
+Password:
+309+1 records in
+309+1 records out
+1297862656 bytes transferred in 112.203648 secs (11567027 bytes/sec)
+</code></pre>
+
+<blockquote>
+<p>/dev/disk3s1 是分区，/dev/disk3 是块设备，/dev/rdisk3 是原始字符设备</p>
+</blockquote>
+
+<p>这样就安装系统好了，再次卸载：</p>
+
+<pre><code>[23:45]~/ ❯ df
+Filesystem    512-blocks      Used Available Capacity iused      ifree %iused  Mounted on
+/dev/disk1     487830528 299358472 187960056    62% 1687450 4293279829    0%   /
+devfs                380       380         0   100%     658          0  100%   /dev
+map -hosts             0         0         0   100%       0          0  100%   /net
+map auto_home          0         0         0   100%       0          0  100%   /home
+/dev/disk3s1       82644     41524     41120    51%       0          0  100%   /Volumes/boot
+[23:49]~/ ❯ diskutil unmount /dev/disk3s1
+Volume boot on disk3s1 unmounted
+</code></pre>
+
+<h2 id="2-第一次启动">2. 第一次启动</h2>
+
+<p>将 TF 卡插入树莓派，连接电源、显示器、键盘，即可启动。启动后输入用户名 pi ，密码 raspberry 。</p>
+
+<h3 id="2-1-配置语言-时区和键盘布局">2.1. 配置语言、时区和键盘布局</h3>
+
+<p>执行 <code>sudo raspi-config</code> ，进入 <code>4 Localisation Options</code> ，对系统进行本地化配置：</p>
+
+<ul>
+<li>在 <code>I1 Change Locale</code> 中设置本地语言，取消 <code>en_GB.UTF-8 UTF-8</code> ，选中 <code>en_US.UTF-8 UTF-8</code> 。</li>
+<li>在 <code>I2 Change Timezone</code> 中设置时区为 <code>Asia</code> 下的 <code>Shanghai</code> 。</li>
+<li>在 <code>I3 Change Keyboard Layout</code> 设置键盘布局，依次选择 <code>Generic 104-key PC</code>  &gt; <code>Other</code> &gt; <code>English (US)</code> &gt; <code>English (US)</code> &gt; <code>The default for the keyboard layout</code> &gt; <code>No compose key</code> 。</li>
+<li>在 <code>I4 Change Wi-fi Country</code> 中设置<code>CN China</code></li>
+<li>完成配置后，选择 <code>Finish</code> ，根据提示重启系统，如果没有提示，可以执行 <code>sudo reboot</code> 重启系统。</li>
+</ul>
+
+<h3 id="2-2-配置-wi-fi">2.2. 配置 Wi-Fi</h3>
+
+<p>执行 <code>wpa_passphrase [ssid] [password]</code> 命令将 Wi-Fi 名称和密码写入配置文件：</p>
+
+<pre><code>pi@raspberrypi:~ $ sudo wpa_passphrase TP-Link_30BBB8 12345678 | sudo tee -a /etc/wpa_supplicant/wpa_supplicant.conf
+</code></pre>
+
+<p>重启一下系统，就可以连上 Wi-Fi 了，使用 <code>iwconfig</code> 命令查看连接是否成功，已经获取的 IP ：</p>
+
+<pre><code>pi@raspberrypi:~ $ iwconfig
+wlan0     IEEE 802.11bgn  ESSID:&quot;TP-Link_30BBB8&quot;
+          Mode:Managed  Frequency:2.412 GHz  Access Point: 8C:A6:DF:0C:7A:09
+          Bit Rate=28.8 Mb/s   Tx-Power=31 dBm
+          Retry short limit:7   RTS thr:off   Fragment thr:off
+          Power Management:on
+          Link Quality=44/70  Signal level=-66 dBm
+          Rx invalid nwid:0  Rx invalid crypt:0  Rx invalid frag:0
+          Tx excessive retries:2  Invalid misc:0   Missed beacon:0
+
+lo        no wireless extensions.
+
+eth0      no wireless extensions.
+pi@raspberrypi:~ $ ifconfig
+eth0      Link encap:Ethernet  HWaddr b8:27:eb:11:9b:de
+          inet6 addr: fe80::3f3:df2a:426d:ab83/64 Scope:Link
+          UP BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+lo        Link encap:Local Loopback
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+wlan0     Link encap:Ethernet  HWaddr b8:27:eb:44:ce:8b
+          inet addr:192.168.1.103  Bcast:192.168.1.255  Mask:255.255.255.0
+          inet6 addr: fe80::dba8:37ce:716a:a85/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:4429 errors:0 dropped:34 overruns:0 frame:0
+          TX packets:160 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:327762 (320.0 KiB)  TX bytes:27347 (26.7 KiB)
+</code></pre>
+
+<h3 id="2-3-开启-ssh">2.3. 开启 SSH</h3>
+
+<p>系统默认没有开启 SSH ，需要在 TF 卡的根目录下新建一个空文件 SSH ，这样系统启动时就会启动 SSH ：</p>
+
+<pre><code>pi@raspberrypi:~ $ sudo touch /boot/ssh
+pi@raspberrypi:~ $ sudo reboot
+</code></pre>
+
+<p>查看 SSH 服务是否启动：</p>
+
+<pre><code>pi@raspberrypi:~ $ systemctl status ssh
+● ssh.service - OpenBSD Secure Shell server
+   Loaded: loaded (/lib/systemd/system/ssh.service; enabled)
+   Active: active (running) since Mon 2017-04-10 19:16:40 CST; 2min 2s ago
+ Main PID: 697 (sshd)
+   CGroup: /system.slice/ssh.service
+           └─697 /usr/sbin/sshd -D
+</code></pre>
+
+<p>在 Mac 的终端里执行 <code>ssh pi@192.168.1.103</code> 登录树莓派。</p>
+
+<blockquote>
+<p>可以安装一个 lrzsz ，方便服务器端与客户端的文件传输：<code>sudo apt-get install lrzsz</code></p>
+</blockquote>
+
+<h3 id="2-4-更换源">2.4. 更换源</h3>
+
+<p>编辑配置文件：</p>
+
+<pre><code>pi@raspberrypi:~ $ sudo vi /etc/apt/sources.list
+</code></pre>
+
+<p>注释掉原地址，添加阿里云的源地址：</p>
+
+<pre><code>deb http://mirrors.aliyun.com/raspbian/raspbian/ wheezy main non-free contrib
+deb-src http://mirrors.aliyun.com/raspbian/raspbian/ wheezy main non-free contrib
+</code></pre>
+
+<p>保存文件后，更新系统软件：</p>
+
+<pre><code>pi@raspberrypi:~ $ sudo apt-get update
+</code></pre>
+
+<p>清华的源速度也不错：</p>
+
+<pre><code>deb http://mirrors.tuna.tsinghua.edu.cn/raspbian/raspbian/ jessie main non-free contrib
+deb-src http://mirrors.tuna.tsinghua.edu.cn/raspbian/raspbian/ jessie main non-free contrib
+</code></pre>
+
+<h3 id="2-5-替换-vim">2.5. 替换 Vim</h3>
+
+<p>系统原装的 Vim 超难用，先卸载，再按照新的：</p>
+
+<pre><code>pi@raspberrypi:~ $ sudo apt-get remove vim-common
+pi@raspberrypi:~ $ sudo apt-get install vim
+</code></pre>
+
+<h3 id="2-6-设置-ssh-证书登录">2.6. 设置 SSH 证书登录</h3>
+
+<p>暴露在外围的密码登录容易受到攻击，而且每次都要输密码，不够方便。真正生产环境中还是使用证书登录。配置需要如下几个步骤。</p>
+
+<ol>
+<li><p>生成一对秘钥，一路回车默认生成id_rsa和id_rsa.pub，前者是私钥，放在客户端，后者是公钥，需要放在ssh服务器：</p>
+
+<pre><code>pi@raspberrypi:~ $ ssh-keygen -t rsa
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/pi/.ssh/id_rsa):
+Created directory '/home/pi/.ssh'.
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /home/pi/.ssh/id_rsa.
+Your public key has been saved in /home/pi/.ssh/id_rsa.pub.
+The key fingerprint is:
+63:c8:76:52:c1:14:bc:1b:8b:28:b2:02:7d:86:96:8f pi@raspberrypi
+The key's randomart image is:
++---[RSA 2048]----+
+|       ++.       |
+|        o.       |
+|        ..       |
+|     . oo        |
+| . o .=.S+       |
+|o * +..+o.       |
+|.+ *             |
+|o E .            |
+|.                |
++-----------------+
+pi@raspberrypi:~ $ cd .ssh/
+pi@raspberrypi:~/.ssh $ ls
+id_rsa  id_rsa.pub
+</code></pre></li>
+
+<li><p>在服务器端将 id_rsa.pub 添加到 authorized_keys ，然后配置 ssh_config</p>
+
+<pre><code>pi@raspberrypi:~/.ssh $ cat id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys
+pi@raspberrypi:~ $ vim /etc/ssh/ssh_config    
+RSAAuthentication yes
+PubkeyAuthentication yes
+AuthorizedKeysFile  %h/.ssh/authorized_keys
+</code></pre></li>
+
+<li><p>把私钥 id_rsa 发送到客户端，由于我是 MacOS ，放在 ~/.ssh/ 目录下，更名为 raspberry_pi ，在 ~/.ssh/config 文件中添加一项配置：</p>
+
+<pre><code>host pi
+HostName 192.168.1.103
+Port 22
+User pi
+IdentityFile ~/.ssh/raspberry_pi
+</code></pre></li>
+
+<li><p>在客户端使用 <code>ssh pi</code> 即可登录树莓派。</p></li>
+</ol>
+
+<h3 id="2-7-系统时间">2.7. 系统时间</h3>
+
+<p>树莓派没有实时时钟，所以每次启动后要用 ntp 对时，否则时间不准。默认设置的 ntp 服务器连接较慢，可以添加一些境内的 ntp 服务器。编辑 /etc/ntp.conf 文件，找到如下两行：</p>
+
+<pre><code># You do need to talk to an NTP server or two (or three).
+#server ntp.your-provider.example
+</code></pre>
+
+<p>在这行后面添加：</p>
+
+<pre><code>server ntp.fudan.edu.cn iburst
+server time.asia.apple.com iburst
+server asia.pool.ntp.org iburst
+server ntp.nict.jp iburst
+server time.nist.gov iburst
+</code></pre>
+
+<p>保存后重启 ntpd ：</p>
+
+<pre><code>pi@raspberrypi:~ $ sudo systemctl restart ntp.service
+</code></pre>
+
+<h3 id="2-8-配置以太网">2.8. 配置以太网</h3>
+
+<p>树莓派有一个以太网卡 eth0 ，默认是 dhcp 方式自动分配 IP ，要改成静态 IP 需要编辑 /etc/network/interfaces 文件，将 eth0 的配置删除，添加如下内容：</p>
+
+<pre><code>auto eth0
+iface eth0 inet static
+    address 192.168.5.252
+    netmask 255.255.255.0
+    gateway 192.168.5.50
+    dns-nameservers 192.168.0.99
+</code></pre>
+
+<p>保存后重启 network 服务：</p>
+
+<pre><code>pi@raspberrypi:~ $ sudo systemctl restart networking.service
+</code></pre>
+
+<h2 id="3-硬件编程开发">3. 硬件编程开发</h2>
+
+<p>树莓派通过 40 pin 排针引出 26 路 GPIO ，输出高电平 3.3V ，部分 GPIO 有复用功能，包括一个两线 I2C ，一个四线 SPI ，一个 UART ，信号定义如下：</p>
+
+<p><img src="http://exbob.github.io/images/2017-05-09/2017-05-09_2.jpg" alt="" /></p>
+
+<p>读写 GPIO 可以用 C 语言或者 Python ，官方推荐的 Python GPIO 是一个小型 Python 库，但是不支持 SPI 、I2C 等 GPIO 的复用功能，使用 C 语言开发的 WiringPi 更受欢迎：<a href="http://wiringpi.com/" target="_blank">http://wiringpi.com/</a> ，它提供了一个 C 语言开发库， API 风格类似 Arduino ，可以访问 GPIO 管脚的所有功能，还提供了一个命令行工具 gpio ，可以直接访问 GPIO 管脚。</p>
+
+<h3 id="3-1-下载安装">3.1. 下载安装</h3>
+
+<p>先按照 git ，然后通过 git 下载源码：</p>
+
+<pre><code>pi@raspberrypi:~ $ sudo apt-get install git
+pi@raspberrypi:~ $ git clone git://git.drogon.net/wiringPi
+</code></pre>
+
+<p>安装：</p>
+
+<pre><code>pi@raspberrypi:~ $  cd ~/wiringPi
+pi@raspberrypi:~ $  ./build
+</code></pre>
+
+<p>测试是否安装成功：</p>
+
+<pre><code>pi@raspberrypi:~/wiringPi $ gpio -v
+gpio version: 2.44
+Copyright (c) 2012-2017 Gordon Henderson
+This is free software with ABSOLUTELY NO WARRANTY.
+For details type: gpio -warranty
+
+Raspberry Pi Details:
+    Type: Pi 3, Revision: 02, Memory: 1024MB, Maker: Sony
+    * Device tree is enabled. 
+    * --&gt; Raspberry Pi 3 Model B Rev 1.2
+    * This Raspberry Pi supports user-level GPIO access.
+</code></pre>
+
+<h3 id="3-2-wiringpi-的管脚编码">3.2. WiringPi 的管脚编码</h3>
+
+<p>WiringPi 的 GPIO 管脚编号与连接器上的硬件硬件编号并不一致，获取当前树莓派的 GPIO 管脚描述的方法是使用 gpio 命令：</p>
+
+<pre><code>pi@raspberrypi:~/wiringPi $ gpio readall
+ +-----+-----+---------+------+---+---Pi 3---+---+------+---------+-----+-----+
+ | BCM | wPi |   Name  | Mode | V | Physical | V | Mode | Name    | wPi | BCM |
+ +-----+-----+---------+------+---+----++----+---+------+---------+-----+-----+
+ |     |     |    3.3v |      |   |  1 || 2  |   |      | 5v      |     |     |
+ |   2 |   8 |   SDA.1 |   IN | 1 |  3 || 4  |   |      | 5v      |     |     |
+ |   3 |   9 |   SCL.1 |   IN | 1 |  5 || 6  |   |      | 0v      |     |     |
+ |   4 |   7 | GPIO. 7 |   IN | 1 |  7 || 8  | 0 | IN   | TxD     | 15  | 14  |
+ |     |     |      0v |      |   |  9 || 10 | 1 | IN   | RxD     | 16  | 15  |
+ |  17 |   0 | GPIO. 0 |   IN | 0 | 11 || 12 | 0 | IN   | GPIO. 1 | 1   | 18  |
+ |  27 |   2 | GPIO. 2 |   IN | 0 | 13 || 14 |   |      | 0v      |     |     |
+ |  22 |   3 | GPIO. 3 |   IN | 0 | 15 || 16 | 0 | IN   | GPIO. 4 | 4   | 23  |
+ |     |     |    3.3v |      |   | 17 || 18 | 0 | IN   | GPIO. 5 | 5   | 24  |
+ |  10 |  12 |    MOSI |   IN | 0 | 19 || 20 |   |      | 0v      |     |     |
+ |   9 |  13 |    MISO |   IN | 0 | 21 || 22 | 0 | IN   | GPIO. 6 | 6   | 25  |
+ |  11 |  14 |    SCLK |   IN | 0 | 23 || 24 | 1 | IN   | CE0     | 10  | 8   |
+ |     |     |      0v |      |   | 25 || 26 | 1 | IN   | CE1     | 11  | 7   |
+ |   0 |  30 |   SDA.0 |   IN | 1 | 27 || 28 | 1 | IN   | SCL.0   | 31  | 1   |
+ |   5 |  21 | GPIO.21 |   IN | 1 | 29 || 30 |   |      | 0v      |     |     |
+ |   6 |  22 | GPIO.22 |   IN | 1 | 31 || 32 | 0 | IN   | GPIO.26 | 26  | 12  |
+ |  13 |  23 | GPIO.23 |   IN | 0 | 33 || 34 |   |      | 0v      |     |     |
+ |  19 |  24 | GPIO.24 |   IN | 0 | 35 || 36 | 0 | IN   | GPIO.27 | 27  | 16  |
+ |  26 |  25 | GPIO.25 |   IN | 0 | 37 || 38 | 0 | IN   | GPIO.28 | 28  | 20  |
+ |     |     |      0v |      |   | 39 || 40 | 0 | IN   | GPIO.29 | 29  | 21  |
+ +-----+-----+---------+------+---+----++----+---+------+---------+-----+-----+
+ | BCM | wPi |   Name  | Mode | V | Physical | V | Mode | Name    | wPi | BCM |
+ +-----+-----+---------+------+---+---Pi 3---+---+------+---------+-----+-----+
+</code></pre>
+
+<p>这个命令会生成一张图片，描述当前树莓派的 GPIO 连接器管脚与 WiringPi 中的管脚编号的映射关系，上图是 Raspberry Pi 3 Model B 型的。</p>
+
+<h3 id="3-3-gpio">3.3. GPIO</h3>
+
+<p>WiringPi 提供了多个初始化函数：</p>
+
+<ul>
+<li>int wiringPiSetup (void) ;</li>
+<li>int wiringPiSetupGpio (void) ;</li>
+<li>int wiringPiSetupPhys (void) ;</li>
+<li>int wiringPiSetupSys (void) ;</li>
+</ul>
+
+<p>程序开始的时候，必须调用其中一个，且需要 root 权限。通常调用 wiringPiSetup(void) 即可，它的作用是初始化 WiringPi 编程环境和 GPIO 管脚映射。wiringPiSetupGpio(void) 和 wiringPiSetupPhys(void) 会用树莓派的 GPIO 编号或者连接器管脚编号替代 WiringPi 的编号，wiringPiSetupSys(void) 会用 /sys/class/gpio 接口来代替直接访问硬件，也称为 sys 模式，这三个函数都很少使用。</p>
+
+<p>访问 GPIO 主要需要如下函数，这些函数在 sys 模式下都是无效的：</p>
+
+<ul>
+<li>void pinMode (int pin, int mode) ;</li>
+</ul>
+
+<p>设置某个管脚的模式为 INPUT, OUTPUT, PWM_OUTPUT 或者 GPIO_CLOCK 。只有 wiringPi pin 1 (BCM_GPIO 18) 支持 PWM 输出 ，只有 wiringPi pin 7 (BCM_GPIO 4)  支持 CLOCK 输出。</p>
+
+<ul>
+<li>void pullUpDnControl (int pin, int pud) ;</li>
+</ul>
+
+<p>设置某个输入管脚的上拉和下拉电阻，PUD_OFF 表示关闭上下拉电阻, PUD_DOWN 表示下拉到地，PUD_UP 表示上拉倒 3.3V ，上下拉电阻大约 50KΩ 。</p>
+
+<ul>
+<li>void digitalWrite (int pin, int value) ;</li>
+</ul>
+
+<p>向某个输出管脚写值，HIGH 表示高电平， LOW 表示低电平。</p>
+
+<ul>
+<li>int digitalRead (int pin) ;</li>
+</ul>
+
+<p>读取某个输入管脚的状态，返回 HIGH 表示高电平，LOW 表示低电平。</p>
+
+<h3 id="3-4-spi">3.4. SPI</h3>
+
+<p>编程访问 SPI 前，要用 gpio 加载 SPI 驱动：</p>
+
+<pre><code>gpio load spi
+</code></pre>
+
+<p>编辑代码时要包含头文件：</p>
+
+<pre><code>#include &lt;wiringPiSPI.h&gt;
+</code></pre>
+
+<p>编译时要手动链接 ： <code>-lwiringPi</code> 。</p>
+
+<h3 id="3-5-uart">3.5. UART</h3>
+
+<h2 id="4-搭建-nas-服务">4. 搭建 NAS 服务</h2>
+
+<h3 id="4-1-硬件配置">4.1. 硬件配置</h3>
+
+<p>准备一块移动硬盘，因为树莓派的 USB 口驱动能力有限，最好用双 USB 口数据线，为移动硬盘独立供电，格式化为 ext4 ，我这里的分区是 sda1 ：</p>
+
+<pre><code>pi@raspberrypi:~ $ sudo fdisk /dev/sda -l
+
+Disk /dev/sda: 149.1 GiB, 160041885696 bytes, 312581808 sectors
+Units: sectors of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disklabel type: dos
+Disk identifier: 0x9fd95492
+
+Device     Boot Start       End   Sectors   Size Id Type
+/dev/sda1        2048 312581807 312579760 149.1G 83 Linux
+</code></pre>
+
+<p>为了让系统启动时自动挂在移动硬盘，需要修改 /etc/fstab 文件，添加 sda1 的配置，记得修改前先备份：</p>
+
+<pre><code>pi@raspberrypi:/etc $ cat fstab
+proc            /proc           proc    defaults          0       0
+PARTUUID=5b2de8de-01  /boot           vfat    defaults          0       2
+PARTUUID=5b2de8de-02  /               ext4    defaults,noatime  0       1
+/dev/sda1             /home/pi/nas    ext4    defaults,noatime  0       0
+# a swapfile is not a swap partition, no line here
+#   use  dphys-swapfile swap[on|off]  for that
+</code></pre>
+
+<p>创建挂在目录：</p>
+
+<pre><code>pi@raspberrypi:~ $ mkdir /home/pi/nas
+</code></pre>
+
+<p>重启后查看挂载信息：</p>
+
+<pre><code>pi@raspberrypi:~ $ df
+Filesystem     1K-blocks    Used Available Use% Mounted on
+/dev/root       29787900 1959324  26593012   7% /
+devtmpfs          469532       0    469532   0% /dev
+tmpfs             473864       0    473864   0% /dev/shm
+tmpfs             473864   12260    461604   3% /run
+tmpfs               5120       4      5116   1% /run/lock
+tmpfs             473864       0    473864   0% /sys/fs/cgroup
+/dev/mmcblk0p1     41322   20763     20559  51% /boot
+/dev/sda1      153705340   60864 145813600   1% /home/pi/nas
+</code></pre>
+
+<h3 id="4-2-文件共享">4.2. 文件共享</h3>
+
+<p>Samba 可以实现树莓派上的文件在局域网内的共享。安装必要的文件：</p>
+
+<pre><code>pi@raspberrypi:~ $  sudo apt-get install samba samba-common-bin -y
+</code></pre>
+
+<blockquote>
+<p>如果分区是 NTFS 格式，需要安装 NTFS 支持：<code>sudo apt-get install ntfs-3g</code> 。如果是 exFAT 格式，则选用安装 exfat-utils 。</p>
+</blockquote>
+
+<p>创建共享文件夹 shares：</p>
+
+<pre><code>pi@raspberrypi:~ $ sudo mkdir  /home/pi/nas/shares
+</code></pre>
+
+<p>编辑配置文件 /etc/samba/smb.conf ，替换成如下内容：</p>
+
+<pre><code>[global]
+security = user
+encrypt passwords = true
+guest account = nobody
+map to guest = bad user
+
+#======================= Share Definitions =======================
+[share]
+comment = Guest access shares
+path = /home/pi/nas/shares/
+browseable = yes
+writable = yes
+#read only = yes
+guest ok = yes
+public = yes
+
+[NAS-Data]
+comment = Nas data folder
+path = /home/pi/nas/
+browseable = yes
+writable = yes
+valid users = root pi
+</code></pre>
+
+<p>需要为 samba 添加一个 pi 账户：</p>
+
+<pre><code>pi@raspberrypi:~/nas $ sudo smbpasswd -a pi
+New SMB password:
+Retype new SMB password:
+Added user pi.
+</code></pre>
+
+<p>重启 samba 服务，确保启动成功：</p>
+
+<pre><code>pi@raspberrypi:~/nas $ sudo systemctl restart smbd.service
+pi@raspberrypi:~/nas $ sudo systemctl status smbd.service
+● smbd.service - LSB: start Samba SMB/CIFS daemon (smbd)
+   Loaded: loaded (/etc/init.d/smbd)
+   Active: active (running) since Mon 2017-04-10 19:17:04 CST; 2s ago
+  Process: 5272 ExecStop=/etc/init.d/smbd stop (code=exited, status=0/SUCCESS)
+  Process: 5122 ExecReload=/etc/init.d/smbd reload (code=exited, status=0/SUCCESS)
+  Process: 5313 ExecStart=/etc/init.d/smbd start (code=exited, status=0/SUCCESS)
+   CGroup: /system.slice/smbd.service
+           ├─5324 /usr/sbin/smbd -D
+           └─5329 /usr/sbin/smbd -D
+
+Apr 10 19:17:04 raspberrypi smbd[5313]: Starting SMB/CIFS daemon: smbd.
+Apr 10 19:17:04 raspberrypi systemd[1]: Started LSB: start Samba SMB/CIFS daemon (smbd).
+Apr 10 19:17:04 raspberrypi smbd[5324]: [2017/04/10 19:17:04.479386,  0] ../lib/util/become_daemon.c:124(daemon_ready)
+Apr 10 19:17:04 raspberrypi smbd[5324]: STATUS=daemon 'smbd' finished starting up and ready to serve connections
+</code></pre>
+
+<p>在 MAC 中打开 Finder &gt; 前往 &gt; 网络 ，就可以看到树莓派的共享文件夹，访问 share 共享目录无需密码，而 NAS-Data 需要密码验证：</p>
+
+<p><img src="http://exbob.github.io/images/2017-05-09/2017-05-09_3.png" alt="" /></p>
+
+<h3 id="4-3-ftp-服务器">4.3. FTP 服务器</h3>
+
+<p>在树莓派上安装 vsftpd ：</p>
+
+<pre><code>pi@raspberrypi:~ $ sudo apt-get install vsftpd
+</code></pre>
+
+<p>编辑配置文件 /etc/vsftpd.conf ，修改如下选项：</p>
+
+<pre><code>#禁止匿名访问
+anonymous_enable=NO  
+#设定本地用户可以访问
+local_enable=YES
+#设定可以进行写操作
+write_enable=YES
+#设定上传后文件的权限掩码
+local_umask=022
+#设定根目录
+local_root=/home/pi/
+</code></pre>
+
+<p>用 ftp 客户端软件登录：</p>
+
+<p><img src="http://exbob.github.io/images/2017-05-09/2017-05-09_4.png" alt="" /></p>
+
+<h2 id="5-移植-uci">5. 移植 UCI</h2>
+
+<p>UCI 是 OpenWRT 的一个配置工具，提供 C 语言 API 和 Shell 命令接口，可以方便的自定义配置文件。uci 的编译需要 CMake ，先安装 CMake ：</p>
+
+<pre><code>pi@raspberrypi:~ $ sudo apt-get install cmake
+</code></pre>
+
+<p>安装 libluajit-dev ，否则会出现  <code>lauxlib.h: No such file or directory</code> 这样的错误 :</p>
+
+<pre><code>pi@raspberrypi:~ $ sudo apt-get install libluajit-5.1-dev
+</code></pre>
+
+<p>通过 git 下载 uci 的源码包：</p>
+
+<pre><code>pi@raspberrypi:~ $ git clone https://github.com/jkjuopperi/uci.git
+</code></pre>
+
+<p>用 pkg-config 查询刚才的 libluajit-dev 的头文件目录：</p>
+
+<pre><code>pi@raspberrypi:~ $ pkg-config --cflags --libs luajit
+-I/usr/include/luajit-2.0 -lluajit-5.1
+</code></pre>
+
+<p>然后进入 uci 目录，在 CMakeLists.txt 文件中靠前位置添加如下一行，指定头文件目录，否则编译的时候找不到：</p>
+
+<pre><code>INCLUDE_DIRECTORIES(&quot;/usr/include/luajit-2.0/&quot;)
+</code></pre>
+
+<p>保存后开始编译安装：</p>
+
+<pre><code>pi@raspberrypi:~/uci $ cmake  .
+pi@raspberrypi:~/uci $ make
+pi@raspberrypi:~/uci $ sudo make install
+[ 27%] Built target uci-static
+[ 54%] Built target uci-shared
+[ 63%] Built target cli
+[ 72%] Built target cli-static
+[ 81%] Built target ucimap
+[ 90%] Built target ucimap-example
+[100%] Built target uci_lua
+Install the project...
+-- Install configuration: &quot;&quot;
+-- Installing: /usr/local/include/uci.h
+-- Installing: /usr/local/include/uci_config.h
+-- Installing: /usr/local/include/ucimap.h
+-- Installing: /usr/local/lib/libuci.so
+-- Installing: /usr/local/lib/libuci.a
+-- Installing: /usr/local/bin/uci
+-- Set runtime path of &quot;/usr/local/bin/uci&quot; to &quot;&quot;
+-- Installing: /usr/local/bin/uci-static
+-- Installing: /usr/local/lib/lua/5.1/uci.so
+-- Set runtime path of &quot;/usr/local/lib/lua/5.1/uci.so&quot; to &quot;&quot;
+</code></pre>
+
+<p>安装后需要执行一次 <code>sudo ldconfig -v</code>，否则可能找不到新装的库文件，uci 默认将配置文件放在 /etc/config 目录下，所以新建该目录，执行 uci ，如下表示安装成功：</p>
+
+<pre><code>pi@raspberrypi:~/uci $ uci
+Usage: uci [&lt;options&gt;] &lt;command&gt; [&lt;arguments&gt;]
+
+Commands:
+        batch
+        export     [&lt;config&gt;]
+        import     [&lt;config&gt;]
+        changes    [&lt;config&gt;]
+        commit     [&lt;config&gt;]
+        add        &lt;config&gt; &lt;section-type&gt;
+        add_list   &lt;config&gt;.&lt;section&gt;.&lt;option&gt;=&lt;string&gt;
+        show       [&lt;config&gt;[.&lt;section&gt;[.&lt;option&gt;]]]
+        get        &lt;config&gt;.&lt;section&gt;[.&lt;option&gt;]
+        set        &lt;config&gt;.&lt;section&gt;[.&lt;option&gt;]=&lt;value&gt;
+        delete     &lt;config&gt;[.&lt;section[.&lt;option&gt;]]
+        rename     &lt;config&gt;.&lt;section&gt;[.&lt;option&gt;]=&lt;name&gt;
+        revert     &lt;config&gt;[.&lt;section&gt;[.&lt;option&gt;]]
+        reorder    &lt;config&gt;.&lt;section&gt;=&lt;position&gt;
+
+Options:
+        -c &lt;path&gt;  set the search path for config files (default: /etc/config)
+        -d &lt;str&gt;   set the delimiter for list values in uci show
+        -f &lt;file&gt;  use &lt;file&gt; as input instead of stdin
+        -L         do not load any plugins
+        -m         when importing, merge data into an existing package
+        -n         name unnamed sections on export (default)
+        -N         don't name unnamed sections
+        -p &lt;path&gt;  add a search path for config change files
+        -P &lt;path&gt;  add a search path for config change files and use as default
+        -q         quiet mode (don't print error messages)
+        -s         force strict mode (stop on parser errors, default)
+        -S         disable strict mode
+        -X         do not use extended syntax on 'show'
+</code></pre>
+
+<h2 id="6-web-开发">6. Web 开发</h2>
+
+<p>使用 Django + Nginx 搭建一个静态站点。</p>
+
+<h3 id="6-1-安装-nginx">6.1. 安装 Nginx</h3>
+
+<p>安装 nginx ，安装后会自动启动：</p>
+
+<pre><code>pi@raspberrypi:~ $ sudo apt-get install nginx
+pi@raspberrypi:~ $ systemctl status nginx.service 
+â— nginx.service - A high performance web server and a reverse proxy server
+   Loaded: loaded (/lib/systemd/system/nginx.service; enabled)
+   Active: active (running) since Tue 2017-09-26 22:32:43 CST; 16h ago
+ Main PID: 756 (nginx)
+   CGroup: /system.slice/nginx.service
+           â”œâ”€756 nginx: master process /usr/sbin/nginx -g daemon on; master_process on;
+           â”œâ”€757 nginx: worker process
+           â”œâ”€758 nginx: worker process
+           â”œâ”€759 nginx: worker process
+           â””â”€760 nginx: worker process
+</code></pre>
+
+<p>通过浏览器访问树莓派的 IP ，可以如下页面：</p>
+
+<p><img src="http://exbob.github.io/images/2017-05-09/2017-05-09_5.png" alt="" /></p>
+
+<h3 id="6-2-安装-django">6.2. 安装 Django</h3>
+
+<p>先安装 pip ：</p>
+
+<pre><code>pi@raspberrypi:~ $ curl  https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+pi@raspberrypi:~ $ sudo python  get-pip.py
+</code></pre>
+
+<p>然后安装 Django 框架：</p>
+
+<pre><code>pi@raspberrypi:~ $ sudo pip install django
+</code></pre>
+
+<h3 id="6-3-安装-uwsgi">6.3. 安装 uWSGI</h3>
+
+<p>安装 python-dev ，否则下一步安装 uwsgi 会失败：</p>
+
+<pre><code>pi@raspberrypi:~ $ sudo apt-get install python-dev
+</code></pre>
+
+<p>安装 uwsgi ：</p>
+
+<pre><code>pi@raspberrypi:~ $ sudo pip install uwsgi
+</code></pre>
+
+<p>新建一个 test.py 文件，写入如下代码：</p>
+
+<pre><code># test.py
+def application(env, start_response):
+    start_response('200 OK', [('Content-Type','text/html')])
+    return [&quot;Hello uWSGI&quot;] # python2
+</code></pre>
+
+<p>保存后执行：</p>
+
+<pre><code>pi@raspberrypi:~ $ uwsgi --http :8000 --wsgi-file test.py
+</code></pre>
+
+<p>打开浏览器，访问 <code>http://localhost_ip:8000</code> ，显示 <code>Hello uWSGI</code>，说明 <code>Web client - uWSGI - Python</code> 三个环节是畅通的：</p>
+
+<p><img src="http://exbob.github.io/images/2017-05-09/2017-05-09_6.png" alt="" /></p>
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>2639 Words</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2017-05-09 08:00 &#43;0800</p>
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h"></span>
+                    <hr />
+                </div>
+
+                <div class="pagination__buttons">
+                    
+                        <span class="button previous">
+                            <a href="http://exbob.github.io/posts/2017/05/rsa-%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E4%B8%8E%E6%95%B0%E5%AD%97%E8%AF%81%E4%B9%A6/">
+                                <span class="button__icon">←</span>
+                                <span class="button__text">RSA 加密算法与数字证书</span>
+                            </a>
+                        </span>
+                    
+
+                    
+                        <span class="button next">
+                            <a href="http://exbob.github.io/posts/2017/03/linux-%E4%B8%B2%E5%8F%A3%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0/">
+                                <span class="button__text">Linux 串口编程笔记</span>
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    
+                </div>
+            </div>
+        
+
+        
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2020</span>
+            
+                <span><a href="http://exbob.github.io">Shaocheng.Li</a></span>
+            
+            <span><a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></span>
+            <span> <a href="http://exbob.github.io/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>
+        </div>
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="http://exbob.github.io/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+
+
+
+    </body>
+</html>

@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="Shaocheng.Li ">
+<meta name="description" content="原理 现在有一个文件file1，通过修改file1得到了文件file2，然后用diff工具比较file1和file2的差异，得到一个补丁文件file.patch，它记录了两个文件的不同之处，patch工具就可以根据这个补丁文件修改file1，从而得到file2。
+相关工具 diff diff [options] 源文件 目标文件  diff用于列出两个文件的不同之处，指示如何由源文件变为目标文件，可以用重定向生成补丁文件，注意：diff只能用于比较文本文件。常用选项：
+-c，输出一个基于上下文的diff，即提供每处修改的前后机会内容，这样patch命令可以在打补丁前验证上下文是否匹配，而补丁文件也更容易阅读。
+-b，忽略空格引起的变化
+-B，忽略插入/删除空行引起的变化
+-i，忽略大小写
+-N，在比较目录时，如果一个文件只在其中一个目录中找到，那它被视为在第二个目录中是一个空文件
+-r，在比较目录时，递归比较所有子目录
+-u，使用统一的输出格式
+patch patch [options] 源文件 补丁文件  patch用于根据补丁文件修改源文件，它会直接改动源文件，打补丁前请注意备份。常用选项：
+-R，反向补丁，将已经打了补丁的文件恢复到原来的样子
+-p[num]，忽略前几层目录，目录的层数由num指定
+例1：比较两个文件 file1:
+this is line1 this is line2 this is line3 this is line4  file2：
+this is line1 this is line2 hello this is line3 this is line4 this is line5  执行：
+diff file1 file2 &amp;gt; file.patch  生成补丁文件file.patch：
+2c2 &amp;lt; this is line2 --- &amp;gt; this is line2 hello 4a5 &amp;gt; this is line5  对file1打补丁：" />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#252627" />
+<link rel="canonical" href="http://exbob.github.io/posts/2011/07/%E8%A1%A5%E4%B8%81%E7%9A%84%E5%88%B6%E4%BD%9C%E5%92%8C%E4%BD%BF%E7%94%A8/" />
+
+
+    <title>
+        
+            补丁的制作和使用 :: Shaocheng.Li  — Hello Friends
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="http://exbob.github.io/main.min.73f55a8d452be4a71b2960620b80252cf69abd84d63fe7501abf0a39b1a70a78.css">
+
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="http://exbob.github.io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="http://exbob.github.io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="http://exbob.github.io/favicon-16x16.png">
+    <link rel="manifest" href="http://exbob.github.io/site.webmanifest">
+    <link rel="mask-icon" href="http://exbob.github.io/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="http://exbob.github.io/favicon.ico">
+    <meta name="msapplication-TileColor" content="#252627">
+    <meta name="theme-color" content="#252627">
+
+<meta itemprop="name" content="补丁的制作和使用">
+<meta itemprop="description" content="原理 现在有一个文件file1，通过修改file1得到了文件file2，然后用diff工具比较file1和file2的差异，得到一个补丁文件file.patch，它记录了两个文件的不同之处，patch工具就可以根据这个补丁文件修改file1，从而得到file2。
+相关工具 diff diff [options] 源文件 目标文件  diff用于列出两个文件的不同之处，指示如何由源文件变为目标文件，可以用重定向生成补丁文件，注意：diff只能用于比较文本文件。常用选项：
+-c，输出一个基于上下文的diff，即提供每处修改的前后机会内容，这样patch命令可以在打补丁前验证上下文是否匹配，而补丁文件也更容易阅读。
+-b，忽略空格引起的变化
+-B，忽略插入/删除空行引起的变化
+-i，忽略大小写
+-N，在比较目录时，如果一个文件只在其中一个目录中找到，那它被视为在第二个目录中是一个空文件
+-r，在比较目录时，递归比较所有子目录
+-u，使用统一的输出格式
+patch patch [options] 源文件 补丁文件  patch用于根据补丁文件修改源文件，它会直接改动源文件，打补丁前请注意备份。常用选项：
+-R，反向补丁，将已经打了补丁的文件恢复到原来的样子
+-p[num]，忽略前几层目录，目录的层数由num指定
+例1：比较两个文件 file1:
+this is line1 this is line2 this is line3 this is line4  file2：
+this is line1 this is line2 hello this is line3 this is line4 this is line5  执行：
+diff file1 file2 &gt; file.patch  生成补丁文件file.patch：
+2c2 &lt; this is line2 --- &gt; this is line2 hello 4a5 &gt; this is line5  对file1打补丁：">
+
+
+<meta itemprop="datePublished" content="2011-07-15T08:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2011-07-15T08:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="106">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="http://exbob.github.io"/>
+
+<meta name="twitter:title" content="补丁的制作和使用"/>
+<meta name="twitter:description" content="原理 现在有一个文件file1，通过修改file1得到了文件file2，然后用diff工具比较file1和file2的差异，得到一个补丁文件file.patch，它记录了两个文件的不同之处，patch工具就可以根据这个补丁文件修改file1，从而得到file2。
+相关工具 diff diff [options] 源文件 目标文件  diff用于列出两个文件的不同之处，指示如何由源文件变为目标文件，可以用重定向生成补丁文件，注意：diff只能用于比较文本文件。常用选项：
+-c，输出一个基于上下文的diff，即提供每处修改的前后机会内容，这样patch命令可以在打补丁前验证上下文是否匹配，而补丁文件也更容易阅读。
+-b，忽略空格引起的变化
+-B，忽略插入/删除空行引起的变化
+-i，忽略大小写
+-N，在比较目录时，如果一个文件只在其中一个目录中找到，那它被视为在第二个目录中是一个空文件
+-r，在比较目录时，递归比较所有子目录
+-u，使用统一的输出格式
+patch patch [options] 源文件 补丁文件  patch用于根据补丁文件修改源文件，它会直接改动源文件，打补丁前请注意备份。常用选项：
+-R，反向补丁，将已经打了补丁的文件恢复到原来的样子
+-p[num]，忽略前几层目录，目录的层数由num指定
+例1：比较两个文件 file1:
+this is line1 this is line2 this is line3 this is line4  file2：
+this is line1 this is line2 hello this is line3 this is line4 this is line5  执行：
+diff file1 file2 &gt; file.patch  生成补丁文件file.patch：
+2c2 &lt; this is line2 --- &gt; this is line2 hello 4a5 &gt; this is line5  对file1打补丁："/>
+
+
+
+
+
+    <meta property="article:published_time" content="2011-07-15 08:00:00 &#43;0800 CST" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="http://exbob.github.io/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$ cd /home/</span>
+            <span class="logo__cursor" style=""></span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="http://exbob.github.io/about/">About</a></li><li><a href="http://exbob.github.io/posts/">Posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>One minute
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            <h1 class="post-title">
+                <a href="http://exbob.github.io/posts/2011/07/%E8%A1%A5%E4%B8%81%E7%9A%84%E5%88%B6%E4%BD%9C%E5%92%8C%E4%BD%BF%E7%94%A8/">补丁的制作和使用</a>
+            </h1>
+
+            
+
+            <div class="post-content">
+                
+
+<h2 id="原理">原理</h2>
+
+<p>现在有一个文件file1，通过修改file1得到了文件file2，然后用diff工具比较file1和file2的差异，得到一个补丁文件file.patch，它记录了两个文件的不同之处，patch工具就可以根据这个补丁文件修改file1，从而得到file2。</p>
+
+<h2 id="相关工具">相关工具</h2>
+
+<pre><code>diff
+diff [options] 源文件 目标文件
+</code></pre>
+
+<p>diff用于列出两个文件的不同之处，指示如何由源文件变为目标文件，可以用重定向生成补丁文件，注意：diff只能用于比较文本文件。常用选项：</p>
+
+<p>-c，输出一个基于上下文的diff，即提供每处修改的前后机会内容，这样patch命令可以在打补丁前验证上下文是否匹配，而补丁文件也更容易阅读。</p>
+
+<p>-b，忽略空格引起的变化</p>
+
+<p>-B，忽略插入/删除空行引起的变化</p>
+
+<p>-i，忽略大小写</p>
+
+<p>-N，在比较目录时，如果一个文件只在其中一个目录中找到，那它被视为在第二个目录中是一个空文件</p>
+
+<p>-r，在比较目录时，递归比较所有子目录</p>
+
+<p>-u，使用统一的输出格式</p>
+
+<pre><code>patch
+patch [options]  源文件 补丁文件
+</code></pre>
+
+<p>patch用于根据补丁文件修改源文件，它会直接改动源文件，打补丁前请注意备份。常用选项：</p>
+
+<p>-R，反向补丁，将已经打了补丁的文件恢复到原来的样子</p>
+
+<p>-p[num]，忽略前几层目录，目录的层数由num指定</p>
+
+<h2 id="例1-比较两个文件">例1：比较两个文件</h2>
+
+<p>file1:</p>
+
+<pre><code>this is line1  
+this is line2   
+this is line3  
+this is line4  
+</code></pre>
+
+<p>file2：</p>
+
+<pre><code>this is line1  
+this is line2 hello  
+this is line3  
+this is line4  
+this is line5  
+</code></pre>
+
+<p>执行：</p>
+
+<pre><code>diff file1 file2 &gt; file.patch  
+</code></pre>
+
+<p>生成补丁文件file.patch：</p>
+
+<pre><code>2c2  
+&lt; this is line2   
+---  
+&gt; this is line2 hello  
+4a5  
+&gt; this is line5  
+</code></pre>
+
+<p>对file1打补丁：</p>
+
+<pre><code>patch file1 file.patch  
+</code></pre>
+
+<p>file1的内容就变成了file2，如果想把file1变为原来的样子，执行：</p>
+
+<pre><code>patch -R file1 file.patch  
+</code></pre>
+
+<h2 id="例2-比较两个目录">例2：比较两个目录</h2>
+
+<p>在工作路径下有两个目录：doc1和doc2。</p>
+
+<p>执行diff命令，生成补丁文件patch：</p>
+
+<pre><code>diff -Nur doc1 doc2 &gt; doc.patch  
+</code></pre>
+
+<p>用patch工具为doc1打补丁：</p>
+
+<pre><code>cd doc1  
+patch -p1 &lt; ../doc.patch  
+</code></pre>
+
+<h2 id="参考">参考：</h2>
+
+<p>用Diff和Patch工具维护源码： <a href="https://www.ibm.com/developerworks/cn/linux/l-diffp/" target="_blank">https://www.ibm.com/developerworks/cn/linux/l-diffp/</a></p>
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>106 Words</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2011-07-15 08:00 &#43;0800</p>
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h"></span>
+                    <hr />
+                </div>
+
+                <div class="pagination__buttons">
+                    
+                        <span class="button previous">
+                            <a href="http://exbob.github.io/posts/2011/07/%E4%B8%BAlinux%E7%B3%BB%E7%BB%9F%E9%85%8D%E7%BD%AEserial-console/">
+                                <span class="button__icon">←</span>
+                                <span class="button__text">为Linux系统配置serial console</span>
+                            </a>
+                        </span>
+                    
+
+                    
+                        <span class="button next">
+                            <a href="http://exbob.github.io/posts/2011/07/%E5%85%B3%E4%BA%8Ec%E8%AF%AD%E8%A8%80%E7%9A%84%E4%BD%8D%E7%A7%BB%E6%93%8D%E4%BD%9C/">
+                                <span class="button__text">关于C语言的位移操作</span>
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    
+                </div>
+            </div>
+        
+
+        
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2020</span>
+            
+                <span><a href="http://exbob.github.io">Shaocheng.Li</a></span>
+            
+            <span><a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></span>
+            <span> <a href="http://exbob.github.io/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>
+        </div>
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="http://exbob.github.io/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+
+
+
+    </body>
+</html>

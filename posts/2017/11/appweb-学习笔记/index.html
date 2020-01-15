@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="Shaocheng.Li ">
+<meta name="description" content="1. 概述 Appweb 是一个快速、高效、安全的开源嵌入式 web server ，同时包含了 ESP web 框架和一系列扩展支持，可以极大的缩短开放时间，官网：https://embedthis.com/ ，包含如下组件：
+ HTTP web server 程序和库 HTTP client 程序和库 管理和监视进程 ESP web 框架 可选的 CGI、Ejscript、ESP 和 PHP 模块 SSL/TLS 支持包 文档和源码  特性：
+ 快速开发。Appweb 提供最简单、最低消耗的开发 web 应用方法，它包含了嵌入式 web 应用开发所需的全部特性，极大的缩短了开发时间。 最小的资源需求。Appweb 非常简洁和快速，只需要极小的系统资源，最小只需 2MB 的存储空间，运行时最少只需 1MB 内存。 可定制的开发环境。Appweb 高度模块化，你可以只选择所需的特性，并且支持运行时模块加载和编译时控制。 安全可靠。支持 SSL/TLS，提供最基本的验证，沙盒限制，访问和错误日志。 性能。事件驱动的多线程核心提供了最快的响应，。 标准化。Appweb 支持 HTTP/1.0 、HTTP/1.1 、CGI/1.1 、SSL RFC 2246 、HTTP RFC 2617 。 可移植。Appweb 支持 Linux 、Windows 、Mac OSX ，支持 ARM 、MIPS 、i386/X86/X86_64 、PowerPC 等。  2." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#252627" />
+<link rel="canonical" href="http://exbob.github.io/posts/2017/11/appweb-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" />
+
+
+    <title>
+        
+            Appweb 学习笔记 :: Shaocheng.Li  — Hello Friends
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="http://exbob.github.io/main.min.73f55a8d452be4a71b2960620b80252cf69abd84d63fe7501abf0a39b1a70a78.css">
+
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="http://exbob.github.io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="http://exbob.github.io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="http://exbob.github.io/favicon-16x16.png">
+    <link rel="manifest" href="http://exbob.github.io/site.webmanifest">
+    <link rel="mask-icon" href="http://exbob.github.io/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="http://exbob.github.io/favicon.ico">
+    <meta name="msapplication-TileColor" content="#252627">
+    <meta name="theme-color" content="#252627">
+
+<meta itemprop="name" content="Appweb 学习笔记">
+<meta itemprop="description" content="1. 概述 Appweb 是一个快速、高效、安全的开源嵌入式 web server ，同时包含了 ESP web 框架和一系列扩展支持，可以极大的缩短开放时间，官网：https://embedthis.com/ ，包含如下组件：
+ HTTP web server 程序和库 HTTP client 程序和库 管理和监视进程 ESP web 框架 可选的 CGI、Ejscript、ESP 和 PHP 模块 SSL/TLS 支持包 文档和源码  特性：
+ 快速开发。Appweb 提供最简单、最低消耗的开发 web 应用方法，它包含了嵌入式 web 应用开发所需的全部特性，极大的缩短了开发时间。 最小的资源需求。Appweb 非常简洁和快速，只需要极小的系统资源，最小只需 2MB 的存储空间，运行时最少只需 1MB 内存。 可定制的开发环境。Appweb 高度模块化，你可以只选择所需的特性，并且支持运行时模块加载和编译时控制。 安全可靠。支持 SSL/TLS，提供最基本的验证，沙盒限制，访问和错误日志。 性能。事件驱动的多线程核心提供了最快的响应，。 标准化。Appweb 支持 HTTP/1.0 、HTTP/1.1 、CGI/1.1 、SSL RFC 2246 、HTTP RFC 2617 。 可移植。Appweb 支持 Linux 、Windows 、Mac OSX ，支持 ARM 、MIPS 、i386/X86/X86_64 、PowerPC 等。  2.">
+
+
+<meta itemprop="datePublished" content="2017-11-24T08:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2017-11-24T08:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="489">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="http://exbob.github.io"/>
+
+<meta name="twitter:title" content="Appweb 学习笔记"/>
+<meta name="twitter:description" content="1. 概述 Appweb 是一个快速、高效、安全的开源嵌入式 web server ，同时包含了 ESP web 框架和一系列扩展支持，可以极大的缩短开放时间，官网：https://embedthis.com/ ，包含如下组件：
+ HTTP web server 程序和库 HTTP client 程序和库 管理和监视进程 ESP web 框架 可选的 CGI、Ejscript、ESP 和 PHP 模块 SSL/TLS 支持包 文档和源码  特性：
+ 快速开发。Appweb 提供最简单、最低消耗的开发 web 应用方法，它包含了嵌入式 web 应用开发所需的全部特性，极大的缩短了开发时间。 最小的资源需求。Appweb 非常简洁和快速，只需要极小的系统资源，最小只需 2MB 的存储空间，运行时最少只需 1MB 内存。 可定制的开发环境。Appweb 高度模块化，你可以只选择所需的特性，并且支持运行时模块加载和编译时控制。 安全可靠。支持 SSL/TLS，提供最基本的验证，沙盒限制，访问和错误日志。 性能。事件驱动的多线程核心提供了最快的响应，。 标准化。Appweb 支持 HTTP/1.0 、HTTP/1.1 、CGI/1.1 、SSL RFC 2246 、HTTP RFC 2617 。 可移植。Appweb 支持 Linux 、Windows 、Mac OSX ，支持 ARM 、MIPS 、i386/X86/X86_64 、PowerPC 等。  2."/>
+
+
+
+
+
+    <meta property="article:published_time" content="2017-11-24 08:00:00 &#43;0800 CST" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="http://exbob.github.io/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$ cd /home/</span>
+            <span class="logo__cursor" style=""></span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="http://exbob.github.io/about/">About</a></li><li><a href="http://exbob.github.io/posts/">Posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>3 minutes
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            <h1 class="post-title">
+                <a href="http://exbob.github.io/posts/2017/11/appweb-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">Appweb 学习笔记</a>
+            </h1>
+
+            
+
+            <div class="post-content">
+                
+
+<h2 id="1-概述">1. 概述</h2>
+
+<p>Appweb 是一个快速、高效、安全的开源嵌入式 web server ，同时包含了 ESP web 框架和一系列扩展支持，可以极大的缩短开放时间，官网：<a href="https://embedthis.com/" target="_blank">https://embedthis.com/</a> ，包含如下组件：</p>
+
+<ul>
+<li>HTTP web server 程序和库</li>
+<li>HTTP client 程序和库</li>
+<li>管理和监视进程</li>
+<li>ESP web 框架</li>
+<li>可选的 CGI、Ejscript、ESP 和 PHP 模块</li>
+<li>SSL/TLS 支持包</li>
+<li>文档和源码</li>
+</ul>
+
+<p><img src="http://exbob.github.io/images/2017-11-24/2017-11-24_1.jpg" alt="" /></p>
+
+<p>特性：</p>
+
+<ul>
+<li>快速开发。Appweb 提供最简单、最低消耗的开发 web 应用方法，它包含了嵌入式 web 应用开发所需的全部特性，极大的缩短了开发时间。</li>
+<li>最小的资源需求。Appweb 非常简洁和快速，只需要极小的系统资源，最小只需 2MB 的存储空间，运行时最少只需 1MB 内存。</li>
+<li>可定制的开发环境。Appweb 高度模块化，你可以只选择所需的特性，并且支持运行时模块加载和编译时控制。</li>
+<li>安全可靠。支持 SSL/TLS，提供最基本的验证，沙盒限制，访问和错误日志。</li>
+<li>性能。事件驱动的多线程核心提供了最快的响应，。</li>
+<li>标准化。Appweb 支持 HTTP/1.0 、HTTP/1.1 、CGI/1.1 、SSL RFC 2246 、HTTP RFC 2617 。</li>
+<li>可移植。Appweb 支持 Linux 、Windows 、Mac OSX ，支持 ARM 、MIPS 、i386/X86/X86_64 、PowerPC 等。</li>
+</ul>
+
+<h2 id="2-安装">2. 安装</h2>
+
+<p>Appweb 以源码形式在 github 上发布：<a href="https://github.com/embedthis/appweb" target="_blank">https://github.com/embedthis/appweb</a> ，支持的运行环境：</p>
+
+<ul>
+<li>Linux — Linux 2.6 with GNU C/C++</li>
+<li>Windows — Microsoft Windows 7 with Visual Studio 2010 or later</li>
+<li>Mac OS X — Mac OS X 10.8 (Mountain Lion) or later</li>
+</ul>
+
+<p>下载后解压，在源码目录下执行 make ，编译完成后生成的文件都在 build 目录下:</p>
+
+<pre><code>~/appweb-7.0.1 $ cd build/linux-x64-default/bin
+~/appweb-7.0.1/build/linux-x64-default/bin $ ls
+appman           ca.key           libappweb.dylib  libmpr-version.a self.crt
+appweb           ec.crt           libesp.dylib     libmpr.dylib     self.key
+appweb-esp       ec.key           libhttp.dylib    libpcre.dylib    test.crt
+authpass         esp-compile.json libmbedtls.a     makerom          test.key
+ca.crt           http             libmpr-mbedtls.a roots.crt        vcvars.bat
+</code></pre>
+
+<p>然后执行 <code>make install</code> 安装到本地，安装时执行的脚本是 projects/appweb-linux-default.mk ，二进制文件默认都安装在 /usr/local/lib/appweb/ 目录下。安装完成后会自动启动 appweb 。如果想要部署到其他系统，可以执行 <code>make deploy</code> ，会将所有需要安装的文件都输出到 linux-x64-default 目录下。当然还可以交叉编译，常用系统的编译文件都在 projects 目录下，可以用 ARCH 设置目标机的 CPU ，用 CC、CFLAGS、DFLAGS、LD 和 LDFLAGS 等参数设置自己的交叉编译工具链。卸载可以用 <code>make uninstall</code> 。</p>
+
+<h2 id="3-运行">3. 运行</h2>
+
+<p>安装后，会自动在 /etc/init.d 下新建一个 appweb 服务，appweb 会作为系统守护进程自动启动，错误日志位于 /var/log/appweb/ 目录下：</p>
+
+<p>$ ps -ef | grep appweb
+root      6501     1  0 13:44 ?        00:00:00 /usr/local/bin/appman &ndash;daemon &ndash;program /usr/local/bin/appweb &ndash;home /etc/appweb &ndash;pidfile /var/run/appweb.pid run
+nobody    6505  6501  0 13:44 ?        00:00:00 /usr/local/bin/appweb &ndash;log stdout:1
+ $ sudo lsof -i | grep appweb
+appweb    6505 nobody    6u  IPv6 1444273      0t0  TCP *:http (LISTEN)
+appweb    6505 nobody    7u  IPv6 1444274      0t0  TCP *:https (LISTEN)</p>
+
+<p>如果发现启动不成功，可以查看一下 /etc/appweb/install.conf 文件，把第一行开头的 -e 去掉，然后重启。启动成后通过浏览器访问主机 IP 即可显示默认页面：</p>
+
+<p><img src="http://exbob.github.io/images/2017-11-24/2017-11-24_2.png" alt="" />
+Appweb 提供了一个管理工具 appman ，它可以将 appweb 作为一个守护进程启动，还可以管理 appweb 的运行。appweb 的语法是 <code>appweb  [option]</code> ，可用的选项有：</p>
+
+<ul>
+<li>&ndash;config filename，指定配置文件替代默认的 appweb.conf.</li>
+<li>&ndash;chroot directory ，改变 Appweb 运行的系统根目录，导致 Appweb 无法访问该目录之外的其他文件。</li>
+<li>&ndash;debugger，启动 debug.</li>
+<li>&ndash;log logSpec ，指定 log 文件。此选项会覆盖配置文件中的 ErrorLog ，logSpec 的语法是 logName[:logLevel][.maxSize] 。当 log 文件的大小超过 maxSize 时，会将 log 文件备份为 logName.old ，再新建一个 logName 。logLevel 是一个 0~9 的数字，0 表示最少的 log 信息。该选项可以缩写为 -l 。</li>
+<li>&ndash;home directory ，指定服务器的根目录，该目录包含 Appweb 的配置文件。</li>
+<li>&ndash;name uniqueName ，设置程序名称，当同时运行多个 appweb 实例时，可以为当前程序指定唯一名称。</li>
+<li>&ndash;threads ，设置线程号。</li>
+<li>&ndash;verbose ，&ndash;log stderr:2 的缩写，可以进一步缩写为 -v 。</li>
+<li>&ndash;version ，显示 appweb 版本。</li>
+</ul>
+
+<p>如果启动 appweb 时指定了 IP 和端口，就不会去读取默认的 appweb.conf 文件，语法是：</p>
+
+<pre><code>appweb  [IP]:[PORT]  [documents]
+</code></pre>
+
+<p>如果没有指定端口，默认会监听 80 端口。如果没有指定 IP，默认会监听所有 IP 。documents 用于指定 web 页面的目录。如果没有指定配置文件，appweb 会使用一个默认的最简配置。</p>
+
+<h2 id="4-配置">4. 配置</h2>
+
+<p>appweb 的配置文件管理着监听的 IP 和端口，要加载的模块，Web 页面的位置，如何记录日志等。置顶的配置文件默认叫做 appweb.conf，允许用 include 语句导入子配置文件。配置文件中每一行设置一个选项，用井号 # 表示注释。一份配置文件是由多种选项构成的：</p>
+
+<ul>
+<li>全局选项</li>
+<li>Route 选项块</li>
+<li>Virtual Host 选项块</li>
+<li>条件选项块</li>
+</ul>
+
+<p>没有被任何选项块包含的选项就是全局选项，定义一些 appweb 的全局属性。Route 选项块用 <Route "URL"></Route> 标签标识，用于设置特定的 URL，例如：</p>
+
+<pre><code>&lt;Route &quot;/myapp/&quot;&gt;
+    SetHandler esp
+&lt;/Route&gt;
+</code></pre>
+
+<p>它表示以 &ldquo;/myapp/&rdquo; 开头的 URL 请求转给 esp 处理。</p>
+
+<p>Virtual Host 选项块用 <VirtualHost></VirtualHost> 标签标识，用于定义虚拟子服务，将虚拟子服务的内容与 IP 或者域名绑定，例如：</p>
+
+<pre><code>&lt;VirtualHost&gt;
+    ServerName www.mycorp.org
+    Documents /var/www/mycorp
+    ...
+&lt;/VirtualHost&gt;
+</code></pre>
+
+<p>条件选项块用 <if SYMBOL></if> 标签标识，读取配置文件时会判断 SYMBOL 的值，如果为 true 就会加载这些选项，否则就会忽略，例如：</p>
+
+<pre><code>&lt;if FILE_MODULE&gt;
+    LoadModule fileHandler mod_file
+&lt;/if&gt;
+</code></pre>
+
+<p>appweb 支持两种条件选项块：</p>
+
+<ul>
+<li>BLD_DEBUG ：如果 appweb 使能了 DEBUG ，该符号为 true</li>
+<li>NAME_MODULE ：如果使能了 NAME_MODULE 模块，该符号为 true</li>
+</ul>
+
+<p>整个配置文件是从头到尾被读取的，所有要注意各选项的排列顺序。说有选项的列表：<a href="https://embedthis.com/appweb/doc/users/directives.html" target="_blank">https://embedthis.com/appweb/doc/users/directives.html</a></p>
+
+<h2 id="5-开发">5. 开发</h2>
+
+<p>Appweb 提供了三种应用开发方式：</p>
+
+<ol>
+<li>开发额外的模块，由 appweb 程序加载</li>
+<li>用 ESP web 框架开发一个应用，有 appweb 程序加载</li>
+<li>在自己的程序中使用 Appweb 的 HTTP library 开发应用</li>
+</ol>
+
+<p>Appweb 包含了四个可加载的模块：CGI 、ESP 、PHP 和 SSL 。我们可以开发自己的模块，扩展功能，appweb 支持动态加载和静态链接两种方式调用模块，使用 C 语言接口。新建一个模块时，首先要新建一个初始化函数，格式如下：</p>
+
+<pre><code>maNameInit(Http *http, MprModule *module)
+</code></pre>
+
+<p>Name 可以替换成模块的名字，第一个字母必须大写，例如 <code>maCgiHandlerInit</code> 可以做为 CgiHandler 模块的初始化接口，appweb 加载  CgiHandler  的时候首先调用这个函数。</p>
+
+<p>新建自己的 Handler ，处理 Http 请求。Handler 通常包含在模块里，然后在配置文件里设置，用 LoadModule 命令加载模块，每一个  handler 对应一种 Http 请求，在 Route 选项块里用  AddHandler 或者 SetHandler 命令设置，例如：</p>
+
+<pre><code>LoadModule myHandler mod_my
+&lt;Route /my/&gt;
+    SetHandler myHandler
+&lt;/Route&gt;
+</code></pre>
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>489 Words</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2017-11-24 08:00 &#43;0800</p>
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h"></span>
+                    <hr />
+                </div>
+
+                <div class="pagination__buttons">
+                    
+                        <span class="button previous">
+                            <a href="http://exbob.github.io/posts/2017/11/x86-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%9A%84-pci-%E6%80%BB%E7%BA%BF%E7%BB%93%E6%9E%84/">
+                                <span class="button__icon">←</span>
+                                <span class="button__text">x86 计算机的 PCI 总线结构</span>
+                            </a>
+                        </span>
+                    
+
+                    
+                        <span class="button next">
+                            <a href="http://exbob.github.io/posts/2017/11/%E7%94%A8-seafile-%E8%87%AA%E5%BB%BA%E4%BA%91%E5%AD%98%E5%82%A8/">
+                                <span class="button__text">用 seafile 自建云存储</span>
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    
+                </div>
+            </div>
+        
+
+        
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2020</span>
+            
+                <span><a href="http://exbob.github.io">Shaocheng.Li</a></span>
+            
+            <span><a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></span>
+            <span> <a href="http://exbob.github.io/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>
+        </div>
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="http://exbob.github.io/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+
+
+
+    </body>
+</html>

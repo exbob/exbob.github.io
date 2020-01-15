@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="Shaocheng.Li ">
+<meta name="description" content="先做一道题目：
+#include &amp;lt;stdio.h&amp;gt; int f(int *p) { static int i = 5; p=&amp;amp;i; return 0; } int main(void) { int *p; f(p); printf(&amp;quot;p = %d/n&amp;quot;,*p); return 0; }  该程序的输出结果是多少？
+有人会认为输出的是“p = 5”，其实应该是一个不确定的数。
+为了弄清为什么，先看下一个例子：
+#include &amp;lt;stdio.h&amp;gt; int main(void) { int i=0x01; int *p=&amp;amp;i; printf(&amp;quot;&amp;amp;i = %x/n&amp;quot;,&amp;amp;i); //i的地址 printf(&amp;quot;p = %x/n&amp;quot;,p); printf(&amp;quot;*p = %x/n&amp;quot;,*p); printf(&amp;quot;&amp;amp;p = %x/n&amp;quot;,&amp;amp;p); return 0; }  执行结果：
+&amp;amp;i = bfffe924 p = bfffe924 *p = 1 &amp;amp;p = bfffe920  解析：" />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#252627" />
+<link rel="canonical" href="http://exbob.github.io/posts/2011/07/%E5%85%B3%E4%BA%8E%E5%87%BD%E6%95%B0%E7%9A%84%E6%8C%87%E9%92%88%E5%8F%82%E6%95%B0/" />
+
+
+    <title>
+        
+            关于函数的指针参数 :: Shaocheng.Li  — Hello Friends
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="http://exbob.github.io/main.min.73f55a8d452be4a71b2960620b80252cf69abd84d63fe7501abf0a39b1a70a78.css">
+
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="http://exbob.github.io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="http://exbob.github.io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="http://exbob.github.io/favicon-16x16.png">
+    <link rel="manifest" href="http://exbob.github.io/site.webmanifest">
+    <link rel="mask-icon" href="http://exbob.github.io/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="http://exbob.github.io/favicon.ico">
+    <meta name="msapplication-TileColor" content="#252627">
+    <meta name="theme-color" content="#252627">
+
+<meta itemprop="name" content="关于函数的指针参数">
+<meta itemprop="description" content="先做一道题目：
+#include &lt;stdio.h&gt; int f(int *p) { static int i = 5; p=&amp;i; return 0; } int main(void) { int *p; f(p); printf(&quot;p = %d/n&quot;,*p); return 0; }  该程序的输出结果是多少？
+有人会认为输出的是“p = 5”，其实应该是一个不确定的数。
+为了弄清为什么，先看下一个例子：
+#include &lt;stdio.h&gt; int main(void) { int i=0x01; int *p=&amp;i; printf(&quot;&amp;i = %x/n&quot;,&amp;i); //i的地址 printf(&quot;p = %x/n&quot;,p); printf(&quot;*p = %x/n&quot;,*p); printf(&quot;&amp;p = %x/n&quot;,&amp;p); return 0; }  执行结果：
+&amp;i = bfffe924 p = bfffe924 *p = 1 &amp;p = bfffe920  解析：">
+
+
+<meta itemprop="datePublished" content="2011-07-01T08:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2011-07-01T08:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="109">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="http://exbob.github.io"/>
+
+<meta name="twitter:title" content="关于函数的指针参数"/>
+<meta name="twitter:description" content="先做一道题目：
+#include &lt;stdio.h&gt; int f(int *p) { static int i = 5; p=&amp;i; return 0; } int main(void) { int *p; f(p); printf(&quot;p = %d/n&quot;,*p); return 0; }  该程序的输出结果是多少？
+有人会认为输出的是“p = 5”，其实应该是一个不确定的数。
+为了弄清为什么，先看下一个例子：
+#include &lt;stdio.h&gt; int main(void) { int i=0x01; int *p=&amp;i; printf(&quot;&amp;i = %x/n&quot;,&amp;i); //i的地址 printf(&quot;p = %x/n&quot;,p); printf(&quot;*p = %x/n&quot;,*p); printf(&quot;&amp;p = %x/n&quot;,&amp;p); return 0; }  执行结果：
+&amp;i = bfffe924 p = bfffe924 *p = 1 &amp;p = bfffe920  解析："/>
+
+
+
+
+
+    <meta property="article:published_time" content="2011-07-01 08:00:00 &#43;0800 CST" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="http://exbob.github.io/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$ cd /home/</span>
+            <span class="logo__cursor" style=""></span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="http://exbob.github.io/about/">About</a></li><li><a href="http://exbob.github.io/posts/">Posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>One minute
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            <h1 class="post-title">
+                <a href="http://exbob.github.io/posts/2011/07/%E5%85%B3%E4%BA%8E%E5%87%BD%E6%95%B0%E7%9A%84%E6%8C%87%E9%92%88%E5%8F%82%E6%95%B0/">关于函数的指针参数</a>
+            </h1>
+
+            
+
+            <div class="post-content">
+                <p>先做一道题目：</p>
+
+<pre><code>#include &lt;stdio.h&gt;  
+int f(int *p)  
+{  
+    static int i = 5;  
+    p=&amp;i;  
+    return 0;  
+}  
+int main(void)  
+{  
+    int *p;  
+    f(p);  
+    printf(&quot;p = %d/n&quot;,*p);  
+    return 0;  
+}  
+</code></pre>
+
+<p>该程序的输出结果是多少？</p>
+
+<p>有人会认为输出的是“p = 5”，其实应该是一个不确定的数。</p>
+
+<p>为了弄清为什么，先看下一个例子：</p>
+
+<pre><code>#include &lt;stdio.h&gt;  
+int main(void)  
+{  
+    int i=0x01;  
+    int *p=&amp;i;  
+    printf(&quot;&amp;i = %x/n&quot;,&amp;i);   //i的地址  
+    printf(&quot;p = %x/n&quot;,p);  
+    printf(&quot;*p = %x/n&quot;,*p);  
+    printf(&quot;&amp;p = %x/n&quot;,&amp;p);  
+    return 0;  
+}  
+</code></pre>
+
+<p>执行结果：</p>
+
+<pre><code>&amp;i = bfffe924
+p = bfffe924
+*p = 1
+&amp;p = bfffe920
+</code></pre>
+
+<p>解析：</p>
+
+<p>指针占4Byte，存放着它所指向的数据的地址。P是一个指向int型变量i的指针，所以p表示该指针的内容，也就是i的地址；*p表示p指向的内容，就是i；&amp;p代表指针p本身的地址。</p>
+
+<p>再看第一道题，main函数里的p和f函数的参数p都是指向int型的指针，当 main 函数调用f函数时：f(p),传递给f函数的是main函数中的p的内容，因为p没有初始化，所以它的内容是一个不确定的地址，所以，f函数中的p指向了这个不确定地址。</p>
+
+<p>怎样才能让 main 函数中的p指向f函数中的静态变量i呢？</p>
+
+<p>将程序做如下修改即可：</p>
+
+<pre><code>#include &lt;stdio.h&gt;  
+int f(int **p)  
+{  
+    static int i = 5;  
+    *p=&amp;i;  
+    return 0;  
+}  
+int main(void)  
+{  
+    int i=0x01;  
+    int *p=&amp;i;  
+    f(&amp;p);  
+    printf(&quot;p = %d/n&quot;,*p);  
+    return 0;  
+}
+</code></pre>
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>109 Words</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2011-07-01 08:00 &#43;0800</p>
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h"></span>
+                    <hr />
+                </div>
+
+                <div class="pagination__buttons">
+                    
+                        <span class="button previous">
+                            <a href="http://exbob.github.io/posts/2011/07/%E5%85%B3%E4%BA%8Ec%E8%AF%AD%E8%A8%80%E7%9A%84%E4%BD%8D%E7%A7%BB%E6%93%8D%E4%BD%9C/">
+                                <span class="button__icon">←</span>
+                                <span class="button__text">关于C语言的位移操作</span>
+                            </a>
+                        </span>
+                    
+
+                    
+                        <span class="button next">
+                            <a href="http://exbob.github.io/posts/2011/06/%E7%A5%9E%E7%BA%A7%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">
+                                <span class="button__text">神级排序算法</span>
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    
+                </div>
+            </div>
+        
+
+        
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2020</span>
+            
+                <span><a href="http://exbob.github.io">Shaocheng.Li</a></span>
+            
+            <span><a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></span>
+            <span> <a href="http://exbob.github.io/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>
+        </div>
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="http://exbob.github.io/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+
+
+
+    </body>
+</html>

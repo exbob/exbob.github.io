@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="Shaocheng.Li ">
+<meta name="description" content="1. 简介 BlueZ 是 Linux 官方的蓝牙协议栈，官网地址： 。
+BlueZ 的代码由两个部分组成：内核代码和用户空间程序。内核代码包括驱动和核心协议栈，用户空间程序包括应用程序接口和操作蓝牙设备的工具。BlueZ 的体系结构如下图：
+我使用的版本是 bluez-4.101 。
+2. 扫描 下面这个例程展示了搜索蓝牙设备的过程，并显示设备名称和地址。
+//samplescan.c #include &amp;lt;stdio.h&amp;gt; #include &amp;lt;stdlib.h&amp;gt; #include &amp;lt;unistd.h&amp;gt; #include &amp;lt;sys/socket.h&amp;gt; #include &amp;lt;bluetooth/bluetooth.h&amp;gt; #include &amp;lt;bluetooth/hci.h&amp;gt; #include &amp;lt;bluetooth/hci_lib.h&amp;gt; int main(int argc, char **argv) { inquiry_info *ii = NULL; int max_rsp, num_rsp; int dev_id, sock, len, flags; int i; char addr[19] = { 0 }; char name[248] = { 0 }; dev_id = hci_get_route(NULL); sock = hci_open_dev( dev_id ); if (dev_id &amp;lt; 0 || sock &amp;lt; 0) { perror(&amp;quot;opening socket&amp;quot;); exit(1); } len = 8; max_rsp = 255; flags = IREQ_CACHE_FLUSH; ii = (inquiry_info*)malloc(max_rsp * sizeof(inquiry_info)); num_rsp = hci_inquiry(dev_id, len, max_rsp, NULL, &amp;amp;ii, flags); if( num_rsp &amp;lt; 0 ) perror(&amp;quot;hci_inquiry&amp;quot;); for (i = 0; i &amp;lt; num_rsp; i&#43;&#43;) { ba2str(&amp;amp;(ii&#43;i)-&amp;gt;bdaddr, addr); memset(name, 0, sizeof(name)); if (hci_read_remote_name(sock, &amp;amp;(ii&#43;i)-&amp;gt;bdaddr, sizeof(name), name, 0) &amp;lt; 0) strcpy(name, &amp;quot;[unknown]&amp;quot;); printf(&amp;quot;%s %s\n&amp;quot;, addr, name); } free( ii ); close( sock ); return 0; }  编译 gcc -o simplescan simplescan." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#252627" />
+<link rel="canonical" href="http://exbob.github.io/posts/2016/03/bluez-%E8%93%9D%E7%89%99%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0/" />
+
+
+    <title>
+        
+            BlueZ 蓝牙编程笔记 :: Shaocheng.Li  — Hello Friends
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="http://exbob.github.io/main.min.73f55a8d452be4a71b2960620b80252cf69abd84d63fe7501abf0a39b1a70a78.css">
+
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="http://exbob.github.io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="http://exbob.github.io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="http://exbob.github.io/favicon-16x16.png">
+    <link rel="manifest" href="http://exbob.github.io/site.webmanifest">
+    <link rel="mask-icon" href="http://exbob.github.io/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="http://exbob.github.io/favicon.ico">
+    <meta name="msapplication-TileColor" content="#252627">
+    <meta name="theme-color" content="#252627">
+
+<meta itemprop="name" content="BlueZ 蓝牙编程笔记">
+<meta itemprop="description" content="1. 简介 BlueZ 是 Linux 官方的蓝牙协议栈，官网地址： 。
+BlueZ 的代码由两个部分组成：内核代码和用户空间程序。内核代码包括驱动和核心协议栈，用户空间程序包括应用程序接口和操作蓝牙设备的工具。BlueZ 的体系结构如下图：
+我使用的版本是 bluez-4.101 。
+2. 扫描 下面这个例程展示了搜索蓝牙设备的过程，并显示设备名称和地址。
+//samplescan.c #include &lt;stdio.h&gt; #include &lt;stdlib.h&gt; #include &lt;unistd.h&gt; #include &lt;sys/socket.h&gt; #include &lt;bluetooth/bluetooth.h&gt; #include &lt;bluetooth/hci.h&gt; #include &lt;bluetooth/hci_lib.h&gt; int main(int argc, char **argv) { inquiry_info *ii = NULL; int max_rsp, num_rsp; int dev_id, sock, len, flags; int i; char addr[19] = { 0 }; char name[248] = { 0 }; dev_id = hci_get_route(NULL); sock = hci_open_dev( dev_id ); if (dev_id &lt; 0 || sock &lt; 0) { perror(&quot;opening socket&quot;); exit(1); } len = 8; max_rsp = 255; flags = IREQ_CACHE_FLUSH; ii = (inquiry_info*)malloc(max_rsp * sizeof(inquiry_info)); num_rsp = hci_inquiry(dev_id, len, max_rsp, NULL, &amp;ii, flags); if( num_rsp &lt; 0 ) perror(&quot;hci_inquiry&quot;); for (i = 0; i &lt; num_rsp; i&#43;&#43;) { ba2str(&amp;(ii&#43;i)-&gt;bdaddr, addr); memset(name, 0, sizeof(name)); if (hci_read_remote_name(sock, &amp;(ii&#43;i)-&gt;bdaddr, sizeof(name), name, 0) &lt; 0) strcpy(name, &quot;[unknown]&quot;); printf(&quot;%s %s\n&quot;, addr, name); } free( ii ); close( sock ); return 0; }  编译 gcc -o simplescan simplescan.">
+
+
+<meta itemprop="datePublished" content="2016-03-23T08:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2016-03-23T08:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="199">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="http://exbob.github.io"/>
+
+<meta name="twitter:title" content="BlueZ 蓝牙编程笔记"/>
+<meta name="twitter:description" content="1. 简介 BlueZ 是 Linux 官方的蓝牙协议栈，官网地址： 。
+BlueZ 的代码由两个部分组成：内核代码和用户空间程序。内核代码包括驱动和核心协议栈，用户空间程序包括应用程序接口和操作蓝牙设备的工具。BlueZ 的体系结构如下图：
+我使用的版本是 bluez-4.101 。
+2. 扫描 下面这个例程展示了搜索蓝牙设备的过程，并显示设备名称和地址。
+//samplescan.c #include &lt;stdio.h&gt; #include &lt;stdlib.h&gt; #include &lt;unistd.h&gt; #include &lt;sys/socket.h&gt; #include &lt;bluetooth/bluetooth.h&gt; #include &lt;bluetooth/hci.h&gt; #include &lt;bluetooth/hci_lib.h&gt; int main(int argc, char **argv) { inquiry_info *ii = NULL; int max_rsp, num_rsp; int dev_id, sock, len, flags; int i; char addr[19] = { 0 }; char name[248] = { 0 }; dev_id = hci_get_route(NULL); sock = hci_open_dev( dev_id ); if (dev_id &lt; 0 || sock &lt; 0) { perror(&quot;opening socket&quot;); exit(1); } len = 8; max_rsp = 255; flags = IREQ_CACHE_FLUSH; ii = (inquiry_info*)malloc(max_rsp * sizeof(inquiry_info)); num_rsp = hci_inquiry(dev_id, len, max_rsp, NULL, &amp;ii, flags); if( num_rsp &lt; 0 ) perror(&quot;hci_inquiry&quot;); for (i = 0; i &lt; num_rsp; i&#43;&#43;) { ba2str(&amp;(ii&#43;i)-&gt;bdaddr, addr); memset(name, 0, sizeof(name)); if (hci_read_remote_name(sock, &amp;(ii&#43;i)-&gt;bdaddr, sizeof(name), name, 0) &lt; 0) strcpy(name, &quot;[unknown]&quot;); printf(&quot;%s %s\n&quot;, addr, name); } free( ii ); close( sock ); return 0; }  编译 gcc -o simplescan simplescan."/>
+
+
+
+
+
+    <meta property="article:published_time" content="2016-03-23 08:00:00 &#43;0800 CST" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="http://exbob.github.io/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$ cd /home/</span>
+            <span class="logo__cursor" style=""></span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="http://exbob.github.io/about/">About</a></li><li><a href="http://exbob.github.io/posts/">Posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>One minute
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            <h1 class="post-title">
+                <a href="http://exbob.github.io/posts/2016/03/bluez-%E8%93%9D%E7%89%99%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0/">BlueZ 蓝牙编程笔记</a>
+            </h1>
+
+            
+
+            <div class="post-content">
+                
+
+<h2 id="1-简介">1. 简介</h2>
+
+<p>BlueZ 是 Linux 官方的蓝牙协议栈，官网地址：<www.bluez.org> 。</p>
+
+<p>BlueZ 的代码由两个部分组成：内核代码和用户空间程序。内核代码包括驱动和核心协议栈，用户空间程序包括应用程序接口和操作蓝牙设备的工具。BlueZ 的体系结构如下图：</p>
+
+<p><img src="http://exbob.github.io/images/2016-03-23/2016-03-23_1.jpg" alt="" /></p>
+
+<p>我使用的版本是 bluez-4.101 。</p>
+
+<h2 id="2-扫描">2. 扫描</h2>
+
+<p>下面这个例程展示了搜索蓝牙设备的过程，并显示设备名称和地址。</p>
+
+<pre><code>//samplescan.c
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;unistd.h&gt;
+#include &lt;sys/socket.h&gt;
+#include &lt;bluetooth/bluetooth.h&gt;
+#include &lt;bluetooth/hci.h&gt;
+#include &lt;bluetooth/hci_lib.h&gt;
+
+int main(int argc, char **argv)
+{
+    inquiry_info *ii = NULL;
+    int max_rsp, num_rsp;
+    int dev_id, sock, len, flags;
+    int i;
+    char addr[19] = { 0 };
+    char name[248] = { 0 };
+
+    dev_id = hci_get_route(NULL);
+    sock = hci_open_dev( dev_id );
+    if (dev_id &lt; 0 || sock &lt; 0) {
+        perror(&quot;opening socket&quot;);
+        exit(1);
+    }
+
+    len  = 8;
+    max_rsp = 255;
+    flags = IREQ_CACHE_FLUSH;
+    ii = (inquiry_info*)malloc(max_rsp * sizeof(inquiry_info));
+
+    num_rsp = hci_inquiry(dev_id, len, max_rsp, NULL, &amp;ii, flags);
+    if( num_rsp &lt; 0 ) perror(&quot;hci_inquiry&quot;);
+
+    for (i = 0; i &lt; num_rsp; i++) {
+        ba2str(&amp;(ii+i)-&gt;bdaddr, addr);
+        memset(name, 0, sizeof(name));
+        if (hci_read_remote_name(sock, &amp;(ii+i)-&gt;bdaddr, sizeof(name), 
+            name, 0) &lt; 0)
+        strcpy(name, &quot;[unknown]&quot;);
+        printf(&quot;%s  %s\n&quot;, addr, name);
+    }
+
+    free( ii );
+    close( sock );
+    return 0;
+}
+</code></pre>
+
+<p>编译 <code>gcc -o simplescan simplescan.c -lbluetooth</code></p>
+
+<p>bdaddr_t 是存储蓝牙设备地址的基本数据结构：</p>
+
+<pre><code>typedef struct {
+    uint8_t b[6];
+} __attribute__((packed)) bdaddr_t; 
+</code></pre>
+
+<p>BlueZ 中的所有蓝牙地址都存放在 bdaddr_t ，同时提供了两个函数用于地址字符串与 bdaddr_t 之间的转换：</p>
+
+<pre><code>int str2ba( const char *str, bdaddr_t *ba );
+int ba2str( const bdaddr_t *ba, char *str );
+</code></pre>
+
+<p>地址字符串的结构应该是 <code>XX:XX:XX:XX:XX:XX</code> ，XX 是一个十六进制数，str2ba 函数将它转换到 6 Byte 的 bdaddr_t 中。ba2str 的作用相反。</p>
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>199 Words</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2016-03-23 08:00 &#43;0800</p>
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h"></span>
+                    <hr />
+                </div>
+
+                <div class="pagination__buttons">
+                    
+                        <span class="button previous">
+                            <a href="http://exbob.github.io/posts/2016/04/linux-%E4%B8%8B%E8%B0%83%E8%AF%95%E4%BD%8E%E5%8A%9F%E8%80%97%E8%93%9D%E7%89%99%E7%9A%84%E7%AC%94%E8%AE%B0/">
+                                <span class="button__icon">←</span>
+                                <span class="button__text">Linux 下调试低功耗蓝牙的笔记</span>
+                            </a>
+                        </span>
+                    
+
+                    
+                        <span class="button next">
+                            <a href="http://exbob.github.io/posts/2016/02/%E6%A0%B8%E6%A1%83/">
+                                <span class="button__text">核桃</span>
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    
+                </div>
+            </div>
+        
+
+        
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2020</span>
+            
+                <span><a href="http://exbob.github.io">Shaocheng.Li</a></span>
+            
+            <span><a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></span>
+            <span> <a href="http://exbob.github.io/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>
+        </div>
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="http://exbob.github.io/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+
+
+
+    </body>
+</html>

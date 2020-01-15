@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="Shaocheng.Li ">
+<meta name="description" content="ip 命令是 iproute2 工具包提供的 Linux 网络管理工具，集成了原有的 ifconfg 、arp 、route 、netstat 等多种命令的功能，并提供了很多新特性。它的语法是：
+ip [OPTIONS] OBJECT {COMMAND|help} 其中：
+ OBJECT 表示操作对象，可选的值有 { link | addr | addrlabel | route | rule | neigh | ntable | tunnel | maddr | mroute | mrule | monitor | xfrm | token } ，常用的对象包括：  link：网络设备 addr：设备上的协议（IP或IPv6）地址 addrlabel：协议地址选择的标签配置 route：路由表条目 rule：路由策略数据库中的规则 neigh: ARP 表  OPTIONS 表示选项，可选的值有 { -V[ersion] | -s[tatistics] | -d[etails] | -r[esolve] | -h[uman-readable] | -iec | -f[amily] { inet | inet6 | ipx | dnet | link } | -o[neline] | -t[imestamp] | -b[atch] [filename] | -rc[vbuf] [size] } 常用的选项包括：  -V，-Version：显示指令版本信息 -s，-stats，statistics：输出详细信息 -h，-human，-human-readable：输出人类可读的统计信息和后缀 -o，-oneline：将每条记录输出到一行，用 \字符替换换行符   1." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#252627" />
+<link rel="canonical" href="http://exbob.github.io/posts/2020/01/ip-%E5%91%BD%E4%BB%A4%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" />
+
+
+    <title>
+        
+            ip 命令学习笔记 :: Shaocheng.Li  — Hello Friends
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="http://exbob.github.io/main.min.73f55a8d452be4a71b2960620b80252cf69abd84d63fe7501abf0a39b1a70a78.css">
+
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="http://exbob.github.io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="http://exbob.github.io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="http://exbob.github.io/favicon-16x16.png">
+    <link rel="manifest" href="http://exbob.github.io/site.webmanifest">
+    <link rel="mask-icon" href="http://exbob.github.io/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="http://exbob.github.io/favicon.ico">
+    <meta name="msapplication-TileColor" content="#252627">
+    <meta name="theme-color" content="#252627">
+
+<meta itemprop="name" content="ip 命令学习笔记">
+<meta itemprop="description" content="ip 命令是 iproute2 工具包提供的 Linux 网络管理工具，集成了原有的 ifconfg 、arp 、route 、netstat 等多种命令的功能，并提供了很多新特性。它的语法是：
+ip [OPTIONS] OBJECT {COMMAND|help} 其中：
+ OBJECT 表示操作对象，可选的值有 { link | addr | addrlabel | route | rule | neigh | ntable | tunnel | maddr | mroute | mrule | monitor | xfrm | token } ，常用的对象包括：  link：网络设备 addr：设备上的协议（IP或IPv6）地址 addrlabel：协议地址选择的标签配置 route：路由表条目 rule：路由策略数据库中的规则 neigh: ARP 表  OPTIONS 表示选项，可选的值有 { -V[ersion] | -s[tatistics] | -d[etails] | -r[esolve] | -h[uman-readable] | -iec | -f[amily] { inet | inet6 | ipx | dnet | link } | -o[neline] | -t[imestamp] | -b[atch] [filename] | -rc[vbuf] [size] } 常用的选项包括：  -V，-Version：显示指令版本信息 -s，-stats，statistics：输出详细信息 -h，-human，-human-readable：输出人类可读的统计信息和后缀 -o，-oneline：将每条记录输出到一行，用 \字符替换换行符   1.">
+
+
+<meta itemprop="datePublished" content="2020-01-08T08:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2020-01-08T08:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="544">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="http://exbob.github.io"/>
+
+<meta name="twitter:title" content="ip 命令学习笔记"/>
+<meta name="twitter:description" content="ip 命令是 iproute2 工具包提供的 Linux 网络管理工具，集成了原有的 ifconfg 、arp 、route 、netstat 等多种命令的功能，并提供了很多新特性。它的语法是：
+ip [OPTIONS] OBJECT {COMMAND|help} 其中：
+ OBJECT 表示操作对象，可选的值有 { link | addr | addrlabel | route | rule | neigh | ntable | tunnel | maddr | mroute | mrule | monitor | xfrm | token } ，常用的对象包括：  link：网络设备 addr：设备上的协议（IP或IPv6）地址 addrlabel：协议地址选择的标签配置 route：路由表条目 rule：路由策略数据库中的规则 neigh: ARP 表  OPTIONS 表示选项，可选的值有 { -V[ersion] | -s[tatistics] | -d[etails] | -r[esolve] | -h[uman-readable] | -iec | -f[amily] { inet | inet6 | ipx | dnet | link } | -o[neline] | -t[imestamp] | -b[atch] [filename] | -rc[vbuf] [size] } 常用的选项包括：  -V，-Version：显示指令版本信息 -s，-stats，statistics：输出详细信息 -h，-human，-human-readable：输出人类可读的统计信息和后缀 -o，-oneline：将每条记录输出到一行，用 \字符替换换行符   1."/>
+
+
+
+
+
+    <meta property="article:published_time" content="2020-01-08 08:00:00 &#43;0800 CST" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="http://exbob.github.io/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$ cd /home/</span>
+            <span class="logo__cursor" style=""></span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="http://exbob.github.io/about/">About</a></li><li><a href="http://exbob.github.io/posts/">Posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>3 minutes
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            <h1 class="post-title">
+                <a href="http://exbob.github.io/posts/2020/01/ip-%E5%91%BD%E4%BB%A4%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">ip 命令学习笔记</a>
+            </h1>
+                <hr />
+                <aside id="toc">
+                <div class="toc-title">Table of Contents</div>
+                    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#1-配置网卡">1. 配置网卡</a></li>
+<li><a href="#2-配置路由表">2. 配置路由表</a></li>
+<li><a href="#3-配置-arp">3. 配置 ARP</a></li>
+<li><a href="#4-查看端口状态">4. 查看端口状态</a></li>
+<li><a href="#参考">参考：</a></li>
+</ul></li>
+</ul>
+</nav>
+                </aside>
+                <hr />
+
+            
+
+            <div class="post-content">
+                
+
+<p>ip 命令是 iproute2 工具包提供的 Linux 网络管理工具，集成了原有的 ifconfg 、arp 、route 、netstat 等多种命令的功能，并提供了很多新特性。它的语法是：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">ip <span style="color:#f92672">[</span>OPTIONS<span style="color:#f92672">]</span> OBJECT <span style="color:#f92672">{</span>COMMAND|help<span style="color:#f92672">}</span></code></pre></div>
+<p>其中：</p>
+
+<ul>
+<li>OBJECT 表示操作对象，可选的值有 <code>{ link | addr | addrlabel | route | rule | neigh | ntable | tunnel | maddr | mroute | mrule | monitor | xfrm | token }</code> ，常用的对象包括：
+
+<ul>
+<li><code>link</code>：网络设备</li>
+<li><code>addr</code>：设备上的协议（IP或IPv6）地址</li>
+<li><code>addrlabel</code>：协议地址选择的标签配置</li>
+<li><code>route</code>：路由表条目</li>
+<li><code>rule</code>：路由策略数据库中的规则</li>
+<li><code>neigh</code>: ARP 表</li>
+</ul></li>
+<li>OPTIONS 表示选项，可选的值有 <code>{ -V[ersion] | -s[tatistics] | -d[etails] | -r[esolve] | -h[uman-readable] | -iec | -f[amily] { inet | inet6 | ipx | dnet | link } | -o[neline] | -t[imestamp] | -b[atch] [filename] | -rc[vbuf] [size] }</code> 常用的选项包括：
+
+<ul>
+<li><code>-V，-Version</code>：显示指令版本信息</li>
+<li><code>-s，-stats，statistics</code>：输出详细信息</li>
+<li><code>-h，-human，-human-readable</code>：输出人类可读的统计信息和后缀</li>
+<li><code>-o，-oneline</code>：将每条记录输出到一行，用 <code>\</code>字符替换换行符</li>
+</ul></li>
+</ul>
+
+<h2 id="1-配置网卡">1. 配置网卡</h2>
+
+<p>调用 <code>ip addr</code> 可以查看所有网卡的信息和配置，也可以在后追加网卡的接口名称，单独查看特定网卡，以 <code>enp1s0</code> 为例：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">root@localhost:~# ip addr show enp1s0
+<span style="color:#ae81ff">3</span>: enp1s0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span style="color:#ae81ff">1500</span> qdisc mq state UP group default qlen <span style="color:#ae81ff">1000</span>
+    link/ether <span style="color:#ae81ff">00</span>:1d:f3:52:b7:94 brd ff:ff:ff:ff:ff:ff
+    inet <span style="color:#ae81ff">192</span>.168.5.242/24 brd <span style="color:#ae81ff">192</span>.168.5.255 scope global enp1s0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::21d:f3ff:fe52:b794/64 scope link 
+       valid_lft forever preferred_lft forever</code></pre></div>
+<p>每个字段的含义：</p>
+
+<ul>
+<li><code>&lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt;</code> : <code>BROADCAST</code>表示该接口支持广播；<code>MULTICAST</code>表示该接口支持多播；<code>UP</code>表示该网络接口已启用；<code>LOWER_UP</code>表示网络电缆已插入，设备已连接至网络。</li>
+<li><code>mtu 1500</code>：最大传输单元（链路层最大一次传输的上层数据大小，也就是一个 IP 包的最大值）为 1500 字节。</li>
+<li><code>qdisc mq</code>：用于数据包排队 。</li>
+<li><code>state UP</code>：网络接口已启用，如果接口没有启用，会显示 DOWN 。</li>
+<li><code>qlen 1000</code>：传输队列长度。</li>
+<li><code>link/ether 00:1d:f3:52:b7:94</code> : 网卡的 MAC 地址。</li>
+<li><code>brd ff:ff:ff:ff:ff:ff</code> : 广播 MAC 地址。</li>
+<li><code>inet 192.168.5.242/24</code> : 网卡的 IPv4 地址。</li>
+<li><code>brd 192.168.5.255</code> : 广播 IPv4 地址。</li>
+<li><code>scope global</code>：全局有效，如果显示为 <code>link</code> 表示仅对此设备有效。</li>
+<li><code>enp1s0</code> : 如果前面有 <code>dynamic</code> 字符，表示这个网卡的 IP 是动态获取的。</li>
+<li><code>valid_lft forever</code> :  IP 的有效期是永久，如果是动态获取的 IP ，会显示剩余的有效时间。</li>
+<li><code>preferred_lft forever</code> :  首选 IP 的地址的有效期。</li>
+</ul>
+
+<p>为网卡添加或者删除一个 IP 地址：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">ip addr add/del <span style="color:#ae81ff">192</span>.168.0.123/24 dev enp1s0</code></pre></div>
+<p>启动或者禁用一个网卡：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">ip link set enp1s0 up/down</code></pre></div>
+<p>设置网卡的其他特性也可以用 <code>ip link set</code> 语法。例如：</p>
+
+<ul>
+<li><code>arp on/off</code> : 改变网卡的 NOARP 标识，设为 off 表示禁用该网卡的 ARP 协议。网卡处于 UP 状态时不能执行这个操作。</li>
+<li><code>multicast on/off</code> : 改变网卡的 MULTICAST 标识，设为 off 表示禁用该网卡的组播。</li>
+<li><code>dynamic on/off</code> : 改变网卡的 DYNAMIC 标识，设为 off 表示禁止该网卡动态获取 IP。</li>
+<li><code>mtu NUMBER</code> : 设置该网卡的最大传输单元。</li>
+</ul>
+
+<p>查看网卡的流量统计：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">root@localhost:~# ip -s -s link ls enp1s0
+<span style="color:#ae81ff">3</span>: enp1s0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span style="color:#ae81ff">1500</span> qdisc mq state UP mode DEFAULT group default qlen <span style="color:#ae81ff">1000</span>
+    link/ether <span style="color:#ae81ff">00</span>:1d:f3:52:b7:94 brd ff:ff:ff:ff:ff:ff
+    RX: bytes  packets  errors  dropped overrun mcast   
+    <span style="color:#ae81ff">42861012</span>   <span style="color:#ae81ff">137710</span>   <span style="color:#ae81ff">0</span>       <span style="color:#ae81ff">0</span>       <span style="color:#ae81ff">0</span>       <span style="color:#ae81ff">151</span>     
+    RX errors: length   crc     frame   fifo    missed
+               <span style="color:#ae81ff">0</span>        <span style="color:#ae81ff">0</span>       <span style="color:#ae81ff">0</span>       <span style="color:#ae81ff">0</span>       <span style="color:#ae81ff">0</span>       
+    TX: bytes  packets  errors  dropped carrier collsns 
+    <span style="color:#ae81ff">520406</span>     <span style="color:#ae81ff">6159</span>     <span style="color:#ae81ff">0</span>       <span style="color:#ae81ff">0</span>       <span style="color:#ae81ff">0</span>       <span style="color:#ae81ff">0</span>       
+    TX errors: aborted  fifo   window heartbeat transns
+               <span style="color:#ae81ff">0</span>        <span style="color:#ae81ff">0</span>       <span style="color:#ae81ff">0</span>       <span style="color:#ae81ff">0</span>       <span style="color:#ae81ff">2</span>       </code></pre></div>
+<h2 id="2-配置路由表">2. 配置路由表</h2>
+
+<p>显示系统的路由表：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">root@localhost:~# ip route show
+default via <span style="color:#ae81ff">10</span>.76.141.9 dev enp0s29u1u4c2  proto static  metric <span style="color:#ae81ff">100</span> 
+<span style="color:#ae81ff">10</span>.76.141.8/29 dev enp0s29u1u4c2  proto kernel  scope link  src <span style="color:#ae81ff">10</span>.76.141.12  metric <span style="color:#ae81ff">100</span> 
+<span style="color:#ae81ff">192</span>.168.5.0/24 dev enp1s0  proto kernel  scope link  src <span style="color:#ae81ff">192</span>.168.5.242  metric <span style="color:#ae81ff">100</span> 
+<span style="color:#ae81ff">192</span>.168.99.0/24 dev wlp3s0  proto kernel  scope link  src <span style="color:#ae81ff">192</span>.168.99.1  metric <span style="color:#ae81ff">600</span> </code></pre></div>
+<ul>
+<li><p><code>default</code> 一行表示缺省路由。</p></li>
+
+<li><p><code>via 10.76.141.9</code> 表示网关，也就是吓一跳的 IP 。</p></li>
+
+<li><p>普通路由的第一个字段表示目标网段。</p></li>
+
+<li><p><code>dev enp1s0</code> 表示出口网卡。</p></li>
+
+<li><p><code>metric 100</code> 表示优先级，数字小的优先。</p></li>
+</ul>
+
+<h2 id="3-配置-arp">3. 配置 ARP</h2>
+
+<p>查看系统的 ARP 缓存：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">root@localhost:~# ip neigh show
+<span style="color:#ae81ff">192</span>.168.5.252 dev enp1s0 lladdr 8c:a6:df:0c:7a:0a REACHABLE
+<span style="color:#ae81ff">192</span>.168.5.36 dev enp1s0 lladdr <span style="color:#ae81ff">98</span>:ee:cb:a9:c1:98 STALE
+<span style="color:#ae81ff">192</span>.168.5.50 dev enp1s0 lladdr f8:7b:20:ee:d2:47 STALE
+<span style="color:#ae81ff">192</span>.168.5.64 dev enp1s0 lladdr <span style="color:#ae81ff">74</span>:27:ea:6f:08:35 STALE
+<span style="color:#ae81ff">10</span>.76.141.9 dev enp0s29u1u4c2 lladdr 4c:54:99:45:e5:d5 REACHABLE
+fe80::4e54:99ff:fe45:e5d5 dev enp0s29u1u4c2 lladdr 4c:54:99:45:e5:d5 router REACHABLE</code></pre></div>
+<p>每一行都是一条 ARP ，以第一行为例：</p>
+
+<ul>
+<li><code>192.168.5.252</code> 表示设备的 IP 。</li>
+<li><code>dev enp1s0</code> 表示发现此设备的网卡。</li>
+<li><code>lladdr 8c:a6:df:0c:7a:0a</code> 表示此设备的 MAC 地址。</li>
+<li><code>REACHABLE</code> 表示这条 ARP 条目的状态：
+
+<ul>
+<li><code>REACHABLE</code> 表示条目有效，设备在线。</li>
+<li><code>STALE</code> 表示条目有效，但是设备未必在线。</li>
+<li><code>FAILED</code> 表示条目无效，设备不在线。</li>
+<li><code>PERMANENT</code> 表示此条目永久有效，直到管理员将其删除，通常是手动添加的静态 ARP 绑定。</li>
+</ul></li>
+</ul>
+
+<p>添加一条静态 ARP ：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">ip neight add dev enp1s0 add <span style="color:#ae81ff">192</span>.168.5.50 lladdr f8:7b:20:ee:d2:47 nud permanent</code></pre></div>
+<p>如果 ARP 表中已经存在了这样的 ARP 映射，执行 add 命令会报错，可以用 replace 将其替换，其他参数不变：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">ip neight relpace dev enp1s0 add <span style="color:#ae81ff">192</span>.168.5.50 lladdr f8:7b:20:ee:d2:47 nud permanent</code></pre></div>
+<p>删除一条 ARP 时不用这么多参数，只需指定接口和 IP 即可：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">ip neight delete dev enp1s0 add <span style="color:#ae81ff">192</span>.168.5.50</code></pre></div>
+<p>清空当前 ARP 表：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">ip neight flush dev enp1s0</code></pre></div>
+<h2 id="4-查看端口状态">4. 查看端口状态</h2>
+
+<h2 id="参考">参考：</h2>
+
+<ul>
+<li><p><a href="http://www.policyrouting.org/iproute2.doc.html" target="_blank">http://www.policyrouting.org/iproute2.doc.html</a></p></li>
+
+<li><p><a href="https://linux.cn/article-3144-1.html" target="_blank">https://linux.cn/article-3144-1.html</a></p></li>
+</ul>
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>544 Words</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2020-01-08 08:00 &#43;0800</p>
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h"></span>
+                    <hr />
+                </div>
+
+                <div class="pagination__buttons">
+                    
+
+                    
+                        <span class="button next">
+                            <a href="http://exbob.github.io/posts/2019/12/uci-%E5%92%8C-ubus-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+                                <span class="button__text">UCI 和 ubus 学习笔记</span>
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    
+                </div>
+            </div>
+        
+
+        
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2020</span>
+            
+                <span><a href="http://exbob.github.io">Shaocheng.Li</a></span>
+            
+            <span><a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></span>
+            <span> <a href="http://exbob.github.io/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>
+        </div>
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="http://exbob.github.io/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+
+
+
+    </body>
+</html>

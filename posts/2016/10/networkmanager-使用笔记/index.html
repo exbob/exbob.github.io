@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="Shaocheng.Li ">
+<meta name="description" content="NetworkManager 是目前 Linux 系统中提供网络连接管理服务的一套软件，也支持传统的 ifcfg 类型配置文件。核心是 NetworkManager 守护进程，还提供了命令行工具 nmcli ，以及图形界面配置工具。NetworkManager 可用于以下连接类型：以太网、VLAN、网桥、绑定、成组、Wi-Fi、移动宽带（比如移动网络 3G）及 IP-over-InfiniBand。在这些连接类型中，NetworkManager 可配置网络别名、IP 地址、静态路由器、DNS 信息及 VPN 连接以及很多具体连接参数。最后，NetworkManager 通过 D-bus 提供 API，D-Bus 允许应用程序查询并控制网络配置及状态。
+启动、停止、查看 NetworkManager 服务：
+[root@localhost ~]# systemctl start|stop|restart|status NetworkManager  NetworkManager 的配置文件和脚本保存在 /etc/sysconfig/ 目录中。大多数网络配置信息都保存在这里，VPN、移动宽带及 PPPoE 配置除外，这些配置保存在 /etc/NetworkManager/ 子目录中。例如，接口的具体信息是保存在 /etc/sysconfig/network-scripts/ 目录下的 ifcfg-* 文件中。全局设置使用 /etc/sysconfig/network 文件
+在命令行中，可以使用 nmcli 工具与 NetworkManager 进行交互。例如，修改了某个 ifcfg-* 文件后，需要手动载入，可以执行：
+[root@localhost ~]# nmcli connection load /etc/sysconfig/network-scripts/ifcfg-ifname  如果要重新载入全部配置文件，可以执行 ：
+[root@localhost ~]# nmcli connection reload  可以执行 nmcli help 查看该命令的语法，命令的各种参数都可以用 Tab 键补全。" />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#252627" />
+<link rel="canonical" href="http://exbob.github.io/posts/2016/10/networkmanager-%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/" />
+
+
+    <title>
+        
+            NetworkManager 使用笔记 :: Shaocheng.Li  — Hello Friends
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="http://exbob.github.io/main.min.73f55a8d452be4a71b2960620b80252cf69abd84d63fe7501abf0a39b1a70a78.css">
+
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="http://exbob.github.io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="http://exbob.github.io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="http://exbob.github.io/favicon-16x16.png">
+    <link rel="manifest" href="http://exbob.github.io/site.webmanifest">
+    <link rel="mask-icon" href="http://exbob.github.io/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="http://exbob.github.io/favicon.ico">
+    <meta name="msapplication-TileColor" content="#252627">
+    <meta name="theme-color" content="#252627">
+
+<meta itemprop="name" content="NetworkManager 使用笔记">
+<meta itemprop="description" content="NetworkManager 是目前 Linux 系统中提供网络连接管理服务的一套软件，也支持传统的 ifcfg 类型配置文件。核心是 NetworkManager 守护进程，还提供了命令行工具 nmcli ，以及图形界面配置工具。NetworkManager 可用于以下连接类型：以太网、VLAN、网桥、绑定、成组、Wi-Fi、移动宽带（比如移动网络 3G）及 IP-over-InfiniBand。在这些连接类型中，NetworkManager 可配置网络别名、IP 地址、静态路由器、DNS 信息及 VPN 连接以及很多具体连接参数。最后，NetworkManager 通过 D-bus 提供 API，D-Bus 允许应用程序查询并控制网络配置及状态。
+启动、停止、查看 NetworkManager 服务：
+[root@localhost ~]# systemctl start|stop|restart|status NetworkManager  NetworkManager 的配置文件和脚本保存在 /etc/sysconfig/ 目录中。大多数网络配置信息都保存在这里，VPN、移动宽带及 PPPoE 配置除外，这些配置保存在 /etc/NetworkManager/ 子目录中。例如，接口的具体信息是保存在 /etc/sysconfig/network-scripts/ 目录下的 ifcfg-* 文件中。全局设置使用 /etc/sysconfig/network 文件
+在命令行中，可以使用 nmcli 工具与 NetworkManager 进行交互。例如，修改了某个 ifcfg-* 文件后，需要手动载入，可以执行：
+[root@localhost ~]# nmcli connection load /etc/sysconfig/network-scripts/ifcfg-ifname  如果要重新载入全部配置文件，可以执行 ：
+[root@localhost ~]# nmcli connection reload  可以执行 nmcli help 查看该命令的语法，命令的各种参数都可以用 Tab 键补全。">
+
+
+<meta itemprop="datePublished" content="2016-10-13T08:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2016-10-13T08:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="629">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="http://exbob.github.io"/>
+
+<meta name="twitter:title" content="NetworkManager 使用笔记"/>
+<meta name="twitter:description" content="NetworkManager 是目前 Linux 系统中提供网络连接管理服务的一套软件，也支持传统的 ifcfg 类型配置文件。核心是 NetworkManager 守护进程，还提供了命令行工具 nmcli ，以及图形界面配置工具。NetworkManager 可用于以下连接类型：以太网、VLAN、网桥、绑定、成组、Wi-Fi、移动宽带（比如移动网络 3G）及 IP-over-InfiniBand。在这些连接类型中，NetworkManager 可配置网络别名、IP 地址、静态路由器、DNS 信息及 VPN 连接以及很多具体连接参数。最后，NetworkManager 通过 D-bus 提供 API，D-Bus 允许应用程序查询并控制网络配置及状态。
+启动、停止、查看 NetworkManager 服务：
+[root@localhost ~]# systemctl start|stop|restart|status NetworkManager  NetworkManager 的配置文件和脚本保存在 /etc/sysconfig/ 目录中。大多数网络配置信息都保存在这里，VPN、移动宽带及 PPPoE 配置除外，这些配置保存在 /etc/NetworkManager/ 子目录中。例如，接口的具体信息是保存在 /etc/sysconfig/network-scripts/ 目录下的 ifcfg-* 文件中。全局设置使用 /etc/sysconfig/network 文件
+在命令行中，可以使用 nmcli 工具与 NetworkManager 进行交互。例如，修改了某个 ifcfg-* 文件后，需要手动载入，可以执行：
+[root@localhost ~]# nmcli connection load /etc/sysconfig/network-scripts/ifcfg-ifname  如果要重新载入全部配置文件，可以执行 ：
+[root@localhost ~]# nmcli connection reload  可以执行 nmcli help 查看该命令的语法，命令的各种参数都可以用 Tab 键补全。"/>
+
+
+
+
+
+    <meta property="article:published_time" content="2016-10-13 08:00:00 &#43;0800 CST" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="http://exbob.github.io/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$ cd /home/</span>
+            <span class="logo__cursor" style=""></span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="http://exbob.github.io/about/">About</a></li><li><a href="http://exbob.github.io/posts/">Posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>3 minutes
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            <h1 class="post-title">
+                <a href="http://exbob.github.io/posts/2016/10/networkmanager-%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/">NetworkManager 使用笔记</a>
+            </h1>
+
+            
+
+            <div class="post-content">
+                
+
+<p>NetworkManager 是目前 Linux 系统中提供网络连接管理服务的一套软件，也支持传统的 ifcfg 类型配置文件。核心是 NetworkManager 守护进程，还提供了命令行工具 nmcli ，以及图形界面配置工具。NetworkManager 可用于以下连接类型：以太网、VLAN、网桥、绑定、成组、Wi-Fi、移动宽带（比如移动网络 3G）及 IP-over-InfiniBand。在这些连接类型中，NetworkManager 可配置网络别名、IP 地址、静态路由器、DNS 信息及 VPN 连接以及很多具体连接参数。最后，NetworkManager 通过 D-bus 提供 API，D-Bus 允许应用程序查询并控制网络配置及状态。</p>
+
+<p>启动、停止、查看 NetworkManager 服务：</p>
+
+<pre><code>[root@localhost ~]# systemctl start|stop|restart|status NetworkManager
+</code></pre>
+
+<p>NetworkManager 的配置文件和脚本保存在 /etc/sysconfig/ 目录中。大多数网络配置信息都保存在这里，VPN、移动宽带及 PPPoE 配置除外，这些配置保存在 /etc/NetworkManager/ 子目录中。例如，接口的具体信息是保存在 /etc/sysconfig/network-scripts/ 目录下的 ifcfg-* 文件中。全局设置使用 /etc/sysconfig/network 文件</p>
+
+<p>在命令行中，可以使用 nmcli 工具与 NetworkManager 进行交互。例如，修改了某个 ifcfg-* 文件后，需要手动载入，可以执行：</p>
+
+<pre><code>[root@localhost ~]# nmcli connection load /etc/sysconfig/network-scripts/ifcfg-ifname
+</code></pre>
+
+<p>如果要重新载入全部配置文件，可以执行 ：</p>
+
+<pre><code>[root@localhost ~]# nmcli connection reload
+</code></pre>
+
+<p>可以执行 <code>nmcli help</code> 查看该命令的语法，命令的各种参数都可以用 Tab 键补全。</p>
+
+<pre><code>[root@localhost ~]# nmcli help
+Usage: nmcli [OPTIONS] OBJECT { COMMAND | help }
+
+OPTIONS
+  -t[erse]                                   简洁输出
+  -p[retty]                                  美化输出
+  -m[ode] tabular|multiline                  输出模式
+  -f[ields] &lt;field1,field2,...&gt;|all|common   指定字段输出
+  -e[scape] yes|no                           指定分隔符
+  -n[ocheck]                                 不检测版本
+  -a[sk]                                     询问缺失参数
+  -w[ait] &lt;seconds&gt;                          设置超时等待完成操作
+  -v[ersion]                                 显示版本
+  -h[elp]                                    获得帮助
+
+OBJECT
+  g[eneral]       常规管理
+  n[etworking]    全面的网络控制
+  r[adio]         无线网络管理
+  c[onnection]    网络连接管理
+  d[evice]        网络设备管理
+  a[gent]         网络代理管理
+</code></pre>
+
+<p>列出所有的网络设备：</p>
+
+<pre><code>[root@localhost ~]# nmcli device show
+GENERAL.DEVICE:                         enp4s0
+GENERAL.TYPE:                           ethernet
+GENERAL.HWADDR:                         00:1D:F3:51:95:4D
+GENERAL.MTU:                            1500
+GENERAL.STATE:                          100 (connected)
+GENERAL.CONNECTION:                     enp4s0
+GENERAL.CON-PATH:                       /org/freedesktop/NetworkManager/ActiveConnection/0
+WIRED-PROPERTIES.CARRIER:               on
+IP4.ADDRESS[1]:                         ip = 192.168.5.242/24, gw = 0.0.0.0
+IP6.ADDRESS[1]:                         ip = fe80::21d:f3ff:fe51:954d/64, gw = ::
+
+GENERAL.DEVICE:                         ttyACM3
+GENERAL.TYPE:                           gsm
+GENERAL.HWADDR:                         (unknown)
+GENERAL.MTU:                            0
+GENERAL.STATE:                          30 (disconnected)
+GENERAL.CONNECTION:                     --
+GENERAL.CON-PATH:                       --
+
+GENERAL.DEVICE:                         lo
+GENERAL.TYPE:                           loopback
+GENERAL.HWADDR:                         00:00:00:00:00:00
+GENERAL.MTU:                            65536
+GENERAL.STATE:                          10 (unmanaged)
+GENERAL.CONNECTION:                     --
+GENERAL.CON-PATH:                       --
+</code></pre>
+
+<p>查看所有网络设备的状态：</p>
+
+<pre><code>[root@localhost ~]# nmcli device status 
+DEVICE   TYPE      STATE         CONNECTION 
+enp4s0   ethernet  connected     enp4s0     
+ttyACM3  gsm       disconnected  --         
+lo       loopback  unmanaged     --   
+</code></pre>
+
+<p>查看所有的网络连接：</p>
+
+<pre><code>[root@localhost ~]# nmcli connection show 
+NAME    UUID                                  TYPE            DEVICE 
+enp4s0  f056272b-e28a-4e69-8264-af9fccfbf45d  802-3-ethernet  enp4s0
+</code></pre>
+
+<p>可以看到，本机有一个以太网卡和一个 3G 网卡，只有以太网使能了连接，3G 网卡处于未连接状态。TYPE 字段表示连接类型，支持的值有：adsl, bond, bond-slave, bridge, bridge-slave, bluetooth, cdma, ethernet, gsm, infiniband, olpc-mesh, team, team-slave, vlan, wifi, wimax。可以在新建或者编辑连接时用 type 参数设置，按 Tab 键查看该列表，或查看 nmcli(1) man page 中的 TYPE_SPECIFIC_OPTIONS 列表。</p>
+
+<p>DEVICE 表示设备名称，如果是以太网或者WiFi，就是用 ifconfig -a 看到的名称。CONNECTION 表示连接名称，这是在连接配置文件的名称，这里的以太网配置文件是 ifcfg-enp4s0 。可以在新建连接时用 con-name 参数设置。</p>
+
+<h2 id="1-以太网">1. 以太网</h2>
+
+<p>新建一个以太网连接，使用动态 IP ：</p>
+
+<pre><code>[root@localhost ~]# nmcli connection add type ethernet con-name connection-name ifname interface-name
+</code></pre>
+
+<p>这样会在 /etc/sysconfig/network-scripts/ 目录下生成一个 ifcfg-* 配置文件。使用以下命令激活以太网连接：</p>
+
+<pre><code>[root@localhost ~]# nmcli con up my-office
+Connection successfully activated (D-Bus active path: /org/freedesktop/NetworkManager/ActiveConnection/5)
+</code></pre>
+
+<p>用如下命令可以查看该连接的详细信息：</p>
+
+<pre><code>[root@localhost ~]# nmcli connection show enp4s0 
+</code></pre>
+
+<h2 id="2-3g-网卡">2. 3G 网卡</h2>
+
+<p>查看这个设备的详情：</p>
+
+<pre><code>[root@localhost ~]# nmcli device show ttyACM3 
+GENERAL.DEVICE:                         ttyACM3
+GENERAL.TYPE:                           gsm
+GENERAL.HWADDR:                         (unknown)
+GENERAL.MTU:                            0
+GENERAL.STATE:                          30 (disconnected)
+GENERAL.CONNECTION:                     --
+GENERAL.CON-PATH:                       --
+</code></pre>
+
+<p>新建一个 3G 网卡的连接：</p>
+
+<pre><code>[root@localhost ~]# nmcli connection add type gsm ifname ttyACM3 user 3gnet password 3gnet apn 3gnet
+Connection 'gsm-ttyACM3' (d15e8860-6dc1-4aa5-b579-b898e651a984) successfully added.
+</code></pre>
+
+<p>这会在 /etc/NetworkManager/system-connections/ 下生成一个配置文件，并且会自动连接，生成一个 ppp0 的网络设备：</p>
+
+<pre><code>[root@localhost ~]# cat gsm-ttyACM3 
+[connection]
+id=gsm-ttyACM3
+uuid=7561e339-43b7-4e7f-bc2c-5886b5a97afc
+interface-name=ttyACM3
+type=gsm
+
+[gsm]
+number=*99#
+username=3gnet
+password=3gnet
+apn=3gnet
+[root@localhost ~]# nmcli device status 
+DEVICE   TYPE      STATE      CONNECTION  
+enp4s0   ethernet  connected  enp4s0      
+ttyACM3  gsm       connected  gsm-ttyACM3 
+ppp0     unknown   connected  ppp0        
+lo       loopback  unmanaged  --    
+~]# nmcli connection show
+NAME         UUID                                  TYPE            DEVICE  
+ppp0         9e55469f-b362-4122-8031-aa18360a8d75  generic         ppp0    
+gsm-ttyACM3  7561e339-43b7-4e7f-bc2c-5886b5a97afc  gsm             ttyACM3 
+enp4s0       f056272b-e28a-4e69-8264-af9fccfbf45d  802-3-ethernet  enp4s0  
+</code></pre>
+
+<p>要取消自动连接，需要将 autoconnect 设为 false ：</p>
+
+<pre><code>[root@localhost ~]# nmcli connection modify gsm-ttyACM3 connection.autoconnect false
+[root@localhost ~]# cat /etc/NetworkManager/system-connections/gsm-ttyACM3 
+[connection]
+id=gsm-ttyACM3
+uuid=86f38b5b-31e3-4250-8304-c94a8fe7ac29
+interface-name=ttyACM3
+type=gsm
+autoconnect=false
+
+[gsm]
+number=*99#
+username=3gnet
+password=3gnet
+apn=3gnet
+</code></pre>
+
+<h2 id="3-wifi">3. WiFi</h2>
+
+<p>用如下命令查看可访问的 WiFi 热点：</p>
+
+<pre><code>[root@localhost ~]# nmcli device wifi list 
+*  SSID               MODE   CHAN  RATE       SIGNAL  BARS  SECURITY  
+   SBSon              Infra  4     54 Mbit/s  84      â–‚â–„â–†â–ˆ  WPA1 WPA2 
+   TP-LINK_3          Infra  1     54 Mbit/s  77      â–‚â–„â–†_  WPA2      
+   readtime           Infra  1     54 Mbit/s  70      â–‚â–„â–†_  WPA2      
+   sbstest            Infra  1     54 Mbit/s  59      â–‚â–„â–†_  WPA1 WPA2 
+   Xiaomi             Infra  1     54 Mbit/s  57      â–‚â–„â–†_  WPA2      
+   wifi-360           Infra  6     54 Mbit/s  47      â–‚â–„__  WPA2      
+</code></pre>
+
+<p>新建一个名为 wifi-con 的 WiFi 连接：</p>
+
+<pre><code>[root@localhost ~]# nmcli connection add con-name wifi-con ifname wlp1s0 type wifi ssid TP-LINK_3
+Connection 'wifi-con' (7c5ae676-a2c7-49df-a37b-d93787be2b72) successfully added.    
+</code></pre>
+
+<p>设置加密方式为 WPA2 ，并设置密码：</p>
+
+<pre><code>[root@localhost ~]# nmcli connection modify wifi-con wifi-sec.key-mgmt wpa-psk  
+[root@localhost ~]# nmcli connection modify wifi-con wifi-sec.psk 87654321
+</code></pre>
+
+<p>激活该连接：</p>
+
+<pre><code>[root@localhost ~]# nmcli connection up wifi-con 
+Connection successfully activated (D-Bus active path: /org/freedesktop/NetworkManager/ActiveConnection/3)
+[root@localhost ~]# iwconfig 
+lo        no wireless extensions.
+
+enp4s0    no wireless extensions.
+
+wlp1s0    IEEE 802.11abgn  ESSID:&quot;TP-LINK_3&quot;  
+          Mode:Managed  Frequency:2.412 GHz  Access Point: 64:09:80:64:2F:8E   
+          Bit Rate=1 Mb/s   Tx-Power=15 dBm   
+          Retry short limit:7   RTS thr:off   Fragment thr:off
+          Encryption key:off
+          Power Management:off
+          Link Quality=44/70  Signal level=-66 dBm  
+          Rx invalid nwid:0  Rx invalid crypt:0  Rx invalid frag:0
+          Tx excessive retries:3  Invalid misc:20   Missed beacon:0
+</code></pre>
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>629 Words</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2016-10-13 08:00 &#43;0800</p>
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h"></span>
+                    <hr />
+                </div>
+
+                <div class="pagination__buttons">
+                    
+                        <span class="button previous">
+                            <a href="http://exbob.github.io/posts/2016/10/linux-3g-module-howto/">
+                                <span class="button__icon">←</span>
+                                <span class="button__text">Linux 3G Module HowTo</span>
+                            </a>
+                        </span>
+                    
+
+                    
+                        <span class="button next">
+                            <a href="http://exbob.github.io/posts/2016/09/bitbake-%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/">
+                                <span class="button__text">BitBake 使用笔记</span>
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    
+                </div>
+            </div>
+        
+
+        
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2020</span>
+            
+                <span><a href="http://exbob.github.io">Shaocheng.Li</a></span>
+            
+            <span><a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></span>
+            <span> <a href="http://exbob.github.io/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>
+        </div>
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="http://exbob.github.io/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+
+
+
+    </body>
+</html>

@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="Shaocheng.Li ">
+<meta name="description" content="keepalived 是一个用 C 语言编写的免费开源软件，它实现了 VRRP协议，同时提供了强大的负载均衡 (LVS) 功能。我们可以用他的 VRRP 功能实现路由器或者服务器等网络设备的双机热备。简单的说，两台路由器，一台作为主机，一台作为备机，两台路由器有自己的独立 IP ，同时共享一个虚拟 IP ，主机正常是，这个虚拟 IP 指向主机，当主机出现故障时，虚拟 IP 指向备机，实现了路由器的无缝自动切换。网络拓扑如下图所示：
+虚拟 IP 的实现方式有很多种，比较可靠的方法是为一个网卡定义多个 IP ，端口名用冒号隔开一个数字，用 ifconfig 命令实现，例如：
+ifconfig eth0:0 192.168.6.100 netmask 255.255.255.0 up   用点隔开一个数字的端口名属于 VLAN 网卡，例如 eth0.100 ，具有不同的特性和应用。
+ 安装 keepalived 官网在 https://www.keepalived.org/ ，可以编译源码进行安装。在 ubuntu 系统下，直接用 apt 安装：
+apt-get install keepalived  配置 keepalived 只有一个配置文件 keepalived.conf，通常位于 /etc/keepalived/ 目录下，keepalived 还提供了很多配置文件的实例，安装在 /usr/share/doc/keepalived/sample/ 目录下。对于双机热备，最简单的配置如下：
+主机 ：
+vrrp_instance VI_1 { # 定义一个 VRRP 实例，VI_1 表示这个实例的名称，同一组 VRRP 路由器的实例名称必须一致 state MASTER # 定义本机的初始状态，MASTER 表示主机，BACKUP 表示备机 interface enp3s0 # 指定 VRRP 运行的网卡 virtual_router_id 51 # 定义 VRRP 路由器的 ID ，取值 1~255 ，同一组 VRRP 路由器的 ID 必须一致，这个 ID 会用于虚拟路由器的 MAC 地址 priority 100 # 定义本机的优先级，取值 1~254 ，数字越大，优先级越高，MASTER 应该比 BACKUP 高 50 以上。 virtual_ipaddress { # 定义虚拟 IP 192." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#252627" />
+<link rel="canonical" href="http://exbob.github.io/posts/2019/08/%E4%BD%BF%E7%94%A8-keepalived-%E5%AE%9E%E7%8E%B0%E5%8F%8C%E6%9C%BA%E7%83%AD%E5%A4%87/" />
+
+
+    <title>
+        
+            使用 keepalived 实现双机热备 :: Shaocheng.Li  — Hello Friends
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="http://exbob.github.io/main.min.73f55a8d452be4a71b2960620b80252cf69abd84d63fe7501abf0a39b1a70a78.css">
+
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="http://exbob.github.io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="http://exbob.github.io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="http://exbob.github.io/favicon-16x16.png">
+    <link rel="manifest" href="http://exbob.github.io/site.webmanifest">
+    <link rel="mask-icon" href="http://exbob.github.io/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="http://exbob.github.io/favicon.ico">
+    <meta name="msapplication-TileColor" content="#252627">
+    <meta name="theme-color" content="#252627">
+
+<meta itemprop="name" content="使用 keepalived 实现双机热备">
+<meta itemprop="description" content="keepalived 是一个用 C 语言编写的免费开源软件，它实现了 VRRP协议，同时提供了强大的负载均衡 (LVS) 功能。我们可以用他的 VRRP 功能实现路由器或者服务器等网络设备的双机热备。简单的说，两台路由器，一台作为主机，一台作为备机，两台路由器有自己的独立 IP ，同时共享一个虚拟 IP ，主机正常是，这个虚拟 IP 指向主机，当主机出现故障时，虚拟 IP 指向备机，实现了路由器的无缝自动切换。网络拓扑如下图所示：
+虚拟 IP 的实现方式有很多种，比较可靠的方法是为一个网卡定义多个 IP ，端口名用冒号隔开一个数字，用 ifconfig 命令实现，例如：
+ifconfig eth0:0 192.168.6.100 netmask 255.255.255.0 up   用点隔开一个数字的端口名属于 VLAN 网卡，例如 eth0.100 ，具有不同的特性和应用。
+ 安装 keepalived 官网在 https://www.keepalived.org/ ，可以编译源码进行安装。在 ubuntu 系统下，直接用 apt 安装：
+apt-get install keepalived  配置 keepalived 只有一个配置文件 keepalived.conf，通常位于 /etc/keepalived/ 目录下，keepalived 还提供了很多配置文件的实例，安装在 /usr/share/doc/keepalived/sample/ 目录下。对于双机热备，最简单的配置如下：
+主机 ：
+vrrp_instance VI_1 { # 定义一个 VRRP 实例，VI_1 表示这个实例的名称，同一组 VRRP 路由器的实例名称必须一致 state MASTER # 定义本机的初始状态，MASTER 表示主机，BACKUP 表示备机 interface enp3s0 # 指定 VRRP 运行的网卡 virtual_router_id 51 # 定义 VRRP 路由器的 ID ，取值 1~255 ，同一组 VRRP 路由器的 ID 必须一致，这个 ID 会用于虚拟路由器的 MAC 地址 priority 100 # 定义本机的优先级，取值 1~254 ，数字越大，优先级越高，MASTER 应该比 BACKUP 高 50 以上。 virtual_ipaddress { # 定义虚拟 IP 192.">
+
+
+<meta itemprop="datePublished" content="2019-08-24T08:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-08-24T08:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="490">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="http://exbob.github.io"/>
+
+<meta name="twitter:title" content="使用 keepalived 实现双机热备"/>
+<meta name="twitter:description" content="keepalived 是一个用 C 语言编写的免费开源软件，它实现了 VRRP协议，同时提供了强大的负载均衡 (LVS) 功能。我们可以用他的 VRRP 功能实现路由器或者服务器等网络设备的双机热备。简单的说，两台路由器，一台作为主机，一台作为备机，两台路由器有自己的独立 IP ，同时共享一个虚拟 IP ，主机正常是，这个虚拟 IP 指向主机，当主机出现故障时，虚拟 IP 指向备机，实现了路由器的无缝自动切换。网络拓扑如下图所示：
+虚拟 IP 的实现方式有很多种，比较可靠的方法是为一个网卡定义多个 IP ，端口名用冒号隔开一个数字，用 ifconfig 命令实现，例如：
+ifconfig eth0:0 192.168.6.100 netmask 255.255.255.0 up   用点隔开一个数字的端口名属于 VLAN 网卡，例如 eth0.100 ，具有不同的特性和应用。
+ 安装 keepalived 官网在 https://www.keepalived.org/ ，可以编译源码进行安装。在 ubuntu 系统下，直接用 apt 安装：
+apt-get install keepalived  配置 keepalived 只有一个配置文件 keepalived.conf，通常位于 /etc/keepalived/ 目录下，keepalived 还提供了很多配置文件的实例，安装在 /usr/share/doc/keepalived/sample/ 目录下。对于双机热备，最简单的配置如下：
+主机 ：
+vrrp_instance VI_1 { # 定义一个 VRRP 实例，VI_1 表示这个实例的名称，同一组 VRRP 路由器的实例名称必须一致 state MASTER # 定义本机的初始状态，MASTER 表示主机，BACKUP 表示备机 interface enp3s0 # 指定 VRRP 运行的网卡 virtual_router_id 51 # 定义 VRRP 路由器的 ID ，取值 1~255 ，同一组 VRRP 路由器的 ID 必须一致，这个 ID 会用于虚拟路由器的 MAC 地址 priority 100 # 定义本机的优先级，取值 1~254 ，数字越大，优先级越高，MASTER 应该比 BACKUP 高 50 以上。 virtual_ipaddress { # 定义虚拟 IP 192."/>
+
+
+
+
+
+    <meta property="article:published_time" content="2019-08-24 08:00:00 &#43;0800 CST" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="http://exbob.github.io/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$ cd /home/</span>
+            <span class="logo__cursor" style=""></span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="http://exbob.github.io/about/">About</a></li><li><a href="http://exbob.github.io/posts/">Posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>3 minutes
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            <h1 class="post-title">
+                <a href="http://exbob.github.io/posts/2019/08/%E4%BD%BF%E7%94%A8-keepalived-%E5%AE%9E%E7%8E%B0%E5%8F%8C%E6%9C%BA%E7%83%AD%E5%A4%87/">使用 keepalived 实现双机热备</a>
+            </h1>
+
+            
+
+            <div class="post-content">
+                
+
+<p>keepalived 是一个用 C 语言编写的免费开源软件，它实现了 VRRP协议，同时提供了强大的负载均衡 (LVS) 功能。我们可以用他的 VRRP 功能实现路由器或者服务器等网络设备的双机热备。简单的说，两台路由器，一台作为主机，一台作为备机，两台路由器有自己的独立 IP ，同时共享一个虚拟 IP ，主机正常是，这个虚拟 IP 指向主机，当主机出现故障时，虚拟 IP 指向备机，实现了路由器的无缝自动切换。网络拓扑如下图所示：</p>
+
+<p><img src="http://exbob.github.io/images/2019-08-24/2019-08-24_1.jpg" alt="" /></p>
+
+<p>虚拟 IP 的实现方式有很多种，比较可靠的方法是为一个网卡定义多个 IP ，端口名用冒号隔开一个数字，用  ifconfig 命令实现，例如：</p>
+
+<pre><code>ifconfig eth0:0 192.168.6.100 netmask 255.255.255.0 up
+</code></pre>
+
+<blockquote>
+<p>用点隔开一个数字的端口名属于 VLAN 网卡，例如 eth0.100 ，具有不同的特性和应用。</p>
+</blockquote>
+
+<h2 id="安装">安装</h2>
+
+<p>keepalived 官网在 <a href="https://www.keepalived.org/" target="_blank">https://www.keepalived.org/</a> ，可以编译源码进行安装。在 ubuntu 系统下，直接用 apt 安装：</p>
+
+<pre><code>apt-get install keepalived
+</code></pre>
+
+<h2 id="配置">配置</h2>
+
+<p>keepalived 只有一个配置文件 keepalived.conf，通常位于 <code>/etc/keepalived/</code> 目录下，keepalived 还提供了很多配置文件的实例，安装在 <code>/usr/share/doc/keepalived/sample/</code> 目录下。对于双机热备，最简单的配置如下：</p>
+
+<p>主机 ：</p>
+
+<pre><code>vrrp_instance VI_1 {   # 定义一个 VRRP 实例，VI_1 表示这个实例的名称，同一组 VRRP 路由器的实例名称必须一致
+    state MASTER        # 定义本机的初始状态，MASTER 表示主机，BACKUP 表示备机
+    interface enp3s0     # 指定 VRRP 运行的网卡
+    virtual_router_id 51  # 定义 VRRP 路由器的 ID ，取值 1~255 ，同一组 VRRP 路由器的 ID 必须一致，这个 ID 会用于虚拟路由器的 MAC 地址
+    priority 100               # 定义本机的优先级，取值 1~254 ，数字越大，优先级越高，MASTER 应该比 BACKUP 高 50 以上。
+    virtual_ipaddress {   # 定义虚拟 IP 
+        192.168.1.3/24
+    }
+}
+</code></pre>
+
+<p>备机：</p>
+
+<pre><code>vrrp_instance VI_1 {
+    state BACKUP
+    interface enp3s0
+    virtual_router_id 51
+    priority 40
+    virtual_ipaddress {
+        192.168.1.3/24
+    }
+}
+</code></pre>
+
+<p>配置完成后，执行 <code>systemctl start keepalived</code> 命令启动 keepalived 服务。</p>
+
+<h2 id="验证">验证</h2>
+
+<p>主机正常的情况下，可以看到主机的  VRRP 实例处于 MASTER 状态：</p>
+
+<pre><code># systemctl  status keepalived.service
+● keepalived.service - Keepalive Daemon (LVS and VRRP)
+   Loaded: loaded (/lib/systemd/system/keepalived.service; enabled; vendor preset: enabled)
+   Active: active (running) since Sat 2019-08-24 16:22:33 CST; 9min ago
+  Process: 2311 ExecStart=/usr/sbin/keepalived $DAEMON_ARGS (code=exited, status=0/SUCCESS)
+ Main PID: 2315 (keepalived)
+    Tasks: 3
+   Memory: 1.2M
+      CPU: 195ms
+   CGroup: /system.slice/keepalived.service
+           ├─2315 /usr/sbin/keepalived
+           ├─2316 /usr/sbin/keepalived
+           └─2319 /usr/sbin/keepalived
+
+Aug 24 16:22:33 ubuntu Keepalived_vrrp[2319]: Using LinkWatch kernel netlink reflector...
+Aug 24 16:22:33 ubuntu Keepalived_healthcheckers[2316]: Registering Kernel netlink reflector
+Aug 24 16:22:33 ubuntu Keepalived_healthcheckers[2316]: Registering Kernel netlink command channel
+Aug 24 16:22:33 ubuntu Keepalived_healthcheckers[2316]: Opening file '/etc/keepalived/keepalived.conf'.
+Aug 24 16:22:33 ubuntu Keepalived_healthcheckers[2316]: Using LinkWatch kernel netlink reflector...
+Aug 24 16:25:27 ubuntu Keepalived_vrrp[2319]: VRRP_Instance(VI_1) Entering MASTER STATE
+</code></pre>
+
+<p>以及虚拟 IP 指向主机的网卡：</p>
+
+<pre><code>root@ubuntu:~# ip addr
+1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host
+       valid_lft forever preferred_lft forever
+2: enp3s0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+    link/ether 00:1d:f3:52:99:10 brd ff:ff:ff:ff:ff:ff
+    inet 192.168.1.1/24 brd 192.168.1.255 scope global enp3s0
+       valid_lft forever preferred_lft forever
+    inet 192.168.1.3/24 scope global secondary enp3s0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::21d:f3ff:fe52:9910/64 scope link
+       valid_lft forever preferred_lft forever
+</code></pre>
+
+<p>如果把主机关闭，则备机的 VRRP 实例状态会变为 MASTER ，虚拟 IP 也会指向备机的网卡：</p>
+
+<pre><code># systemctl  status keepalived.service
+● keepalived.service - Keepalive Daemon (LVS and VRRP)
+   Loaded: loaded (/lib/systemd/system/keepalived.service; enabled; vendor preset: enabled)
+   Active: active (running) since Sat 2019-08-24 16:22:33 CST; 9min ago
+  Process: 2311 ExecStart=/usr/sbin/keepalived $DAEMON_ARGS (code=exited, status=0/SUCCESS)
+ Main PID: 2315 (keepalived)
+    Tasks: 3
+   Memory: 1.2M
+      CPU: 195ms
+   CGroup: /system.slice/keepalived.service
+           ├─2315 /usr/sbin/keepalived
+           ├─2316 /usr/sbin/keepalived
+           └─2319 /usr/sbin/keepalived
+
+Aug 24 16:22:33 ubuntu Keepalived_vrrp[2319]: Using LinkWatch kernel netlink reflector...
+Aug 24 16:22:33 ubuntu Keepalived_healthcheckers[2316]: Registering Kernel netlink reflector
+Aug 24 16:22:33 ubuntu Keepalived_healthcheckers[2316]: Registering Kernel netlink command channel
+Aug 24 16:22:33 ubuntu Keepalived_healthcheckers[2316]: Opening file '/etc/keepalived/keepalived.conf'.
+Aug 24 16:22:33 ubuntu Keepalived_healthcheckers[2316]: Using LinkWatch kernel netlink reflector...
+Aug 24 16:22:34 ubuntu Keepalived_vrrp[2319]: VRRP_Instance(VI_1) Entering BACKUP STATE
+Aug 24 16:25:26 ubuntu Keepalived_vrrp[2319]: VRRP_Instance(VI_1) Transition to MASTER STATE
+Aug 24 16:25:27 ubuntu Keepalived_vrrp[2319]: VRRP_Instance(VI_1) Entering MASTER STATE
+</code></pre>
+
+<h2 id="参考">参考</h2>
+
+<ul>
+<li><a href="https://cshihong.github.io/2017/12/18/%E8%99%9A%E6%8B%9F%E8%B7%AF%E7%94%B1%E5%86%97%E4%BD%99%E5%8D%8F%E8%AE%AE-VRRP/" target="_blank">虚拟路由冗余协议(VRRP)</a></li>
+<li><a href="https://qizhanming.com/blog/2018/05/17/how-to-config-keepalived-on-centos-7" target="_blank">CentOS 7 配置 Keepalived 实现双机热备</a></li>
+<li><a href="http://www.xumenger.com/virtual-ip-20190220/" target="_blank">虚拟 IP 技术</a></li>
+<li><a href="https://www.cnblogs.com/JohnABC/p/5951340.html" target="_blank">Linux-eth0 eth0:1 和eth0.1关系、ifconfig以及虚拟IP实现介绍</a></li>
+</ul>
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>490 Words</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2019-08-24 08:00 &#43;0800</p>
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h"></span>
+                    <hr />
+                </div>
+
+                <div class="pagination__buttons">
+                    
+                        <span class="button previous">
+                            <a href="http://exbob.github.io/posts/2019/09/ubuntu-%E4%B8%8B%E8%8E%B7%E5%8F%96%E5%92%8C%E7%BC%96%E8%AF%91%E5%86%85%E6%A0%B8%E6%BA%90%E7%A0%81%E7%9A%84%E6%96%B9%E6%B3%95/">
+                                <span class="button__icon">←</span>
+                                <span class="button__text">Ubuntu 下获取和编译内核源码的方法</span>
+                            </a>
+                        </span>
+                    
+
+                    
+                        <span class="button next">
+                            <a href="http://exbob.github.io/posts/2019/08/%E4%BD%BF%E7%94%A8-openssl-%E8%BF%9B%E8%A1%8C-aes-%E5%8A%A0%E5%AF%86/">
+                                <span class="button__text">使用 openssl 进行 AES 加密</span>
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    
+                </div>
+            </div>
+        
+
+        
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2020</span>
+            
+                <span><a href="http://exbob.github.io">Shaocheng.Li</a></span>
+            
+            <span><a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></span>
+            <span> <a href="http://exbob.github.io/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>
+        </div>
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="http://exbob.github.io/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+
+
+
+    </body>
+</html>

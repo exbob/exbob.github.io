@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="Shaocheng.Li ">
+<meta name="description" content="数据文件 datefile
+Steve Blenheim:238-923-7366:95 Latham Lane, Easton, PA 83755:11/12/56:20300 Betty Boop:245-836-8357:635 Cutesy Lane, Hollywood, CA 91464:6/23/23:14500 Igor Chevsky:385-375-8395:3567 Populus Place, Caldwell, NJ 23875:6/18/68:23400 Norma Corder:397-857-2735:74 Pine Street, Dearborn, MI 23874:3/28/45:245700 Jennifer Cowan:548-834-2348:583 Laurel Ave., Kingsville, TX 83745:10/1/35:58900 Jon DeLoach:408-253-3122:123 Park St., San Jose, CA 04086:7/25/53:85100 Karen Evich:284-758-2857:23 Edgecliff Place, Lincoln, NB 92743:7/25/53:85100 Karen Evich:284-758-2867:23 Edgecliff Place, Lincoln, NB 92743:11/3/35:58200 Karen Evich:284-758-2867:23 Edgecliff Place, Lincoln, NB 92743:11/3/35:58200 Fred Fardbarkle:674-843-1385:20 Parak Lane, Duluth, MN 23850:4/12/23:780900 Fred Fardbarkle:674-843-1385:20 Parak Lane, Duluth, MN 23850:4/12/23:780900 Lori Gortz:327-832-5728:3465 Mirlo Street, Peabody, MA 34756:10/2/65:35200 Paco Gutierrez:835-365-1284:454 Easy Street, Decatur, IL 75732:2/28/53:123500 Ephram Hardy:293-259-5395:235 CarltonLane, Joliet, IL 73858:8/12/20:56700 James Ikeda:834-938-8376:23445 Aster Ave." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#252627" />
+<link rel="canonical" href="http://exbob.github.io/posts/2012/11/unix-shell-%E8%8C%83%E4%BE%8B%E7%B2%BE%E8%A7%A3%E7%AC%AC%E4%BA%94%E7%AB%A0-sed-%E4%B9%A0%E9%A2%98/" />
+
+
+    <title>
+        
+            《Unix Shell 范例精解》第五章 sed 习题 :: Shaocheng.Li  — Hello Friends
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="http://exbob.github.io/main.min.73f55a8d452be4a71b2960620b80252cf69abd84d63fe7501abf0a39b1a70a78.css">
+
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="http://exbob.github.io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="http://exbob.github.io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="http://exbob.github.io/favicon-16x16.png">
+    <link rel="manifest" href="http://exbob.github.io/site.webmanifest">
+    <link rel="mask-icon" href="http://exbob.github.io/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="http://exbob.github.io/favicon.ico">
+    <meta name="msapplication-TileColor" content="#252627">
+    <meta name="theme-color" content="#252627">
+
+<meta itemprop="name" content="《Unix Shell 范例精解》第五章 sed 习题">
+<meta itemprop="description" content="数据文件 datefile
+Steve Blenheim:238-923-7366:95 Latham Lane, Easton, PA 83755:11/12/56:20300 Betty Boop:245-836-8357:635 Cutesy Lane, Hollywood, CA 91464:6/23/23:14500 Igor Chevsky:385-375-8395:3567 Populus Place, Caldwell, NJ 23875:6/18/68:23400 Norma Corder:397-857-2735:74 Pine Street, Dearborn, MI 23874:3/28/45:245700 Jennifer Cowan:548-834-2348:583 Laurel Ave., Kingsville, TX 83745:10/1/35:58900 Jon DeLoach:408-253-3122:123 Park St., San Jose, CA 04086:7/25/53:85100 Karen Evich:284-758-2857:23 Edgecliff Place, Lincoln, NB 92743:7/25/53:85100 Karen Evich:284-758-2867:23 Edgecliff Place, Lincoln, NB 92743:11/3/35:58200 Karen Evich:284-758-2867:23 Edgecliff Place, Lincoln, NB 92743:11/3/35:58200 Fred Fardbarkle:674-843-1385:20 Parak Lane, Duluth, MN 23850:4/12/23:780900 Fred Fardbarkle:674-843-1385:20 Parak Lane, Duluth, MN 23850:4/12/23:780900 Lori Gortz:327-832-5728:3465 Mirlo Street, Peabody, MA 34756:10/2/65:35200 Paco Gutierrez:835-365-1284:454 Easy Street, Decatur, IL 75732:2/28/53:123500 Ephram Hardy:293-259-5395:235 CarltonLane, Joliet, IL 73858:8/12/20:56700 James Ikeda:834-938-8376:23445 Aster Ave.">
+
+
+<meta itemprop="datePublished" content="2012-11-04T08:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2012-11-04T08:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="301">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="http://exbob.github.io"/>
+
+<meta name="twitter:title" content="《Unix Shell 范例精解》第五章 sed 习题"/>
+<meta name="twitter:description" content="数据文件 datefile
+Steve Blenheim:238-923-7366:95 Latham Lane, Easton, PA 83755:11/12/56:20300 Betty Boop:245-836-8357:635 Cutesy Lane, Hollywood, CA 91464:6/23/23:14500 Igor Chevsky:385-375-8395:3567 Populus Place, Caldwell, NJ 23875:6/18/68:23400 Norma Corder:397-857-2735:74 Pine Street, Dearborn, MI 23874:3/28/45:245700 Jennifer Cowan:548-834-2348:583 Laurel Ave., Kingsville, TX 83745:10/1/35:58900 Jon DeLoach:408-253-3122:123 Park St., San Jose, CA 04086:7/25/53:85100 Karen Evich:284-758-2857:23 Edgecliff Place, Lincoln, NB 92743:7/25/53:85100 Karen Evich:284-758-2867:23 Edgecliff Place, Lincoln, NB 92743:11/3/35:58200 Karen Evich:284-758-2867:23 Edgecliff Place, Lincoln, NB 92743:11/3/35:58200 Fred Fardbarkle:674-843-1385:20 Parak Lane, Duluth, MN 23850:4/12/23:780900 Fred Fardbarkle:674-843-1385:20 Parak Lane, Duluth, MN 23850:4/12/23:780900 Lori Gortz:327-832-5728:3465 Mirlo Street, Peabody, MA 34756:10/2/65:35200 Paco Gutierrez:835-365-1284:454 Easy Street, Decatur, IL 75732:2/28/53:123500 Ephram Hardy:293-259-5395:235 CarltonLane, Joliet, IL 73858:8/12/20:56700 James Ikeda:834-938-8376:23445 Aster Ave."/>
+
+
+
+
+
+    <meta property="article:published_time" content="2012-11-04 08:00:00 &#43;0800 CST" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="http://exbob.github.io/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$ cd /home/</span>
+            <span class="logo__cursor" style=""></span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="http://exbob.github.io/about/">About</a></li><li><a href="http://exbob.github.io/posts/">Posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>2 minutes
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            <h1 class="post-title">
+                <a href="http://exbob.github.io/posts/2012/11/unix-shell-%E8%8C%83%E4%BE%8B%E7%B2%BE%E8%A7%A3%E7%AC%AC%E4%BA%94%E7%AB%A0-sed-%E4%B9%A0%E9%A2%98/">《Unix Shell 范例精解》第五章 sed 习题</a>
+            </h1>
+
+            
+
+            <div class="post-content">
+                <p>数据文件 datefile</p>
+
+<pre><code>Steve Blenheim:238-923-7366:95 Latham Lane, Easton, PA 83755:11/12/56:20300
+Betty Boop:245-836-8357:635 Cutesy Lane, Hollywood, CA 91464:6/23/23:14500
+Igor Chevsky:385-375-8395:3567 Populus Place, Caldwell, NJ 23875:6/18/68:23400
+Norma Corder:397-857-2735:74 Pine Street, Dearborn, MI 23874:3/28/45:245700
+Jennifer Cowan:548-834-2348:583 Laurel Ave., Kingsville, TX 83745:10/1/35:58900
+Jon DeLoach:408-253-3122:123 Park St., San Jose, CA 04086:7/25/53:85100
+Karen Evich:284-758-2857:23 Edgecliff Place, Lincoln, NB 92743:7/25/53:85100
+Karen Evich:284-758-2867:23 Edgecliff Place, Lincoln, NB 92743:11/3/35:58200
+Karen Evich:284-758-2867:23 Edgecliff Place, Lincoln, NB 92743:11/3/35:58200
+Fred Fardbarkle:674-843-1385:20 Parak Lane, Duluth, MN 23850:4/12/23:780900
+Fred Fardbarkle:674-843-1385:20 Parak Lane, Duluth, MN 23850:4/12/23:780900
+Lori Gortz:327-832-5728:3465 Mirlo Street, Peabody, MA 34756:10/2/65:35200
+Paco Gutierrez:835-365-1284:454 Easy Street, Decatur, IL 75732:2/28/53:123500
+Ephram Hardy:293-259-5395:235 CarltonLane, Joliet, IL 73858:8/12/20:56700
+James Ikeda:834-938-8376:23445 Aster Ave., Allentown, NJ 83745:12/1/38:45000
+Barbara Kertz:385-573-8326:832 Ponce Drive, Gary, IN 83756:12/1/46:268500
+Lesley Kirstin:408-456-1234:4 Harvard Square, Boston, MA 02133:4/22/62:52600
+William Kopf:846-836-2837:6937 Ware Road, Milton, PA 93756:9/21/46:43500
+Sir Lancelot:837-835-8257:474 Camelot Boulevard, Bath, WY 28356:5/13/69:24500
+Jesse Neal:408-233-8971:45 Rose Terrace, San Francisco, CA 92303:2/3/36:25000
+Zippy Pinhead:834-823-8319:2356 Bizarro Ave., Farmount, IL 84357:1/1/67:89500
+Arthur Putie:923-835-8745:23 Wimp Lane, Kensington, DL 38758:8/31/69:126000
+Popeye Sailor:156-454-3322:945 Bluto Street, Anywhere, USA 29358:3/19/35:22350
+Jose Santiago:385-898-8357:38 Fife Way, Abilene, TX 39673:1/5/58:95600
+Tommy Savage:408-724-0140:1222 Oxbow Court, Sunnyvale, CA 94087:5/19/66:34200
+Yukio Takeshida:387-827-1095:13 Uno Lane, Ashville, NC 23556:7/1/29:57000
+Vinh Tranh:438-910-7449:8235 Maple Street, Wilmington, VM 29085:9/23/63:68900
+</code></pre>
+
+<ul>
+<li><p>把 Jon 的名字改为 Jonathan</p>
+
+<pre><code>sed -e 's/^Jon /Jonathan /' datebook
+</code></pre></li>
+
+<li><p>删除前 3 行</p>
+
+<pre><code>sed -e '1,3d' datebook
+</code></pre></li>
+
+<li><p>打印第 5~10 行</p>
+
+<pre><code>sed -n -e '5,10p' datebook
+</code></pre></li>
+
+<li><p>删除含有 Lane 的所有行</p>
+
+<pre><code>sed -e '/Lane/d' datebook
+</code></pre></li>
+
+<li><p>删除不含有 Lane 的所有行</p>
+
+<pre><code>sed -e '/Lane/!d' datebook
+</code></pre></li>
+
+<li><p>打印所有生日在十一月或十二月的行</p>
+
+<pre><code>sed -n -e '/:1[12]\//p' datebook
+</code></pre></li>
+
+<li><p>在以 James 开头的各行末尾加上 3 颗星号</p>
+
+<pre><code>sed -e '/^James/s/$/***&amp;/' datebook
+</code></pre></li>
+
+<li><p>将所有包含 Jose 的行都替换为 JOSE HAS RETIRED</p>
+
+<pre><code>sed -e '/Jose/c\JOSE HAS RETIRED' datebook
+</code></pre></li>
+
+<li><p>把 Popeye 的生日改为 11/14/46 ，假定您不知道 Popeye 的生日，设法用正则表达式查找出来</p>
+
+<pre><code>sed -n -e '/^Popeye /s/:[0-9]*\/[0-9]*\/[0-9]*/:11\/14\/46:/p' datebook
+</code></pre></li>
+
+<li><p>删除所有空行</p>
+
+<pre><code>sed -e '/^$/d' datebook
+</code></pre></li>
+
+<li><p>写一个能完成下列任务的 sed 脚本</p>
+
+<p>a) 在第一行上方插入标题 PERSONNEL FILE</p>
+
+<p>b) 删除以 500 结尾的工资项</p>
+
+<p>c) 把名和姓的位置颠倒后，打印文件内容</p>
+
+<p>d) 在文件末尾加上 THE END</p>
+
+<pre><code>1i\PERSONNEL FILE
+/500$/d
+s/\([a-zA-Z]*\) \([a-zA-Z]*\)/\2 \1/
+$a\THE END
+</code></pre></li>
+</ul>
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>301 Words</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2012-11-04 08:00 &#43;0800</p>
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h"></span>
+                    <hr />
+                </div>
+
+                <div class="pagination__buttons">
+                    
+                        <span class="button previous">
+                            <a href="http://exbob.github.io/posts/2012/11/linux-%E9%A9%B1%E5%8A%A8%E7%9A%84%E5%BC%82%E6%AD%A5%E9%80%9A%E7%9F%A5/">
+                                <span class="button__icon">←</span>
+                                <span class="button__text">Linux 驱动的异步通知</span>
+                            </a>
+                        </span>
+                    
+
+                    
+                        <span class="button next">
+                            <a href="http://exbob.github.io/posts/2012/11/unix-shell-%E8%8C%83%E4%BE%8B%E7%B2%BE%E8%A7%A3%E7%AC%AC%E5%9B%9B%E7%AB%A0-grep-%E4%B9%A0%E9%A2%98/">
+                                <span class="button__text">《Unix Shell 范例精解》第四章 grep 习题</span>
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    
+                </div>
+            </div>
+        
+
+        
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2020</span>
+            
+                <span><a href="http://exbob.github.io">Shaocheng.Li</a></span>
+            
+            <span><a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></span>
+            <span> <a href="http://exbob.github.io/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>
+        </div>
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="http://exbob.github.io/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+
+
+
+    </body>
+</html>

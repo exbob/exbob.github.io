@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="Shaocheng.Li ">
+<meta name="description" content="1. What is IPv6 IPv6 是为了解决 IPv4 地址资源日渐枯竭的问题，使用的是 128bit 地址，可以提供更多的地址空间。IPv6 地址以 16bit 为一组，每组用冒号隔开，可以分为八组，每组以 4 个十六进制数表示，共 32 个十六进制数，例如 2001:0db8:85a3:08d3:1319:8a2e:0370:7344 是一个合法的 IPv6 地址，它又可以分为两个逻辑部分：一个 64 位的网络前缀和一个 64 位的主机地址。
+IPv6 中的 loopback interface 定义为 0000:0000:0000:0000:0000:0000:0000:0001 ，也可以表示为 ::1 ，因为每组中的前导 0 可以省略，一对连续的冒号表示多组 0 ，一个 IPv6 地址中允许出现一对连冒号。
+IPv4 位址可以很容易的转化为 IPv6 格式。如果 IPv4 的一个地址为135.75.43.52（十六进制为 0x874B2B34 ），它可以被转化为0000:0000:0000:0000:0000:ffff:874B:2B34 或者 ::ffff:874B:2B34 。同时，还可以使用混合符号（IPv4-compatible address），则地址可以为 ::ffff:135.75.43.52 。
+2. Linux support 首先需要内核支持，2.6 之后的内核都支持 IPv6 ，在 3.x 版本中，通常默认已经编译入内核：
+如果 IPv6 编译成了模块，可以用 modprobe ipv6 命令加载。内核支持后就可以在 /proc 文件系统中看到 if_net6 文件：" />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#252627" />
+<link rel="canonical" href="http://exbob.github.io/posts/2015/11/linux-ipv6-howto/" />
+
+
+    <title>
+        
+            Linux IPv6 HOWTO :: Shaocheng.Li  — Hello Friends
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="http://exbob.github.io/main.min.73f55a8d452be4a71b2960620b80252cf69abd84d63fe7501abf0a39b1a70a78.css">
+
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="http://exbob.github.io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="http://exbob.github.io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="http://exbob.github.io/favicon-16x16.png">
+    <link rel="manifest" href="http://exbob.github.io/site.webmanifest">
+    <link rel="mask-icon" href="http://exbob.github.io/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="http://exbob.github.io/favicon.ico">
+    <meta name="msapplication-TileColor" content="#252627">
+    <meta name="theme-color" content="#252627">
+
+<meta itemprop="name" content="Linux IPv6 HOWTO">
+<meta itemprop="description" content="1. What is IPv6 IPv6 是为了解决 IPv4 地址资源日渐枯竭的问题，使用的是 128bit 地址，可以提供更多的地址空间。IPv6 地址以 16bit 为一组，每组用冒号隔开，可以分为八组，每组以 4 个十六进制数表示，共 32 个十六进制数，例如 2001:0db8:85a3:08d3:1319:8a2e:0370:7344 是一个合法的 IPv6 地址，它又可以分为两个逻辑部分：一个 64 位的网络前缀和一个 64 位的主机地址。
+IPv6 中的 loopback interface 定义为 0000:0000:0000:0000:0000:0000:0000:0001 ，也可以表示为 ::1 ，因为每组中的前导 0 可以省略，一对连续的冒号表示多组 0 ，一个 IPv6 地址中允许出现一对连冒号。
+IPv4 位址可以很容易的转化为 IPv6 格式。如果 IPv4 的一个地址为135.75.43.52（十六进制为 0x874B2B34 ），它可以被转化为0000:0000:0000:0000:0000:ffff:874B:2B34 或者 ::ffff:874B:2B34 。同时，还可以使用混合符号（IPv4-compatible address），则地址可以为 ::ffff:135.75.43.52 。
+2. Linux support 首先需要内核支持，2.6 之后的内核都支持 IPv6 ，在 3.x 版本中，通常默认已经编译入内核：
+如果 IPv6 编译成了模块，可以用 modprobe ipv6 命令加载。内核支持后就可以在 /proc 文件系统中看到 if_net6 文件：">
+
+
+<meta itemprop="datePublished" content="2015-11-27T08:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2015-11-27T08:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="162">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="http://exbob.github.io"/>
+
+<meta name="twitter:title" content="Linux IPv6 HOWTO"/>
+<meta name="twitter:description" content="1. What is IPv6 IPv6 是为了解决 IPv4 地址资源日渐枯竭的问题，使用的是 128bit 地址，可以提供更多的地址空间。IPv6 地址以 16bit 为一组，每组用冒号隔开，可以分为八组，每组以 4 个十六进制数表示，共 32 个十六进制数，例如 2001:0db8:85a3:08d3:1319:8a2e:0370:7344 是一个合法的 IPv6 地址，它又可以分为两个逻辑部分：一个 64 位的网络前缀和一个 64 位的主机地址。
+IPv6 中的 loopback interface 定义为 0000:0000:0000:0000:0000:0000:0000:0001 ，也可以表示为 ::1 ，因为每组中的前导 0 可以省略，一对连续的冒号表示多组 0 ，一个 IPv6 地址中允许出现一对连冒号。
+IPv4 位址可以很容易的转化为 IPv6 格式。如果 IPv4 的一个地址为135.75.43.52（十六进制为 0x874B2B34 ），它可以被转化为0000:0000:0000:0000:0000:ffff:874B:2B34 或者 ::ffff:874B:2B34 。同时，还可以使用混合符号（IPv4-compatible address），则地址可以为 ::ffff:135.75.43.52 。
+2. Linux support 首先需要内核支持，2.6 之后的内核都支持 IPv6 ，在 3.x 版本中，通常默认已经编译入内核：
+如果 IPv6 编译成了模块，可以用 modprobe ipv6 命令加载。内核支持后就可以在 /proc 文件系统中看到 if_net6 文件："/>
+
+
+
+
+
+    <meta property="article:published_time" content="2015-11-27 08:00:00 &#43;0800 CST" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="http://exbob.github.io/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$ cd /home/</span>
+            <span class="logo__cursor" style=""></span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="http://exbob.github.io/about/">About</a></li><li><a href="http://exbob.github.io/posts/">Posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>One minute
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            <h1 class="post-title">
+                <a href="http://exbob.github.io/posts/2015/11/linux-ipv6-howto/">Linux IPv6 HOWTO</a>
+            </h1>
+
+            
+
+            <div class="post-content">
+                
+
+<h2 id="1-what-is-ipv6">1. What is IPv6</h2>
+
+<p>IPv6 是为了解决 IPv4 地址资源日渐枯竭的问题，使用的是 128bit 地址，可以提供更多的地址空间。IPv6 地址以 16bit 为一组，每组用冒号隔开，可以分为八组，每组以 4 个十六进制数表示，共 32 个十六进制数，例如 <code>2001:0db8:85a3:08d3:1319:8a2e:0370:7344</code>  是一个合法的 IPv6 地址，它又可以分为两个逻辑部分：一个 64 位的网络前缀和一个 64 位的主机地址。</p>
+
+<p>IPv6 中的 loopback interface 定义为 <code>0000:0000:0000:0000:0000:0000:0000:0001</code> ，也可以表示为 <code>::1</code> ，因为每组中的前导 0 可以省略，一对连续的冒号表示多组 0 ，一个 IPv6 地址中允许出现一对连冒号。</p>
+
+<p>IPv4 位址可以很容易的转化为 IPv6 格式。如果 IPv4 的一个地址为<code>135.75.43.52</code>（十六进制为 0x874B2B34 ），它可以被转化为<code>0000:0000:0000:0000:0000:ffff:874B:2B34</code> 或者 <code>::ffff:874B:2B34</code> 。同时，还可以使用混合符号（IPv4-compatible address），则地址可以为 <code>::ffff:135.75.43.52</code> 。</p>
+
+<h2 id="2-linux-support">2. Linux support</h2>
+
+<p>首先需要内核支持，2.6 之后的内核都支持 IPv6 ，在 3.x 版本中，通常默认已经编译入内核：</p>
+
+<p><img src="http://exbob.github.io/images/2015-11-27/2015-11-27_1.jpg" alt="" /></p>
+
+<p>如果 IPv6 编译成了模块，可以用 <code>modprobe ipv6</code> 命令加载。内核支持后就可以在 /proc 文件系统中看到 if_net6 文件：</p>
+
+<p><img src="http://exbob.github.io/images/2015-11-27/2015-11-27_2.jpg" alt="" /></p>
+
+<p>要将网口配置成 IPv6 ，也需要配置命令支持 IPv6 ，可以用如下命令检查 ifconfig 是否支持 IPv6 :</p>
+
+<pre><code>~# ifconfig -? 2&gt;&amp; 1 | grep -qw 'inet6' &amp;&amp; echo &quot;utility 'ifconfig' is IPv6-ready&quot;
+</code></pre>
+
+<p>检查 route 是否支持 IPv6 :</p>
+
+<pre><code>~# route -? 2&gt;&amp; 1 | grep -qw 'inet6' &amp;&amp; echo &quot;utility 'route' is IPv6-ready&quot;
+</code></pre>
+
+<h2 id="3-configuration">3. Configuration</h2>
+
+<p>为网口添加一个 IPv6 地址 ：</p>
+
+<p><img src="http://exbob.github.io/images/2015-11-27/2015-11-27_3.jpg" alt="" /></p>
+
+<p>可以用 del 参数删除 ：<code>ifconfig eth0 inet6 del 2001:0db8:0:f101::1/64</code></p>
+
+<h2 id="4-test">4. Test</h2>
+
+<p>可以用 IPv6 可以用 ping6 命令，例如测试 loopback interface ：</p>
+
+<p><img src="http://exbob.github.io/images/2015-11-27/2015-11-27_4.jpg" alt="" /></p>
+
+<p>ping6 的 -I 参数可以指定网口，例如要测试 eth0 可以用 <code>ping6 -I eth0  fe80::2e0:18ff:fe90:9205</code> 。</p>
+
+<p>测试路由的 traceroute 命令也有 IPv6 版本： traceroute6 。</p>
+
+<h2 id="5-参考">5. 参考</h2>
+
+<p><a href="http://tldp.org/HOWTO/Linux+IPv6-HOWTO/index.html" target="_blank">http://tldp.org/HOWTO/Linux+IPv6-HOWTO/index.html</a></p>
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>162 Words</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2015-11-27 08:00 &#43;0800</p>
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h"></span>
+                    <hr />
+                </div>
+
+                <div class="pagination__buttons">
+                    
+                        <span class="button previous">
+                            <a href="http://exbob.github.io/posts/2015/11/%E5%AD%A6%E4%B9%A0-swiftios/">
+                                <span class="button__icon">←</span>
+                                <span class="button__text">学习 Swift&amp;iOS</span>
+                            </a>
+                        </span>
+                    
+
+                    
+                        <span class="button next">
+                            <a href="http://exbob.github.io/posts/2015/10/linux-%E4%B8%8B%E8%B0%83%E8%AF%95%E8%93%9D%E7%89%99%E6%A8%A1%E5%9D%97%E7%9A%84%E7%AC%94%E8%AE%B0/">
+                                <span class="button__text">Linux 下调试蓝牙模块的笔记</span>
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    
+                </div>
+            </div>
+        
+
+        
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2020</span>
+            
+                <span><a href="http://exbob.github.io">Shaocheng.Li</a></span>
+            
+            <span><a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></span>
+            <span> <a href="http://exbob.github.io/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>
+        </div>
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="http://exbob.github.io/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+
+
+
+    </body>
+</html>
