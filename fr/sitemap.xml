@@ -3,44 +3,44 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://exbob.github.io/fr/categories/</loc>
+    <loc>https://shaocheng.li/fr/categories/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://exbob.github.io/categories/"
+                href="https://shaocheng.li/categories/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
-                href="https://exbob.github.io/fr/categories/"
+                href="https://shaocheng.li/fr/categories/"
                 />
   </url>
   
   <url>
-    <loc>https://exbob.github.io/fr/</loc>
+    <loc>https://shaocheng.li/fr/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://exbob.github.io/"
+                href="https://shaocheng.li/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
-                href="https://exbob.github.io/fr/"
+                href="https://shaocheng.li/fr/"
                 />
   </url>
   
   <url>
-    <loc>https://exbob.github.io/fr/tags/</loc>
+    <loc>https://shaocheng.li/fr/tags/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="https://exbob.github.io/tags/"
+                href="https://shaocheng.li/tags/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
-                href="https://exbob.github.io/fr/tags/"
+                href="https://shaocheng.li/fr/tags/"
                 />
   </url>
   

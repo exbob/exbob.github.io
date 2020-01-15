@@ -15,7 +15,7 @@ vrrp_instance VI_1 { # 定义一个 VRRP 实例，VI_1 表示这个实例的名�
 <meta name="keywords" content="" />
 <meta name="robots" content="noodp" />
 <meta name="theme-color" content="#252627" />
-<link rel="canonical" href="https://exbob.github.io/posts/2019/08/%E4%BD%BF%E7%94%A8-keepalived-%E5%AE%9E%E7%8E%B0%E5%8F%8C%E6%9C%BA%E7%83%AD%E5%A4%87/" />
+<link rel="canonical" href="https://shaocheng.li/posts/2019/08/%E4%BD%BF%E7%94%A8-keepalived-%E5%AE%9E%E7%8E%B0%E5%8F%8C%E6%9C%BA%E7%83%AD%E5%A4%87/" />
 
 
     <title>
@@ -31,21 +31,21 @@ vrrp_instance VI_1 { # 定义一个 VRRP 实例，VI_1 表示这个实例的名�
 
 
 
-<link rel="stylesheet" href="https://exbob.github.io/main.min.73f55a8d452be4a71b2960620b80252cf69abd84d63fe7501abf0a39b1a70a78.css">
+<link rel="stylesheet" href="https://shaocheng.li/main.min.73f55a8d452be4a71b2960620b80252cf69abd84d63fe7501abf0a39b1a70a78.css">
 
 
     
-        <link rel="stylesheet" type="text/css" href="https://exbob.github.io/css/custom.css">
+        <link rel="stylesheet" type="text/css" href="https://shaocheng.li/css/custom.css">
     
 
 
 
-    <link rel="apple-touch-icon" sizes="180x180" href="https://exbob.github.io/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="https://exbob.github.io/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="https://exbob.github.io/favicon-16x16.png">
-    <link rel="manifest" href="https://exbob.github.io/site.webmanifest">
-    <link rel="mask-icon" href="https://exbob.github.io/safari-pinned-tab.svg" color="#252627">
-    <link rel="shortcut icon" href="https://exbob.github.io/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://shaocheng.li/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://shaocheng.li/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://shaocheng.li/favicon-16x16.png">
+    <link rel="manifest" href="https://shaocheng.li/site.webmanifest">
+    <link rel="mask-icon" href="https://shaocheng.li/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="https://shaocheng.li/favicon.ico">
     <meta name="msapplication-TileColor" content="#252627">
     <meta name="theme-color" content="#252627">
 
@@ -67,7 +67,7 @@ vrrp_instance VI_1 { # 定义一个 VRRP 实例，VI_1 表示这个实例的名�
 
 <meta itemprop="keywords" content="" />
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://exbob.github.io"/>
+<meta name="twitter:image" content="https://shaocheng.li"/>
 
 <meta name="twitter:title" content="使用 keepalived 实现双机热备"/>
 <meta name="twitter:description" content="keepalived 是一个用 C 语言编写的免费开源软件，它实现了 VRRP协议，同时提供了强大的负载均衡 (LVS) 功能。我们可以用他的 VRRP 功能实现路由器或者服务器等网络设备的双机热备。简单的说，两台路由器，一台作为主机，一台作为备机，两台路由器有自己的独立 IP ，同时共享一个虚拟 IP ，主机正常是，这个虚拟 IP 指向主机，当主机出现故障时，虚拟 IP 指向备机，实现了路由器的无缝自动切换。网络拓扑如下图所示：
@@ -97,7 +97,7 @@ vrrp_instance VI_1 { # 定义一个 VRRP 实例，VI_1 表示这个实例的名�
         <div class="container">
             <header class="header">
     <span class="header__inner">
-        <a href="https://exbob.github.io/" style="text-decoration: none;">
+        <a href="https://shaocheng.li/" style="text-decoration: none;">
     <div class="logo">
         
             <span class="logo__mark">></span>
@@ -111,7 +111,7 @@ vrrp_instance VI_1 { # 定义一个 VRRP 实例，VI_1 表示这个实例的名�
         <span class="header__right">
             
                 <nav class="menu">
-    <ul class="menu__inner"><li><a href="https://exbob.github.io/about/">About</a></li><li><a href="https://exbob.github.io/posts/">Posts</a></li>
+    <ul class="menu__inner"><li><a href="https://shaocheng.li/about/">About</a></li><li><a href="https://shaocheng.li/posts/">Posts</a></li>
     </ul>
 </nav>
 
@@ -148,7 +148,7 @@ vrrp_instance VI_1 { # 定义一个 VRRP 实例，VI_1 表示这个实例的名�
 
         <article>
             <h1 class="post-title">
-                <a href="https://exbob.github.io/posts/2019/08/%E4%BD%BF%E7%94%A8-keepalived-%E5%AE%9E%E7%8E%B0%E5%8F%8C%E6%9C%BA%E7%83%AD%E5%A4%87/">使用 keepalived 实现双机热备</a>
+                <a href="https://shaocheng.li/posts/2019/08/%E4%BD%BF%E7%94%A8-keepalived-%E5%AE%9E%E7%8E%B0%E5%8F%8C%E6%9C%BA%E7%83%AD%E5%A4%87/">使用 keepalived 实现双机热备</a>
             </h1>
 
             
@@ -158,7 +158,7 @@ vrrp_instance VI_1 { # 定义一个 VRRP 实例，VI_1 表示这个实例的名�
 
 <p>keepalived 是一个用 C 语言编写的免费开源软件，它实现了 VRRP协议，同时提供了强大的负载均衡 (LVS) 功能。我们可以用他的 VRRP 功能实现路由器或者服务器等网络设备的双机热备。简单的说，两台路由器，一台作为主机，一台作为备机，两台路由器有自己的独立 IP ，同时共享一个虚拟 IP ，主机正常是，这个虚拟 IP 指向主机，当主机出现故障时，虚拟 IP 指向备机，实现了路由器的无缝自动切换。网络拓扑如下图所示：</p>
 
-<p><img src="https://exbob.github.io/images/2019-08-24/2019-08-24_1.jpg" alt="" /></p>
+<p><img src="https://shaocheng.li/images/2019-08-24/2019-08-24_1.jpg" alt="" /></p>
 
 <p>虚拟 IP 的实现方式有很多种，比较可靠的方法是为一个网卡定义多个 IP ，端口名用冒号隔开一个数字，用  ifconfig 命令实现，例如：</p>
 
@@ -310,7 +310,7 @@ Aug 24 16:25:27 ubuntu Keepalived_vrrp[2319]: VRRP_Instance(VI_1) Entering MASTE
                 <div class="pagination__buttons">
                     
                         <span class="button previous">
-                            <a href="https://exbob.github.io/posts/2019/09/ubuntu-%E4%B8%8B%E8%8E%B7%E5%8F%96%E5%92%8C%E7%BC%96%E8%AF%91%E5%86%85%E6%A0%B8%E6%BA%90%E7%A0%81%E7%9A%84%E6%96%B9%E6%B3%95/">
+                            <a href="https://shaocheng.li/posts/2019/09/ubuntu-%E4%B8%8B%E8%8E%B7%E5%8F%96%E5%92%8C%E7%BC%96%E8%AF%91%E5%86%85%E6%A0%B8%E6%BA%90%E7%A0%81%E7%9A%84%E6%96%B9%E6%B3%95/">
                                 <span class="button__icon">←</span>
                                 <span class="button__text">Ubuntu 下获取和编译内核源码的方法</span>
                             </a>
@@ -319,7 +319,7 @@ Aug 24 16:25:27 ubuntu Keepalived_vrrp[2319]: VRRP_Instance(VI_1) Entering MASTE
 
                     
                         <span class="button next">
-                            <a href="https://exbob.github.io/posts/2019/08/%E4%BD%BF%E7%94%A8-openssl-%E8%BF%9B%E8%A1%8C-aes-%E5%8A%A0%E5%AF%86/">
+                            <a href="https://shaocheng.li/posts/2019/08/%E4%BD%BF%E7%94%A8-openssl-%E8%BF%9B%E8%A1%8C-aes-%E5%8A%A0%E5%AF%86/">
                                 <span class="button__text">使用 openssl 进行 AES 加密</span>
                                 <span class="button__icon">→</span>
                             </a>
@@ -340,10 +340,10 @@ Aug 24 16:25:27 ubuntu Keepalived_vrrp[2319]: VRRP_Instance(VI_1) Entering MASTE
         <div class="footer__content">
             <span>&copy; 2020</span>
             
-                <span><a href="https://exbob.github.io">Shaocheng.Li</a></span>
+                <span><a href="https://shaocheng.li">Shaocheng.Li</a></span>
             
             <span><a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></span>
-            <span> <a href="https://exbob.github.io/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+            <span> <a href="https://shaocheng.li/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
         </div>
     </div>
     <div class="footer__inner">
@@ -362,7 +362,7 @@ Aug 24 16:25:27 ubuntu Keepalived_vrrp[2319]: VRRP_Instance(VI_1) Entering MASTE
 
 
 
-<script type="text/javascript" src="https://exbob.github.io/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+<script type="text/javascript" src="https://shaocheng.li/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
 
 
 

@@ -10,7 +10,7 @@
 <meta name="keywords" content="" />
 <meta name="robots" content="noodp" />
 <meta name="theme-color" content="#252627" />
-<link rel="canonical" href="https://exbob.github.io/posts/2016/01/hostapd-howto/" />
+<link rel="canonical" href="https://shaocheng.li/posts/2016/01/hostapd-howto/" />
 
 
     <title>
@@ -26,21 +26,21 @@
 
 
 
-<link rel="stylesheet" href="https://exbob.github.io/main.min.73f55a8d452be4a71b2960620b80252cf69abd84d63fe7501abf0a39b1a70a78.css">
+<link rel="stylesheet" href="https://shaocheng.li/main.min.73f55a8d452be4a71b2960620b80252cf69abd84d63fe7501abf0a39b1a70a78.css">
 
 
     
-        <link rel="stylesheet" type="text/css" href="https://exbob.github.io/css/custom.css">
+        <link rel="stylesheet" type="text/css" href="https://shaocheng.li/css/custom.css">
     
 
 
 
-    <link rel="apple-touch-icon" sizes="180x180" href="https://exbob.github.io/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="https://exbob.github.io/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="https://exbob.github.io/favicon-16x16.png">
-    <link rel="manifest" href="https://exbob.github.io/site.webmanifest">
-    <link rel="mask-icon" href="https://exbob.github.io/safari-pinned-tab.svg" color="#252627">
-    <link rel="shortcut icon" href="https://exbob.github.io/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://shaocheng.li/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://shaocheng.li/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://shaocheng.li/favicon-16x16.png">
+    <link rel="manifest" href="https://shaocheng.li/site.webmanifest">
+    <link rel="mask-icon" href="https://shaocheng.li/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="https://shaocheng.li/favicon.ico">
     <meta name="msapplication-TileColor" content="#252627">
     <meta name="theme-color" content="#252627">
 
@@ -57,7 +57,7 @@
 
 <meta itemprop="keywords" content="" />
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://exbob.github.io"/>
+<meta name="twitter:image" content="https://shaocheng.li"/>
 
 <meta name="twitter:title" content="hostapd HOWTO"/>
 <meta name="twitter:description" content="1. About hostapd 是一个运行在 Linux 用户空间的 daemon 程序，它可以将 IEEE 802.11 无线网卡切换为 AP 模式，也就是实现软 AP 功能，并提供 IEEE 802.1X/WPA/WPA2/EAP/RADIUS 的认证服务。它使用 nl80211 接口与内核进行通信，支持基于 mac80211 框架的无线驱动。下面是 Linux 的无线网络架构：
@@ -82,7 +82,7 @@
         <div class="container">
             <header class="header">
     <span class="header__inner">
-        <a href="https://exbob.github.io/" style="text-decoration: none;">
+        <a href="https://shaocheng.li/" style="text-decoration: none;">
     <div class="logo">
         
             <span class="logo__mark">></span>
@@ -96,7 +96,7 @@
         <span class="header__right">
             
                 <nav class="menu">
-    <ul class="menu__inner"><li><a href="https://exbob.github.io/about/">About</a></li><li><a href="https://exbob.github.io/posts/">Posts</a></li>
+    <ul class="menu__inner"><li><a href="https://shaocheng.li/about/">About</a></li><li><a href="https://shaocheng.li/posts/">Posts</a></li>
     </ul>
 </nav>
 
@@ -133,7 +133,7 @@
 
         <article>
             <h1 class="post-title">
-                <a href="https://exbob.github.io/posts/2016/01/hostapd-howto/">hostapd HOWTO</a>
+                <a href="https://shaocheng.li/posts/2016/01/hostapd-howto/">hostapd HOWTO</a>
             </h1>
 
             
@@ -145,7 +145,7 @@
 
 <p>hostapd 是一个运行在 Linux 用户空间的 daemon 程序，它可以将 IEEE 802.11 无线网卡切换为 AP 模式，也就是实现软 AP 功能，并提供 IEEE 802.1X/WPA/WPA2/EAP/RADIUS 的认证服务。它使用 nl80211 接口与内核进行通信，支持基于 mac80211 框架的无线驱动。下面是 Linux 的无线网络架构：</p>
 
-<p><img src="https://exbob.github.io/images/2016-01-01/2016-01-01_1.jpg" alt="" /></p>
+<p><img src="https://shaocheng.li/images/2016-01-01/2016-01-01_1.jpg" alt="" /></p>
 
 <ul>
 <li>IEEE 802.11 是现在的无线局域网通用的标准，我们通常把它与 Wi-Fi 混为一谈。</li>
@@ -229,7 +229,7 @@ Station bc:6c:21:6e:04:c3 (on wlan0)
 <li>channel：设定信道，必须是 hw_mode 指定协议能够支持的信道。信道的选择应该避免与同区域内的其他 AP 的信道产生重叠，这与 802.11 标准的信道划分有关，在 802.11b/g 中，83.5MHz 的带宽划分了 14 个信道，相邻的多个信道存在频率重叠，整个频段内只有 1、6、11 ，三个信道互不干扰。</li>
 </ul>
 
-<p><img src="https://exbob.github.io/images/2016-01-01/2016-01-01_2.jpg" alt="" /></p>
+<p><img src="https://shaocheng.li/images/2016-01-01/2016-01-01_2.jpg" alt="" /></p>
 
 <h3 id="2-3-认证与加密">2.3. 认证与加密</h3>
 
@@ -529,7 +529,7 @@ You can start and stop it with:
                 <div class="pagination__buttons">
                     
                         <span class="button previous">
-                            <a href="https://exbob.github.io/posts/2016/01/lsof-%E5%91%BD%E4%BB%A4%E5%85%A5%E9%97%A8/">
+                            <a href="https://shaocheng.li/posts/2016/01/lsof-%E5%91%BD%E4%BB%A4%E5%85%A5%E9%97%A8/">
                                 <span class="button__icon">←</span>
                                 <span class="button__text">lsof 命令入门</span>
                             </a>
@@ -538,7 +538,7 @@ You can start and stop it with:
 
                     
                         <span class="button next">
-                            <a href="https://exbob.github.io/posts/2015/12/git-%E7%AC%94%E8%AE%B0/">
+                            <a href="https://shaocheng.li/posts/2015/12/git-%E7%AC%94%E8%AE%B0/">
                                 <span class="button__text">Git 笔记</span>
                                 <span class="button__icon">→</span>
                             </a>
@@ -559,10 +559,10 @@ You can start and stop it with:
         <div class="footer__content">
             <span>&copy; 2020</span>
             
-                <span><a href="https://exbob.github.io">Shaocheng.Li</a></span>
+                <span><a href="https://shaocheng.li">Shaocheng.Li</a></span>
             
             <span><a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></span>
-            <span> <a href="https://exbob.github.io/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+            <span> <a href="https://shaocheng.li/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
         </div>
     </div>
     <div class="footer__inner">
@@ -581,7 +581,7 @@ You can start and stop it with:
 
 
 
-<script type="text/javascript" src="https://exbob.github.io/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+<script type="text/javascript" src="https://shaocheng.li/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
 
 
 

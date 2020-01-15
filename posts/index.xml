@@ -1,19 +1,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Posts on Shaocheng.Li</title>
-        <link>https://exbob.github.io/posts/</link>
+        <link>https://shaocheng.li/posts/</link>
         <description>Recent content in Posts on Shaocheng.Li</description>
         <generator>Hugo -- gohugo.io</generator>
         <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
         <lastBuildDate>Wed, 15 Jan 2020 14:31:11 +0800</lastBuildDate>
-        <atom:link href="https://exbob.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://shaocheng.li/posts/index.xml" rel="self" type="application/rss+xml" />
         
         <item>
             <title>Markdown Syntax Guide</title>
-            <link>https://exbob.github.io/posts/2020/01/markdown-syntax-guide/</link>
+            <link>https://shaocheng.li/posts/2020/01/markdown-syntax-guide/</link>
             <pubDate>Wed, 15 Jan 2020 14:31:11 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2020/01/markdown-syntax-guide/</guid>
+            <guid>https://shaocheng.li/posts/2020/01/markdown-syntax-guide/</guid>
             <description>This article offers a sample of basic Markdown syntax that can be used in Hugo content files, also it shows whether basic HTML elements are decorated with CSS in a Hugo theme.
 Headings The following HTML &amp;lt;h1&amp;gt;—&amp;lt;h6&amp;gt; elements represent six levels of section headings. &amp;lt;h1&amp;gt; is the highest section level while &amp;lt;h6&amp;gt; is the lowest.
 H1 H2 H3 H4 H5 H6 Paragraph Xerum, quo qui aut unt expliquam qui dolut labo.</description>
@@ -120,10 +120,10 @@ H1 H2 H3 H4 H5 H6 Paragraph Xerum, quo qui aut unt expliquam qui dolut labo.</de
         
         <item>
             <title>ip 命令学习笔记</title>
-            <link>https://exbob.github.io/posts/2020/01/ip-%E5%91%BD%E4%BB%A4%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+            <link>https://shaocheng.li/posts/2020/01/ip-%E5%91%BD%E4%BB%A4%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
             <pubDate>Wed, 08 Jan 2020 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2020/01/ip-%E5%91%BD%E4%BB%A4%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+            <guid>https://shaocheng.li/posts/2020/01/ip-%E5%91%BD%E4%BB%A4%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
             <description>ip 命令是 iproute2 工具包提供的 Linux 网络管理工具，集成了原有的 ifconfg 、arp 、route 、netstat 等多种命令的功能，并提供了很多新特性。它的语法是：
 ip [OPTIONS] OBJECT {COMMAND|help} 其中：
  OBJECT 表示操作对象，可选的值有 { link | addr | addrlabel | route | rule | neigh | ntable | tunnel | maddr | mroute | mrule | monitor | xfrm | token } ，常用的对象包括：  link：网络设备 addr：设备上的协议（IP或IPv6）地址 addrlabel：协议地址选择的标签配置 route：路由表条目 rule：路由策略数据库中的规则 neigh: ARP 表  OPTIONS 表示选项，可选的值有 { -V[ersion] | -s[tatistics] | -d[etails] | -r[esolve] | -h[uman-readable] | -iec | -f[amily] { inet | inet6 | ipx | dnet | link } | -o[neline] | -t[imestamp] | -b[atch] [filename] | -rc[vbuf] [size] } 常用的选项包括：  -V，-Version：显示指令版本信息 -s，-stats，statistics：输出详细信息 -h，-human，-human-readable：输出人类可读的统计信息和后缀 -o，-oneline：将每条记录输出到一行，用 \字符替换换行符   1.</description>
@@ -275,10 +275,10 @@ fe80::4e54:99ff:fe45:e5d5 dev enp0s29u1u4c2 lladdr 4c:54:99:45:e5:d5 router REAC
         
         <item>
             <title>UCI 和 ubus 学习笔记</title>
-            <link>https://exbob.github.io/posts/2019/12/uci-%E5%92%8C-ubus-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+            <link>https://shaocheng.li/posts/2019/12/uci-%E5%92%8C-ubus-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
             <pubDate>Tue, 24 Dec 2019 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2019/12/uci-%E5%92%8C-ubus-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+            <guid>https://shaocheng.li/posts/2019/12/uci-%E5%92%8C-ubus-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
             <description>UCI 和 ubus 都是 Openwrt 项目提供的软件，UCI 提供了统一的配置文件格式和读写工具，ubus 提供了基于 Unix Socket 的进程间通信框架。两个软件都可以方便的移植到其他 Linux 系统，以 Ubuntu 系统为例，首先要安装一些依赖的软件：
 apt-get install pkg-config apt-get install lua5.1 apt-get install liblua5.1-dev apt-get install cmake apt-get install libjson-c-dev 然后要编译安装 libubox ：
 git clone https://git.openwrt.org/project/libubox.git cd libubox cmake . make make install 编译时可能出现找不到头文件的错误：
@@ -352,10 +352,10 @@ make install</code></pre></div>]]></content>
         
         <item>
             <title>Python Socket 编程笔记</title>
-            <link>https://exbob.github.io/posts/2019/11/python-socket-%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0/</link>
+            <link>https://shaocheng.li/posts/2019/11/python-socket-%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0/</link>
             <pubDate>Tue, 26 Nov 2019 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2019/11/python-socket-%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0/</guid>
+            <guid>https://shaocheng.li/posts/2019/11/python-socket-%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0/</guid>
             <description>1. 套接字 套接字（Socket）是一种操作系统提供的进程间通信机制，可以用于不同主机间的进程通信，最早由 UNIX 提出，现在广泛用于各种操作系统，同时也特指这种机制下的通信端点。根据通信地址的不同种类，Socket 可以分为三类：
  INET ，这是 IPv4 地址域的套接字，用于 IPv4 网络间的通信。 INET6 ，这是 IPv6 地址域的套接字，用于 IPv6 网络间的通信。 UNIX ，这是 UNIX 域的套接字，用于主机内的进程间通信。  套接字常用的报文类型有两种：
  SOCK_DGRAM，固定长度，无连接不可靠的报文传递，两个对等进程之间通信时不需要建立逻辑连接，直接向对方的套接字发送报文即可。在 INET 套接字中，这种报文使用的默认协议是 UDP 。 SOCK_STREAM，有序的，可靠的，双向的，面向连接的字节流，两个对等进程在正式通信之前，要先建立逻辑连接。在 INET 套接字中，这种报文使用的默认协议是 TCP 。  Python 提供了 socket 模块用于底层 socket 通信，模块提供了一个同名的类，以及其他读写 socket 的方法。
@@ -943,10 +943,10 @@ os<span style="color:#f92672">.</span>remove(SOCK)</code></pre></div>
         
         <item>
             <title>Ubuntu 下获取和编译内核源码的方法</title>
-            <link>https://exbob.github.io/posts/2019/09/ubuntu-%E4%B8%8B%E8%8E%B7%E5%8F%96%E5%92%8C%E7%BC%96%E8%AF%91%E5%86%85%E6%A0%B8%E6%BA%90%E7%A0%81%E7%9A%84%E6%96%B9%E6%B3%95/</link>
+            <link>https://shaocheng.li/posts/2019/09/ubuntu-%E4%B8%8B%E8%8E%B7%E5%8F%96%E5%92%8C%E7%BC%96%E8%AF%91%E5%86%85%E6%A0%B8%E6%BA%90%E7%A0%81%E7%9A%84%E6%96%B9%E6%B3%95/</link>
             <pubDate>Fri, 20 Sep 2019 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2019/09/ubuntu-%E4%B8%8B%E8%8E%B7%E5%8F%96%E5%92%8C%E7%BC%96%E8%AF%91%E5%86%85%E6%A0%B8%E6%BA%90%E7%A0%81%E7%9A%84%E6%96%B9%E6%B3%95/</guid>
+            <guid>https://shaocheng.li/posts/2019/09/ubuntu-%E4%B8%8B%E8%8E%B7%E5%8F%96%E5%92%8C%E7%BC%96%E8%AF%91%E5%86%85%E6%A0%B8%E6%BA%90%E7%A0%81%E7%9A%84%E6%96%B9%E6%B3%95/</guid>
             <description>以 Ubuntu 16.04 为例，如果只想获得当前内核版本的源码可以用 apt-get ，如果想获取当前系统的所有内核源码建议用 git 。
 1. apt-get 通常是用 apt-get source 下载：
 apt-get source linux-image-$(uname -r)  源码会直接下载到当前目录，并自动解压，所以建议在 /usr/src/ 目录下执行：
@@ -1029,10 +1029,10 @@ root@ubuntu:~# cp -rf /boot/config-4.4.0-116-generic /usr/src/linux-source-4.4.0
         
         <item>
             <title>使用 keepalived 实现双机热备</title>
-            <link>https://exbob.github.io/posts/2019/08/%E4%BD%BF%E7%94%A8-keepalived-%E5%AE%9E%E7%8E%B0%E5%8F%8C%E6%9C%BA%E7%83%AD%E5%A4%87/</link>
+            <link>https://shaocheng.li/posts/2019/08/%E4%BD%BF%E7%94%A8-keepalived-%E5%AE%9E%E7%8E%B0%E5%8F%8C%E6%9C%BA%E7%83%AD%E5%A4%87/</link>
             <pubDate>Sat, 24 Aug 2019 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2019/08/%E4%BD%BF%E7%94%A8-keepalived-%E5%AE%9E%E7%8E%B0%E5%8F%8C%E6%9C%BA%E7%83%AD%E5%A4%87/</guid>
+            <guid>https://shaocheng.li/posts/2019/08/%E4%BD%BF%E7%94%A8-keepalived-%E5%AE%9E%E7%8E%B0%E5%8F%8C%E6%9C%BA%E7%83%AD%E5%A4%87/</guid>
             <description>keepalived 是一个用 C 语言编写的免费开源软件，它实现了 VRRP协议，同时提供了强大的负载均衡 (LVS) 功能。我们可以用他的 VRRP 功能实现路由器或者服务器等网络设备的双机热备。简单的说，两台路由器，一台作为主机，一台作为备机，两台路由器有自己的独立 IP ，同时共享一个虚拟 IP ，主机正常是，这个虚拟 IP 指向主机，当主机出现故障时，虚拟 IP 指向备机，实现了路由器的无缝自动切换。网络拓扑如下图所示：
 虚拟 IP 的实现方式有很多种，比较可靠的方法是为一个网卡定义多个 IP ，端口名用冒号隔开一个数字，用 ifconfig 命令实现，例如：
 ifconfig eth0:0 192.168.6.100 netmask 255.255.255.0 up   用点隔开一个数字的端口名属于 VLAN 网卡，例如 eth0.100 ，具有不同的特性和应用。
@@ -1178,10 +1178,10 @@ Aug 24 16:25:27 ubuntu Keepalived_vrrp[2319]: VRRP_Instance(VI_1) Entering MASTE
         
         <item>
             <title>使用 openssl 进行 AES 加密</title>
-            <link>https://exbob.github.io/posts/2019/08/%E4%BD%BF%E7%94%A8-openssl-%E8%BF%9B%E8%A1%8C-aes-%E5%8A%A0%E5%AF%86/</link>
+            <link>https://shaocheng.li/posts/2019/08/%E4%BD%BF%E7%94%A8-openssl-%E8%BF%9B%E8%A1%8C-aes-%E5%8A%A0%E5%AF%86/</link>
             <pubDate>Sun, 18 Aug 2019 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2019/08/%E4%BD%BF%E7%94%A8-openssl-%E8%BF%9B%E8%A1%8C-aes-%E5%8A%A0%E5%AF%86/</guid>
+            <guid>https://shaocheng.li/posts/2019/08/%E4%BD%BF%E7%94%A8-openssl-%E8%BF%9B%E8%A1%8C-aes-%E5%8A%A0%E5%AF%86/</guid>
             <description>aes 加密需要一个字符串作为密钥，自己写一个，或者用完成的工具生成一随机的，假设密钥为 passphrase ，加密一个文件 file：
 openssl enc -aes-128-cbc -in file -out file.enc -k passphrase  也可以把密钥存放在一个文本文件，然后用 -kfile 选项指定：
 openssl enc -aes-128-cbc -in file -out file.enc -kfile passphrase.txt  </description>
@@ -1199,10 +1199,10 @@ openssl enc -aes-128-cbc -in file -out file.enc -kfile passphrase.txt  </descrip
         
         <item>
             <title>使用 OpenVPN 实现远程访问</title>
-            <link>https://exbob.github.io/posts/2019/07/%E4%BD%BF%E7%94%A8-openvpn-%E5%AE%9E%E7%8E%B0%E8%BF%9C%E7%A8%8B%E8%AE%BF%E9%97%AE/</link>
+            <link>https://shaocheng.li/posts/2019/07/%E4%BD%BF%E7%94%A8-openvpn-%E5%AE%9E%E7%8E%B0%E8%BF%9C%E7%A8%8B%E8%AE%BF%E9%97%AE/</link>
             <pubDate>Tue, 02 Jul 2019 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2019/07/%E4%BD%BF%E7%94%A8-openvpn-%E5%AE%9E%E7%8E%B0%E8%BF%9C%E7%A8%8B%E8%AE%BF%E9%97%AE/</guid>
+            <guid>https://shaocheng.li/posts/2019/07/%E4%BD%BF%E7%94%A8-openvpn-%E5%AE%9E%E7%8E%B0%E8%BF%9C%E7%A8%8B%E8%AE%BF%E9%97%AE/</guid>
             <description>有时我们需要连接不同局域网的两台主机，使其可以互相访问，比如用家里的电脑登录办公室电脑的某个服务。我们可以使用 OpenVPN 实现这个功能，它的原理是在两台电脑上安装 OpenVPN 客户端，同时连接公网上的 OpenVPN 服务器，OpenVPN 会将这两台电脑组成一个虚拟局域网，它们就可以像局域网内一样互相访问了。搭建 VPN 前的网络拓扑如下：
 家里的电脑是 Windows7 系统，办公室的电脑安装了 Ubuntu16.04 ，公网上的 VPS 安装了 Ubuntu16.04 。如果全部都是 Windows 系统，配置起来会更方便一点，Linux 下的文本操作略显繁琐，好在 SoftEther 提供了可以远程管理的 GUI 工具。
 1. 在 VPS 上安装 SoftEther SoftEther 这套软件其实是一个完整的夸平台 VPN 解决方案，在单一软件内集成了 OpenVPN 、L2TP 、IPsec 等 VPN 协议，我们可以用它在 VPS 上搭建一个 OpenVPN 的服务器，非常方便。
@@ -1532,10 +1532,10 @@ tun0      Link encap:UNSPEC  HWaddr 00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
         
         <item>
             <title>UDP socket 编程实践</title>
-            <link>https://exbob.github.io/posts/2018/12/udp-socket-%E7%BC%96%E7%A8%8B%E5%AE%9E%E8%B7%B5/</link>
+            <link>https://shaocheng.li/posts/2018/12/udp-socket-%E7%BC%96%E7%A8%8B%E5%AE%9E%E8%B7%B5/</link>
             <pubDate>Thu, 20 Dec 2018 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2018/12/udp-socket-%E7%BC%96%E7%A8%8B%E5%AE%9E%E8%B7%B5/</guid>
+            <guid>https://shaocheng.li/posts/2018/12/udp-socket-%E7%BC%96%E7%A8%8B%E5%AE%9E%E8%B7%B5/</guid>
             <description>UDP 是面向非连接的，如果通讯双方都在局域网中，服务器端和客户端没有区别，如果是局域网内的主机与公网上的主机通讯，由于 NAT 地址转换协议的作用，必须由局域网内的主机主动向公网的主句发送数据，公网的主机作为服务器端，必须接收客户端的数据后，解析出源 IP 和端口，再反向发送，实现双向通讯。下面是一个简单的 Demo 。
 服务器端：
 // server.c  #include &amp;lt;stdio.h&amp;gt; #include &amp;lt;unistd.h&amp;gt; #include &amp;lt;sys/types.h&amp;gt; #include &amp;lt;sys/socket.h&amp;gt; #include &amp;lt;netinet/in.h&amp;gt; #include &amp;lt;arpa/inet.h&amp;gt; #include &amp;lt;string.h&amp;gt; #define SERVER_PORT 6789  #define CPU_PORT 9009  #define BUFF_LEN 1024  int main(int argc, char* argv[]) { int server_fd, count; struct sockaddr_in ser_addr; struct sockaddr_in src_addr; socklen_t len; char buf[BUFF_LEN]; server_fd = socket(AF_INET, SOCK_DGRAM, 0); //IPV4,UDP  memset(&amp;amp;ser_addr, 0, sizeof(ser_addr)); ser_addr.sin_family = AF_INET; ser_addr.</description>
@@ -1648,10 +1648,10 @@ tun0      Link encap:UNSPEC  HWaddr 00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
         
         <item>
             <title>iptables 学习笔记</title>
-            <link>https://exbob.github.io/posts/2018/12/iptables-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+            <link>https://shaocheng.li/posts/2018/12/iptables-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
             <pubDate>Wed, 12 Dec 2018 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2018/12/iptables-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+            <guid>https://shaocheng.li/posts/2018/12/iptables-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
             <description>关于 iptables 的原理，这里有一份教程写得深入浅出，浅显易懂：
  iptables 详解  常用的命令可以参考参考 iptables 手册
 下面记录一些常见的 iptables 应用场景。
@@ -1750,10 +1750,10 @@ iptables -t filter -I INPUT -p icmp -m icmp --icmp-type &quot;echo-request&quot;
         
         <item>
             <title>用 timedatectl 管理系统时间</title>
-            <link>https://exbob.github.io/posts/2018/09/%E7%94%A8-timedatectl-%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E6%97%B6%E9%97%B4/</link>
+            <link>https://shaocheng.li/posts/2018/09/%E7%94%A8-timedatectl-%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E6%97%B6%E9%97%B4/</link>
             <pubDate>Mon, 24 Sep 2018 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2018/09/%E7%94%A8-timedatectl-%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E6%97%B6%E9%97%B4/</guid>
+            <guid>https://shaocheng.li/posts/2018/09/%E7%94%A8-timedatectl-%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E6%97%B6%E9%97%B4/</guid>
             <description>查看当前系统时间：
 $ timedatectl status Local time: Thu 2018-09-20 09:42:53 CST Universal time: Thu 2018-09-20 01:42:53 UTC RTC time: Thu 2018-09-20 01:42:53 Time zone: Asia/Chongqing (CST, +0800) Network time on: yes NTP synchronized: yes RTC in local TZ: no RTC in local TZ: no 表示 RTC 时钟不是用本地时间，而是使用 UTC 时间，可以改成使用本地时间，但是并不推荐这么做：
 $ timedatectl set-local-rtc 1 $ timedatectl Local time: Thu 2018-09-20 03:57:58 CEST Universal time: Thu 2018-09-20 01:57:58 UTC RTC time: Thu 2018-09-20 03:57:59 Time zone: Europe/Paris (CEST, +0200) Network time on: yes NTP synchronized: yes RTC in local TZ: yes Warning: The system is configured to read the RTC time in the local time zone.</description>
@@ -1845,10 +1845,10 @@ Sep <span style="color:#ae81ff">20</span> <span style="color:#ae81ff">04</span>:
         
         <item>
             <title>包管理器 dnf 学习笔记</title>
-            <link>https://exbob.github.io/posts/2018/09/%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8-dnf-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+            <link>https://shaocheng.li/posts/2018/09/%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8-dnf-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
             <pubDate>Fri, 21 Sep 2018 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2018/09/%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8-dnf-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+            <guid>https://shaocheng.li/posts/2018/09/%E5%8C%85%E7%AE%A1%E7%90%86%E5%99%A8-dnf-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
             <description>dnf 是 Fedora 上的新一代软件包管理器，从 Fedora22 开始取代了原有的 yum 。拥有超级用户权限才可以使用 dnf 在系统上安装、更新和删除软件包。
 1. 配置 dnf 的配置文件位于 /etc/dnf/dnf.conf ,文件里的配置信息按不同种类分为多个小节，其中必须的 [main] 小节包含了所有全局选项，还可能包含一些 [repository] 小节用于设置特定存储库的选项，但是建议在 /etc/yum.repos.d/ 目录中的 .repo 文件里定义某个存储库的选项，这些选项的值会覆盖 [main] 小节的同名选项。
 最简单的 /etc/dnf/dnf.conf 文件类似如下：
@@ -1984,10 +1984,10 @@ clean_requirements_on_remove=true
         
         <item>
             <title>Linux 系统如何获取 CPU 主频</title>
-            <link>https://exbob.github.io/posts/2018/08/linux-%E7%B3%BB%E7%BB%9F%E5%A6%82%E4%BD%95%E8%8E%B7%E5%8F%96-cpu-%E4%B8%BB%E9%A2%91/</link>
+            <link>https://shaocheng.li/posts/2018/08/linux-%E7%B3%BB%E7%BB%9F%E5%A6%82%E4%BD%95%E8%8E%B7%E5%8F%96-cpu-%E4%B8%BB%E9%A2%91/</link>
             <pubDate>Tue, 07 Aug 2018 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2018/08/linux-%E7%B3%BB%E7%BB%9F%E5%A6%82%E4%BD%95%E8%8E%B7%E5%8F%96-cpu-%E4%B8%BB%E9%A2%91/</guid>
+            <guid>https://shaocheng.li/posts/2018/08/linux-%E7%B3%BB%E7%BB%9F%E5%A6%82%E4%BD%95%E8%8E%B7%E5%8F%96-cpu-%E4%B8%BB%E9%A2%91/</guid>
             <description>1.CPU 主频 CPU 的主频是指 CPU 核心的时钟频率，它是 CPU 执行指令的最小时间单位。CPU 内部有时钟管理模块，通过外部振荡器（获取其他时钟电路）输入一个特定的频率（外频），经过内部的 PLL 电路（倍频器）锁定到一个很高的频率，再经过不同的分频，供给不同的模块和总线使用，供给 CPU 的就称为主频,就是通常所说的“主频 = 外频 x 倍频”。目前桌面 X86 CPU 的外频由主板供给，通常是 100MHz ，倍频通常是固定设置的。如果要超频，通常是在主板的 BIOS 中修改倍频因子，也有特殊情况可以增加外频。
 X86-Linux 体系有三种硬件时钟：
  Real Time Clock(RTC) ，实时时钟，通常位于 CMOS ，独立工作 Programmalbe Interval Timer(PIT) ，可编程的间隔定时器，通常由 8254 芯片实现 Time Stamp Counter(TSC) ，时间戳控制器，记录 CPU 时钟周期  Linux 内核在计算 CPU 主频时会用到 PIT 和 TSC 。以下是在 kernel 3.4 版本中分析。
@@ -2341,10 +2341,10 @@ cpu1  cpu3  cpuidle  microcode   offline   possible  present  release
         
         <item>
             <title>Linux 内核调试方法</title>
-            <link>https://exbob.github.io/posts/2018/07/linux-%E5%86%85%E6%A0%B8%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95/</link>
+            <link>https://shaocheng.li/posts/2018/07/linux-%E5%86%85%E6%A0%B8%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95/</link>
             <pubDate>Thu, 05 Jul 2018 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2018/07/linux-%E5%86%85%E6%A0%B8%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95/</guid>
+            <guid>https://shaocheng.li/posts/2018/07/linux-%E5%86%85%E6%A0%B8%E8%B0%83%E8%AF%95%E6%96%B9%E6%B3%95/</guid>
             <description>基于 Ubuntu 14.04 ，Linux Kernel 4.0 以上版本。
  1. printk() printk() 是内核提供的函数，用于将内核空间的信息打印到用户空间缓冲区，打印的信息可以通过 demsg 命令查看，或者直接查看 /proc/kmsg 文件。缓冲区是一个环形队列的结构，消息太多时，旧的消息就会被逐渐覆盖，缓冲区大小是在 kernel/printk/printk.c 文件中的代码设置的：
 #define __LOG_BUF_LEN (1 &amp;lt;&amp;lt; CONFIG_LOG_BUF_SHIFT) static char __log_buf[__LOG_BUF_LEN] __aligned(LOG_ALIGN);  缓冲区大小是 CONFIG_LOG_BUF_SHIFT*2 个字节，CONFIG_LOG_BUF_SHIFT 是在 init/Kconfig 文件中设置的，我们可以在 menuconfig 的相关路径中修改：
@@ -2834,10 +2834,10 @@ MODULE_LICENSE(&quot;GPL&quot;);
         
         <item>
             <title>systemd 的网络管理</title>
-            <link>https://exbob.github.io/posts/2018/05/systemd-%E7%9A%84%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/</link>
+            <link>https://shaocheng.li/posts/2018/05/systemd-%E7%9A%84%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/</link>
             <pubDate>Wed, 09 May 2018 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2018/05/systemd-%E7%9A%84%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/</guid>
+            <guid>https://shaocheng.li/posts/2018/05/systemd-%E7%9A%84%E7%BD%91%E7%BB%9C%E7%AE%A1%E7%90%86/</guid>
             <description>0. 简介 systemd 是 freedesktop 的项目，官网 https://www.freedesktop.org/wiki/Software/systemd/ ,项目源码在 github 上发布，可以在 https://github.com/systemd/systemd 查看所有版本更新、 Bug Fix 和版本对应的文档等。
 systemd-networkd 是 systemd 默认提供的网络管理服务，可以完全管理以太网，对于无线网卡，还需要其他服务支持，比如管理 Wi-Fi 的 wpa_supplicant@.service ，管理 PPP 的 ppp@.service 。
 管理网卡前，应该确保各网卡的驱动都已经正常加载，systemd 的 systemd-modules-load.service 负责在系统启动时静态加载内核模块。它会从以下路径搜索可用的配置文件：
@@ -3028,10 +3028,10 @@ DHCP=yes
         
         <item>
             <title>Yocto 学习笔记</title>
-            <link>https://exbob.github.io/posts/2018/04/yocto-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+            <link>https://shaocheng.li/posts/2018/04/yocto-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
             <pubDate>Fri, 27 Apr 2018 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2018/04/yocto-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+            <guid>https://shaocheng.li/posts/2018/04/yocto-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
             <description>0. Quick Start 构建一个 yocto 系统镜像的基本流程如下：
 1. 准备宿主机系统，安装必要的开发工具。 2. 初始化构建环境，通常是利用 oe-init-build-env 脚本，默认会新建一个构建目录 build 。 3. 编辑 build/conf/local.conf 文件，确认 MACHINE 变量，为 4. 开始构建系统镜像，最终的镜像文件会生成在 build/tmp/deploy/images/ 目录下。
 先在宿主机安装 Ubuntu Server 18.04 ，至少预留 50GB 硬盘空间，推荐 100GB ，然后安装如下软件包：
@@ -3126,10 +3126,10 @@ Date:   Tue Feb 20 08:33:45 2018 +0800
         
         <item>
             <title>Libpcap 学习笔记</title>
-            <link>https://exbob.github.io/posts/2018/04/libpcap-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+            <link>https://shaocheng.li/posts/2018/04/libpcap-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
             <pubDate>Mon, 23 Apr 2018 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2018/04/libpcap-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+            <guid>https://shaocheng.li/posts/2018/04/libpcap-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
             <description>0. 简介 libpcap 是用于捕获 TCP/IP 网络数据包的 C/C++ 库，支持 Linux 系统，Tcpdump 就是在其基础上开发的，通常用于网络嗅探、数据抓取、协议分析等，官网是 http://www.tcpdump.org ，主要的功能有：
  数据包捕获：捕获流经网卡的原始数据包 规则过滤：提供自带规则过滤功能，按需要选择过滤规则 流量采集与统计：采集网络中的流量信息 自定义数据包发送：构造任何格式的原始数据包  包捕获机制是在数据链路层增加一个旁路处理，并不干扰系统自身的网络协议栈的处理，对发送和接收的数据包通过 Linux 内核做过滤和缓冲处理，最后直接传递给上层应用程序。在 Linux 发行版上可以直接安装 libpcap 或者开发库 libpcap-devel ，也可以下载源码后编译安装。
 1. 编程 调用 libpcap 库函数前要包含的头文件：
@@ -3463,10 +3463,10 @@ dst port 192.168.5.252 and (dst port 22 or dst port 23)
         
         <item>
             <title>Tkinter 学习笔记</title>
-            <link>https://exbob.github.io/posts/2017/12/tkinter-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+            <link>https://shaocheng.li/posts/2017/12/tkinter-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
             <pubDate>Mon, 18 Dec 2017 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2017/12/tkinter-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+            <guid>https://shaocheng.li/posts/2017/12/tkinter-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
             <description>0. 开始 Tkinter 是 Python 内置的 GUI 框架，安装后 Python 后即可使用：
 Python 3.6.2 (v3.6.2:5fd33b5926, Jul 16 2017, 20:11:06) [GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin Type &amp;quot;help&amp;quot;, &amp;quot;copyright&amp;quot;, &amp;quot;credits&amp;quot; or &amp;quot;license&amp;quot; for more information. &amp;gt;&amp;gt;&amp;gt; import tkinter as tk &amp;gt;&amp;gt;&amp;gt; tk._test()  运行结果：
 下面这个例子只包含一个 Quit 按钮:
@@ -5332,10 +5332,10 @@ window.mainloop()
         
         <item>
             <title>Linux 编程笔记</title>
-            <link>https://exbob.github.io/posts/2017/12/linux-%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0/</link>
+            <link>https://shaocheng.li/posts/2017/12/linux-%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0/</link>
             <pubDate>Thu, 14 Dec 2017 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2017/12/linux-%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0/</guid>
+            <guid>https://shaocheng.li/posts/2017/12/linux-%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0/</guid>
             <description>1. sysconfig() sysconfig() 是获取系统运行时配置信息的函数，包括内存、CPU 等。函数声明：
 #include &amp;lt;unistd.h&amp;gt; long sysconf(int name);  参数 name 用于指示要获取的信息，通过返回值将结果返回。新建一个 test.c ，获取当前系统的信息：
 #include &amp;lt;stdio.h&amp;gt; #include &amp;lt;unistd.h&amp;gt; #define ONE_MB (1024 * 1024) int main() { printf(&amp;quot;The number of processors configured is :%ld\n&amp;quot;, sysconf(_SC_NPROCESSORS_CONF)); printf(&amp;quot;The number of processors currently online (available) is :%ld\n&amp;quot;, sysconf(_SC_NPROCESSORS_ONLN)); printf(&amp;quot;The pagesize: %ld\n&amp;quot;, sysconf(_SC_PAGESIZE)); printf(&amp;quot;The number of pages: %ld\n&amp;quot;, sysconf(_SC_PHYS_PAGES)); printf(&amp;quot;The number of available pages: %ld\n&amp;quot;, sysconf(_SC_AVPHYS_PAGES)); printf(&amp;quot;The memory size: %lld MB\n&amp;quot;, (long long)sysconf(_SC_PAGESIZE) * (long long)sysconf(_SC_PHYS_PAGES) / ONE_MB ); printf(&amp;quot;The number of files max opened:: %ld\n&amp;quot;, sysconf(_SC_OPEN_MAX)); printf(&amp;quot;The number of ticks per second: %ld\n&amp;quot;, sysconf(_SC_CLK_TCK)); printf(&amp;quot;The max length of host name: %ld\n&amp;quot;, sysconf(_SC_HOST_NAME_MAX)); printf(&amp;quot;The max length of login name: %ld\n&amp;quot;, sysconf(_SC_LOGIN_NAME_MAX)); return 0; }  编译后执行：</description>
@@ -5698,10 +5698,10 @@ int main()
         
         <item>
             <title>计算机是如何实现重启的</title>
-            <link>https://exbob.github.io/posts/2017/11/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%98%AF%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%87%8D%E5%90%AF%E7%9A%84/</link>
+            <link>https://shaocheng.li/posts/2017/11/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%98%AF%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%87%8D%E5%90%AF%E7%9A%84/</link>
             <pubDate>Thu, 30 Nov 2017 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2017/11/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%98%AF%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%87%8D%E5%90%AF%E7%9A%84/</guid>
+            <guid>https://shaocheng.li/posts/2017/11/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%98%AF%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E9%87%8D%E5%90%AF%E7%9A%84/</guid>
             <description>1. Soft Power 早期的计算机主板都是使用 AT 电源管理技术，AT 电源系统非常简单，电源键是机械式开关，只有开闭两种状态，闭合后电流从开关上流过为主板供电，断开后主板上的所有器件同时断电，无法实现待机、软关机等功能，这个时期的 Windows 系统关机后会一直显示一条 &amp;ldquo;It is now safe to turn off your computer&amp;rdquo; 的信息，因为操作系统无法切断电源。这时期的电源可以叫做 Hard Power ，因为全部都是硬件控制的。
 后来英特尔提出了 ATX 主板标准，它带来了 Soft Power ，它使用的 ATX 电源没有直接连到电脑的开关，而是插在主板上，可以通过软件控制，下面是 ATX 主板电源接口的信号定义：
 它还带来了两个重要的变化：
@@ -6046,10 +6046,10 @@ GenericAddressStructure ResetReg;
         
         <item>
             <title>Linux 系统的 USB 设备结构</title>
-            <link>https://exbob.github.io/posts/2017/11/linux-%E7%B3%BB%E7%BB%9F%E7%9A%84-usb-%E8%AE%BE%E5%A4%87%E7%BB%93%E6%9E%84/</link>
+            <link>https://shaocheng.li/posts/2017/11/linux-%E7%B3%BB%E7%BB%9F%E7%9A%84-usb-%E8%AE%BE%E5%A4%87%E7%BB%93%E6%9E%84/</link>
             <pubDate>Tue, 28 Nov 2017 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2017/11/linux-%E7%B3%BB%E7%BB%9F%E7%9A%84-usb-%E8%AE%BE%E5%A4%87%E7%BB%93%E6%9E%84/</guid>
+            <guid>https://shaocheng.li/posts/2017/11/linux-%E7%B3%BB%E7%BB%9F%E7%9A%84-usb-%E8%AE%BE%E5%A4%87%E7%BB%93%E6%9E%84/</guid>
             <description>以一台 x86 主机为例，用 lsusb 可以查看它的所有 USB 设备：
 # lsusb Bus 001 Device 003: ID 1bc7:0021 Telit HE910 Bus 002 Device 002: ID 04e2:1410 Exar Corp. Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub Bus 002 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub  在 sys 文件系统的 /sys/bus/usb/devices/ 目录下可以看到所有 USB 设备的树形结构：
 /sys/bus/usb/devices# ls -l total 0 lrwxrwxrwx 1 root root 0 Nov 26 10:57 1-0:1.0 -&amp;gt; .</description>
@@ -6116,10 +6116,10 @@ lrwxrwxrwx 1 root root 0 Nov 26 10:57 usb2 -&gt; ../../../devices/pci0000:00/000
         
         <item>
             <title>x86 计算机的 PCI 总线结构</title>
-            <link>https://exbob.github.io/posts/2017/11/x86-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%9A%84-pci-%E6%80%BB%E7%BA%BF%E7%BB%93%E6%9E%84/</link>
+            <link>https://shaocheng.li/posts/2017/11/x86-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%9A%84-pci-%E6%80%BB%E7%BA%BF%E7%BB%93%E6%9E%84/</link>
             <pubDate>Mon, 27 Nov 2017 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2017/11/x86-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%9A%84-pci-%E6%80%BB%E7%BA%BF%E7%BB%93%E6%9E%84/</guid>
+            <guid>https://shaocheng.li/posts/2017/11/x86-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%9A%84-pci-%E6%80%BB%E7%BA%BF%E7%BB%93%E6%9E%84/</guid>
             <description>1. 硬件 PCI 总线是一个并行总线，一个时钟周期有 32 个 bit （后扩展到 64 bit） 同时传输，带宽 133MB/s ，PCI 设备具有独立的地址空间，叫做 PCI 总线地址空间，通过 Host bridge 隔离处理器系统的存储器域与 PCI 总线域，下面挂在了一个 PCI 总线树，典型的结构如下图：
 PCI 总线主要分为三个部分：
  PCI 设备。符合 PCI 总线标准的设备就被称为 PCI 设备，PCI 总线架构中可以包含多个 PCI 设备。图中的 Audio、LAN 都是一个 PCI 设备。PCI 设备同时也分为主设备和目标设备两种，主设备是一次访问操作的发起者，而目标设备则是被访问者。 PCI 总线。PCI 总线在系统中可以有多条，类似于树状结构进行扩展，每条 PCI 总线都可以连接多个 PCI 设备/桥，上图中有两条 PCI 总线。 PCI 桥。当一条 PCI 总线的承载量不够时，可以用新的 PCI 总线进行扩展，而 PCI 桥则是连接 PCI 总线之间的纽带，如图的 PCI-to-PCI Bridge 。  后期为了提高数据传输速率，又推出了 PCIe 总线，改为串行总线，差分信号传输，带宽提升至 250MB/s ，最新的 PCIe 3.</description>
@@ -6431,10 +6431,10 @@ static int pci_conf1_write(unsigned int seg, unsigned int bus, unsigned int devf
         
         <item>
             <title>Appweb 学习笔记</title>
-            <link>https://exbob.github.io/posts/2017/11/appweb-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+            <link>https://shaocheng.li/posts/2017/11/appweb-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
             <pubDate>Fri, 24 Nov 2017 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2017/11/appweb-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+            <guid>https://shaocheng.li/posts/2017/11/appweb-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
             <description>1. 概述 Appweb 是一个快速、高效、安全的开源嵌入式 web server ，同时包含了 ESP web 框架和一系列扩展支持，可以极大的缩短开放时间，官网：https://embedthis.com/ ，包含如下组件：
  HTTP web server 程序和库 HTTP client 程序和库 管理和监视进程 ESP web 框架 可选的 CGI、Ejscript、ESP 和 PHP 模块 SSL/TLS 支持包 文档和源码  特性：
  快速开发。Appweb 提供最简单、最低消耗的开发 web 应用方法，它包含了嵌入式 web 应用开发所需的全部特性，极大的缩短了开发时间。 最小的资源需求。Appweb 非常简洁和快速，只需要极小的系统资源，最小只需 2MB 的存储空间，运行时最少只需 1MB 内存。 可定制的开发环境。Appweb 高度模块化，你可以只选择所需的特性，并且支持运行时模块加载和编译时控制。 安全可靠。支持 SSL/TLS，提供最基本的验证，沙盒限制，访问和错误日志。 性能。事件驱动的多线程核心提供了最快的响应，。 标准化。Appweb 支持 HTTP/1.0 、HTTP/1.1 、CGI/1.1 、SSL RFC 2246 、HTTP RFC 2617 。 可移植。Appweb 支持 Linux 、Windows 、Mac OSX ，支持 ARM 、MIPS 、i386/X86/X86_64 、PowerPC 等。  2.</description>
@@ -6600,10 +6600,10 @@ Appweb 提供了一个管理工具 appman ，它可以将 appweb 作为一个守
         
         <item>
             <title>用 seafile 自建云存储</title>
-            <link>https://exbob.github.io/posts/2017/11/%E7%94%A8-seafile-%E8%87%AA%E5%BB%BA%E4%BA%91%E5%AD%98%E5%82%A8/</link>
+            <link>https://shaocheng.li/posts/2017/11/%E7%94%A8-seafile-%E8%87%AA%E5%BB%BA%E4%BA%91%E5%AD%98%E5%82%A8/</link>
             <pubDate>Sat, 18 Nov 2017 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2017/11/%E7%94%A8-seafile-%E8%87%AA%E5%BB%BA%E4%BA%91%E5%AD%98%E5%82%A8/</guid>
+            <guid>https://shaocheng.li/posts/2017/11/%E7%94%A8-seafile-%E8%87%AA%E5%BB%BA%E4%BA%91%E5%AD%98%E5%82%A8/</guid>
             <description>Seafile 是一款开源的企业云盘，注重可靠性和性能。支持 Windows, Mac, Linux, iOS, Android 平台。支持文件同步或者直接挂载到本地访问，国人开发，官方网站：https://www.seafile.com 。
 1. 部署 Seafile 服务器 我的云服务器是 Ubuntu Server 16.04.1 LTS 64位 ，新建一个工作目录 ~/seafile ，下载最新的服务器安装包 seafile-server_6.2.3_x86-64.tar.gz 到该目录，然后在该目录下做如下工作：
 mkdir installed mv seafile-server_6.2.3_x86-64.tar.gz installed tar xvf installed/seafile-server_6.2.3_x86-64.tar.gz  现在的目录结构如下：
@@ -6765,10 +6765,10 @@ sudo systemctl enable seahub.service
         
         <item>
             <title>用 Supervisor 管理进程</title>
-            <link>https://exbob.github.io/posts/2017/11/%E7%94%A8-supervisor-%E7%AE%A1%E7%90%86%E8%BF%9B%E7%A8%8B/</link>
+            <link>https://shaocheng.li/posts/2017/11/%E7%94%A8-supervisor-%E7%AE%A1%E7%90%86%E8%BF%9B%E7%A8%8B/</link>
             <pubDate>Thu, 09 Nov 2017 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2017/11/%E7%94%A8-supervisor-%E7%AE%A1%E7%90%86%E8%BF%9B%E7%A8%8B/</guid>
+            <guid>https://shaocheng.li/posts/2017/11/%E7%94%A8-supervisor-%E7%AE%A1%E7%90%86%E8%BF%9B%E7%A8%8B/</guid>
             <description>Supervisor 是一个 Python 编写的进程管理工具，可以帮助我们实现进程的启动、关闭和重启，可以对多个进程独立管理，或者分组管理，通常用于 Linux 服务器的进程管理，官方网站 supervisord.org 。有两个主要的组成部分：
  supervisord，运行 Supervisor 时会启动一个进程 supervisord，它负责启动所管理的进程，并将所管理的进程作为自己的子进程来启动，而且可以在所管理的进程出现崩溃时自动重启。 supervisorctl，命令行管理工具，可以用来执行 stop、start、restart 等命令，来对这些子进程进行管理。  1. 安装 可以用 pip 安装：
 sudo pip install supervisor  如果是 Ubuntu 系统，也可以用 apt-get ：
@@ -6919,10 +6919,10 @@ WantedBy=multi-user.target
         
         <item>
             <title>VScode 使用笔记</title>
-            <link>https://exbob.github.io/posts/2017/11/vscode-%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</link>
+            <link>https://shaocheng.li/posts/2017/11/vscode-%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</link>
             <pubDate>Tue, 07 Nov 2017 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2017/11/vscode-%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</guid>
+            <guid>https://shaocheng.li/posts/2017/11/vscode-%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</guid>
             <description>1. Python 开发环境 为 vscode 安装 Python 插件，然后选择 Python 版本：
  通过 shift+command+p 组合键打开命令控制板 选择 Python:Select Workspace Interpreter 选择 Python 版本  2. 在终端打开 vscode 在 zsh 终端里用 vscode 直接打开当前目录，编辑配置文件 ~/.zshrc ，在最后加一行：
 alias code=&#39;/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin/code&#39;  保存后重启终端，找一个项目文件夹，直接打开 vscode ：
@@ -6980,10 +6980,10 @@ $ code .  3. 远程 FTP 同步 ftp-sync 是一个自动将本地工作目录文�
         
         <item>
             <title>用 pyvenv 创建虚拟环境</title>
-            <link>https://exbob.github.io/posts/2017/10/%E7%94%A8-pyvenv-%E5%88%9B%E5%BB%BA%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83/</link>
+            <link>https://shaocheng.li/posts/2017/10/%E7%94%A8-pyvenv-%E5%88%9B%E5%BB%BA%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83/</link>
             <pubDate>Fri, 27 Oct 2017 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2017/10/%E7%94%A8-pyvenv-%E5%88%9B%E5%BB%BA%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83/</guid>
+            <guid>https://shaocheng.li/posts/2017/10/%E7%94%A8-pyvenv-%E5%88%9B%E5%BB%BA%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83/</guid>
             <description>Mac 默认安装的是 Python2.7 ，再安装一个 Python3.6 ，就出现了两个版本共存的问题，不同的项目、不同的程序要用不同的版本，就需要创建虚拟环境，切换版本。Python3 提供了 pyvenv 模块原生支持虚拟环境，
 要创建一个虚拟环境，首先决定一个你想要存放的目录，接着运行 pyvenv 后面携带着目录名:
 pyvenv tutorial-env  如果目录不存在的话，这将会创建一个 tutorial-env 目录，并且也在目录里面创建一个包含 Python 解释器，标准库，以及各种配套文件的 Python “副本”。之后你必须激活它：
@@ -7021,10 +7021,10 @@ pip 9.0.1 from /Users/lishaocheng/Workspace/py3/lib/python3.6/site-packages (pyt
         
         <item>
             <title>用 VPS 自建科学上网</title>
-            <link>https://exbob.github.io/posts/2017/10/%E7%94%A8-vps-%E8%87%AA%E5%BB%BA%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/</link>
+            <link>https://shaocheng.li/posts/2017/10/%E7%94%A8-vps-%E8%87%AA%E5%BB%BA%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/</link>
             <pubDate>Tue, 17 Oct 2017 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2017/10/%E7%94%A8-vps-%E8%87%AA%E5%BB%BA%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/</guid>
+            <guid>https://shaocheng.li/posts/2017/10/%E7%94%A8-vps-%E8%87%AA%E5%BB%BA%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/</guid>
             <description>1. 购买 VPS 推荐 https://www.vultr.com ，注册成功后先充值，Vultr 支持信用卡、比特币和支付宝等，支付宝比较方便：
 充值完毕后，点击右上角的蓝色加号购买服务器，然后选择服务器位置、系统和配置，国内推荐东京：
 选择 Ubuntu 16.04 系统，$5/月的套餐，可以先购买一个月试用：
@@ -7180,10 +7180,10 @@ backend ss-out
         
         <item>
             <title>Numbers 使用技巧</title>
-            <link>https://exbob.github.io/posts/2017/09/numbers-%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7/</link>
+            <link>https://shaocheng.li/posts/2017/09/numbers-%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7/</link>
             <pubDate>Sat, 23 Sep 2017 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2017/09/numbers-%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7/</guid>
+            <guid>https://shaocheng.li/posts/2017/09/numbers-%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7/</guid>
             <description>1. 自动填充 有时我们需要将一个单元格的内容复制到整行，或者整列，那么我们可以选中单元格，然后拖动边框的黄点即可：
 如果想要填充的字母或者数字自动递增，需要先将单元格的数据格式换成文本，然后再拖动黄点：
 2. 拷贝样式 Numbers 也有类似微软 Office 的格式刷功能，叫做拷贝/粘贴样式。这个两个功能可以在“格式”菜单栏中找到，可以将它们添加到自定义工具栏中，方便使用：
@@ -7221,10 +7221,10 @@ backend ss-out
         
         <item>
             <title>用 iperf 测试网络性能</title>
-            <link>https://exbob.github.io/posts/2017/08/%E7%94%A8-iperf-%E6%B5%8B%E8%AF%95%E7%BD%91%E7%BB%9C%E6%80%A7%E8%83%BD/</link>
+            <link>https://shaocheng.li/posts/2017/08/%E7%94%A8-iperf-%E6%B5%8B%E8%AF%95%E7%BD%91%E7%BB%9C%E6%80%A7%E8%83%BD/</link>
             <pubDate>Tue, 01 Aug 2017 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2017/08/%E7%94%A8-iperf-%E6%B5%8B%E8%AF%95%E7%BD%91%E7%BB%9C%E6%80%A7%E8%83%BD/</guid>
+            <guid>https://shaocheng.li/posts/2017/08/%E7%94%A8-iperf-%E6%B5%8B%E8%AF%95%E7%BD%91%E7%BB%9C%E6%80%A7%E8%83%BD/</guid>
             <description>iperf 是一个客户端/服务器端工作模式的网络性能测试工具，用于测试 TCP 或者 UDP 的吞吐量，记录延迟、丢包率、MTU等信息。
 1. 语法 缺省状态下，iperf 使用 TCP 传输协议，服务器端的语法：
 iperf -s -p [port] [ options ]  加 -D 参数可以后台运行。
@@ -7342,10 +7342,10 @@ UDP buffer size: 9.00 KByte (default)
         
         <item>
             <title>netcat 基本用法</title>
-            <link>https://exbob.github.io/posts/2017/07/netcat-%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95/</link>
+            <link>https://shaocheng.li/posts/2017/07/netcat-%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95/</link>
             <pubDate>Mon, 31 Jul 2017 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2017/07/netcat-%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95/</guid>
+            <guid>https://shaocheng.li/posts/2017/07/netcat-%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95/</guid>
             <description>netcat 是一个任意 TCP 和 UDP 连接和监听的工具，有时别名也叫 nc 。可以用于各种 TCP 或 UDP 相关的任务，包括打开 TCP 连接，发送 UDP 数据包，监听任意 TCP 和 UDP 端口，同时支持 IPv4 和 IPv6 。
 1. 语法 netcat [option] ip port  常用参数：
  -e ，建立链接后执行外部程序。 -l ，使 netcat 处于监听状态。 -u ，使用 UDP ，缺省状态下是 TCP 协议。 -v ，输出详细信息。 -z ，执行端口扫描。对于 TCP 端口（缺省），尝试在不发送数据的情况下执行连接扫描（完整三路信号握手）。对于 UDP (–u)，缺省情况下会发送空 UDP 包。  2. 端口扫描 用于扫描远程主机的某个端口是否处于监听状态，假设一台服务器的端口情况：
@@ -7427,10 +7427,10 @@ $ nc -u 118.89.16.224 1080
         
         <item>
             <title>LeetCode 刷题</title>
-            <link>https://exbob.github.io/posts/2017/06/leetcode-%E5%88%B7%E9%A2%98/</link>
+            <link>https://shaocheng.li/posts/2017/06/leetcode-%E5%88%B7%E9%A2%98/</link>
             <pubDate>Mon, 26 Jun 2017 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2017/06/leetcode-%E5%88%B7%E9%A2%98/</guid>
+            <guid>https://shaocheng.li/posts/2017/06/leetcode-%E5%88%B7%E9%A2%98/</guid>
             <description>用 LeetCode 练习 Python ，难度都是选择 Easy 。
  1. Two Sum Given an array of integers, return indices of the two numbers such that they add up to a specific target.
 You may assume that each input would have exactly one solution, and you may not use the same element twice.
@@ -7860,10 +7860,10 @@ Output: &quot;1211&quot;
         
         <item>
             <title>Python 对 list 的处理</title>
-            <link>https://exbob.github.io/posts/2017/06/python-%E5%AF%B9-list-%E7%9A%84%E5%A4%84%E7%90%86/</link>
+            <link>https://shaocheng.li/posts/2017/06/python-%E5%AF%B9-list-%E7%9A%84%E5%A4%84%E7%90%86/</link>
             <pubDate>Sun, 25 Jun 2017 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2017/06/python-%E5%AF%B9-list-%E7%9A%84%E5%A4%84%E7%90%86/</guid>
+            <guid>https://shaocheng.li/posts/2017/06/python-%E5%AF%B9-list-%E7%9A%84%E5%A4%84%E7%90%86/</guid>
             <description>list 是一种有序的数据集合，索引从 0 开始，类似 C 语言中的数组。比如定义一个 list ：
 &amp;gt;&amp;gt;&amp;gt; array=[2,3,4] &amp;gt;&amp;gt;&amp;gt; print array [2, 3, 4] &amp;gt;&amp;gt;&amp;gt; print array[0] 2  1. 基本操作 获取 list 元素的个数可以用 len() 函数：
 &amp;gt;&amp;gt;&amp;gt; len(array) 3  所以，最后一个元素的索引是 len()-1 ，还可以用 -1 做索引，直接获取最后一个元素，以此类推，可以获取倒数第二个，倒数第三个元素：
@@ -8019,10 +8019,10 @@ Output: &quot;1211&quot;
         
         <item>
             <title>Paho JavaScript Client 学习笔记</title>
-            <link>https://exbob.github.io/posts/2017/06/paho-javascript-client-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+            <link>https://shaocheng.li/posts/2017/06/paho-javascript-client-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
             <pubDate>Tue, 13 Jun 2017 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2017/06/paho-javascript-client-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+            <guid>https://shaocheng.li/posts/2017/06/paho-javascript-client-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
             <description> Paho JavaScript Client 是一个用 JavaScript 写的，基于浏览器的 MQTT Client 库，用于使用 WebSockets 协议连接 MQTT Broker 。
  官网是 http://www.eclipse.org/paho/clients/js/ GitHub 是 https://github.com/eclipse/paho.mqtt.javascript  1. 安装 通过 git 克隆到本地：
 git clone https://github.com/eclipse/paho.mqtt.javascript.git  默认克隆的是 master 分支，是正式发布的版本，远程还有一个 develop 分支，用于开发测试，包含了一个基于 maven 构建的简单客户端，可以用于单元测试。首先要手动检出：
@@ -8060,10 +8060,10 @@ $ mvn test -Dtest.server=iot.eclipse.com -Dtest.server.port=80 -Dtest.server.pat
         
         <item>
             <title>使用 Python 操作 3G 模块</title>
-            <link>https://exbob.github.io/posts/2017/06/%E4%BD%BF%E7%94%A8-python-%E6%93%8D%E4%BD%9C-3g-%E6%A8%A1%E5%9D%97/</link>
+            <link>https://shaocheng.li/posts/2017/06/%E4%BD%BF%E7%94%A8-python-%E6%93%8D%E4%BD%9C-3g-%E6%A8%A1%E5%9D%97/</link>
             <pubDate>Thu, 01 Jun 2017 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2017/06/%E4%BD%BF%E7%94%A8-python-%E6%93%8D%E4%BD%9C-3g-%E6%A8%A1%E5%9D%97/</guid>
+            <guid>https://shaocheng.li/posts/2017/06/%E4%BD%BF%E7%94%A8-python-%E6%93%8D%E4%BD%9C-3g-%E6%A8%A1%E5%9D%97/</guid>
             <description>以 Telit HE910 模块为例，在 Linux 下的 AT 命令端口是 /dev/ttyACM3 。可以通过 pyserial 库直接读写端口来与模块通信，也可以使用更高级的 python-gsmmodem 。
 1. Pyserial 如果要直接发送 AT 指令，需要串口读写库，我们常用的是 pyserial ，Python 2.7 默认没有安装这个库，需要自行下载，参考 https://pypi.python.org/pypi/pyserial/2.7，下面是一个简单的例子：
 #!/usr/bin/python import serial ser=serial.Serial(port=&#39;/dev/ttyACM3&#39;, baudrate=115200, bytesize=8, parity=&#39;N&#39;, stopbits=1, timeout=1, xonxoff=False, rtscts=False, dsrdtr=False) cmd=&amp;quot;AT\r&amp;quot; ser.write(cmd.encode()) msg=ser.read(64) print(msg)  保存到文件 atcommand.py ，执行：
@@ -8275,10 +8275,10 @@ Message sent.
         
         <item>
             <title>Linux Test Project 学习笔记</title>
-            <link>https://exbob.github.io/posts/2017/05/linux-test-project-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+            <link>https://shaocheng.li/posts/2017/05/linux-test-project-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
             <pubDate>Wed, 24 May 2017 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2017/05/linux-test-project-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+            <guid>https://shaocheng.li/posts/2017/05/linux-test-project-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
             <description>1. 简介 Linux Test Projec 是一个开源项目，简称 LTP ，致力于提供一套测试工具，用于测试和验证 Linux 内核的功能和稳定性，官网地址：https://linux-test-project.github.io。
 2. 安装 安装前要准备 git、gcc、automake、autoconf、m4、bison、byacc、flex 。然后从 github 克隆源码：
 $ git clone https://github.com/linux-test-project/ltp.git $ cd ltp  配置、编译、安装，文件都安装在 /opt/ltp/ 目录下。：
@@ -8343,10 +8343,10 @@ bin  IDcheck.sh  runltp  runltplite.sh  runtest  scenario_groups  share  testcas
         
         <item>
             <title>Paho Python Client 学习笔记</title>
-            <link>https://exbob.github.io/posts/2017/05/paho-python-client-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+            <link>https://shaocheng.li/posts/2017/05/paho-python-client-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
             <pubDate>Tue, 23 May 2017 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2017/05/paho-python-client-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+            <guid>https://shaocheng.li/posts/2017/05/paho-python-client-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
             <description>Paho 是一个开源的 MQTT 客户端项目，提供多种语言的 MQTT 客户端实现，包括 C、C++、C#、Java、Python、JavaScript 等，完全支持 MQTT v3.1 和 v3.1.1 。Paho Python Client 是它的 Python 语言版本，支持 Python 2.7 和 3.x 。更多特性可以查看 http://www.eclipse.org/paho/clients/python/ ，源码和文档在 https://github.com/eclipse/paho.mqtt.python 。
 该项目提供了一个测试用的 MQTT broker ：iot.eclipse.org ，端口 1883 ，无密码。
 1. 安装 在 Python 环境中用 pip install paho-mqtt 命令安装，或者下载源码：
@@ -8669,10 +8669,10 @@ $SYS/broker/version mosquitto version 1.4.11
         
         <item>
             <title>RSA 加密算法与数字证书</title>
-            <link>https://exbob.github.io/posts/2017/05/rsa-%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E4%B8%8E%E6%95%B0%E5%AD%97%E8%AF%81%E4%B9%A6/</link>
+            <link>https://shaocheng.li/posts/2017/05/rsa-%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E4%B8%8E%E6%95%B0%E5%AD%97%E8%AF%81%E4%B9%A6/</link>
             <pubDate>Tue, 16 May 2017 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2017/05/rsa-%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E4%B8%8E%E6%95%B0%E5%AD%97%E8%AF%81%E4%B9%A6/</guid>
+            <guid>https://shaocheng.li/posts/2017/05/rsa-%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E4%B8%8E%E6%95%B0%E5%AD%97%E8%AF%81%E4%B9%A6/</guid>
             <description>1. RSA 加密算法 RSA 是一种非对称加密算法，同时生成一对密钥，分为公钥和私钥，它有几个重要的特点：
  公钥可以向外发布给多人，私钥必须单独保留确保安全 使用私钥加密的信息只能要公钥解密，使用公钥加密的信息只能用私钥解密 密钥越长，被破解的难度越大，可靠性越高，普通用户应使用 1024 位密钥，证书认证机构应该使用 2048 位或以上  RSA 加密算法有两个重要的应用：信息加密和数字签名。
 2. 信息加密 如果将 RSA 用于数据加密，必然不希望别人知道数据内容，只有我可以解密，这时需要用公钥加密，私钥解密。例如，我生成了一对密钥，将公钥分给很多人，私钥自己保留，Alice 想要给我发信息时，就可以用这个公钥加密之后发给我，只有我可以用私钥解密。
@@ -8787,10 +8787,10 @@ Verified OK
         
         <item>
             <title>RaspberryPi 3 使用笔记</title>
-            <link>https://exbob.github.io/posts/2017/05/raspberrypi-3-%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</link>
+            <link>https://shaocheng.li/posts/2017/05/raspberrypi-3-%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</link>
             <pubDate>Tue, 09 May 2017 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2017/05/raspberrypi-3-%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</guid>
+            <guid>https://shaocheng.li/posts/2017/05/raspberrypi-3-%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</guid>
             <description>0. 准备  Raspberry Pi 3 Model B 32GB Class10 TF 卡（官方推荐 8GB 以上）和读卡器 5V2A USB 电源，比如 iPad 电源适配器 microUSB 电源线 HDMI 数据线 显示器 USB 键盘  1. 安装系统 下载 Raspbian jessie lite ：2017-04-10-raspbian-jessie-lite.img ，这是一个官方支持的精简系统，基于 Debian 开发，只有文本界面。
 将 TF 卡插入 MacBook ，在终端里用 df 命令可以看到 TF 卡已经被挂载：
 [22:16]~/ ❯ df Filesystem 512-blocks Used Available Capacity iused ifree %iused Mounted on /dev/disk1 487830528 299357448 187961080 62% 1687373 4293279906 0% / devfs 377 377 0 100% 654 0 100% /dev map -hosts 0 0 0 100% 0 0 100% /net map auto_home 0 0 0 100% 0 0 100% /home /dev/disk3s1 60612608 226616 60385992 1% 76 4294967203 0% /Volumes/Pi  然后卸载：</description>
@@ -9512,10 +9512,10 @@ def application(env, start_response):
         
         <item>
             <title>Linux 串口编程笔记</title>
-            <link>https://exbob.github.io/posts/2017/03/linux-%E4%B8%B2%E5%8F%A3%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0/</link>
+            <link>https://shaocheng.li/posts/2017/03/linux-%E4%B8%B2%E5%8F%A3%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0/</link>
             <pubDate>Mon, 27 Mar 2017 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2017/03/linux-%E4%B8%B2%E5%8F%A3%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0/</guid>
+            <guid>https://shaocheng.li/posts/2017/03/linux-%E4%B8%B2%E5%8F%A3%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0/</guid>
             <description>1. 串口简介 这里的串口是指美国电子工业联盟（EIA）制定的三种串行数据通信的接口标准， RS-232 、RS-485 和 RS422 ，RS-232 是单端信号全双工，RS-485 是差分信号半双工，RS-422 是差分信号全双工。差分信号的通信速率更高，通信距离更长，RS-232 的通信距离通常小于 15 米，而 RS-485 和 RS-422 可以达到 100 米以上。
 以 RS-232 为例，设计之初是用来连接调制解调器做传输之用，也因此它的脚位意义通常也和调制解调器传输有关。RS-232 的设备可以分为数据终端设备（DTE，Data Terminal Equipment, For example, PC）和数据通信设备（DCE，Data Communication Equipment）两类，这种分类定义了不同的线路用来发送和接受信号。一般来说，计算机和终端设备有DTE连接器，调制解调器和打印机有DCE连接器。标准的 232 接口有 25 针，不过常用的是 9 针的 DB-9 接口，信号定义如下：
    脚位 简写 意义 说明     Pin1 DCD Carrier Detect 调制解调器通知电脑有载波被侦测到。   Pin2 RXD Receiver 接收数据。   Pin3 TXD Transmit 发送数据。   Pin4 DTR Data Terminal Ready 电脑告诉调制解调器可以进行传输。   Pin5 GND Ground 地线。   Pin6 DSR Data Set Ready 调制解调器告诉电脑一切准备就绪。   Pin7 RTS Request To Send 电脑要求调制解调器将数据提交。   Pin8 CTS Clear To Send 调制解调器通知电脑可以传数据过来。   Pin9 RI Ring Indicator 调制解调器通知电脑有电话进来。    这个信号说明是从 DTE 设备的角度出发的，TXD、DTR 和 RTS 信号是由 DTE 产生的，RXD、DSR、CTS、DCD 和 RI 信号是由 DCE 产生的。</description>
@@ -10132,10 +10132,10 @@ ret = 12
         
         <item>
             <title>在 ITerm2 中使用 Zmodem 协议传输文件</title>
-            <link>https://exbob.github.io/posts/2017/01/%E5%9C%A8-iterm2-%E4%B8%AD%E4%BD%BF%E7%94%A8-zmodem-%E5%8D%8F%E8%AE%AE%E4%BC%A0%E8%BE%93%E6%96%87%E4%BB%B6/</link>
+            <link>https://shaocheng.li/posts/2017/01/%E5%9C%A8-iterm2-%E4%B8%AD%E4%BD%BF%E7%94%A8-zmodem-%E5%8D%8F%E8%AE%AE%E4%BC%A0%E8%BE%93%E6%96%87%E4%BB%B6/</link>
             <pubDate>Tue, 10 Jan 2017 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2017/01/%E5%9C%A8-iterm2-%E4%B8%AD%E4%BD%BF%E7%94%A8-zmodem-%E5%8D%8F%E8%AE%AE%E4%BC%A0%E8%BE%93%E6%96%87%E4%BB%B6/</guid>
+            <guid>https://shaocheng.li/posts/2017/01/%E5%9C%A8-iterm2-%E4%B8%AD%E4%BD%BF%E7%94%A8-zmodem-%E5%8D%8F%E8%AE%AE%E4%BC%A0%E8%BE%93%E6%96%87%E4%BB%B6/</guid>
             <description>Zmodem 是跨平台的文件传输协议，可以很方便的在不同的操作系统之间接传输文件。lzrsz 是该协议的实现方式：https://ohse.de/uwe/software/lrzsz.html 。安装后，在 Mac 的 ITerm2 中用 SSH 登陆远程的 Linux 主机，然后用 rz 、sz 命令传输文件。
 在 Ubuntu 中安装:
 $ sudo apt-get install lrzsz  在 Mac 中安装：
@@ -10274,10 +10274,10 @@ fi
         
         <item>
             <title>Sublime Text 3 常用插件</title>
-            <link>https://exbob.github.io/posts/2017/01/sublime-text-3-%E5%B8%B8%E7%94%A8%E6%8F%92%E4%BB%B6/</link>
+            <link>https://shaocheng.li/posts/2017/01/sublime-text-3-%E5%B8%B8%E7%94%A8%E6%8F%92%E4%BB%B6/</link>
             <pubDate>Sat, 07 Jan 2017 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2017/01/sublime-text-3-%E5%B8%B8%E7%94%A8%E6%8F%92%E4%BB%B6/</guid>
+            <guid>https://shaocheng.li/posts/2017/01/sublime-text-3-%E5%B8%B8%E7%94%A8%E6%8F%92%E4%BB%B6/</guid>
             <description>0. Package Control 用于下载、管理插件的插件，安装方法见项目主页。有时安装后会出现 “There are no packages available for installation” 这样的错误，这是因为无法下载插件资源列表文件。解决方法是在菜单栏中选择 Preferences &amp;gt; Package Settings &amp;gt; Package Control &amp;gt; Settings-User ，在打开的配置文件中添加：
 &amp;quot;channels&amp;quot;: [ &amp;quot;https://gist.githubusercontent.com/stanwu/679f8af0c9a43f800974/raw/5e3561bfb8b3ddc92680052c89e73c7dabc92f94/channel_v3.json&amp;quot;, &amp;quot;https://web.archive.org/web/20150905194312/https://packagecontrol.io/channel_v3.json&amp;quot; ],  1. Predawn 一款为Sublime和Atom打造的暗色主题，可以定义Tab的大小，SideBar大小，Find栏大小，并提供主题同款的ICON。
 安装后重启 Sublime Text ，通过菜单栏 Preferences -&amp;gt; Settings 打开用户配置文件，添加：
@@ -10443,10 +10443,10 @@ fi
         
         <item>
             <title>推荐一款 Markdown 编辑器</title>
-            <link>https://exbob.github.io/posts/2016/12/%E6%8E%A8%E8%8D%90%E4%B8%80%E6%AC%BE-markdown-%E7%BC%96%E8%BE%91%E5%99%A8/</link>
+            <link>https://shaocheng.li/posts/2016/12/%E6%8E%A8%E8%8D%90%E4%B8%80%E6%AC%BE-markdown-%E7%BC%96%E8%BE%91%E5%99%A8/</link>
             <pubDate>Sat, 24 Dec 2016 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2016/12/%E6%8E%A8%E8%8D%90%E4%B8%80%E6%AC%BE-markdown-%E7%BC%96%E8%BE%91%E5%99%A8/</guid>
+            <guid>https://shaocheng.li/posts/2016/12/%E6%8E%A8%E8%8D%90%E4%B8%80%E6%AC%BE-markdown-%E7%BC%96%E8%BE%91%E5%99%A8/</guid>
             <description>Markdown 语法解决了文本编辑时，内容与样式分离的问题，让我们更专注于内容，少在排版上浪费时间。
 Cmd Markdown 这款编辑器扩展了 Markdown 语法，实现了很多实用的功能：
  实时同步预览 编程语言高亮，显示行号 支持绘制表格、流程图、甘特图 支持 LaTeX 公式 支持段落批注 支持 Vim 编辑模式 可导出 Html 和 PDF 文件 支持云端同步存储 提供 Linux、Windows、Mac 桌面端编辑器和 Web 端编辑器  </description>
@@ -10472,10 +10472,10 @@ Cmd Markdown 这款编辑器扩展了 Markdown 语法，实现了很多实用的
         
         <item>
             <title>Linux Wireless HowTo</title>
-            <link>https://exbob.github.io/posts/2016/10/linux-wireless-howto/</link>
+            <link>https://shaocheng.li/posts/2016/10/linux-wireless-howto/</link>
             <pubDate>Wed, 26 Oct 2016 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2016/10/linux-wireless-howto/</guid>
+            <guid>https://shaocheng.li/posts/2016/10/linux-wireless-howto/</guid>
             <description>这里的无线（Wireless）指无线局域网，它的通用标准是 IEEE 802.11 协议，定义了数据链路层（MAC层）和物理层协议，工作载波的频率为 2.4GHz ，划分了 11 个频道，最新的协议已经有 5GHz 的工作频率。协议的演进方向是 802.11a-&amp;gt;802.11b-&amp;gt;802.11g-&amp;gt;802.11n 。
 而 802.11i 是 802.11 的无线安全协议，它的技术实现是 WPA 和 WPA2 ，都是开放秘钥认证方式，都属于 Wi-Fi 联盟，WPA2 是比 WPA 更高级的一种安全方式，RSN 是 WPA2 的别名。PSK 和 802.1X 是两种无线安全实现的方式，PSK 是个人级别的，而 802.1X 是企业级别的，较为复杂，但更安全。TKIP 和 CCMP 是两种数据加密算法，在 WPA 和 WPA2 中都可以使用。而 AES 是 CCMP 算法中的核心算法，且目前来看，是最可靠的加密算法。
 Wi-Fi 是一个厂商联盟的标志，目的是建立一个统一的、基于 IEEE 802.11 协议的技术实现。可以简单把 Wi-Fi 设备理解为符合 IEEE 802.11 协议标准的设备。
@@ -10894,10 +10894,10 @@ options cfg80211 ieee80211_regdom<span style="color:#f92672">=</span><span style
         
         <item>
             <title>Linux 3G Module HowTo</title>
-            <link>https://exbob.github.io/posts/2016/10/linux-3g-module-howto/</link>
+            <link>https://shaocheng.li/posts/2016/10/linux-3g-module-howto/</link>
             <pubDate>Tue, 25 Oct 2016 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2016/10/linux-3g-module-howto/</guid>
+            <guid>https://shaocheng.li/posts/2016/10/linux-3g-module-howto/</guid>
             <description>Linux 中 3G 模块的层次结构：
 硬件模块就是 3G 模块，通常通过 USB 总线接入计算机。内核中的 3G 模块驱动可以在应用层生成串行设备，例如 ttyUSB*、ttyACM* 等。3G 模块的拨号连接过程遵循 ppp 协议，它提供了通过串行点对点链路传输数据报的方法，Linux 内核集成了 ppp 协议栈，pppd 程序是 ppp 协议在用户空间的守护进程，chat 程序负责通过串行设备与 pppd 之间的通信。
 1. 硬件和驱动 大部分 3G 模块是挂在 USB 总线上，以 Telit HE910 模块为例，这是一个支持 WCDMA ，即联通 3G 的模块 ：
@@ -11386,10 +11386,10 @@ default         0.0.0.0         0.0.0.0         U     0      0        0 ppp0
         
         <item>
             <title>NetworkManager 使用笔记</title>
-            <link>https://exbob.github.io/posts/2016/10/networkmanager-%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</link>
+            <link>https://shaocheng.li/posts/2016/10/networkmanager-%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</link>
             <pubDate>Thu, 13 Oct 2016 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2016/10/networkmanager-%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</guid>
+            <guid>https://shaocheng.li/posts/2016/10/networkmanager-%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</guid>
             <description>NetworkManager 是目前 Linux 系统中提供网络连接管理服务的一套软件，也支持传统的 ifcfg 类型配置文件。核心是 NetworkManager 守护进程，还提供了命令行工具 nmcli ，以及图形界面配置工具。NetworkManager 可用于以下连接类型：以太网、VLAN、网桥、绑定、成组、Wi-Fi、移动宽带（比如移动网络 3G）及 IP-over-InfiniBand。在这些连接类型中，NetworkManager 可配置网络别名、IP 地址、静态路由器、DNS 信息及 VPN 连接以及很多具体连接参数。最后，NetworkManager 通过 D-bus 提供 API，D-Bus 允许应用程序查询并控制网络配置及状态。
 启动、停止、查看 NetworkManager 服务：
 [root@localhost ~]# systemctl start|stop|restart|status NetworkManager  NetworkManager 的配置文件和脚本保存在 /etc/sysconfig/ 目录中。大多数网络配置信息都保存在这里，VPN、移动宽带及 PPPoE 配置除外，这些配置保存在 /etc/NetworkManager/ 子目录中。例如，接口的具体信息是保存在 /etc/sysconfig/network-scripts/ 目录下的 ifcfg-* 文件中。全局设置使用 /etc/sysconfig/network 文件
@@ -11627,10 +11627,10 @@ wlp1s0    IEEE 802.11abgn  ESSID:&quot;TP-LINK_3&quot;
         
         <item>
             <title>BitBake 使用笔记</title>
-            <link>https://exbob.github.io/posts/2016/09/bitbake-%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</link>
+            <link>https://shaocheng.li/posts/2016/09/bitbake-%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</link>
             <pubDate>Mon, 12 Sep 2016 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2016/09/bitbake-%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</guid>
+            <guid>https://shaocheng.li/posts/2016/09/bitbake-%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</guid>
             <description>1. 简介 BitBake 是用 Python 写的一个程序，它是 OpenEmbedded 构建系统时使用的生产工具，现在有很多嵌入式系统都是在使用，比如Yocto 、WindRiver Linux 等。它是一个多任务引擎，可以并行执行 shell 和 Python 任务，每个任务单元根据预定义的元数据来管理源码、配置、编译、打包，并最终将每个任务生成的文件集合成为系统镜像。例如要从源码构建一个 Linux 系统，需要搭建一个生产环境，然后依次生成 Grub、Kernel、各种库文件、各种可执行文件，然后集合到一个文件系统里。如果你玩过 LFS ，就会了解这个过程的复杂性。BitBake 存在的意义就是提供了一个高效的工具，将这个过程标准化、流程化。BitBake 与 GNU Make 的关系就像 GNU Make 之于 GCC ，运作方式也类似 GNU Make ，又有很多不同：
  BitBake 根据预先定义的元数据执行任务，这些元数据定义了执行任务所需的变量，执行任务的过程，以及任务之间的依赖关系，它们存储在 recipe(.bb)、append(.bbappend)、configuration(.conf)、include(.inc) 和 class(.bbclass) 文件中。 BitBake 包含一个抓取器，用于从不同的位置获取源码，例如本地文件、源码控制器(git)、网站等。 每一个任务单元的结构通过 recipe 文件描述，描述的信息有依赖关系、源码位置、版本信息、校验和、说明等等。 BitBake 包含了一个 C/S 的抽象概念，可以通过命令行或者 XML-RPC 使用，拥有多种用户接口。  几个概念：
  Recipe 。Recipe 文件是最基本的元数据文件，每个任务单元对应一个 Recipe 文件，后缀是 .bb ，这种文件为 BitBake 提供的信息包括软件包的基本信息（作者、版本、License等）、依赖关系、源码的位置和获取方法、补丁、配置和编译方法、如何打包和安装。 Configuration 。Configuration 文件的后缀是 .conf ，它会在很多地方出现，定义了多种变量，包括硬件架构选项、编译器选项、通用配置选项、用户配置选项。主 Configuration 文件是 bitbake.</description>
@@ -11703,10 +11703,10 @@ wlp1s0    IEEE 802.11abgn  ESSID:&quot;TP-LINK_3&quot;
         
         <item>
             <title>Start Developing iOS Apps (Swift)</title>
-            <link>https://exbob.github.io/posts/2016/05/start-developing-ios-apps-swift/</link>
+            <link>https://shaocheng.li/posts/2016/05/start-developing-ios-apps-swift/</link>
             <pubDate>Fri, 06 May 2016 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2016/05/start-developing-ios-apps-swift/</guid>
+            <guid>https://shaocheng.li/posts/2016/05/start-developing-ios-apps-swift/</guid>
             <description>原文：Start Developing iOS Apps (Swift)
 Translated by Bob
 2016-05-06
@@ -12242,10 +12242,10 @@ class ViewController: UIViewController {
         
         <item>
             <title>晴天钟 Documentation</title>
-            <link>https://exbob.github.io/posts/2016/04/%E6%99%B4%E5%A4%A9%E9%92%9F-documentation/</link>
+            <link>https://shaocheng.li/posts/2016/04/%E6%99%B4%E5%A4%A9%E9%92%9F-documentation/</link>
             <pubDate>Wed, 06 Apr 2016 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2016/04/%E6%99%B4%E5%A4%A9%E9%92%9F-documentation/</guid>
+            <guid>https://shaocheng.li/posts/2016/04/%E6%99%B4%E5%A4%A9%E9%92%9F-documentation/</guid>
             <description>1. 简介 晴天钟是一系列天气预测产品的总称，它们主要提取于美国国家大气海洋局/气候环境预测局(NOAA/NCEP)的“全球预测系统”(Global Forecast System, GFS)数值模式。由叶泉志开发，目前由中国科学院上海天文台中国天文科普网提供硬件及网络支持。
 2. 使用 域名是 http://7timer.org ，IP 访问 http://202.127.24.18/ 。域名不太稳定，通常用 IP 访问 。由于它使用的是 Google 地图，所有要开启翻墙代理，还要选择英文，否则就看不到地图了。
 我通常用它来查看天文用途的天气预报。在地图上单击选点，然后选择 ASTRO ：
@@ -12719,10 +12719,10 @@ JSON: <a href="http://202.127.24.18/v4/bin/api.pl?lon=118.093&amp;lat=24.468&amp
         
         <item>
             <title>Linux 下调试低功耗蓝牙的笔记</title>
-            <link>https://exbob.github.io/posts/2016/04/linux-%E4%B8%8B%E8%B0%83%E8%AF%95%E4%BD%8E%E5%8A%9F%E8%80%97%E8%93%9D%E7%89%99%E7%9A%84%E7%AC%94%E8%AE%B0/</link>
+            <link>https://shaocheng.li/posts/2016/04/linux-%E4%B8%8B%E8%B0%83%E8%AF%95%E4%BD%8E%E5%8A%9F%E8%80%97%E8%93%9D%E7%89%99%E7%9A%84%E7%AC%94%E8%AE%B0/</link>
             <pubDate>Tue, 05 Apr 2016 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2016/04/linux-%E4%B8%8B%E8%B0%83%E8%AF%95%E4%BD%8E%E5%8A%9F%E8%80%97%E8%93%9D%E7%89%99%E7%9A%84%E7%AC%94%E8%AE%B0/</guid>
+            <guid>https://shaocheng.li/posts/2016/04/linux-%E4%B8%8B%E8%B0%83%E8%AF%95%E4%BD%8E%E5%8A%9F%E8%80%97%E8%93%9D%E7%89%99%E7%9A%84%E7%AC%94%E8%AE%B0/</guid>
             <description>蓝牙 4.0 版本推出了低功耗规范，简称 BLE (Bluetooth Low Energy)，很多小型设备，例如小米手环，都是使用低功耗蓝牙。要与这类模块连接，主设备的蓝牙模块必须支持低功耗，例如 intel 2230 ：
 现在有一个 BLE 的透传模块，会不断的发出数据，我的主机安装了 Linux ，使用 intel 2230 接收数据。协议栈依然是 BlueZ 。
 1. GATT 协议 BLE 连接都是建立在 GATT 协议之上的。介绍 GATT 之前，需要了解 GAP（Generic Access Profile）。它在用来控制设备连接和广播。GAP 使你的设备被其他设备可见，并决定了你的设备是否可以或者怎样与合同设备进行交互。GAP 给设备定义了若干角色，其中主要的两个是：外围设备（Peripheral）和中心设备（Central），外设必须不停的向外广播，让中心设备知道它的存在。中心设备扫描到外设后，发起并建立 GATT 连接。
@@ -13078,10 +13078,10 @@ Notification handle = 0x001a value: 32 30 37 38 20 35 33 32 37 20 34 33 30 35 20
         
         <item>
             <title>BlueZ 蓝牙编程笔记</title>
-            <link>https://exbob.github.io/posts/2016/03/bluez-%E8%93%9D%E7%89%99%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0/</link>
+            <link>https://shaocheng.li/posts/2016/03/bluez-%E8%93%9D%E7%89%99%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0/</link>
             <pubDate>Wed, 23 Mar 2016 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2016/03/bluez-%E8%93%9D%E7%89%99%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0/</guid>
+            <guid>https://shaocheng.li/posts/2016/03/bluez-%E8%93%9D%E7%89%99%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0/</guid>
             <description>1. 简介 BlueZ 是 Linux 官方的蓝牙协议栈，官网地址： 。
 BlueZ 的代码由两个部分组成：内核代码和用户空间程序。内核代码包括驱动和核心协议栈，用户空间程序包括应用程序接口和操作蓝牙设备的工具。BlueZ 的体系结构如下图：
 我使用的版本是 bluez-4.101 。
@@ -13172,10 +13172,10 @@ int ba2str( const bdaddr_t *ba, char *str );
         
         <item>
             <title>核桃</title>
-            <link>https://exbob.github.io/posts/2016/02/%E6%A0%B8%E6%A1%83/</link>
+            <link>https://shaocheng.li/posts/2016/02/%E6%A0%B8%E6%A1%83/</link>
             <pubDate>Tue, 23 Feb 2016 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2016/02/%E6%A0%B8%E6%A1%83/</guid>
+            <guid>https://shaocheng.li/posts/2016/02/%E6%A0%B8%E6%A1%83/</guid>
             <description>朦胧中，好像醒了。
 抬眼看窗外，天还黑，
 拿起手机，才五点。
@@ -13218,10 +13218,10 @@ int ba2str( const bdaddr_t *ba, char *str );
         
         <item>
             <title>Logrotate</title>
-            <link>https://exbob.github.io/posts/2016/01/logrotate/</link>
+            <link>https://shaocheng.li/posts/2016/01/logrotate/</link>
             <pubDate>Thu, 21 Jan 2016 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2016/01/logrotate/</guid>
+            <guid>https://shaocheng.li/posts/2016/01/logrotate/</guid>
             <description>在 Linux 系统中存在各种日志文件，例如保存启动信息和内核信息的 /var/log/dmesg ，保存系统日志的 /var/log/syslog 等。如果连续运行时间太长，这些日志会越来越大，最终占据太多系统空间。所以，我们需要定期清理系统日志。Logrotate 的主要功能就是定时将旧的日志文件归档，同时创建一个新的空的日志文件，归档的文件可以选择压缩或者发送到指定的邮箱，这个过程叫做轮替（rotate）：
 Logrotate 是基于 cron 运行的，他的脚本是 /etc/cron.daily/logrotate :
 #!/bin/sh /usr/sbin/logrotate /etc/logrotate.conf EXITVALUE=$? if [ $EXITVALUE != 0 ]; then /usr/bin/logger -t logrotate &amp;quot;ALERT exited abnormally with [$EXITVALUE]&amp;quot; fi exit 0   cron 用于设置周期性被执行的指令，是运行在后台的守护进程。
@@ -13302,10 +13302,10 @@ include /etc/logrotate.d
         
         <item>
             <title>Openemu on Mac</title>
-            <link>https://exbob.github.io/posts/2016/01/openemu-on-mac/</link>
+            <link>https://shaocheng.li/posts/2016/01/openemu-on-mac/</link>
             <pubDate>Sun, 10 Jan 2016 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2016/01/openemu-on-mac/</guid>
+            <guid>https://shaocheng.li/posts/2016/01/openemu-on-mac/</guid>
             <description>Openemu 是一款多功能游戏机模拟器软件，可以在 Mac 上模拟多种游戏机，从早期的 GBA 到索尼的 PSP ，有了它，我就可以在 Mac 上玩超级马里奥顶蘑菇了。
 你可以在官网 Openemu.org 下载，解压后即可运行。模拟器没有自带游戏，可以在 Homebrew 中浏览下载，但是可选择的并不多。另一个网站 emuparadise.me 提供了大量的游戏 ROM ，我在这里可以搜索马里奥：
 然后下载、解压，将游戏 ROM 拖拽到模拟器界面即可完成安装。</description>
@@ -13325,10 +13325,10 @@ include /etc/logrotate.d
         
         <item>
             <title>lsof 命令入门</title>
-            <link>https://exbob.github.io/posts/2016/01/lsof-%E5%91%BD%E4%BB%A4%E5%85%A5%E9%97%A8/</link>
+            <link>https://shaocheng.li/posts/2016/01/lsof-%E5%91%BD%E4%BB%A4%E5%85%A5%E9%97%A8/</link>
             <pubDate>Fri, 08 Jan 2016 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2016/01/lsof-%E5%91%BD%E4%BB%A4%E5%85%A5%E9%97%A8/</guid>
+            <guid>https://shaocheng.li/posts/2016/01/lsof-%E5%91%BD%E4%BB%A4%E5%85%A5%E9%97%A8/</guid>
             <description>以前只是用 lsof 命令查看某个文件被那些进程打开了，直到看了这篇文章：An lsof Primer ，展示了 lsof 强大的一面。网上有很多翻译，找不到原始版本了，我修改了一些地方。
  lsof 是系统管理/安全的高级工具（über-tool）。大多数时候，我用它来获取系统中与网络连接相关的信息，但那只是这个强大有小众的命令的第一步。将这个工具称之为 lsof 真是名副其实，因为它是指“列出打开的文件（lists openfiles）”。切记，在 Unix 中一切（包括网络套接字）都是文件。
 有趣的是，lsof 也是有着最多开关的 Linux/Unix 命令之一。它有那么多的开关，许多选项支持使用 - 和 + 前缀。
@@ -13571,10 +13571,10 @@ bkdr   1893 daniel 3u  IPv6 3456 TCP 10.10.1.10:1234-&gt;1.1.1.1:31337 (ESTABLIS
         
         <item>
             <title>hostapd HOWTO</title>
-            <link>https://exbob.github.io/posts/2016/01/hostapd-howto/</link>
+            <link>https://shaocheng.li/posts/2016/01/hostapd-howto/</link>
             <pubDate>Fri, 01 Jan 2016 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2016/01/hostapd-howto/</guid>
+            <guid>https://shaocheng.li/posts/2016/01/hostapd-howto/</guid>
             <description>1. About hostapd 是一个运行在 Linux 用户空间的 daemon 程序，它可以将 IEEE 802.11 无线网卡切换为 AP 模式，也就是实现软 AP 功能，并提供 IEEE 802.1X/WPA/WPA2/EAP/RADIUS 的认证服务。它使用 nl80211 接口与内核进行通信，支持基于 mac80211 框架的无线驱动。下面是 Linux 的无线网络架构：
  IEEE 802.11 是现在的无线局域网通用的标准，我们通常把它与 Wi-Fi 混为一谈。 mac80211 是 Linux 内核的 802.11 无线设备驱动框架，intel 的无线网卡驱动 iwlwifi 就是基于这个框架。 cfg80211 是 Linux 内核中配置和管理 802.11 无线设备的接口，与 FullMAC 驱动, mac80211 驱动一起工作。 nl80211 和 wext 是两种面向用户空间的接口标准，用于在用户空间配置和管理 802.11 无线设备，内核的 cfg80211 一起工作，目前两种标准同时存在于内核中，nl80211 正在逐步替代 wext ，hostapd 只支持 nl80211 。  iw 就是一个使用 nl80211 接口的命令，用它可以查看和配置无线网卡，支持 nl80211 标准，不支持老的 wext 标准。用 iw list 可以获取当前无线网卡的全部特性，在 Supported interface modes 和 software interface modes 中看到无线网卡是否支持 AP 模式，已经 AP 类型：</description>
             <content type="html"><![CDATA[
@@ -13949,10 +13949,10 @@ You can start and stop it with:
         
         <item>
             <title>Git 笔记</title>
-            <link>https://exbob.github.io/posts/2015/12/git-%E7%AC%94%E8%AE%B0/</link>
+            <link>https://shaocheng.li/posts/2015/12/git-%E7%AC%94%E8%AE%B0/</link>
             <pubDate>Tue, 29 Dec 2015 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2015/12/git-%E7%AC%94%E8%AE%B0/</guid>
+            <guid>https://shaocheng.li/posts/2015/12/git-%E7%AC%94%E8%AE%B0/</guid>
             <description>1. 配置 git 的全局配置文件是用户目录下的 .gitconfig 文件。设置用户信息：
 git config [--global] user.name &amp;quot;[name]&amp;quot; git config [--global] user.email &amp;quot;[email address]&amp;quot;  2. 创建新仓库  在当前目录下创建新仓库 git init 克隆远程服务器上的仓库 git clone [url]  创建新仓库时会生成 .git 文件夹，包含了该仓库的所有配置文件。
 3. 工作流 源码目录称为工作区 workspace ,本地仓库叫做 Repository ，远程仓库叫做 Remote ，在本地仓库和工作区之间存在一个暂存区 Index 。通常的工作流程是修改源码、放入暂存区、提交到仓库、推送到远程服务器：
@@ -14122,10 +14122,10 @@ v1.0-1-g740c0c4
         
         <item>
             <title>学习 Swift&amp;iOS</title>
-            <link>https://exbob.github.io/posts/2015/11/%E5%AD%A6%E4%B9%A0-swiftios/</link>
+            <link>https://shaocheng.li/posts/2015/11/%E5%AD%A6%E4%B9%A0-swiftios/</link>
             <pubDate>Mon, 30 Nov 2015 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2015/11/%E5%AD%A6%E4%B9%A0-swiftios/</guid>
+            <guid>https://shaocheng.li/posts/2015/11/%E5%AD%A6%E4%B9%A0-swiftios/</guid>
             <description> Swift  The Swift Programming Language 中文版 如果没有苹果电脑，可用 swift 在线编译器 使用 Playground 快速练习 Swift 语法  </description>
             <content type="html"><![CDATA[
 
@@ -14141,10 +14141,10 @@ v1.0-1-g740c0c4
         
         <item>
             <title>Linux IPv6 HOWTO</title>
-            <link>https://exbob.github.io/posts/2015/11/linux-ipv6-howto/</link>
+            <link>https://shaocheng.li/posts/2015/11/linux-ipv6-howto/</link>
             <pubDate>Fri, 27 Nov 2015 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2015/11/linux-ipv6-howto/</guid>
+            <guid>https://shaocheng.li/posts/2015/11/linux-ipv6-howto/</guid>
             <description>1. What is IPv6 IPv6 是为了解决 IPv4 地址资源日渐枯竭的问题，使用的是 128bit 地址，可以提供更多的地址空间。IPv6 地址以 16bit 为一组，每组用冒号隔开，可以分为八组，每组以 4 个十六进制数表示，共 32 个十六进制数，例如 2001:0db8:85a3:08d3:1319:8a2e:0370:7344 是一个合法的 IPv6 地址，它又可以分为两个逻辑部分：一个 64 位的网络前缀和一个 64 位的主机地址。
 IPv6 中的 loopback interface 定义为 0000:0000:0000:0000:0000:0000:0000:0001 ，也可以表示为 ::1 ，因为每组中的前导 0 可以省略，一对连续的冒号表示多组 0 ，一个 IPv6 地址中允许出现一对连冒号。
 IPv4 位址可以很容易的转化为 IPv6 格式。如果 IPv4 的一个地址为135.75.43.52（十六进制为 0x874B2B34 ），它可以被转化为0000:0000:0000:0000:0000:ffff:874B:2B34 或者 ::ffff:874B:2B34 。同时，还可以使用混合符号（IPv4-compatible address），则地址可以为 ::ffff:135.75.43.52 。
@@ -14206,10 +14206,10 @@ IPv4 位址可以很容易的转化为 IPv6 格式。如果 IPv4 的一个地址
         
         <item>
             <title>Linux 下调试蓝牙模块的笔记</title>
-            <link>https://exbob.github.io/posts/2015/10/linux-%E4%B8%8B%E8%B0%83%E8%AF%95%E8%93%9D%E7%89%99%E6%A8%A1%E5%9D%97%E7%9A%84%E7%AC%94%E8%AE%B0/</link>
+            <link>https://shaocheng.li/posts/2015/10/linux-%E4%B8%8B%E8%B0%83%E8%AF%95%E8%93%9D%E7%89%99%E6%A8%A1%E5%9D%97%E7%9A%84%E7%AC%94%E8%AE%B0/</link>
             <pubDate>Thu, 22 Oct 2015 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2015/10/linux-%E4%B8%8B%E8%B0%83%E8%AF%95%E8%93%9D%E7%89%99%E6%A8%A1%E5%9D%97%E7%9A%84%E7%AC%94%E8%AE%B0/</guid>
+            <guid>https://shaocheng.li/posts/2015/10/linux-%E4%B8%8B%E8%B0%83%E8%AF%95%E8%93%9D%E7%89%99%E6%A8%A1%E5%9D%97%E7%9A%84%E7%AC%94%E8%AE%B0/</guid>
             <description>1. 蓝牙简介 蓝牙是一种支持设备短距离通信的无线电技术，使用 2.4GHz 频段，数据速率为1Mbps 。采用时分复用方案实现全双工传输。
 蓝牙技术将设备分为两种：主设备和从设备。
 蓝牙主设备的特点：主设备一般具有输入端。在进行蓝牙匹配操作时，用户通过输入端可输入随机的匹配密码来将两个设备匹配。蓝牙手机、安装有蓝牙模块的 PC 等都是主设备。（例如：蓝牙手机和蓝牙 PC 进行匹配时，用户可在蓝牙手机上任意输入一组数字，然后在蓝牙PC上输入相同的一组数字，来完成这两个设备之间的匹配。）
@@ -14650,10 +14650,10 @@ Playing WAVE './test.wav' : Signed 16 bit Little Endian, Rate 44100 Hz, Stereo
         
         <item>
             <title>Linux 命令行下的 3G 模块配置工具 comgt</title>
-            <link>https://exbob.github.io/posts/2015/09/linux-%E5%91%BD%E4%BB%A4%E8%A1%8C%E4%B8%8B%E7%9A%84-3g-%E6%A8%A1%E5%9D%97%E9%85%8D%E7%BD%AE%E5%B7%A5%E5%85%B7-comgt/</link>
+            <link>https://shaocheng.li/posts/2015/09/linux-%E5%91%BD%E4%BB%A4%E8%A1%8C%E4%B8%8B%E7%9A%84-3g-%E6%A8%A1%E5%9D%97%E9%85%8D%E7%BD%AE%E5%B7%A5%E5%85%B7-comgt/</link>
             <pubDate>Wed, 09 Sep 2015 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2015/09/linux-%E5%91%BD%E4%BB%A4%E8%A1%8C%E4%B8%8B%E7%9A%84-3g-%E6%A8%A1%E5%9D%97%E9%85%8D%E7%BD%AE%E5%B7%A5%E5%85%B7-comgt/</guid>
+            <guid>https://shaocheng.li/posts/2015/09/linux-%E5%91%BD%E4%BB%A4%E8%A1%8C%E4%B8%8B%E7%9A%84-3g-%E6%A8%A1%E5%9D%97%E9%85%8D%E7%BD%AE%E5%B7%A5%E5%85%B7-comgt/</guid>
             <description>comgt帮助文档
 comgt 是一个 GPRS/EDGE/3G/HSDPA 和 3G/GPRS 模块配置工具。它更像是一个脚本语言解释器，通过调用内建、或者外部脚本与 GPRS 和 3G 模块通讯。
 语法 comgt -d device -ehstvVx script
@@ -14744,10 +14744,10 @@ comgt 是一个 GPRS/EDGE/3G/HSDPA 和 3G/GPRS 模块配置工具。它更像是
         
         <item>
             <title>用 Python 解析 GPS 轨迹数据</title>
-            <link>https://exbob.github.io/posts/2015/09/%E7%94%A8-python-%E8%A7%A3%E6%9E%90-gps-%E8%BD%A8%E8%BF%B9%E6%95%B0%E6%8D%AE/</link>
+            <link>https://shaocheng.li/posts/2015/09/%E7%94%A8-python-%E8%A7%A3%E6%9E%90-gps-%E8%BD%A8%E8%BF%B9%E6%95%B0%E6%8D%AE/</link>
             <pubDate>Tue, 08 Sep 2015 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2015/09/%E7%94%A8-python-%E8%A7%A3%E6%9E%90-gps-%E8%BD%A8%E8%BF%B9%E6%95%B0%E6%8D%AE/</guid>
+            <guid>https://shaocheng.li/posts/2015/09/%E7%94%A8-python-%E8%A7%A3%E6%9E%90-gps-%E8%BD%A8%E8%BF%B9%E6%95%B0%E6%8D%AE/</guid>
             <description>常见的 GPS 数据文件格式有 GPS、CVS、KML 等，这些数据格式本身并不复杂，基本都是对坐标点的集合，大部分 GPS 记录仪都支持多种格式的数据文件的导入和导出。但是有时还是需要做格式转换，比如 Google Earth 只支持 KML 格式导入。所以，我准备做一个 GPS 数据格式转换工具，使用 Python，做一个基于命令行的工具。
 1. GPX GPX（GPS eXchange Format，GPS交换格式）是一个XML格式，它可以用来描述路点、轨迹、路程。这个格式是免费的，可以在不需要付任何许可费用的前提下使用。它的标签保存位置，海拔和时间。
 在GPX中，一个没有顺序关系的点集合，叫路点。一个有顺序的点的集合叫轨迹或者路程。轨迹是一个人曾经走过的记录，路程是一个建议的下一步要走的地方。所以，一般来讲，轨迹里的点，包含时间信息，路程里的点，没有时间信息。
@@ -14800,10 +14800,10 @@ csv 模块定义了如下几个函数：
         
         <item>
             <title>可自定义的 Mac 桌面扩展 Übersicht</title>
-            <link>https://exbob.github.io/posts/2015/08/%E5%8F%AF%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84-mac-%E6%A1%8C%E9%9D%A2%E6%89%A9%E5%B1%95-u%CC%88bersicht/</link>
+            <link>https://shaocheng.li/posts/2015/08/%E5%8F%AF%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84-mac-%E6%A1%8C%E9%9D%A2%E6%89%A9%E5%B1%95-u%CC%88bersicht/</link>
             <pubDate>Sat, 29 Aug 2015 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2015/08/%E5%8F%AF%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84-mac-%E6%A1%8C%E9%9D%A2%E6%89%A9%E5%B1%95-u%CC%88bersicht/</guid>
+            <guid>https://shaocheng.li/posts/2015/08/%E5%8F%AF%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9A%84-mac-%E6%A1%8C%E9%9D%A2%E6%89%A9%E5%B1%95-u%CC%88bersicht/</guid>
             <description>Keep an eye on what is happening on your machine and in the World
  http://tracesof.net/uebersicht/
 At a Glance Übersicht lets you run system commands and display their output on your desktop in little containers, called widgets. Widgets are written using HTML5, which means they
@@ -14854,10 +14854,10 @@ style: &quot;&quot;&quot;
         
         <item>
             <title>获得 IP 所在地的网站 freegeoip.net</title>
-            <link>https://exbob.github.io/posts/2015/08/%E8%8E%B7%E5%BE%97-ip-%E6%89%80%E5%9C%A8%E5%9C%B0%E7%9A%84%E7%BD%91%E7%AB%99-freegeoip.net/</link>
+            <link>https://shaocheng.li/posts/2015/08/%E8%8E%B7%E5%BE%97-ip-%E6%89%80%E5%9C%A8%E5%9C%B0%E7%9A%84%E7%BD%91%E7%AB%99-freegeoip.net/</link>
             <pubDate>Sat, 22 Aug 2015 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2015/08/%E8%8E%B7%E5%BE%97-ip-%E6%89%80%E5%9C%A8%E5%9C%B0%E7%9A%84%E7%BD%91%E7%AB%99-freegeoip.net/</guid>
+            <guid>https://shaocheng.li/posts/2015/08/%E8%8E%B7%E5%BE%97-ip-%E6%89%80%E5%9C%A8%E5%9C%B0%E7%9A%84%E7%BD%91%E7%AB%99-freegeoip.net/</guid>
             <description>About http://freegeoip.net provides a public HTTP API for software developers to search the geolocation of IP addresses. It uses a database of IP addresses that are associated to cities along with other relevant information like time zone, latitude and longitude.
 You&amp;rsquo;re allowed up to 10,000 queries per hour by default. Once this limit is reached, all of your requests will result in HTTP 403, forbidden, until your quota is cleared.</description>
             <content type="html"><![CDATA[
@@ -14917,10 +14917,10 @@ You&amp;rsquo;re allowed up to 10,000 queries per hour by default. Once this lim
         
         <item>
             <title>MQTT 协议和 mosquitto</title>
-            <link>https://exbob.github.io/posts/2015/08/mqtt-%E5%8D%8F%E8%AE%AE%E5%92%8C-mosquitto/</link>
+            <link>https://shaocheng.li/posts/2015/08/mqtt-%E5%8D%8F%E8%AE%AE%E5%92%8C-mosquitto/</link>
             <pubDate>Tue, 11 Aug 2015 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2015/08/mqtt-%E5%8D%8F%E8%AE%AE%E5%92%8C-mosquitto/</guid>
+            <guid>https://shaocheng.li/posts/2015/08/mqtt-%E5%8D%8F%E8%AE%AE%E5%92%8C-mosquitto/</guid>
             <description>1. MQTT 介绍 http://mqtt.org/
 MQTT 是一个轻型协议，使用基于 TCP/IP 协议的发布/订阅消息转发模式，专门用于机器对机器 (M2M) 通信。 MQTT 协议的中心是 MQTT 服务器或代理 (broker) ，支持发布程序和订阅程序进行访问，如下图所示：
 用户可以使用 MQTT 构建一个传感器网络，其中各种传感器都能够以其传感器独有的消息形式发布传感器值。 订阅程序能够订阅不同的消息，以据此采取措施。 MQTT 代理将处理从发布程序到订阅程序的转发消息。
@@ -15372,10 +15372,10 @@ int mosquitto_lib_cleanup();
         
         <item>
             <title>Python 的多线程</title>
-            <link>https://exbob.github.io/posts/2015/07/python-%E7%9A%84%E5%A4%9A%E7%BA%BF%E7%A8%8B/</link>
+            <link>https://shaocheng.li/posts/2015/07/python-%E7%9A%84%E5%A4%9A%E7%BA%BF%E7%A8%8B/</link>
             <pubDate>Mon, 27 Jul 2015 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2015/07/python-%E7%9A%84%E5%A4%9A%E7%BA%BF%E7%A8%8B/</guid>
+            <guid>https://shaocheng.li/posts/2015/07/python-%E7%9A%84%E5%A4%9A%E7%BA%BF%E7%A8%8B/</guid>
             <description>Python 的标准库提供了两个模块支持多线程：thread 和 threading ，thread 是低级模块，threading 是对 thread 进行了封装的高级模块，通常直接用 threading 模块。
 threading 库：https://docs.python.org/2/library/threading.html
 1. 创建线程 threading 模块定义了 Thread 对象，创建一个线程就是创建一个 Thread 实例，用 name 参数指定线程的名称，用 target 参数指定该线程执行的函数。然后调用 start() 方法开始执行，join() 方法的作用是等待线程结束，它可以带一个参数，表示超时时间：
@@ -15593,10 +15593,10 @@ t.start()
         
         <item>
             <title>Python 对 JSON 的处理</title>
-            <link>https://exbob.github.io/posts/2015/07/python-%E5%AF%B9-json-%E7%9A%84%E5%A4%84%E7%90%86/</link>
+            <link>https://shaocheng.li/posts/2015/07/python-%E5%AF%B9-json-%E7%9A%84%E5%A4%84%E7%90%86/</link>
             <pubDate>Tue, 21 Jul 2015 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2015/07/python-%E5%AF%B9-json-%E7%9A%84%E5%A4%84%E7%90%86/</guid>
+            <guid>https://shaocheng.li/posts/2015/07/python-%E5%AF%B9-json-%E7%9A%84%E5%A4%84%E7%90%86/</guid>
             <description>1.什么是 JSON JSON 介绍：http://json.org/json-zh.html
 JSON 是 JavaScript 对象表示法语法的子集，是一种轻量级的数据交换格式。一个 JSON 对象是 “名称:值” 对的无序集合，用花括号包含，“名称:值” 对包含一个字段名称（在双引号中），然后跟一个冒号，最后是值，例如：
 { &amp;quot;name&amp;quot;: &amp;quot;sample_app&amp;quot;, &amp;quot;cmd&amp;quot;: [&amp;quot;python&amp;quot;, &amp;quot;$MOD/sample.py&amp;quot;, &amp;quot;-c&amp;quot;, &amp;quot;$MOD/init.cfg&amp;quot;], &amp;quot;depends&amp;quot;: [&amp;quot;modbus_USBV0&amp;quot;, &amp;quot;cloud_client&amp;quot;, &amp;quot;defaultdb&amp;quot;], &amp;quot;version&amp;quot;: &amp;quot;1.0.0&amp;quot; }  这里的值可以是：
@@ -15758,10 +15758,10 @@ ValueError: Extra data: line 8 column 1 - line 9 column 1 (char 168 - 174)
         
         <item>
             <title>Linux 系统中的时间</title>
-            <link>https://exbob.github.io/posts/2015/07/linux-%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84%E6%97%B6%E9%97%B4/</link>
+            <link>https://shaocheng.li/posts/2015/07/linux-%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84%E6%97%B6%E9%97%B4/</link>
             <pubDate>Wed, 01 Jul 2015 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2015/07/linux-%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84%E6%97%B6%E9%97%B4/</guid>
+            <guid>https://shaocheng.li/posts/2015/07/linux-%E7%B3%BB%E7%BB%9F%E4%B8%AD%E7%9A%84%E6%97%B6%E9%97%B4/</guid>
             <description>1. 时区 Linux 系统中通过 /etc/localtime 文件设置系统时区，所有的时区文件在 /usr/share/zoneinfo/ 目录下
 如果要修改时区，直接将 /usr/share/zoneinfo/ 下的相应时区文件复制到 /etc/ 下，改名为 localtime 即可。
 2. 系统时间的显示和设置 常用的显示或设置系统时间的命令是 date 。
@@ -16113,10 +16113,10 @@ counter = 5
         
         <item>
             <title>Python 学习资料</title>
-            <link>https://exbob.github.io/posts/2015/06/python-%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/</link>
+            <link>https://shaocheng.li/posts/2015/06/python-%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/</link>
             <pubDate>Sat, 13 Jun 2015 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2015/06/python-%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/</guid>
+            <guid>https://shaocheng.li/posts/2015/06/python-%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/</guid>
             <description> 基础教程：  廖雪峰的 Python 2.7 教程 ：http://www.liaoxuefeng.com/wiki/001374738125095c955c1e6d8bb493182103fac9270762a000 Python 标准库 ： http://python.usyiyi.cn/python_278/library/index.html  网络编程：  Python Socket 网络编程 ：http://www.jianshu.com/p/49750ca1589d Sockets programming in Python ：http://www.ibm.com/developerworks/linux/tutorials/l-pysocks/ Python TCP Communication ：https://wiki.python.org/moin/TcpCommunication  数据库  SQLite 教程 ：http://www.w3cschool.cc/sqlite/sqlite-tutorial.html  Pillow  Pillow 快速入门 ：http://pillow-cn.readthedocs.org/zh_CN/latest/handbook/tutorial.html Pillow Tutorial ：https://pillow.readthedocs.org/handbook/tutorial.html#cutting-pasting-and-merging-images Pillow Reference ：https://pillow.readthedocs.org/reference/index.html  Requests  Python Requests的安装与简单运用 ：http://www.zhidaow.com/post/python-requests-install-and-brief-introduction Python Requests 1.1.0 快速上手： http://requests-docs-cn.readthedocs.org/zh_CN/latest/user/quickstart.html  爬虫  Python 爬虫系列教程 ：http://cuiqingcai.com/1052.html Scrapy 框架文档 ：http://scrapy-chs.readthedocs.org/zh_CN/0.24/index.html  </description>
             <content type="html"><![CDATA[
 
@@ -16167,10 +16167,10 @@ counter = 5
         
         <item>
             <title>Libmodbus 编程说明</title>
-            <link>https://exbob.github.io/posts/2015/05/libmodbus-%E7%BC%96%E7%A8%8B%E8%AF%B4%E6%98%8E/</link>
+            <link>https://shaocheng.li/posts/2015/05/libmodbus-%E7%BC%96%E7%A8%8B%E8%AF%B4%E6%98%8E/</link>
             <pubDate>Sun, 24 May 2015 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2015/05/libmodbus-%E7%BC%96%E7%A8%8B%E8%AF%B4%E6%98%8E/</guid>
+            <guid>https://shaocheng.li/posts/2015/05/libmodbus-%E7%BC%96%E7%A8%8B%E8%AF%B4%E6%98%8E/</guid>
             <description>项目主页：http://libmodbus.org
 程序中必须包含头文件，编译时连接到 libmodbus ：
 #include &amp;lt;modbus.h&amp;gt; cc `pkg-config --cflags --libs libmodbus` files  在程序中使用 libmodbus 主要是如下几个步骤。
@@ -16310,10 +16310,10 @@ Waiting for a confirmation…
         
         <item>
             <title>C 语言日志函数库 zlog</title>
-            <link>https://exbob.github.io/posts/2015/02/c-%E8%AF%AD%E8%A8%80%E6%97%A5%E5%BF%97%E5%87%BD%E6%95%B0%E5%BA%93-zlog/</link>
+            <link>https://shaocheng.li/posts/2015/02/c-%E8%AF%AD%E8%A8%80%E6%97%A5%E5%BF%97%E5%87%BD%E6%95%B0%E5%BA%93-zlog/</link>
             <pubDate>Fri, 06 Feb 2015 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2015/02/c-%E8%AF%AD%E8%A8%80%E6%97%A5%E5%BF%97%E5%87%BD%E6%95%B0%E5%BA%93-zlog/</guid>
+            <guid>https://shaocheng.li/posts/2015/02/c-%E8%AF%AD%E8%A8%80%E6%97%A5%E5%BF%97%E5%87%BD%E6%95%B0%E5%BA%93-zlog/</guid>
             <description> 项目主页：http://hardysimpson.github.io/zlog/ 下载地址：https://github.com/HardySimpson/zlog/releases 中文使用手册：http://hardysimpson.github.io/zlog/UsersGuide-CN.html  下载后解压安装：
 [21:15]Workspace/ ❯ tar xvf zlog-latest-stable.tar.gz [21:16]Workspace/ ❯ cd zlog-latest-stable [21:17]zlog-latest-stable/ ❯ make  </description>
             <content type="html"><![CDATA[<ul>
@@ -16333,10 +16333,10 @@ Waiting for a confirmation…
         
         <item>
             <title>科学上网利器 Shadowsocks</title>
-            <link>https://exbob.github.io/posts/2015/01/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91%E5%88%A9%E5%99%A8-shadowsocks/</link>
+            <link>https://shaocheng.li/posts/2015/01/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91%E5%88%A9%E5%99%A8-shadowsocks/</link>
             <pubDate>Tue, 20 Jan 2015 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2015/01/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91%E5%88%A9%E5%99%A8-shadowsocks/</guid>
+            <guid>https://shaocheng.li/posts/2015/01/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91%E5%88%A9%E5%99%A8-shadowsocks/</guid>
             <description>Shadowsocks 可以为浏览器，支持代理服务器的软件（例如 Dropbox）提供代理服务。
 首先购买一个付费的 Shadowsocks 服务账号，推荐 https://shadowsocks.com，不限流量，速度还不错。购买后会提供多个可用的服务器地址，端口，密码和加密方式。
 欢迎使用我的推广链接：https://portal.shadowsocks.com/aff.php?aff=424
@@ -16371,10 +16371,10 @@ Dropbox 已经完全被墙，修改 hosts 也无法连接，只能用代理。�
         
         <item>
             <title>Today Scripts —— 通过脚本打造自己的通知栏部件</title>
-            <link>https://exbob.github.io/posts/2015/01/today-scripts-%E9%80%9A%E8%BF%87%E8%84%9A%E6%9C%AC%E6%89%93%E9%80%A0%E8%87%AA%E5%B7%B1%E7%9A%84%E9%80%9A%E7%9F%A5%E6%A0%8F%E9%83%A8%E4%BB%B6/</link>
+            <link>https://shaocheng.li/posts/2015/01/today-scripts-%E9%80%9A%E8%BF%87%E8%84%9A%E6%9C%AC%E6%89%93%E9%80%A0%E8%87%AA%E5%B7%B1%E7%9A%84%E9%80%9A%E7%9F%A5%E6%A0%8F%E9%83%A8%E4%BB%B6/</link>
             <pubDate>Sat, 10 Jan 2015 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2015/01/today-scripts-%E9%80%9A%E8%BF%87%E8%84%9A%E6%9C%AC%E6%89%93%E9%80%A0%E8%87%AA%E5%B7%B1%E7%9A%84%E9%80%9A%E7%9F%A5%E6%A0%8F%E9%83%A8%E4%BB%B6/</guid>
+            <guid>https://shaocheng.li/posts/2015/01/today-scripts-%E9%80%9A%E8%BF%87%E8%84%9A%E6%9C%AC%E6%89%93%E9%80%A0%E8%87%AA%E5%B7%B1%E7%9A%84%E9%80%9A%E7%9F%A5%E6%A0%8F%E9%83%A8%E4%BB%B6/</guid>
             <description>OS X Yosemite 新增了一个通知中心，可以在上面放一些小部件。而 Today Script 这个小部件可以让你写自己的脚本，在通知栏显示自己想要的东西。
  主页：https://github.com/SamRothCA/Today-Scripts 脚本列表：https://github.com/SamRothCA/Today-Scripts/wiki  在主页上点击下载链接，下载一个压缩包：Today-Scripts.tar.gz，解压得到 Today Scripts.app ，放到应用程序文件夹内，然后打开。在通知中心就会出现 Scripts :
 点击加号，把它添加到通知栏。按照提示，点击右上角的 Info 图标来添加一个脚本：
@@ -16413,10 +16413,10 @@ cal | grep --before-context 6 --after-context 6 --color -e &amp;quot; $(date +%e
         
         <item>
             <title>Lua语言学习笔记</title>
-            <link>https://exbob.github.io/posts/2015/01/lua%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+            <link>https://shaocheng.li/posts/2015/01/lua%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
             <pubDate>Wed, 07 Jan 2015 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2015/01/lua%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+            <guid>https://shaocheng.li/posts/2015/01/lua%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
             <description>Lua （英语发音：/ˈluːə/）是一种轻量级的脚本语言，可以方便的嵌入到其他语言中，很易学习。它是用C语言编写的。广泛应用于游戏和 web 开发中。据说 Adobe Photoshop Lightroom 中 50% 的代码是有 Lua 写的。我学习这个语言是因为目前的项目要用到 LuCI 。
  Lua 的主页：http://www.lua.org 中国开发者论坛：http://www.luaer.cn Lua 程序设计：http://book.luaer.cn Lua 在线手册：http://manual.luaer.cn 酷壳的 Lua 简明教程：http://coolshell.cn/articles/10739.html  1.Hello World Mac 平台默认已经安装了 Lua , 直接执行 lua 就可以进入它的 shell , 首先输出一个 Hello World , 语法很像 C , 结尾有没有分号都可以：
 [18:54]~/ ❯ lua Lua 5.2.3 Copyright (C) 1994-2013 Lua.org, PUC-Rio &amp;gt; print(&amp;quot;Hello World&amp;quot;) Hello World &amp;gt;  也可以写一个脚本文件，直接执行：
@@ -16555,10 +16555,10 @@ end
         
         <item>
             <title>2014-12-31</title>
-            <link>https://exbob.github.io/posts/2014/12/2014-12-31/</link>
+            <link>https://shaocheng.li/posts/2014/12/2014-12-31/</link>
             <pubDate>Wed, 31 Dec 2014 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2014/12/2014-12-31/</guid>
+            <guid>https://shaocheng.li/posts/2014/12/2014-12-31/</guid>
             <description>2014年的最后一天了
 这一年，得到了一些，失去了很多，赚了一点钱，虚度了很多美好的时光。在某个突然醒来的黎明，就在想，应该把生命中最好的时光留给最爱的人，这比什么都重要。
 这一年的最后一个月，我在这个城市买了一套房子，人生中的第一套房。12月2日晚上11点，在合同上写下自己的名字，回来的路上下着小雨。
@@ -16575,10 +16575,10 @@ end
         
         <item>
             <title>在 Linux 中使用 amixer 设置 Input source</title>
-            <link>https://exbob.github.io/posts/2014/10/%E5%9C%A8-linux-%E4%B8%AD%E4%BD%BF%E7%94%A8-amixer-%E8%AE%BE%E7%BD%AE-input-source/</link>
+            <link>https://shaocheng.li/posts/2014/10/%E5%9C%A8-linux-%E4%B8%AD%E4%BD%BF%E7%94%A8-amixer-%E8%AE%BE%E7%BD%AE-input-source/</link>
             <pubDate>Sun, 26 Oct 2014 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2014/10/%E5%9C%A8-linux-%E4%B8%AD%E4%BD%BF%E7%94%A8-amixer-%E8%AE%BE%E7%BD%AE-input-source/</guid>
+            <guid>https://shaocheng.li/posts/2014/10/%E5%9C%A8-linux-%E4%B8%AD%E4%BD%BF%E7%94%A8-amixer-%E8%AE%BE%E7%BD%AE-input-source/</guid>
             <description>电脑的音频输入通常有两个通道：Mic 和 Line in。Mic就是麦克风，Line in 用于连接未经放大的模拟音频信号，例如 Mp3 播放器的耳机插孔，可以将其连接到 PC 的 Line in 插孔。
 Linux 上只要用 alsa 管理声卡，它还提供很多工具，alsamixer用于配置音频的各个参数，基于文本下的图形界面。
 在命令行输入 alsamixer 就可以启动它的界面，然后按 F6 就可以看到当前系统的网卡，每个网卡都由一个独立的数字 ID ：
@@ -16623,10 +16623,10 @@ amixer 是 alsamixer 的命令行模式。
         
         <item>
             <title>个性化定制地图 —— Mapbox</title>
-            <link>https://exbob.github.io/posts/2014/10/%E4%B8%AA%E6%80%A7%E5%8C%96%E5%AE%9A%E5%88%B6%E5%9C%B0%E5%9B%BE-mapbox/</link>
+            <link>https://shaocheng.li/posts/2014/10/%E4%B8%AA%E6%80%A7%E5%8C%96%E5%AE%9A%E5%88%B6%E5%9C%B0%E5%9B%BE-mapbox/</link>
             <pubDate>Thu, 09 Oct 2014 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2014/10/%E4%B8%AA%E6%80%A7%E5%8C%96%E5%AE%9A%E5%88%B6%E5%9C%B0%E5%9B%BE-mapbox/</guid>
+            <guid>https://shaocheng.li/posts/2014/10/%E4%B8%AA%E6%80%A7%E5%8C%96%E5%AE%9A%E5%88%B6%E5%9C%B0%E5%9B%BE-mapbox/</guid>
             <description>Mapbox 想要构建世界上最漂亮的地图。支持多种平台，可以免费创建并定制个性化的地图，实现非常绚丽的效果。
  主页：http://www.mapbox.com 这里有一个介绍：http://www.pingwest.com/demo/mapbox  定制自己的地图 首先要注册一个账号，然后在主页面上方点击 Project ，进入到如下界面，点击 Create project 就可以新建一个自己的地图。
 我新建了一个 My First Map 。点击它，就可以进入编辑界面，左上方是定制地图所需的工具：
@@ -16700,10 +16700,10 @@ Project 这个标签中可以设置地图名称和描述，还可以在此下载
         
         <item>
             <title>Mac OS X 常用软件和技巧</title>
-            <link>https://exbob.github.io/posts/2014/09/mac-os-x-%E5%B8%B8%E7%94%A8%E8%BD%AF%E4%BB%B6%E5%92%8C%E6%8A%80%E5%B7%A7/</link>
+            <link>https://shaocheng.li/posts/2014/09/mac-os-x-%E5%B8%B8%E7%94%A8%E8%BD%AF%E4%BB%B6%E5%92%8C%E6%8A%80%E5%B7%A7/</link>
             <pubDate>Tue, 09 Sep 2014 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2014/09/mac-os-x-%E5%B8%B8%E7%94%A8%E8%BD%AF%E4%BB%B6%E5%92%8C%E6%8A%80%E5%B7%A7/</guid>
+            <guid>https://shaocheng.li/posts/2014/09/mac-os-x-%E5%B8%B8%E7%94%A8%E8%BD%AF%E4%BB%B6%E5%92%8C%E6%8A%80%E5%B7%A7/</guid>
             <description>1.键盘操作 使用 Macbook ，没有合适的鼠标，用了外接键盘后，触摸板也离得远了，尽量是用键盘操作，熟练后效率很高。
 按 F1 键打开 Spotlight ,输入要打开的程序名称，同样适用于搜索并打开文件。
 Mac 键盘快捷键 ：https://support.apple.com/zh-cn/HT201236
@@ -16795,10 +16795,10 @@ Mac 键盘快捷键 ：https://support.apple.com/zh-cn/HT201236
         
         <item>
             <title>让 Mac 的 Photoshop CS6 支持 ICO 文件</title>
-            <link>https://exbob.github.io/posts/2014/07/%E8%AE%A9-mac-%E7%9A%84-photoshop-cs6-%E6%94%AF%E6%8C%81-ico-%E6%96%87%E4%BB%B6/</link>
+            <link>https://shaocheng.li/posts/2014/07/%E8%AE%A9-mac-%E7%9A%84-photoshop-cs6-%E6%94%AF%E6%8C%81-ico-%E6%96%87%E4%BB%B6/</link>
             <pubDate>Sat, 12 Jul 2014 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2014/07/%E8%AE%A9-mac-%E7%9A%84-photoshop-cs6-%E6%94%AF%E6%8C%81-ico-%E6%96%87%E4%BB%B6/</guid>
+            <guid>https://shaocheng.li/posts/2014/07/%E8%AE%A9-mac-%E7%9A%84-photoshop-cs6-%E6%94%AF%E6%8C%81-ico-%E6%96%87%E4%BB%B6/</guid>
             <description>在 http://www.telegraphics.com.au/sw/product/ICOFormat#icoformat页面下载 ico 格式插件。
 在如下界面选择 Mac CS5/CS6 ：
 然后打开下载的 DMG 文件 。将其中的 ICOFormat.plugin 文件复杂到 photoshop 的插件目录下 :
@@ -16823,10 +16823,10 @@ Mac 键盘快捷键 ：https://support.apple.com/zh-cn/HT201236
         
         <item>
             <title>用 google-code-prettify 实现代码语法高亮</title>
-            <link>https://exbob.github.io/posts/2014/07/%E7%94%A8-google-code-prettify-%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%A0%81%E8%AF%AD%E6%B3%95%E9%AB%98%E4%BA%AE/</link>
+            <link>https://shaocheng.li/posts/2014/07/%E7%94%A8-google-code-prettify-%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%A0%81%E8%AF%AD%E6%B3%95%E9%AB%98%E4%BA%AE/</link>
             <pubDate>Fri, 11 Jul 2014 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2014/07/%E7%94%A8-google-code-prettify-%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%A0%81%E8%AF%AD%E6%B3%95%E9%AB%98%E4%BA%AE/</guid>
+            <guid>https://shaocheng.li/posts/2014/07/%E7%94%A8-google-code-prettify-%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%A0%81%E8%AF%AD%E6%B3%95%E9%AB%98%E4%BA%AE/</guid>
             <description>google-code-prettify 可以通过 javascript 和 css 文件为 html 页面实现代码段的语法高亮。
  1. 下载 在 https://code.google.com/p/google-code-prettify/ 下载 prettify-small-4-Mar-2013.tar.bz2 ，解压后的文件夹放在博客模板的 include 目录下，改名为 prettify 。
 2. 导入 在模板的 base.html 文件的 &amp;lt;head&amp;gt; 段添加 ：
@@ -16877,10 +16877,10 @@ Mac 键盘快捷键 ：https://support.apple.com/zh-cn/HT201236
         
         <item>
             <title>在博客添加返回顶部按钮</title>
-            <link>https://exbob.github.io/posts/2014/07/%E5%9C%A8%E5%8D%9A%E5%AE%A2%E6%B7%BB%E5%8A%A0%E8%BF%94%E5%9B%9E%E9%A1%B6%E9%83%A8%E6%8C%89%E9%92%AE/</link>
+            <link>https://shaocheng.li/posts/2014/07/%E5%9C%A8%E5%8D%9A%E5%AE%A2%E6%B7%BB%E5%8A%A0%E8%BF%94%E5%9B%9E%E9%A1%B6%E9%83%A8%E6%8C%89%E9%92%AE/</link>
             <pubDate>Wed, 09 Jul 2014 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2014/07/%E5%9C%A8%E5%8D%9A%E5%AE%A2%E6%B7%BB%E5%8A%A0%E8%BF%94%E5%9B%9E%E9%A1%B6%E9%83%A8%E6%8C%89%E9%92%AE/</guid>
+            <guid>https://shaocheng.li/posts/2014/07/%E5%9C%A8%E5%8D%9A%E5%AE%A2%E6%B7%BB%E5%8A%A0%E8%BF%94%E5%9B%9E%E9%A1%B6%E9%83%A8%E6%8C%89%E9%92%AE/</guid>
             <description>添加后的效果如右下角。
  1. 导入 jQuery 在 http://jquery.com/download/ 中下载压缩过的 jQuery ：jquery-1.11.1.min.js ,放入博客模板的相应目录下，比如 include/ 。
 在 base.html 的  中添加：
@@ -16968,10 +16968,10 @@ Mac 键盘快捷键 ：https://support.apple.com/zh-cn/HT201236
         
         <item>
             <title>QNX 的 Telnet 和 FTP 服务</title>
-            <link>https://exbob.github.io/posts/2013/12/qnx-%E7%9A%84-telnet-%E5%92%8C-ftp-%E6%9C%8D%E5%8A%A1/</link>
+            <link>https://shaocheng.li/posts/2013/12/qnx-%E7%9A%84-telnet-%E5%92%8C-ftp-%E6%9C%8D%E5%8A%A1/</link>
             <pubDate>Fri, 27 Dec 2013 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2013/12/qnx-%E7%9A%84-telnet-%E5%92%8C-ftp-%E6%9C%8D%E5%8A%A1/</guid>
+            <guid>https://shaocheng.li/posts/2013/12/qnx-%E7%9A%84-telnet-%E5%92%8C-ftp-%E6%9C%8D%E5%8A%A1/</guid>
             <description>Telnet 在QNX中，telnet 服务必须用 inetd启动，所以，先确保 /etc/inetd.conf 文件中有一行 ：
 telnet stream tcp nowait root /usr/sbin/telnetd in.telnetd  且没有被注释。
 各自字段的含义：
@@ -17043,10 +17043,10 @@ ftp stream tcp nowait root /usr/sbin/ftpd in.ftpd -l  且没有被注释。
         
         <item>
             <title>Google Fonts</title>
-            <link>https://exbob.github.io/posts/2013/10/google-fonts/</link>
+            <link>https://shaocheng.li/posts/2013/10/google-fonts/</link>
             <pubDate>Wed, 16 Oct 2013 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2013/10/google-fonts/</guid>
+            <guid>https://shaocheng.li/posts/2013/10/google-fonts/</guid>
             <description>Google Fonts 是一套高品质的 Web 字体，可以通过 Google Fonts API 添加到任意 Web 页面中，只需在 HTML 文件的头部添加一个 stylesheet 链接，然后就可以通过 CSS 使用字体。
 优势：
  高品质，开源 支持大多数浏览器 极其易用  劣势：
@@ -17145,10 +17145,10 @@ Making the Web Beautiful!
         
         <item>
             <title>Font Awesome 矢量字体图标</title>
-            <link>https://exbob.github.io/posts/2013/10/font-awesome-%E7%9F%A2%E9%87%8F%E5%AD%97%E4%BD%93%E5%9B%BE%E6%A0%87/</link>
+            <link>https://shaocheng.li/posts/2013/10/font-awesome-%E7%9F%A2%E9%87%8F%E5%AD%97%E4%BD%93%E5%9B%BE%E6%A0%87/</link>
             <pubDate>Tue, 15 Oct 2013 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2013/10/font-awesome-%E7%9F%A2%E9%87%8F%E5%AD%97%E4%BD%93%E5%9B%BE%E6%A0%87/</guid>
+            <guid>https://shaocheng.li/posts/2013/10/font-awesome-%E7%9F%A2%E9%87%8F%E5%AD%97%E4%BD%93%E5%9B%BE%E6%A0%87/</guid>
             <description>项目主页：http://fortawesome.github.io/Font-Awesome/
 目前的 Version 3.2.1 版本支持如下特性：
  一个字体文件， 361 个图标 用 CSS 控制样式 无限缩放 免费 支持视网膜屏幕 为 Bootstrap 设计，也可集成到非 Bootstrap 项目  1.集成  复制 font 目录到项目根目录下 复制 css 目录到项目根目录下，主要使用 font-awesome.min.css 文件 修改 font-awesome.min.css 文件中的字体路径，默认是 ../font/ 在 html 文件中引用 css 文件：&amp;lt;link rel=&amp;quot;stylesheet&amp;quot; href=&amp;quot;./css/font-awesome.min.css&amp;quot; type=&amp;quot;text/css&amp;quot; /&amp;gt;  2.实例 使用图标 &amp;lt;i class=&amp;quot;icon-youtube&amp;quot;&amp;gt;&amp;lt;/i&amp;gt; icon-youtube   icon-youtube
@@ -17244,10 +17244,10 @@ Making the Web Beautiful!
         
         <item>
             <title>Hello Farbox</title>
-            <link>https://exbob.github.io/posts/2013/10/hello-farbox/</link>
+            <link>https://shaocheng.li/posts/2013/10/hello-farbox/</link>
             <pubDate>Sat, 12 Oct 2013 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2013/10/hello-farbox/</guid>
+            <guid>https://shaocheng.li/posts/2013/10/hello-farbox/</guid>
             <description>第一节 1.1 ####1.1.1
 正文
  无序列表1 无序列表2  无序列表子项 无序列表子项  无序列表3  第二节 正文
@@ -17309,10 +17309,10 @@ int main()
         
         <item>
             <title>QNX 对触摸屏的支持</title>
-            <link>https://exbob.github.io/posts/2013/09/qnx-%E5%AF%B9%E8%A7%A6%E6%91%B8%E5%B1%8F%E7%9A%84%E6%94%AF%E6%8C%81/</link>
+            <link>https://shaocheng.li/posts/2013/09/qnx-%E5%AF%B9%E8%A7%A6%E6%91%B8%E5%B1%8F%E7%9A%84%E6%94%AF%E6%8C%81/</link>
             <pubDate>Sun, 15 Sep 2013 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2013/09/qnx-%E5%AF%B9%E8%A7%A6%E6%91%B8%E5%B1%8F%E7%9A%84%E6%94%AF%E6%8C%81/</guid>
+            <guid>https://shaocheng.li/posts/2013/09/qnx-%E5%AF%B9%E8%A7%A6%E6%91%B8%E5%B1%8F%E7%9A%84%E6%94%AF%E6%8C%81/</guid>
             <description>QNX Neutrino 支持多种触摸屏，可以在官网上查找支持的型号和对应的驱动：
 http://www.qnx.com/developers/hardware_support/
 或者在 Utilities Reference 中查看 devi-* 驱动，然后确定所需的参数，启动驱动。例如，启动一个 Dynapro SC4 触摸屏：
@@ -17500,10 +17500,10 @@ calib 用于校准触摸屏。成功配置触摸屏后（已经创建了设备�
         
         <item>
             <title>QNX 编程</title>
-            <link>https://exbob.github.io/posts/2013/07/qnx-%E7%BC%96%E7%A8%8B/</link>
+            <link>https://shaocheng.li/posts/2013/07/qnx-%E7%BC%96%E7%A8%8B/</link>
             <pubDate>Sun, 28 Jul 2013 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2013/07/qnx-%E7%BC%96%E7%A8%8B/</guid>
+            <guid>https://shaocheng.li/posts/2013/07/qnx-%E7%BC%96%E7%A8%8B/</guid>
             <description>处理中断的线程应该先获得 I/O 权限，调用 ThreadCtl() 函数：
 #include &amp;lt;sys/neutrino.h&amp;gt; ThreadCtl( _NTO_TCTL_IO, 0 );  QNX 提供了两种捆绑中断服务程序和中断号的方式：InterruptAttach() 和 InterruptAttachEvent() 。两种方式调用中断服务程序的方式也不同。分离可以调用 InterruptDetach() 函数：
 #define IRQ3 3 /* A forward reference for the handler */ extern const sigevent *serint (void *, int); … /* * Associate the interrupt handler, serint, * with IRQ 3, the 2nd PC serial port */ ThreadCtl( _NTO_TCTL_IO, 0 ); id = InterruptAttach (IRQ3, serint, NULL, 0, 0); … /* Perform some processing.</description>
@@ -17749,10 +17749,10 @@ isr_handler (void *arg, int id)
         
         <item>
             <title>QNX下的串口驱动——devc-ser8250</title>
-            <link>https://exbob.github.io/posts/2013/06/qnx%E4%B8%8B%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8devc-ser8250/</link>
+            <link>https://shaocheng.li/posts/2013/06/qnx%E4%B8%8B%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8devc-ser8250/</link>
             <pubDate>Sun, 09 Jun 2013 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2013/06/qnx%E4%B8%8B%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8devc-ser8250/</guid>
+            <guid>https://shaocheng.li/posts/2013/06/qnx%E4%B8%8B%E7%9A%84%E4%B8%B2%E5%8F%A3%E9%A9%B1%E5%8A%A8devc-ser8250/</guid>
             <description>devc-ser8250 是 QNX 下的8250串口驱动，支持8250s, 14450s 和 16550s 。
 必须以 root 用户运行该程序。
 语法： devc-ser8250 [[options] [port[^shift][,intr]]]... &amp;amp;  选项：  -b number：初始化波特率，默认是 57600。 -C size ：canonical buffer 的大小，单位是字节，默认是 256 。 -c clock[/divisor] ：自定义时钟频率，单位是 Hz ，divisor 是串口。 -E ：raw 模式（默认）。默认关闭软件流控制。 -e ：edited 模式。默认使能软件流控制。 -F ：关闭硬件流控制，默认使能硬件流控制。edited 模式不支持硬件流控制。 -f ：使能硬件流控制。 -I number ：中断输入 buffer 的大小，单位是字节，默认是2048 。 -O number ：中断输出 buffer 的大小，单位是字节，默认是2048 。 -o opt[,opt&amp;hellip;] ：额外选项，用逗号隔开，包括：
@@ -17819,10 +17819,10 @@ n 寄存器是 2^n byte 间隔
         
         <item>
             <title>QNX 编程读写 I/O 端口</title>
-            <link>https://exbob.github.io/posts/2013/06/qnx-%E7%BC%96%E7%A8%8B%E8%AF%BB%E5%86%99-i/o-%E7%AB%AF%E5%8F%A3/</link>
+            <link>https://shaocheng.li/posts/2013/06/qnx-%E7%BC%96%E7%A8%8B%E8%AF%BB%E5%86%99-i/o-%E7%AB%AF%E5%8F%A3/</link>
             <pubDate>Sun, 02 Jun 2013 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2013/06/qnx-%E7%BC%96%E7%A8%8B%E8%AF%BB%E5%86%99-i/o-%E7%AB%AF%E5%8F%A3/</guid>
+            <guid>https://shaocheng.li/posts/2013/06/qnx-%E7%BC%96%E7%A8%8B%E8%AF%BB%E5%86%99-i/o-%E7%AB%AF%E5%8F%A3/</guid>
             <description>要读写 I/O 端口，必须获得 I/O 权限，这需要以 root 权限运行线程，并且调用 ThreadCtl() 函数：
 #include &amp;lt;sys/neutrino.h&amp;gt; ThreadCtl( _NTO_TCTL_IO, 0 );  然后调用 mmap_device_io 函数映射 I/O 端口地址：
 #include &amp;lt;stdint.h&amp;gt; #include &amp;lt;sys/mman.h&amp;gt; uintptr_t mmap_device_io( size_t len, uint64_t io );  io 表示要访问的 I/O 端口地址（基地址），len 表示要访问的 I/O 端口的字节数。如果调用成功会返回映射后的起始地址，可以直接用 in8 和 out8 等函数访问；如果失败则返回 MAP_DEVICE_FAILED。
@@ -17867,10 +17867,10 @@ uintptr_t mmap_device_io( size_t len, uint64_t io );
         
         <item>
             <title>搭建 QNX 开发环境</title>
-            <link>https://exbob.github.io/posts/2013/05/%E6%90%AD%E5%BB%BA-qnx-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</link>
+            <link>https://shaocheng.li/posts/2013/05/%E6%90%AD%E5%BB%BA-qnx-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</link>
             <pubDate>Thu, 02 May 2013 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2013/05/%E6%90%AD%E5%BB%BA-qnx-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</guid>
+            <guid>https://shaocheng.li/posts/2013/05/%E6%90%AD%E5%BB%BA-qnx-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</guid>
             <description>30天评估版页面：http://www.qnx.com/products/evaluation/ 在该页面下载所需软件，并申请 License 。
 系统环境为：Windows XP 和 VMware 7.0
 1. 安装 Windows 平台的 QNX 开发套件 下载 QNXSDP-6.5.0 和 QNXSDP-6.5.0-SP1 ，依次安装，安装过程中需要输入 License 。
@@ -17980,10 +17980,10 @@ uintptr_t mmap_device_io( size_t len, uint64_t io );
         
         <item>
             <title>xargs 命令</title>
-            <link>https://exbob.github.io/posts/2013/04/xargs-%E5%91%BD%E4%BB%A4/</link>
+            <link>https://shaocheng.li/posts/2013/04/xargs-%E5%91%BD%E4%BB%A4/</link>
             <pubDate>Sun, 28 Apr 2013 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2013/04/xargs-%E5%91%BD%E4%BB%A4/</guid>
+            <guid>https://shaocheng.li/posts/2013/04/xargs-%E5%91%BD%E4%BB%A4/</guid>
             <description>xagrs &amp;ndash; 从标准输入获得参数并执行命令
  xargs 有点类似反引号 ，但是功能更强大，它从标准输入获得参数列表，然后分割小块分段，再逐条传递给其他命令并执行。例如：
 find ./ -type f | xargs grep date  该命令相当于对当前目录下的每个文件执行一次 grep date ，也就是将列出当前目录下文件内容中包含 date 的文件 。如果没有 xargs，只会列出当前目录下文件名中包含 date 字段的文件。
@@ -18028,10 +18028,10 @@ find ./ -type f | xargs -n 2 diff  还用两个有用的选项：</description>
         
         <item>
             <title>在 ubuntu 中下载内核源码</title>
-            <link>https://exbob.github.io/posts/2013/04/%E5%9C%A8-ubuntu-%E4%B8%AD%E4%B8%8B%E8%BD%BD%E5%86%85%E6%A0%B8%E6%BA%90%E7%A0%81/</link>
+            <link>https://shaocheng.li/posts/2013/04/%E5%9C%A8-ubuntu-%E4%B8%AD%E4%B8%8B%E8%BD%BD%E5%86%85%E6%A0%B8%E6%BA%90%E7%A0%81/</link>
             <pubDate>Sat, 27 Apr 2013 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2013/04/%E5%9C%A8-ubuntu-%E4%B8%AD%E4%B8%8B%E8%BD%BD%E5%86%85%E6%A0%B8%E6%BA%90%E7%A0%81/</guid>
+            <guid>https://shaocheng.li/posts/2013/04/%E5%9C%A8-ubuntu-%E4%B8%AD%E4%B8%8B%E8%BD%BD%E5%86%85%E6%A0%B8%E6%BA%90%E7%A0%81/</guid>
             <description>下载源码前必须确保已经安装了 dpkg-dev 。使用 apt-get install dpkg-dev 命令安装。
  查找带ubuntu补丁的内核源码
 apt-cache search linux-source  该条命令会查找到很多版本的内核源码，选择所需要的，然后执行：
@@ -18073,10 +18073,10 @@ apt-get build-dep  在源码目录下执行 dpkg-buildpackage 命令，会生成
         
         <item>
             <title>GRUB2常用配置</title>
-            <link>https://exbob.github.io/posts/2013/04/grub2%E5%B8%B8%E7%94%A8%E9%85%8D%E7%BD%AE/</link>
+            <link>https://shaocheng.li/posts/2013/04/grub2%E5%B8%B8%E7%94%A8%E9%85%8D%E7%BD%AE/</link>
             <pubDate>Thu, 25 Apr 2013 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2013/04/grub2%E5%B8%B8%E7%94%A8%E9%85%8D%E7%BD%AE/</guid>
+            <guid>https://shaocheng.li/posts/2013/04/grub2%E5%B8%B8%E7%94%A8%E9%85%8D%E7%BD%AE/</guid>
             <description> GRUB2 指南中文版
 修改 GRUB2 的配置文件后，都要执行 update_grub 命令生成 /boot/grub/grub.cfg 文件，这样才能使修改生效。任何情况下都不建议手动更改该文件。
 1.显示启动菜单 默认情况下，如果只安装了一个系统，GRUB2是不会显示启动菜单的。
@@ -18123,15 +18123,15 @@ GRUB_DEFAULT = 0  /boot/grub/grub.cfg 文件中的第一个菜单项为 0 ，第
         
         <item>
             <title>Linux 系统下编程控制蜂鸣器</title>
-            <link>https://exbob.github.io/posts/2013/01/linux-%E7%B3%BB%E7%BB%9F%E4%B8%8B%E7%BC%96%E7%A8%8B%E6%8E%A7%E5%88%B6%E8%9C%82%E9%B8%A3%E5%99%A8/</link>
+            <link>https://shaocheng.li/posts/2013/01/linux-%E7%B3%BB%E7%BB%9F%E4%B8%8B%E7%BC%96%E7%A8%8B%E6%8E%A7%E5%88%B6%E8%9C%82%E9%B8%A3%E5%99%A8/</link>
             <pubDate>Thu, 24 Jan 2013 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2013/01/linux-%E7%B3%BB%E7%BB%9F%E4%B8%8B%E7%BC%96%E7%A8%8B%E6%8E%A7%E5%88%B6%E8%9C%82%E9%B8%A3%E5%99%A8/</guid>
+            <guid>https://shaocheng.li/posts/2013/01/linux-%E7%B3%BB%E7%BB%9F%E4%B8%8B%E7%BC%96%E7%A8%8B%E6%8E%A7%E5%88%B6%E8%9C%82%E9%B8%A3%E5%99%A8/</guid>
             <description>&lt;h2 id=&#34;原理&#34;&gt;原理&lt;/h2&gt;
 
 &lt;p&gt;X86架构的蜂鸣器连接图如下：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://exbob.github.io/images/2013-01-24/2013-01-24_1.JPG&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://shaocheng.li/images/2013-01-24/2013-01-24_1.JPG&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
 &lt;p&gt;由图可见，蜂鸣器的声调是由定时器8254的计数器2的输出 OUT2 控制的，OUT2 输出一定频率的正弦波就可以驱动蜂鸣器发声。8254 的端口地址是 0x40~0x43 。&lt;/p&gt;</description>
             <content type="html"><![CDATA[<h2 id="原理">原理</h2>
@@ -18184,10 +18184,10 @@ int main()
         
         <item>
             <title>使用 udev 管理设备</title>
-            <link>https://exbob.github.io/posts/2013/01/%E4%BD%BF%E7%94%A8-udev-%E7%AE%A1%E7%90%86%E8%AE%BE%E5%A4%87/</link>
+            <link>https://shaocheng.li/posts/2013/01/%E4%BD%BF%E7%94%A8-udev-%E7%AE%A1%E7%90%86%E8%AE%BE%E5%A4%87/</link>
             <pubDate>Sat, 05 Jan 2013 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2013/01/%E4%BD%BF%E7%94%A8-udev-%E7%AE%A1%E7%90%86%E8%AE%BE%E5%A4%87/</guid>
+            <guid>https://shaocheng.li/posts/2013/01/%E4%BD%BF%E7%94%A8-udev-%E7%AE%A1%E7%90%86%E8%AE%BE%E5%A4%87/</guid>
             <description>udev 是 linux 2.6 内核提供的一种动态管理设备器，主要功能是管理 /dev 目录下的设备节点，同时也替换了 devfs 和 hotplug 的功能，这意味着它要在添加/删除硬件时处理 /dev 目录以及所有用户空间的行为，包括加载 firmware 时。
 udev 依赖于内核提供的 uevent 接口，每次添加或删除设备时，内核都会发送 uevent 向 udev 通知更改。udev 的守护进程是 udevd ，在系统启动时会读取并分析 udev 规则文件提供的所有规则，并保存在内存。 当 udev 接收到内核发出的设备更改事件后，会将设备信息与规则进行匹配，然后执行相应的操作。
 linux内核中的设备信息都是通过 sysfs 文件系统导出的，位于 /sys 目录下。
@@ -18510,10 +18510,10 @@ ACTION==&quot;remove&quot;,KERNEL==&quot;sd[b-z][1-9]&quot;,SUBSYSTEM==&quot;blo
         
         <item>
             <title>Linux 字符驱动的基本结构</title>
-            <link>https://exbob.github.io/posts/2013/01/linux-%E5%AD%97%E7%AC%A6%E9%A9%B1%E5%8A%A8%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84/</link>
+            <link>https://shaocheng.li/posts/2013/01/linux-%E5%AD%97%E7%AC%A6%E9%A9%B1%E5%8A%A8%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84/</link>
             <pubDate>Fri, 04 Jan 2013 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2013/01/linux-%E5%AD%97%E7%AC%A6%E9%A9%B1%E5%8A%A8%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84/</guid>
+            <guid>https://shaocheng.li/posts/2013/01/linux-%E5%AD%97%E7%AC%A6%E9%A9%B1%E5%8A%A8%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84/</guid>
             <description>假设字符设备名为 led ，源文件为led.c ，不涉及实际的硬件操作。基本的驱动代码结构如下：
 1. 包含必要的头文件 #include &amp;lt;linux/init.h&amp;gt; //module_init() 和 module_exit() #include &amp;lt;linux/sched.h&amp;gt; //包含大部分内核API的定义 #include &amp;lt;linux/module.h&amp;gt; //什么模块信息的宏，例如MODULE_AUTHOR(author) #include &amp;lt;linux/version.h&amp;gt; //包含内核版本信息的头文件 #include &amp;lt;linux/moduleparam.h&amp;gt; //创建模块参数的宏 #include &amp;lt;linux/kernel.h&amp;gt; //printk等函数 #include &amp;lt;linux/types.h&amp;gt; //内核模块的各种数据类型，例如dev_t #include &amp;lt;linux/fs.h&amp;gt; //文件系统 #include &amp;lt;linux/cdev.h&amp;gt;  还可以根据需要添加其他头文件。
 2. 定义一个设备私有数据结构 通常会将设备名，设备号，cdev等都放入这个数据结构。
@@ -18801,10 +18801,10 @@ MODULE_LICENSE(&quot;GPL&quot;);
         
         <item>
             <title>在 Linux 内核中新增模块代码</title>
-            <link>https://exbob.github.io/posts/2012/12/%E5%9C%A8-linux-%E5%86%85%E6%A0%B8%E4%B8%AD%E6%96%B0%E5%A2%9E%E6%A8%A1%E5%9D%97%E4%BB%A3%E7%A0%81/</link>
+            <link>https://shaocheng.li/posts/2012/12/%E5%9C%A8-linux-%E5%86%85%E6%A0%B8%E4%B8%AD%E6%96%B0%E5%A2%9E%E6%A8%A1%E5%9D%97%E4%BB%A3%E7%A0%81/</link>
             <pubDate>Tue, 18 Dec 2012 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2012/12/%E5%9C%A8-linux-%E5%86%85%E6%A0%B8%E4%B8%AD%E6%96%B0%E5%A2%9E%E6%A8%A1%E5%9D%97%E4%BB%A3%E7%A0%81/</guid>
+            <guid>https://shaocheng.li/posts/2012/12/%E5%9C%A8-linux-%E5%86%85%E6%A0%B8%E4%B8%AD%E6%96%B0%E5%A2%9E%E6%A8%A1%E5%9D%97%E4%BB%A3%E7%A0%81/</guid>
             <description>一个最简单的内核模块 编写一个最简单的内核模块 hellomod，源码 hellomod.c 如下：
 #include &amp;lt;linux/init.h&amp;gt; #include &amp;lt;linux/module.h&amp;gt; static int __init hellomod_init(void) { printk(&amp;quot;hellomod init\n&amp;quot;); return 0; } static void __exit hellomod_exit(void) { printk(&amp;quot;hellomod exit\n&amp;quot;); } module_init(hellomod_init); module_exit(hellomod_exit); MODULE_LICENSE(&amp;quot;GPL&amp;quot;);  Makefile 文件如下：
 KERDIR=/lib/modules/$(shell uname -r)/build PWD=$(shell pwd) obj-m:=hellomod.o default: make -C ${KERDIR} M=${PWD} modules clean: make -C ${KERDIR} M=${PWD} clean  直接运行 make 即可将其编译为 hellomod.ko 。下面以该模块为例介绍添加到内核的步骤。
@@ -18936,10 +18936,10 @@ endmenu
         
         <item>
             <title>Linux 驱动的异步通知</title>
-            <link>https://exbob.github.io/posts/2012/11/linux-%E9%A9%B1%E5%8A%A8%E7%9A%84%E5%BC%82%E6%AD%A5%E9%80%9A%E7%9F%A5/</link>
+            <link>https://shaocheng.li/posts/2012/11/linux-%E9%A9%B1%E5%8A%A8%E7%9A%84%E5%BC%82%E6%AD%A5%E9%80%9A%E7%9F%A5/</link>
             <pubDate>Tue, 20 Nov 2012 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2012/11/linux-%E9%A9%B1%E5%8A%A8%E7%9A%84%E5%BC%82%E6%AD%A5%E9%80%9A%E7%9F%A5/</guid>
+            <guid>https://shaocheng.li/posts/2012/11/linux-%E9%A9%B1%E5%8A%A8%E7%9A%84%E5%BC%82%E6%AD%A5%E9%80%9A%E7%9F%A5/</guid>
             <description>实现步骤 假设设备驱动名为 module ，设备的私有数据结构为 module_dev_t ，实现异步通知的步骤如下 ：
 1.定义一个 struct fasync_struct *类型的指针，通常是在设备的私有数据结构中定义。
 struct module_dev_t module_dev { ... strcut fasync_struct * fasync_queue; }  2.实现 fasync 方法,在 fasync 方法中调用 fasync_helper 函数。
@@ -19016,10 +19016,10 @@ fcntl(fd,F_SETFL,oflags | FASYNC);
         
         <item>
             <title>《Unix Shell 范例精解》第五章 sed 习题</title>
-            <link>https://exbob.github.io/posts/2012/11/unix-shell-%E8%8C%83%E4%BE%8B%E7%B2%BE%E8%A7%A3%E7%AC%AC%E4%BA%94%E7%AB%A0-sed-%E4%B9%A0%E9%A2%98/</link>
+            <link>https://shaocheng.li/posts/2012/11/unix-shell-%E8%8C%83%E4%BE%8B%E7%B2%BE%E8%A7%A3%E7%AC%AC%E4%BA%94%E7%AB%A0-sed-%E4%B9%A0%E9%A2%98/</link>
             <pubDate>Sun, 04 Nov 2012 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2012/11/unix-shell-%E8%8C%83%E4%BE%8B%E7%B2%BE%E8%A7%A3%E7%AC%AC%E4%BA%94%E7%AB%A0-sed-%E4%B9%A0%E9%A2%98/</guid>
+            <guid>https://shaocheng.li/posts/2012/11/unix-shell-%E8%8C%83%E4%BE%8B%E7%B2%BE%E8%A7%A3%E7%AC%AC%E4%BA%94%E7%AB%A0-sed-%E4%B9%A0%E9%A2%98/</guid>
             <description>数据文件 datefile
 Steve Blenheim:238-923-7366:95 Latham Lane, Easton, PA 83755:11/12/56:20300 Betty Boop:245-836-8357:635 Cutesy Lane, Hollywood, CA 91464:6/23/23:14500 Igor Chevsky:385-375-8395:3567 Populus Place, Caldwell, NJ 23875:6/18/68:23400 Norma Corder:397-857-2735:74 Pine Street, Dearborn, MI 23874:3/28/45:245700 Jennifer Cowan:548-834-2348:583 Laurel Ave., Kingsville, TX 83745:10/1/35:58900 Jon DeLoach:408-253-3122:123 Park St., San Jose, CA 04086:7/25/53:85100 Karen Evich:284-758-2857:23 Edgecliff Place, Lincoln, NB 92743:7/25/53:85100 Karen Evich:284-758-2867:23 Edgecliff Place, Lincoln, NB 92743:11/3/35:58200 Karen Evich:284-758-2867:23 Edgecliff Place, Lincoln, NB 92743:11/3/35:58200 Fred Fardbarkle:674-843-1385:20 Parak Lane, Duluth, MN 23850:4/12/23:780900 Fred Fardbarkle:674-843-1385:20 Parak Lane, Duluth, MN 23850:4/12/23:780900 Lori Gortz:327-832-5728:3465 Mirlo Street, Peabody, MA 34756:10/2/65:35200 Paco Gutierrez:835-365-1284:454 Easy Street, Decatur, IL 75732:2/28/53:123500 Ephram Hardy:293-259-5395:235 CarltonLane, Joliet, IL 73858:8/12/20:56700 James Ikeda:834-938-8376:23445 Aster Ave.</description>
             <content type="html"><![CDATA[<p>数据文件 datefile</p>
@@ -19125,10 +19125,10 @@ $a\THE END
         
         <item>
             <title>《Unix Shell 范例精解》第四章 grep 习题</title>
-            <link>https://exbob.github.io/posts/2012/11/unix-shell-%E8%8C%83%E4%BE%8B%E7%B2%BE%E8%A7%A3%E7%AC%AC%E5%9B%9B%E7%AB%A0-grep-%E4%B9%A0%E9%A2%98/</link>
+            <link>https://shaocheng.li/posts/2012/11/unix-shell-%E8%8C%83%E4%BE%8B%E7%B2%BE%E8%A7%A3%E7%AC%AC%E5%9B%9B%E7%AB%A0-grep-%E4%B9%A0%E9%A2%98/</link>
             <pubDate>Sat, 03 Nov 2012 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2012/11/unix-shell-%E8%8C%83%E4%BE%8B%E7%B2%BE%E8%A7%A3%E7%AC%AC%E5%9B%9B%E7%AB%A0-grep-%E4%B9%A0%E9%A2%98/</guid>
+            <guid>https://shaocheng.li/posts/2012/11/unix-shell-%E8%8C%83%E4%BE%8B%E7%B2%BE%E8%A7%A3%E7%AC%AC%E5%9B%9B%E7%AB%A0-grep-%E4%B9%A0%E9%A2%98/</guid>
             <description>数据文件：
 Steve Blenheim:238-923-7366:95 Latham Lane, Easton, PA 83755:11/12/56:20300 Betty Boop:245-836-8357:635 Cutesy Lane, Hollywood, CA 91464:6/23/23:14500 Igor Chevsky:385-375-8395:3567 Populus Place, Caldwell, NJ 23875:6/18/68:23400 Norma Corder:397-857-2735:74 Pine Street, Dearborn, MI 23874:3/28/45:245700 Jennifer Cowan:548-834-2348:583 Laurel Ave., Kingsville, TX 83745:10/1/35:58900 Jon DeLoach:408-253-3122:123 Park St., San Jose, CA 04086:7/25/53:85100 Karen Evich:284-758-2857:23 Edgecliff Place, Lincoln, NB 92743:7/25/53:85100 Karen Evich:284-758-2867:23 Edgecliff Place, Lincoln, NB 92743:11/3/35:58200 Karen Evich:284-758-2867:23 Edgecliff Place, Lincoln, NB 92743:11/3/35:58200 Fred Fardbarkle:674-843-1385:20 Parak Lane, Duluth, MN 23850:4/12/23:780900 Fred Fardbarkle:674-843-1385:20 Parak Lane, Duluth, MN 23850:4/12/23:780900 Lori Gortz:327-832-5728:3465 Mirlo Street, Peabody, MA 34756:10/2/65:35200 Paco Gutierrez:835-365-1284:454 Easy Street, Decatur, IL 75732:2/28/53:123500 Ephram Hardy:293-259-5395:235 CarltonLane, Joliet, IL 73858:8/12/20:56700 James Ikeda:834-938-8376:23445 Aster Ave.</description>
             <content type="html"><![CDATA[<p>数据文件：</p>
@@ -19218,10 +19218,10 @@ Vinh Tranh:438-910-7449:8235 Maple Street, Wilmington, VM 29085:9/23/63:68900
         
         <item>
             <title>sed 学习笔记</title>
-            <link>https://exbob.github.io/posts/2012/11/sed-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+            <link>https://shaocheng.li/posts/2012/11/sed-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
             <pubDate>Fri, 02 Nov 2012 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2012/11/sed-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+            <guid>https://shaocheng.li/posts/2012/11/sed-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
             <description>一些选项  -e script ：添加一套命令，可通过该选项添加多个处理命令 -n ：只打印通过 p 命令匹配到的行 -i ：将修改结果写入文件 -f scriptfile ：使用脚本文件  常用命令  ! ：对所选行以为的行进行操作 p ：打印 d ：删除 s ：替换 g ：行内全局替换 w ：将行写入文件 c\ ：用命令后面的文本替换当前的行 a\ ：在当前行后添加文本  GNU对正则表达式的扩展  \n : 产生或匹配一个换行符（ASCII 10） \r : 产生或匹配一个回车符（ASCII 13） \t : 产生或匹配一个制表符（ASCII 9） \v : 产生或匹配一个垂直制表符（ASCII 11）  指定地址范围 打印第一行到第十行：
 sed -n -e &#39;1,10p&#39; filename  打印最后一行：
 sed -n -e &#39;$p&#39; filename  用正则表达式匹配行， 打印从以 root 开头的行到以 mail 开头的行：</description>
@@ -19305,10 +19305,10 @@ sed -e 's/[A-Z]/\L&amp;/g' filename
         
         <item>
             <title>awk 实例练习</title>
-            <link>https://exbob.github.io/posts/2012/10/awk-%E5%AE%9E%E4%BE%8B%E7%BB%83%E4%B9%A0/</link>
+            <link>https://shaocheng.li/posts/2012/10/awk-%E5%AE%9E%E4%BE%8B%E7%BB%83%E4%B9%A0/</link>
             <pubDate>Sun, 28 Oct 2012 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2012/10/awk-%E5%AE%9E%E4%BE%8B%E7%BB%83%E4%B9%A0/</guid>
+            <guid>https://shaocheng.li/posts/2012/10/awk-%E5%AE%9E%E4%BE%8B%E7%BB%83%E4%B9%A0/</guid>
             <description>测试文件 file 的内容如下：
 Mike Harrington:(510) 548-1278:250:100:175 Christian Dobbins:(408) 538-2358:155:90:201 Susan Dalsass:(206) 654-6279:250:60:50 Archie McNichol:(206) 548-1348:250:100:175 Jody Savage:(206) 548-1278:15:188:150 Guy Quigley:(916) 343-6410:250:100:175 Dan Savage:(406) 298-7744:450:300:275 Nancy McNeil:(206) 548-1278:250:80:75 John Goldenrod:(916) 348-4278:250:100:175 Chet Main:(510) 548-5258:50:95:135 Tom Savage:(408) 926-3456:250:168:200 Elizabeth Stachelin:(916) 440-1763:175:75:300  该文件依次显示的是姓名，电话号码，过去三个月的捐款额。
 显示所有的电话号码
@@ -19447,10 +19447,10 @@ END {
         
         <item>
             <title>Linux Wireless —— 无线操作模式</title>
-            <link>https://exbob.github.io/posts/2012/10/linux-wireless-%E6%97%A0%E7%BA%BF%E6%93%8D%E4%BD%9C%E6%A8%A1%E5%BC%8F/</link>
+            <link>https://shaocheng.li/posts/2012/10/linux-wireless-%E6%97%A0%E7%BA%BF%E6%93%8D%E4%BD%9C%E6%A8%A1%E5%BC%8F/</link>
             <pubDate>Sat, 27 Oct 2012 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2012/10/linux-wireless-%E6%97%A0%E7%BA%BF%E6%93%8D%E4%BD%9C%E6%A8%A1%E5%BC%8F/</guid>
+            <guid>https://shaocheng.li/posts/2012/10/linux-wireless-%E6%97%A0%E7%BA%BF%E6%93%8D%E4%BD%9C%E6%A8%A1%E5%BC%8F/</guid>
             <description>原文： Wireless Operating Modes
 Translated by Bob
 2012-10-27
@@ -19516,10 +19516,10 @@ Monitor (MON) 模式 Monitor 模式是一个被动模式，不会传输数据帧
         
         <item>
             <title>Linux 系统的电源管理</title>
-            <link>https://exbob.github.io/posts/2012/10/linux-%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%94%B5%E6%BA%90%E7%AE%A1%E7%90%86/</link>
+            <link>https://shaocheng.li/posts/2012/10/linux-%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%94%B5%E6%BA%90%E7%AE%A1%E7%90%86/</link>
             <pubDate>Tue, 23 Oct 2012 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2012/10/linux-%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%94%B5%E6%BA%90%E7%AE%A1%E7%90%86/</guid>
+            <guid>https://shaocheng.li/posts/2012/10/linux-%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%94%B5%E6%BA%90%E7%AE%A1%E7%90%86/</guid>
             <description>现在的 linux 内核支持三种电源管理模式,可以在 /sys/power/state 文件中查看：
 cat /sys/power/state standby mem disk  向该文件写入模式的名称即可实现待机，休眠等，例如：
 echo standby &amp;gt; /sys/power/state  下面对各模式详细说明。
@@ -19581,10 +19581,10 @@ standby mem disk
         
         <item>
             <title>Sublime Text</title>
-            <link>https://exbob.github.io/posts/2012/09/sublime-text/</link>
+            <link>https://shaocheng.li/posts/2012/09/sublime-text/</link>
             <pubDate>Sun, 16 Sep 2012 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2012/09/sublime-text/</guid>
+            <guid>https://shaocheng.li/posts/2012/09/sublime-text/</guid>
             <description>简介 官方 : http://www.sublimetext.com/
 参考了非官方文档 : http://docs.sublimetext.info/en/latest/index.html
 视频简介 : http://v.youku.com/v_show/id_XMzU5NzQ5ODgw.html
@@ -19789,10 +19789,10 @@ standby mem disk
         
         <item>
             <title>Octopress 使用笔记</title>
-            <link>https://exbob.github.io/posts/2012/09/octopress-%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</link>
+            <link>https://shaocheng.li/posts/2012/09/octopress-%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</link>
             <pubDate>Sat, 15 Sep 2012 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2012/09/octopress-%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</guid>
+            <guid>https://shaocheng.li/posts/2012/09/octopress-%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/</guid>
             <description>1.代码和语法高亮 除了 Markdown 语法的缩进方式，在 Octopress 中还多种方式可以在文章中嵌入代码并显示语法高亮：
  反引号代码块  语法
 ``` [language] [title] [url] [link text] code snippet ```   嵌入 Gist  Gist 是 Github 提供的一个代码管理功能。在 Gist 中新建的代码文件会获得一个 gist_id ，用下面的语法就可以在文章中嵌入相应的代码：
@@ -19974,10 +19974,10 @@ disqus_show_comment_count: true
         
         <item>
             <title>用 Octopress 在 github 上部署博客</title>
-            <link>https://exbob.github.io/posts/2012/09/%E7%94%A8-octopress-%E5%9C%A8-github-%E4%B8%8A%E9%83%A8%E7%BD%B2%E5%8D%9A%E5%AE%A2/</link>
+            <link>https://shaocheng.li/posts/2012/09/%E7%94%A8-octopress-%E5%9C%A8-github-%E4%B8%8A%E9%83%A8%E7%BD%B2%E5%8D%9A%E5%AE%A2/</link>
             <pubDate>Sun, 09 Sep 2012 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2012/09/%E7%94%A8-octopress-%E5%9C%A8-github-%E4%B8%8A%E9%83%A8%E7%BD%B2%E5%8D%9A%E5%AE%A2/</guid>
+            <guid>https://shaocheng.li/posts/2012/09/%E7%94%A8-octopress-%E5%9C%A8-github-%E4%B8%8A%E9%83%A8%E7%BD%B2%E5%8D%9A%E5%AE%A2/</guid>
             <description>1.准备  安装 git
 sudo yum install git  配置：
 git config --global user.name &amp;quot;your name&amp;quot; git config --global user.email &amp;quot;your email&amp;quot;  用 RVM 安装 Ruby 1.9.3：
@@ -20219,10 +20219,10 @@ footer: true
         
         <item>
             <title>在 Redhat9 文本系统上安装 Qt/E 4.4.0</title>
-            <link>https://exbob.github.io/posts/2012/06/%E5%9C%A8-redhat9-%E6%96%87%E6%9C%AC%E7%B3%BB%E7%BB%9F%E4%B8%8A%E5%AE%89%E8%A3%85-qt/e-4.4.0/</link>
+            <link>https://shaocheng.li/posts/2012/06/%E5%9C%A8-redhat9-%E6%96%87%E6%9C%AC%E7%B3%BB%E7%BB%9F%E4%B8%8A%E5%AE%89%E8%A3%85-qt/e-4.4.0/</link>
             <pubDate>Fri, 01 Jun 2012 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2012/06/%E5%9C%A8-redhat9-%E6%96%87%E6%9C%AC%E7%B3%BB%E7%BB%9F%E4%B8%8A%E5%AE%89%E8%A3%85-qt/e-4.4.0/</guid>
+            <guid>https://shaocheng.li/posts/2012/06/%E5%9C%A8-redhat9-%E6%96%87%E6%9C%AC%E7%B3%BB%E7%BB%9F%E4%B8%8A%E5%AE%89%E8%A3%85-qt/e-4.4.0/</guid>
             <description>Qt Embedded 直接依赖 Framebuffer，无需 X-Window。所以要开启 Linux 系统的 Framebuffer 。开启方法是通过 BootLoader 向内核传递参数：
  对于 grub，在 grub.conf 文件的kernel 命令后面添加 vga=0x311 fb:on 。 对于 lilo，在 lilo.conf 文件中添加 vga=0x311。0x311 表示分辨率为 640*480，16dpp。  编译安装 首先下载 Qt/E-4.4.0 的源码，然后解压在 root 目录：
 cd /root tar -xvjf qt-embedded-linux-opensource-src-4.4.0.tar.bz2 cd qt-embedded-linux-opensource-src-4.4.0  源码中包含了文档、例程。这些会占用很多空间和编译时间，如果不需要的话就修改 configure ，把它去掉：
@@ -20354,10 +20354,10 @@ make
         
         <item>
             <title>Vim/Cscope 教程</title>
-            <link>https://exbob.github.io/posts/2012/04/vim/cscope-%E6%95%99%E7%A8%8B/</link>
+            <link>https://shaocheng.li/posts/2012/04/vim/cscope-%E6%95%99%E7%A8%8B/</link>
             <pubDate>Sun, 29 Apr 2012 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2012/04/vim/cscope-%E6%95%99%E7%A8%8B/</guid>
+            <guid>https://shaocheng.li/posts/2012/04/vim/cscope-%E6%95%99%E7%A8%8B/</guid>
             <description>原文：
 The Vim/Cscope tutorial
 http://cscope.sourceforge.net/cscope_vim_tutorial.html
@@ -20492,10 +20492,10 @@ CSCOPE_DB=/foo/cscope.out; export CSCOPE_DB
         
         <item>
             <title>在大项目中使用 Cscope</title>
-            <link>https://exbob.github.io/posts/2012/04/%E5%9C%A8%E5%A4%A7%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%BF%E7%94%A8-cscope/</link>
+            <link>https://shaocheng.li/posts/2012/04/%E5%9C%A8%E5%A4%A7%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%BF%E7%94%A8-cscope/</link>
             <pubDate>Sat, 28 Apr 2012 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2012/04/%E5%9C%A8%E5%A4%A7%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%BF%E7%94%A8-cscope/</guid>
+            <guid>https://shaocheng.li/posts/2012/04/%E5%9C%A8%E5%A4%A7%E9%A1%B9%E7%9B%AE%E4%B8%AD%E4%BD%BF%E7%94%A8-cscope/</guid>
             <description>原文：
 Using Cscope on large projects (example: the Linux kernel)
 http://cscope.sourceforge.net/large_projects.html
@@ -20595,10 +20595,10 @@ cscope -b -q -k
         
         <item>
             <title>建立一个定制内核</title>
-            <link>https://exbob.github.io/posts/2012/04/%E5%BB%BA%E7%AB%8B%E4%B8%80%E4%B8%AA%E5%AE%9A%E5%88%B6%E5%86%85%E6%A0%B8/</link>
+            <link>https://shaocheng.li/posts/2012/04/%E5%BB%BA%E7%AB%8B%E4%B8%80%E4%B8%AA%E5%AE%9A%E5%88%B6%E5%86%85%E6%A0%B8/</link>
             <pubDate>Sun, 01 Apr 2012 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2012/04/%E5%BB%BA%E7%AB%8B%E4%B8%80%E4%B8%AA%E5%AE%9A%E5%88%B6%E5%86%85%E6%A0%B8/</guid>
+            <guid>https://shaocheng.li/posts/2012/04/%E5%BB%BA%E7%AB%8B%E4%B8%80%E4%B8%AA%E5%AE%9A%E5%88%B6%E5%86%85%E6%A0%B8/</guid>
             <description>原文：
 Building a custom kernel
 https://fedoraproject.org/wiki/Building_a_custom_kernel
@@ -20966,10 +20966,10 @@ default:
         
         <item>
             <title>在 Linux 系统中部署 goagent</title>
-            <link>https://exbob.github.io/posts/2012/03/%E5%9C%A8-linux-%E7%B3%BB%E7%BB%9F%E4%B8%AD%E9%83%A8%E7%BD%B2-goagent/</link>
+            <link>https://shaocheng.li/posts/2012/03/%E5%9C%A8-linux-%E7%B3%BB%E7%BB%9F%E4%B8%AD%E9%83%A8%E7%BD%B2-goagent/</link>
             <pubDate>Fri, 23 Mar 2012 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2012/03/%E5%9C%A8-linux-%E7%B3%BB%E7%BB%9F%E4%B8%AD%E9%83%A8%E7%BD%B2-goagent/</guid>
+            <guid>https://shaocheng.li/posts/2012/03/%E5%9C%A8-linux-%E7%B3%BB%E7%BB%9F%E4%B8%AD%E9%83%A8%E7%BD%B2-goagent/</guid>
             <description>Goagent 的项目主页在 googlecode：http://code.google.com/p/goagent/
 首页有 Windows 系统中的部署教程，Linux 系统中的部署方法有些复杂，记录如下:
  申请一个Google Appengine：http://code.google.com/intl/zh-CN/appengine/，并且创建一个 appid。 下载 Python 版的 Google App Engine SDK，下载页面：http://code.google.com/intl/zh-CN/appengine/downloads.html#Google_App_Engine_SDK_for_Python，要选择 Linux 平台。下载后解压为一个 google_appengine 文件夹。 下载 goagent 稳定版，在项目主页的顶部就有下载链接，当前的版本是 goagent 1.7.10。下载后解压到 google_appengine/goagent 文件夹。 修改 local/proxy.ini 文件中的 [gae] 下的 appid=你的appid ，多个 appid 可以用 | 隔开。 上传。在 google_appengine 目录下执行：python appcfg.py update goagent/server/python。上传需要一些时间。 chrome 浏览器请安装 SwitchySharp 插件：https://chrome.google.com/webstore/detail/dpplabbmogkhghncfbfdeeokoefdjegm，安装后导入这个设置：http://goagent.googlecode.com/files/SwitchyOptions.bak。 使用时在 goagent/local 下执行 python proxy.py ，然后打开 chrome 即可。  </description>
@@ -20991,10 +20991,10 @@ default:
         
         <item>
             <title>牛逼的AA</title>
-            <link>https://exbob.github.io/posts/2012/03/%E7%89%9B%E9%80%BC%E7%9A%84aa/</link>
+            <link>https://shaocheng.li/posts/2012/03/%E7%89%9B%E9%80%BC%E7%9A%84aa/</link>
             <pubDate>Mon, 05 Mar 2012 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2012/03/%E7%89%9B%E9%80%BC%E7%9A%84aa/</guid>
+            <guid>https://shaocheng.li/posts/2012/03/%E7%89%9B%E9%80%BC%E7%9A%84aa/</guid>
             <description>也许你还不知道 AA 是什么，但只看那牛逼哄哄的名字，就该知道它绝非善类。
 没错。进入这个项目的主页：http://aa-project.sourceforge.net/，就能看到它的三个宏伟目标：
  将所有的重要软件移植到AA-lib 将AA-lib移植到所有的可用平台 迫使IBM重新制造MDA卡   注：MDA（Monochrome Display Adapter ），单色字符显示适配卡，与单色字符显示器配接，它只支持字符显示功能，无图形功能，是一种相当古老的显卡。
@@ -21149,10 +21149,10 @@ done
         
         <item>
             <title>X Window 架构概述</title>
-            <link>https://exbob.github.io/posts/2012/02/x-window-%E6%9E%B6%E6%9E%84%E6%A6%82%E8%BF%B0/</link>
+            <link>https://shaocheng.li/posts/2012/02/x-window-%E6%9E%B6%E6%9E%84%E6%A6%82%E8%BF%B0/</link>
             <pubDate>Mon, 27 Feb 2012 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2012/02/x-window-%E6%9E%B6%E6%9E%84%E6%A6%82%E8%BF%B0/</guid>
+            <guid>https://shaocheng.li/posts/2012/02/x-window-%E6%9E%B6%E6%9E%84%E6%A6%82%E8%BF%B0/</guid>
             <description>原文：
 X Window System Architecture Overview HOWTO
 http://www.linuxdoc.org/HOWTO/XWindow-Overview-HOWTO/index.html
@@ -21352,10 +21352,10 @@ Revision 1.0 2001-05-20 Revised by: dm 初始发行。
         
         <item>
             <title>在Fedora7下安装USB无线网卡TL-WN321G</title>
-            <link>https://exbob.github.io/posts/2012/01/%E5%9C%A8fedora7%E4%B8%8B%E5%AE%89%E8%A3%85usb%E6%97%A0%E7%BA%BF%E7%BD%91%E5%8D%A1tl-wn321g/</link>
+            <link>https://shaocheng.li/posts/2012/01/%E5%9C%A8fedora7%E4%B8%8B%E5%AE%89%E8%A3%85usb%E6%97%A0%E7%BA%BF%E7%BD%91%E5%8D%A1tl-wn321g/</link>
             <pubDate>Tue, 17 Jan 2012 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2012/01/%E5%9C%A8fedora7%E4%B8%8B%E5%AE%89%E8%A3%85usb%E6%97%A0%E7%BA%BF%E7%BD%91%E5%8D%A1tl-wn321g/</guid>
+            <guid>https://shaocheng.li/posts/2012/01/%E5%9C%A8fedora7%E4%B8%8B%E5%AE%89%E8%A3%85usb%E6%97%A0%E7%BA%BF%E7%BD%91%E5%8D%A1tl-wn321g/</guid>
             <description>今天是年前最后一天上班，要在 Fedora7 下安装一款 USB 无线网卡—— TP-Link 的 WN321G+，该网卡使用的是 rt73 芯片，属于 Ralink 芯片组，安装过程中遇到了一下问题，最后总算成功了，记录一下。
 插上usb网卡，用 lsusb 命令就可以看到设备：
 Bus 004 Drvice 003： ID 148f:2573 Ralink Technology,Corp  fedora7 已经带了 rt73 的驱动，用如下命令即可加载：
@@ -21452,10 +21452,10 @@ ROOTPROTO=dhcp
         
         <item>
             <title>怎样设置Framebuffer</title>
-            <link>https://exbob.github.io/posts/2011/12/%E6%80%8E%E6%A0%B7%E8%AE%BE%E7%BD%AEframebuffer/</link>
+            <link>https://shaocheng.li/posts/2011/12/%E6%80%8E%E6%A0%B7%E8%AE%BE%E7%BD%AEframebuffer/</link>
             <pubDate>Wed, 14 Dec 2011 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2011/12/%E6%80%8E%E6%A0%B7%E8%AE%BE%E7%BD%AEframebuffer/</guid>
+            <guid>https://shaocheng.li/posts/2011/12/%E6%80%8E%E6%A0%B7%E8%AE%BE%E7%BD%AEframebuffer/</guid>
             <description>环境：Redhat9.02
 启动级别：3
 1. 配置内核： 首先要再编译内核是选中如下几项：
@@ -21512,10 +21512,10 @@ Console Drivers -&gt; Frame-buffer support -&gt;[*] Support for frame buffer dev
         
         <item>
             <title>使用GNU Autoconf/Automake创建Makefile</title>
-            <link>https://exbob.github.io/posts/2011/11/%E4%BD%BF%E7%94%A8gnu-autoconf/automake%E5%88%9B%E5%BB%BAmakefile/</link>
+            <link>https://shaocheng.li/posts/2011/11/%E4%BD%BF%E7%94%A8gnu-autoconf/automake%E5%88%9B%E5%BB%BAmakefile/</link>
             <pubDate>Mon, 21 Nov 2011 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2011/11/%E4%BD%BF%E7%94%A8gnu-autoconf/automake%E5%88%9B%E5%BB%BAmakefile/</guid>
+            <guid>https://shaocheng.li/posts/2011/11/%E4%BD%BF%E7%94%A8gnu-autoconf/automake%E5%88%9B%E5%BB%BAmakefile/</guid>
             <description>原文：
 How To Create a GNU Autoconf / Automake Based Configure Script for Your Application
 http://www3.fh-swf.de/fbin/roth/download/prg3.howto_autoconfmake.pdf
@@ -21949,10 +21949,10 @@ libmylib_la_SOURCES = mylib.c
         
         <item>
             <title>pkg-config指南</title>
-            <link>https://exbob.github.io/posts/2011/11/pkg-config%E6%8C%87%E5%8D%97/</link>
+            <link>https://shaocheng.li/posts/2011/11/pkg-config%E6%8C%87%E5%8D%97/</link>
             <pubDate>Sat, 19 Nov 2011 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2011/11/pkg-config%E6%8C%87%E5%8D%97/</guid>
+            <guid>https://shaocheng.li/posts/2011/11/pkg-config%E6%8C%87%E5%8D%97/</guid>
             <description>原文：
 Guide for pkg-config:http://people.freedesktop.org/~dbn/pkg-config-guide.html
 Dan Nicholson
@@ -22211,10 +22211,10 @@ myapp_LDADD = $(X_LIBS)
         
         <item>
             <title>在Redhat9下构建TinyX&#43;GTK图形环境</title>
-            <link>https://exbob.github.io/posts/2011/11/%E5%9C%A8redhat9%E4%B8%8B%E6%9E%84%E5%BB%BAtinyx-gtk%E5%9B%BE%E5%BD%A2%E7%8E%AF%E5%A2%83/</link>
+            <link>https://shaocheng.li/posts/2011/11/%E5%9C%A8redhat9%E4%B8%8B%E6%9E%84%E5%BB%BAtinyx-gtk%E5%9B%BE%E5%BD%A2%E7%8E%AF%E5%A2%83/</link>
             <pubDate>Tue, 15 Nov 2011 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2011/11/%E5%9C%A8redhat9%E4%B8%8B%E6%9E%84%E5%BB%BAtinyx-gtk%E5%9B%BE%E5%BD%A2%E7%8E%AF%E5%A2%83/</guid>
+            <guid>https://shaocheng.li/posts/2011/11/%E5%9C%A8redhat9%E4%B8%8B%E6%9E%84%E5%BB%BAtinyx-gtk%E5%9B%BE%E5%BD%A2%E7%8E%AF%E5%A2%83/</guid>
             <description>&lt;h2 id=&#34;概述&#34;&gt;概述&lt;/h2&gt;
 
 &lt;p&gt;最近要将 Redhat9.02 移植到一块嵌入式 586 的主板上，空间有限，还要有图形环境，支持中文。所以，要建立一个精简的图像环境，先选择 TinyX+GTK 的方式进行研究。TinyX 是 XFree86 针对嵌入式的编译选项，体积小，启动速度快。
@@ -22567,10 +22567,10 @@ int  main(int argc,char *argv[])
         
         <item>
             <title>从源码建立XFree86</title>
-            <link>https://exbob.github.io/posts/2011/11/%E4%BB%8E%E6%BA%90%E7%A0%81%E5%BB%BA%E7%AB%8Bxfree86/</link>
+            <link>https://shaocheng.li/posts/2011/11/%E4%BB%8E%E6%BA%90%E7%A0%81%E5%BB%BA%E7%AB%8Bxfree86/</link>
             <pubDate>Tue, 08 Nov 2011 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2011/11/%E4%BB%8E%E6%BA%90%E7%A0%81%E5%BB%BA%E7%AB%8Bxfree86/</guid>
+            <guid>https://shaocheng.li/posts/2011/11/%E4%BB%8E%E6%BA%90%E7%A0%81%E5%BB%BA%E7%AB%8Bxfree86/</guid>
             <description>原文：
 Building XFree86 from a Source Distribution
 http://www.xfree86.org/4.3.0/BUILD.html
@@ -22764,10 +22764,10 @@ make
         
         <item>
             <title>不用任何变量，实现strlen函数</title>
-            <link>https://exbob.github.io/posts/2011/10/%E4%B8%8D%E7%94%A8%E4%BB%BB%E4%BD%95%E5%8F%98%E9%87%8F%E5%AE%9E%E7%8E%B0strlen%E5%87%BD%E6%95%B0/</link>
+            <link>https://shaocheng.li/posts/2011/10/%E4%B8%8D%E7%94%A8%E4%BB%BB%E4%BD%95%E5%8F%98%E9%87%8F%E5%AE%9E%E7%8E%B0strlen%E5%87%BD%E6%95%B0/</link>
             <pubDate>Tue, 18 Oct 2011 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2011/10/%E4%B8%8D%E7%94%A8%E4%BB%BB%E4%BD%95%E5%8F%98%E9%87%8F%E5%AE%9E%E7%8E%B0strlen%E5%87%BD%E6%95%B0/</guid>
+            <guid>https://shaocheng.li/posts/2011/10/%E4%B8%8D%E7%94%A8%E4%BB%BB%E4%BD%95%E5%8F%98%E9%87%8F%E5%AE%9E%E7%8E%B0strlen%E5%87%BD%E6%95%B0/</guid>
             <description>使用递归：
 int strlen(char * str) { if(*str) return strlen(str+1)+1; else return 0; }  </description>
             <content type="html"><![CDATA[<p>使用递归：</p>
@@ -22785,10 +22785,10 @@ int strlen(char * str) { if(*str) return strlen(str+1)+1; else return 0; }  </de
         
         <item>
             <title>Linux系统文本模式下的截屏</title>
-            <link>https://exbob.github.io/posts/2011/07/linux%E7%B3%BB%E7%BB%9F%E6%96%87%E6%9C%AC%E6%A8%A1%E5%BC%8F%E4%B8%8B%E7%9A%84%E6%88%AA%E5%B1%8F/</link>
+            <link>https://shaocheng.li/posts/2011/07/linux%E7%B3%BB%E7%BB%9F%E6%96%87%E6%9C%AC%E6%A8%A1%E5%BC%8F%E4%B8%8B%E7%9A%84%E6%88%AA%E5%B1%8F/</link>
             <pubDate>Fri, 29 Jul 2011 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2011/07/linux%E7%B3%BB%E7%BB%9F%E6%96%87%E6%9C%AC%E6%A8%A1%E5%BC%8F%E4%B8%8B%E7%9A%84%E6%88%AA%E5%B1%8F/</guid>
+            <guid>https://shaocheng.li/posts/2011/07/linux%E7%B3%BB%E7%BB%9F%E6%96%87%E6%9C%AC%E6%A8%A1%E5%BC%8F%E4%B8%8B%E7%9A%84%E6%88%AA%E5%B1%8F/</guid>
             <description>Linux系统文本模式下截屏要用到/dev目录下的vcs设备：
 ls /dev/vcs* /dev/vcs /dev/vcs1 /dev/vcs2 /dev/vcs3 /dev/vcs4 /dev/vcs5 /dev/vcs6  其中，/dev/vcs 是当前的虚拟控制台的内容，/dev/vcs1 是tty1的内容。
 截取当前控制台的内容：
@@ -22819,10 +22819,10 @@ cat /dev/vcs1 &amp;gt; filename  </description>
         
         <item>
             <title>Linux下分割、合并文件——dd和cat</title>
-            <link>https://exbob.github.io/posts/2011/07/linux%E4%B8%8B%E5%88%86%E5%89%B2%E5%90%88%E5%B9%B6%E6%96%87%E4%BB%B6dd%E5%92%8Ccat/</link>
+            <link>https://shaocheng.li/posts/2011/07/linux%E4%B8%8B%E5%88%86%E5%89%B2%E5%90%88%E5%B9%B6%E6%96%87%E4%BB%B6dd%E5%92%8Ccat/</link>
             <pubDate>Tue, 26 Jul 2011 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2011/07/linux%E4%B8%8B%E5%88%86%E5%89%B2%E5%90%88%E5%B9%B6%E6%96%87%E4%BB%B6dd%E5%92%8Ccat/</guid>
+            <guid>https://shaocheng.li/posts/2011/07/linux%E4%B8%8B%E5%88%86%E5%89%B2%E5%90%88%E5%B9%B6%E6%96%87%E4%BB%B6dd%E5%92%8Ccat/</guid>
             <description>dd的作用是转换和拷贝文件，我们可以利用它来分割文件，相关的选项如下：
  if=filename：输入的文件名
  of=finename：输出的文件名
@@ -23038,10 +23038,10 @@ caf.sh  ddf.sh  file  file1  file2  file.bak
         
         <item>
             <title>如何在Linux系统下制作RamDisk</title>
-            <link>https://exbob.github.io/posts/2011/07/%E5%A6%82%E4%BD%95%E5%9C%A8linux%E7%B3%BB%E7%BB%9F%E4%B8%8B%E5%88%B6%E4%BD%9Cramdisk/</link>
+            <link>https://shaocheng.li/posts/2011/07/%E5%A6%82%E4%BD%95%E5%9C%A8linux%E7%B3%BB%E7%BB%9F%E4%B8%8B%E5%88%B6%E4%BD%9Cramdisk/</link>
             <pubDate>Mon, 25 Jul 2011 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2011/07/%E5%A6%82%E4%BD%95%E5%9C%A8linux%E7%B3%BB%E7%BB%9F%E4%B8%8B%E5%88%B6%E4%BD%9Cramdisk/</guid>
+            <guid>https://shaocheng.li/posts/2011/07/%E5%A6%82%E4%BD%95%E5%9C%A8linux%E7%B3%BB%E7%BB%9F%E4%B8%8B%E5%88%B6%E4%BD%9Cramdisk/</guid>
             <description>原文：
 《Linux Ramdisk mini-HOWTO》
 By Van Emery
@@ -23305,10 +23305,10 @@ drwxrwx---    2 van     root         4096 Dec  8 11:09 /mnt/rd
         
         <item>
             <title>为Linux系统配置serial console</title>
-            <link>https://exbob.github.io/posts/2011/07/%E4%B8%BAlinux%E7%B3%BB%E7%BB%9F%E9%85%8D%E7%BD%AEserial-console/</link>
+            <link>https://shaocheng.li/posts/2011/07/%E4%B8%BAlinux%E7%B3%BB%E7%BB%9F%E9%85%8D%E7%BD%AEserial-console/</link>
             <pubDate>Fri, 22 Jul 2011 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2011/07/%E4%B8%BAlinux%E7%B3%BB%E7%BB%9F%E9%85%8D%E7%BD%AEserial-console/</guid>
+            <guid>https://shaocheng.li/posts/2011/07/%E4%B8%BAlinux%E7%B3%BB%E7%BB%9F%E9%85%8D%E7%BD%AEserial-console/</guid>
             <description>原文：
 《Remote Serial Console HOWTO》：http://www.linux.com/learn/docs/ldp/714-Remote-Serial-Console-HOWTO
 Translate By Bob
@@ -23711,10 +23711,10 @@ terminal --timeout=10 serial console
         
         <item>
             <title>补丁的制作和使用</title>
-            <link>https://exbob.github.io/posts/2011/07/%E8%A1%A5%E4%B8%81%E7%9A%84%E5%88%B6%E4%BD%9C%E5%92%8C%E4%BD%BF%E7%94%A8/</link>
+            <link>https://shaocheng.li/posts/2011/07/%E8%A1%A5%E4%B8%81%E7%9A%84%E5%88%B6%E4%BD%9C%E5%92%8C%E4%BD%BF%E7%94%A8/</link>
             <pubDate>Fri, 15 Jul 2011 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2011/07/%E8%A1%A5%E4%B8%81%E7%9A%84%E5%88%B6%E4%BD%9C%E5%92%8C%E4%BD%BF%E7%94%A8/</guid>
+            <guid>https://shaocheng.li/posts/2011/07/%E8%A1%A5%E4%B8%81%E7%9A%84%E5%88%B6%E4%BD%9C%E5%92%8C%E4%BD%BF%E7%94%A8/</guid>
             <description>原理 现在有一个文件file1，通过修改file1得到了文件file2，然后用diff工具比较file1和file2的差异，得到一个补丁文件file.patch，它记录了两个文件的不同之处，patch工具就可以根据这个补丁文件修改file1，从而得到file2。
 相关工具 diff diff [options] 源文件 目标文件  diff用于列出两个文件的不同之处，指示如何由源文件变为目标文件，可以用重定向生成补丁文件，注意：diff只能用于比较文本文件。常用选项：
 -c，输出一个基于上下文的diff，即提供每处修改的前后机会内容，这样patch命令可以在打补丁前验证上下文是否匹配，而补丁文件也更容易阅读。
@@ -23837,10 +23837,10 @@ patch -p1 &lt; ../doc.patch
         
         <item>
             <title>关于C语言的位移操作</title>
-            <link>https://exbob.github.io/posts/2011/07/%E5%85%B3%E4%BA%8Ec%E8%AF%AD%E8%A8%80%E7%9A%84%E4%BD%8D%E7%A7%BB%E6%93%8D%E4%BD%9C/</link>
+            <link>https://shaocheng.li/posts/2011/07/%E5%85%B3%E4%BA%8Ec%E8%AF%AD%E8%A8%80%E7%9A%84%E4%BD%8D%E7%A7%BB%E6%93%8D%E4%BD%9C/</link>
             <pubDate>Fri, 08 Jul 2011 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2011/07/%E5%85%B3%E4%BA%8Ec%E8%AF%AD%E8%A8%80%E7%9A%84%E4%BD%8D%E7%A7%BB%E6%93%8D%E4%BD%9C/</guid>
+            <guid>https://shaocheng.li/posts/2011/07/%E5%85%B3%E4%BA%8Ec%E8%AF%AD%E8%A8%80%E7%9A%84%E4%BD%8D%E7%A7%BB%E6%93%8D%E4%BD%9C/</guid>
             <description>下面这段代码会输出什么结果？
 #include &amp;lt;stdio.h&amp;gt; int main() { printf(&amp;quot;%d\n&amp;quot;,( (i-sizeof(int)) &amp;gt;&amp;gt;32)); return 0; }  答案是 0
 将代码修改如下：
@@ -23893,10 +23893,10 @@ int main()
         
         <item>
             <title>关于函数的指针参数</title>
-            <link>https://exbob.github.io/posts/2011/07/%E5%85%B3%E4%BA%8E%E5%87%BD%E6%95%B0%E7%9A%84%E6%8C%87%E9%92%88%E5%8F%82%E6%95%B0/</link>
+            <link>https://shaocheng.li/posts/2011/07/%E5%85%B3%E4%BA%8E%E5%87%BD%E6%95%B0%E7%9A%84%E6%8C%87%E9%92%88%E5%8F%82%E6%95%B0/</link>
             <pubDate>Fri, 01 Jul 2011 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2011/07/%E5%85%B3%E4%BA%8E%E5%87%BD%E6%95%B0%E7%9A%84%E6%8C%87%E9%92%88%E5%8F%82%E6%95%B0/</guid>
+            <guid>https://shaocheng.li/posts/2011/07/%E5%85%B3%E4%BA%8E%E5%87%BD%E6%95%B0%E7%9A%84%E6%8C%87%E9%92%88%E5%8F%82%E6%95%B0/</guid>
             <description>先做一道题目：
 #include &amp;lt;stdio.h&amp;gt; int f(int *p) { static int i = 5; p=&amp;amp;i; return 0; } int main(void) { int *p; f(p); printf(&amp;quot;p = %d/n&amp;quot;,*p); return 0; }  该程序的输出结果是多少？
 有人会认为输出的是“p = 5”，其实应该是一个不确定的数。
@@ -23979,10 +23979,10 @@ int main(void)
         
         <item>
             <title>神级排序算法</title>
-            <link>https://exbob.github.io/posts/2011/06/%E7%A5%9E%E7%BA%A7%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/</link>
+            <link>https://shaocheng.li/posts/2011/06/%E7%A5%9E%E7%BA%A7%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/</link>
             <pubDate>Tue, 28 Jun 2011 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2011/06/%E7%A5%9E%E7%BA%A7%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/</guid>
+            <guid>https://shaocheng.li/posts/2011/06/%E7%A5%9E%E7%BA%A7%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/</guid>
             <description>下面是一个排序算法，用shell实现的：
 sleepsort.sh
 #!/bin/bash function f() { sleep &amp;quot;$1&amp;quot; echo &amp;quot;$1&amp;quot; } while [ -n &amp;quot;$1&amp;quot; ] do f &amp;quot;$1&amp;quot; &amp;amp; shift done wait  用法：
@@ -24077,10 +24077,10 @@ int main()
         
         <item>
             <title>Unicode编码字符的点阵显示</title>
-            <link>https://exbob.github.io/posts/2011/06/unicode%E7%BC%96%E7%A0%81%E5%AD%97%E7%AC%A6%E7%9A%84%E7%82%B9%E9%98%B5%E6%98%BE%E7%A4%BA/</link>
+            <link>https://shaocheng.li/posts/2011/06/unicode%E7%BC%96%E7%A0%81%E5%AD%97%E7%AC%A6%E7%9A%84%E7%82%B9%E9%98%B5%E6%98%BE%E7%A4%BA/</link>
             <pubDate>Mon, 13 Jun 2011 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2011/06/unicode%E7%BC%96%E7%A0%81%E5%AD%97%E7%AC%A6%E7%9A%84%E7%82%B9%E9%98%B5%E6%98%BE%E7%A4%BA/</guid>
+            <guid>https://shaocheng.li/posts/2011/06/unicode%E7%BC%96%E7%A0%81%E5%AD%97%E7%AC%A6%E7%9A%84%E7%82%B9%E9%98%B5%E6%98%BE%E7%A4%BA/</guid>
             <description>对于unicode编码的字符，可以先将unicode编码转换为GBK编码，然后利用GBK点阵字库（gbk.bin)显示字符。一个比较好的编码转换方法是，制作一个按照unicode编码顺序排列的GBK编码表，直接根据unicode编码就可以查到对应的GBK编码，具体的制作方法如下：
 1.生成一个unicode字符文件 上以篇文章中已经制作了一个GBK编码的全字符文件gbk.txt，用记事本打开gbk.txt，然后以unicode编码另存为unicode.txt文件。
 这样的话，所有的GBK编码字符都用unicode编码保存在unicode.txt中了，可以用winhex打开unicode.txt，会发现前两个字节是FFFE，这是unicode编码的标识，要注意后面的unicode编码是小端存储。
@@ -24389,10 +24389,10 @@ int displaychar(FILE *fp,unsigned short int dispch,char fillch,char start_x,char
         
         <item>
             <title>GBK点阵显示字库的制作和使用</title>
-            <link>https://exbob.github.io/posts/2011/06/gbk%E7%82%B9%E9%98%B5%E6%98%BE%E7%A4%BA%E5%AD%97%E5%BA%93%E7%9A%84%E5%88%B6%E4%BD%9C%E5%92%8C%E4%BD%BF%E7%94%A8/</link>
+            <link>https://shaocheng.li/posts/2011/06/gbk%E7%82%B9%E9%98%B5%E6%98%BE%E7%A4%BA%E5%AD%97%E5%BA%93%E7%9A%84%E5%88%B6%E4%BD%9C%E5%92%8C%E4%BD%BF%E7%94%A8/</link>
             <pubDate>Sun, 12 Jun 2011 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2011/06/gbk%E7%82%B9%E9%98%B5%E6%98%BE%E7%A4%BA%E5%AD%97%E5%BA%93%E7%9A%84%E5%88%B6%E4%BD%9C%E5%92%8C%E4%BD%BF%E7%94%A8/</guid>
+            <guid>https://shaocheng.li/posts/2011/06/gbk%E7%82%B9%E9%98%B5%E6%98%BE%E7%A4%BA%E5%AD%97%E5%BA%93%E7%9A%84%E5%88%B6%E4%BD%9C%E5%92%8C%E4%BD%BF%E7%94%A8/</guid>
             <description>GBK编码共收录汉字21003个、符号883个，并提供1894个造字码位，简、繁体字融于一库。以两个字节表示一个汉字，编码范围是0x8140~0xfefe，兼容GB2318，并覆盖了unicode中的所有汉字。Win7记事本默认以GBK保存汉字。
 关于GBK的详细信息：http://baike.baidu.com/view/25421.htm
 开发环境:
@@ -24561,10 +24561,10 @@ int displaychar(FILE *fp,unsigned short int dispch,char fillch,char start_x,char
         
         <item>
             <title>ASCII字符点阵字库的制作和使用</title>
-            <link>https://exbob.github.io/posts/2011/06/ascii%E5%AD%97%E7%AC%A6%E7%82%B9%E9%98%B5%E5%AD%97%E5%BA%93%E7%9A%84%E5%88%B6%E4%BD%9C%E5%92%8C%E4%BD%BF%E7%94%A8/</link>
+            <link>https://shaocheng.li/posts/2011/06/ascii%E5%AD%97%E7%AC%A6%E7%82%B9%E9%98%B5%E5%AD%97%E5%BA%93%E7%9A%84%E5%88%B6%E4%BD%9C%E5%92%8C%E4%BD%BF%E7%94%A8/</link>
             <pubDate>Wed, 08 Jun 2011 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2011/06/ascii%E5%AD%97%E7%AC%A6%E7%82%B9%E9%98%B5%E5%AD%97%E5%BA%93%E7%9A%84%E5%88%B6%E4%BD%9C%E5%92%8C%E4%BD%BF%E7%94%A8/</guid>
+            <guid>https://shaocheng.li/posts/2011/06/ascii%E5%AD%97%E7%AC%A6%E7%82%B9%E9%98%B5%E5%AD%97%E5%BA%93%E7%9A%84%E5%88%B6%E4%BD%9C%E5%92%8C%E4%BD%BF%E7%94%A8/</guid>
             <description>开发环境：
 Win7，Eclipse，MinGW
 #1.生成ASCII字符文件
@@ -24788,10 +24788,10 @@ int displaychar(FILE *fp,char dispch,char fillch,char start_x,char start_y)
         
         <item>
             <title>用getopt处理main函数的参数</title>
-            <link>https://exbob.github.io/posts/2011/05/%E7%94%A8getopt%E5%A4%84%E7%90%86main%E5%87%BD%E6%95%B0%E7%9A%84%E5%8F%82%E6%95%B0/</link>
+            <link>https://shaocheng.li/posts/2011/05/%E7%94%A8getopt%E5%A4%84%E7%90%86main%E5%87%BD%E6%95%B0%E7%9A%84%E5%8F%82%E6%95%B0/</link>
             <pubDate>Sat, 28 May 2011 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2011/05/%E7%94%A8getopt%E5%A4%84%E7%90%86main%E5%87%BD%E6%95%B0%E7%9A%84%E5%8F%82%E6%95%B0/</guid>
+            <guid>https://shaocheng.li/posts/2011/05/%E7%94%A8getopt%E5%A4%84%E7%90%86main%E5%87%BD%E6%95%B0%E7%9A%84%E5%8F%82%E6%95%B0/</guid>
             <description>环境：Fedora12 Gcc4.4.2
 在C语言中，main函数的声明如下：
 int main（int argc，char *argv[]);  argc是指程序参数的个数，包括程序名本身，如果程序不带参数，argc为1；
@@ -24966,10 +24966,10 @@ excess argument:arg2
         
         <item>
             <title>C语言的参数可变函数</title>
-            <link>https://exbob.github.io/posts/2011/05/c%E8%AF%AD%E8%A8%80%E7%9A%84%E5%8F%82%E6%95%B0%E5%8F%AF%E5%8F%98%E5%87%BD%E6%95%B0/</link>
+            <link>https://shaocheng.li/posts/2011/05/c%E8%AF%AD%E8%A8%80%E7%9A%84%E5%8F%82%E6%95%B0%E5%8F%AF%E5%8F%98%E5%87%BD%E6%95%B0/</link>
             <pubDate>Tue, 17 May 2011 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2011/05/c%E8%AF%AD%E8%A8%80%E7%9A%84%E5%8F%82%E6%95%B0%E5%8F%AF%E5%8F%98%E5%87%BD%E6%95%B0/</guid>
+            <guid>https://shaocheng.li/posts/2011/05/c%E8%AF%AD%E8%A8%80%E7%9A%84%E5%8F%82%E6%95%B0%E5%8F%AF%E5%8F%98%E5%87%BD%E6%95%B0/</guid>
             <description>环境：fedora12，gcc4.4.4
 C语言参数个数可变的函数，叫做VA函数（variable argument function），例如printf()函数。要实现VA函数需要包含stdarg.h:
 #include &amp;lt;stdarg.h&amp;gt;  主要使用下面三个宏定义：
@@ -25081,10 +25081,10 @@ Variable argument list macro definitions
         
         <item>
             <title>键盘上各个按键的英文名</title>
-            <link>https://exbob.github.io/posts/2011/04/%E9%94%AE%E7%9B%98%E4%B8%8A%E5%90%84%E4%B8%AA%E6%8C%89%E9%94%AE%E7%9A%84%E8%8B%B1%E6%96%87%E5%90%8D/</link>
+            <link>https://shaocheng.li/posts/2011/04/%E9%94%AE%E7%9B%98%E4%B8%8A%E5%90%84%E4%B8%AA%E6%8C%89%E9%94%AE%E7%9A%84%E8%8B%B1%E6%96%87%E5%90%8D/</link>
             <pubDate>Sun, 10 Apr 2011 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2011/04/%E9%94%AE%E7%9B%98%E4%B8%8A%E5%90%84%E4%B8%AA%E6%8C%89%E9%94%AE%E7%9A%84%E8%8B%B1%E6%96%87%E5%90%8D/</guid>
+            <guid>https://shaocheng.li/posts/2011/04/%E9%94%AE%E7%9B%98%E4%B8%8A%E5%90%84%E4%B8%AA%E6%8C%89%E9%94%AE%E7%9A%84%E8%8B%B1%E6%96%87%E5%90%8D/</guid>
             <description>**Esc **：escape
 **Tab **：table
 **Caps Lock **：Capital Lock
@@ -25199,10 +25199,10 @@ Variable argument list macro definitions
         
         <item>
             <title>判断进程是否存在的脚本</title>
-            <link>https://exbob.github.io/posts/2011/03/%E5%88%A4%E6%96%AD%E8%BF%9B%E7%A8%8B%E6%98%AF%E5%90%A6%E5%AD%98%E5%9C%A8%E7%9A%84%E8%84%9A%E6%9C%AC/</link>
+            <link>https://shaocheng.li/posts/2011/03/%E5%88%A4%E6%96%AD%E8%BF%9B%E7%A8%8B%E6%98%AF%E5%90%A6%E5%AD%98%E5%9C%A8%E7%9A%84%E8%84%9A%E6%9C%AC/</link>
             <pubDate>Fri, 04 Mar 2011 08:00:00 +0800</pubDate>
             
-            <guid>https://exbob.github.io/posts/2011/03/%E5%88%A4%E6%96%AD%E8%BF%9B%E7%A8%8B%E6%98%AF%E5%90%A6%E5%AD%98%E5%9C%A8%E7%9A%84%E8%84%9A%E6%9C%AC/</guid>
+            <guid>https://shaocheng.li/posts/2011/03/%E5%88%A4%E6%96%AD%E8%BF%9B%E7%A8%8B%E6%98%AF%E5%90%A6%E5%AD%98%E5%9C%A8%E7%9A%84%E8%84%9A%E6%9C%AC/</guid>
             <description>test.sh :
 #!/bin/bash pid=`ps -ef | grep -v grep | grep -v &amp;quot;test.sh&amp;quot; | grep $1 | sed -n &#39;1P&#39; | awk &#39;{print $2}&#39;` if [ -z $pid ] ; then echo &amp;quot;no this process&amp;quot; else echo $pid fi  例：
 查询是否存在hello进程

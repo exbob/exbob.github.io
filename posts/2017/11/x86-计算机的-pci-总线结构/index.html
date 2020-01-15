@@ -11,7 +11,7 @@ PCI 总线主要分为三个部分：
 <meta name="keywords" content="" />
 <meta name="robots" content="noodp" />
 <meta name="theme-color" content="#252627" />
-<link rel="canonical" href="https://exbob.github.io/posts/2017/11/x86-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%9A%84-pci-%E6%80%BB%E7%BA%BF%E7%BB%93%E6%9E%84/" />
+<link rel="canonical" href="https://shaocheng.li/posts/2017/11/x86-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%9A%84-pci-%E6%80%BB%E7%BA%BF%E7%BB%93%E6%9E%84/" />
 
 
     <title>
@@ -27,21 +27,21 @@ PCI 总线主要分为三个部分：
 
 
 
-<link rel="stylesheet" href="https://exbob.github.io/main.min.73f55a8d452be4a71b2960620b80252cf69abd84d63fe7501abf0a39b1a70a78.css">
+<link rel="stylesheet" href="https://shaocheng.li/main.min.73f55a8d452be4a71b2960620b80252cf69abd84d63fe7501abf0a39b1a70a78.css">
 
 
     
-        <link rel="stylesheet" type="text/css" href="https://exbob.github.io/css/custom.css">
+        <link rel="stylesheet" type="text/css" href="https://shaocheng.li/css/custom.css">
     
 
 
 
-    <link rel="apple-touch-icon" sizes="180x180" href="https://exbob.github.io/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="https://exbob.github.io/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="https://exbob.github.io/favicon-16x16.png">
-    <link rel="manifest" href="https://exbob.github.io/site.webmanifest">
-    <link rel="mask-icon" href="https://exbob.github.io/safari-pinned-tab.svg" color="#252627">
-    <link rel="shortcut icon" href="https://exbob.github.io/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://shaocheng.li/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://shaocheng.li/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://shaocheng.li/favicon-16x16.png">
+    <link rel="manifest" href="https://shaocheng.li/site.webmanifest">
+    <link rel="mask-icon" href="https://shaocheng.li/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="https://shaocheng.li/favicon.ico">
     <meta name="msapplication-TileColor" content="#252627">
     <meta name="theme-color" content="#252627">
 
@@ -59,7 +59,7 @@ PCI 总线主要分为三个部分：
 
 <meta itemprop="keywords" content="" />
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="https://exbob.github.io"/>
+<meta name="twitter:image" content="https://shaocheng.li"/>
 
 <meta name="twitter:title" content="x86 计算机的 PCI 总线结构"/>
 <meta name="twitter:description" content="1. 硬件 PCI 总线是一个并行总线，一个时钟周期有 32 个 bit （后扩展到 64 bit） 同时传输，带宽 133MB/s ，PCI 设备具有独立的地址空间，叫做 PCI 总线地址空间，通过 Host bridge 隔离处理器系统的存储器域与 PCI 总线域，下面挂在了一个 PCI 总线树，典型的结构如下图：
@@ -85,7 +85,7 @@ PCI 总线主要分为三个部分：
         <div class="container">
             <header class="header">
     <span class="header__inner">
-        <a href="https://exbob.github.io/" style="text-decoration: none;">
+        <a href="https://shaocheng.li/" style="text-decoration: none;">
     <div class="logo">
         
             <span class="logo__mark">></span>
@@ -99,7 +99,7 @@ PCI 总线主要分为三个部分：
         <span class="header__right">
             
                 <nav class="menu">
-    <ul class="menu__inner"><li><a href="https://exbob.github.io/about/">About</a></li><li><a href="https://exbob.github.io/posts/">Posts</a></li>
+    <ul class="menu__inner"><li><a href="https://shaocheng.li/about/">About</a></li><li><a href="https://shaocheng.li/posts/">Posts</a></li>
     </ul>
 </nav>
 
@@ -136,7 +136,7 @@ PCI 总线主要分为三个部分：
 
         <article>
             <h1 class="post-title">
-                <a href="https://exbob.github.io/posts/2017/11/x86-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%9A%84-pci-%E6%80%BB%E7%BA%BF%E7%BB%93%E6%9E%84/">x86 计算机的 PCI 总线结构</a>
+                <a href="https://shaocheng.li/posts/2017/11/x86-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%9A%84-pci-%E6%80%BB%E7%BA%BF%E7%BB%93%E6%9E%84/">x86 计算机的 PCI 总线结构</a>
             </h1>
                 <hr />
                 <aside id="toc">
@@ -168,7 +168,7 @@ PCI 总线主要分为三个部分：
 
 <p>PCI 总线是一个并行总线，一个时钟周期有 32 个 bit （后扩展到 64 bit） 同时传输，带宽 133MB/s ，PCI 设备具有独立的地址空间，叫做 PCI 总线地址空间，通过 Host bridge 隔离处理器系统的存储器域与 PCI 总线域，下面挂在了一个 PCI 总线树，典型的结构如下图：</p>
 
-<p><img src="https://exbob.github.io/images/2017-11-27/2017-11-27_1.png" alt="" /></p>
+<p><img src="https://shaocheng.li/images/2017-11-27/2017-11-27_1.png" alt="" /></p>
 
 <p>PCI 总线主要分为三个部分：</p>
 
@@ -184,7 +184,7 @@ PCI 总线主要分为三个部分：
 
 <p>在 PCI 总线上，通过 Bus number ，Device number 和 Function number 标识每个 PCI 设备，简称 BDF ，每个 PCI 设备内有单独存储空间，叫做 PCI 配置空间。可以通过 IO 端口 CONFIG_ADDRESS 和 CONFIG_DATA 读取 PCI 配置空间。CONFIG_ADDRESS 的地址是 0xCF8，CONFIG_DATA 的地址是 0xCFC，两个寄存器都为 32bit。CONFIG_ADDRESS 寄存器格式：</p>
 
-<p><img src="https://exbob.github.io/images/2017-11-27/2017-11-27_2.jpg" alt="" /></p>
+<p><img src="https://shaocheng.li/images/2017-11-27/2017-11-27_2.jpg" alt="" /></p>
 
 <ul>
 <li>bit31 是使能对 PCI Bus CONFIG_DATA 的访问；</li>
@@ -205,7 +205,7 @@ PCI 总线主要分为三个部分：
 
 <p>配置空间共 256 字节（地址 0x00~0xFF）， 前 64 字节（地址 0x00~0x3F ）是所有 PCI 设备必须支持的：</p>
 
-<p><img src="https://exbob.github.io/images/2017-11-27/2017-11-27_3.png" alt="" /></p>
+<p><img src="https://shaocheng.li/images/2017-11-27/2017-11-27_3.png" alt="" /></p>
 
 <p>配置空间都是小端存储。Vendor ID 是厂商 ID ，为保证唯一性，需要设备厂商向 PCI SIG 申请获得，Device ID 由厂商自定义。 Base Address Registers （BAR）用来定义该设备占用的 Memory/IO 空间的类型、起始地址和大小，PCI 设备做多有六个 BAR，PCI 桥最多有两个 BAR 。BAR 在 bit0 来表示该设备是映射到 memory 还是 IO，bar 的 bit0 是 readonly 的，也就是说，设备寄存器是映射到 memory 还是 IO 是由设备制造商决定的，其他人无法修改。空间的大小可以用如下方法读取：</p>
 
@@ -217,7 +217,7 @@ PCI 总线主要分为三个部分：
 
 <p>下面是 BAR 的结构图：</p>
 
-<p><img src="https://exbob.github.io/images/2017-11-27/2017-11-27_4.png" alt="" /></p>
+<p><img src="https://shaocheng.li/images/2017-11-27/2017-11-27_4.png" alt="" /></p>
 
 <p>PCI 枚举是个不断递归调用发现新设备的过程，系统启动时, 从 Host Bridge 开始寻找设备和桥。发现桥后设置 Bus，会发现一个 PCI 设备子树，递归的过程中，BIOS/UEFI (或者 Linux 内核, 如果配置成这样)与每个 PCI 设备进行配置交易, 为其分配安全的地址空间和中断等资源。在整个过程结束后，一颗完整的资源分配完毕的树就建立好了。</p>
 
@@ -488,7 +488,7 @@ static int pci_conf1_write(unsigned int seg, unsigned int bus, unsigned int devf
                 <div class="pagination__buttons">
                     
                         <span class="button previous">
-                            <a href="https://exbob.github.io/posts/2017/11/linux-%E7%B3%BB%E7%BB%9F%E7%9A%84-usb-%E8%AE%BE%E5%A4%87%E7%BB%93%E6%9E%84/">
+                            <a href="https://shaocheng.li/posts/2017/11/linux-%E7%B3%BB%E7%BB%9F%E7%9A%84-usb-%E8%AE%BE%E5%A4%87%E7%BB%93%E6%9E%84/">
                                 <span class="button__icon">←</span>
                                 <span class="button__text">Linux 系统的 USB 设备结构</span>
                             </a>
@@ -497,7 +497,7 @@ static int pci_conf1_write(unsigned int seg, unsigned int bus, unsigned int devf
 
                     
                         <span class="button next">
-                            <a href="https://exbob.github.io/posts/2017/11/appweb-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+                            <a href="https://shaocheng.li/posts/2017/11/appweb-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
                                 <span class="button__text">Appweb 学习笔记</span>
                                 <span class="button__icon">→</span>
                             </a>
@@ -518,10 +518,10 @@ static int pci_conf1_write(unsigned int seg, unsigned int bus, unsigned int devf
         <div class="footer__content">
             <span>&copy; 2020</span>
             
-                <span><a href="https://exbob.github.io">Shaocheng.Li</a></span>
+                <span><a href="https://shaocheng.li">Shaocheng.Li</a></span>
             
             <span><a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></span>
-            <span> <a href="https://exbob.github.io/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+            <span> <a href="https://shaocheng.li/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
         </div>
     </div>
     <div class="footer__inner">
@@ -540,7 +540,7 @@ static int pci_conf1_write(unsigned int seg, unsigned int bus, unsigned int devf
 
 
 
-<script type="text/javascript" src="https://exbob.github.io/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+<script type="text/javascript" src="https://shaocheng.li/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
 
 
 
