@@ -12,7 +12,7 @@
 <meta name="keywords" content="" />
 <meta name="robots" content="noodp" />
 <meta name="theme-color" content="#252627" />
-<link rel="canonical" href="http://exbob.github.io/posts/2019/07/%E4%BD%BF%E7%94%A8-openvpn-%E5%AE%9E%E7%8E%B0%E8%BF%9C%E7%A8%8B%E8%AE%BF%E9%97%AE/" />
+<link rel="canonical" href="https://exbob.github.io/posts/2019/07/%E4%BD%BF%E7%94%A8-openvpn-%E5%AE%9E%E7%8E%B0%E8%BF%9C%E7%A8%8B%E8%AE%BF%E9%97%AE/" />
 
 
     <title>
@@ -28,17 +28,17 @@
 
 
 
-<link rel="stylesheet" href="http://exbob.github.io/main.min.73f55a8d452be4a71b2960620b80252cf69abd84d63fe7501abf0a39b1a70a78.css">
+<link rel="stylesheet" href="https://exbob.github.io/main.min.73f55a8d452be4a71b2960620b80252cf69abd84d63fe7501abf0a39b1a70a78.css">
 
 
 
 
-    <link rel="apple-touch-icon" sizes="180x180" href="http://exbob.github.io/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="http://exbob.github.io/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="http://exbob.github.io/favicon-16x16.png">
-    <link rel="manifest" href="http://exbob.github.io/site.webmanifest">
-    <link rel="mask-icon" href="http://exbob.github.io/safari-pinned-tab.svg" color="#252627">
-    <link rel="shortcut icon" href="http://exbob.github.io/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://exbob.github.io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://exbob.github.io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://exbob.github.io/favicon-16x16.png">
+    <link rel="manifest" href="https://exbob.github.io/site.webmanifest">
+    <link rel="mask-icon" href="https://exbob.github.io/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="https://exbob.github.io/favicon.ico">
     <meta name="msapplication-TileColor" content="#252627">
     <meta name="theme-color" content="#252627">
 
@@ -57,7 +57,7 @@
 
 <meta itemprop="keywords" content="" />
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="http://exbob.github.io"/>
+<meta name="twitter:image" content="https://exbob.github.io"/>
 
 <meta name="twitter:title" content="使用 OpenVPN 实现远程访问"/>
 <meta name="twitter:description" content="有时我们需要连接不同局域网的两台主机，使其可以互相访问，比如用家里的电脑登录办公室电脑的某个服务。我们可以使用 OpenVPN 实现这个功能，它的原理是在两台电脑上安装 OpenVPN 客户端，同时连接公网上的 OpenVPN 服务器，OpenVPN 会将这两台电脑组成一个虚拟局域网，它们就可以像局域网内一样互相访问了。搭建 VPN 前的网络拓扑如下：
@@ -84,7 +84,7 @@
         <div class="container">
             <header class="header">
     <span class="header__inner">
-        <a href="http://exbob.github.io/" style="text-decoration: none;">
+        <a href="https://exbob.github.io/" style="text-decoration: none;">
     <div class="logo">
         
             <span class="logo__mark">></span>
@@ -98,7 +98,7 @@
         <span class="header__right">
             
                 <nav class="menu">
-    <ul class="menu__inner"><li><a href="http://exbob.github.io/about/">About</a></li><li><a href="http://exbob.github.io/posts/">Posts</a></li>
+    <ul class="menu__inner"><li><a href="https://exbob.github.io/about/">About</a></li><li><a href="https://exbob.github.io/posts/">Posts</a></li>
     </ul>
 </nav>
 
@@ -135,7 +135,7 @@
 
         <article>
             <h1 class="post-title">
-                <a href="http://exbob.github.io/posts/2019/07/%E4%BD%BF%E7%94%A8-openvpn-%E5%AE%9E%E7%8E%B0%E8%BF%9C%E7%A8%8B%E8%AE%BF%E9%97%AE/">使用 OpenVPN 实现远程访问</a>
+                <a href="https://exbob.github.io/posts/2019/07/%E4%BD%BF%E7%94%A8-openvpn-%E5%AE%9E%E7%8E%B0%E8%BF%9C%E7%A8%8B%E8%AE%BF%E9%97%AE/">使用 OpenVPN 实现远程访问</a>
             </h1>
                 <hr />
                 <aside id="toc">
@@ -167,7 +167,7 @@
 
 <p>有时我们需要连接不同局域网的两台主机，使其可以互相访问，比如用家里的电脑登录办公室电脑的某个服务。我们可以使用 OpenVPN 实现这个功能，它的原理是在两台电脑上安装 OpenVPN 客户端，同时连接公网上的 OpenVPN 服务器，OpenVPN 会将这两台电脑组成一个虚拟局域网，它们就可以像局域网内一样互相访问了。搭建 VPN 前的网络拓扑如下：</p>
 
-<p><img src="http://exbob.github.io/images/2019-07-02/2019-07-02_1.jpg" alt="" /></p>
+<p><img src="https://exbob.github.io/images/2019-07-02/2019-07-02_1.jpg" alt="" /></p>
 
 <p>家里的电脑是 Windows7 系统，办公室的电脑安装了 Ubuntu16.04 ，公网上的 VPS 安装了 Ubuntu16.04 。如果全部都是 Windows 系统，配置起来会更方便一点，Linux 下的文本操作略显繁琐，好在 SoftEther 提供了可以远程管理的 GUI 工具。</p>
 
@@ -214,30 +214,30 @@ Confirm input: <span style="color:#f92672">[</span>再次输入你的密码<span
 
 <p>首先在 <a href="https://www.softether-download.com/cn.aspx?product=softether" target="_blank">SoftEther 下载中心</a> 下载 X64-Windows 平台的 SoftEther VPN Server ，把它安装在家里的笔记本上，安装时选择 <code>SoftEther VPN Server 管理工具（仅限管理工具）</code> ，我们只是用它来连接并配置 VPS 上的 VPN 服务器：</p>
 
-<p><img src="http://exbob.github.io/images/2019-07-02/2019-07-02_2.jpg" alt="" /></p>
+<p><img src="https://exbob.github.io/images/2019-07-02/2019-07-02_2.jpg" alt="" /></p>
 
 <p>安装完成后启动 <code>SoftEther VPN Server 管理器</code> ，在连接设置界面中点击 <code>新设置</code> 按钮，在弹出的对话框中按如下设置，新建一个指向 VPS 的连接：</p>
 
-<p><img src="http://exbob.github.io/images/2019-07-02/2019-07-02_3.jpg" alt="" /></p>
+<p><img src="https://exbob.github.io/images/2019-07-02/2019-07-02_3.jpg" alt="" /></p>
 
 <p>新建成功后，在连接设置界面双击这个设置，开始连接 VPS ，连接成功后会弹出一个管理对话框，这里会出现一个默认的虚拟 HUB ，先将其删除，然后点击 <code>创建虚拟 HUB</code> 按钮，按如下设置，然后点击 <code>确定</code> ，就可以新建一个虚拟 HUB ，其中名字和密码都可以自定义：</p>
 
-<p><img src="http://exbob.github.io/images/2019-07-02/2019-07-02_4.jpg" alt="" /></p>
+<p><img src="https://exbob.github.io/images/2019-07-02/2019-07-02_4.jpg" alt="" /></p>
 
 <p>回到管理界面，双击刚才新建的这个虚拟 HUB ，进入这个 HUB 的管理界面：</p>
 
-<p><img src="http://exbob.github.io/images/2019-07-02/2019-07-02_5.jpg" alt="" /></p>
+<p><img src="https://exbob.github.io/images/2019-07-02/2019-07-02_5.jpg" alt="" /></p>
 
 <p>点击 <code>管理用户</code> ，为这个 HUB 新建一个用户，按如下设置：</p>
 
-<p><img src="http://exbob.github.io/images/2019-07-02/2019-07-02_6.jpg" alt="" /></p>
+<p><img src="https://exbob.github.io/images/2019-07-02/2019-07-02_6.jpg" alt="" /></p>
 
 <p>回到这个 HUB 的管理界面，点击 <code>虚拟 NAT 和 虚拟 DHCP 服务器</code> ，在弹出的对话框中点击 <code>启动 SecureNAT</code> ，如果想修改配置，可以点击  <code>SecureNAT 配置</code>  。至此，VPN 服务器配置都结束了，我们需要导出相应的客户端配置，供后面的客户端使用。在管理界面的右下角点击 <code>OpenVPN/MS-SSTP 设置</code> 按钮，在弹出的对话框中按如下设置：</p>
 
-<p><img src="http://exbob.github.io/images/2019-07-02/2019-07-02_7.jpg" alt="" />
+<p><img src="https://exbob.github.io/images/2019-07-02/2019-07-02_7.jpg" alt="" />
 然后点击 <code>为 OpenVPN Client 生成配置样本文件</code> 就可以导出一个保护配置文件的压缩包，压缩包里会有两个配置文件，我们使用 L3 用于远程访问的这个：</p>
 
-<p><img src="http://exbob.github.io/images/2019-07-02/2019-07-02_8.jpg" alt="" /></p>
+<p><img src="https://exbob.github.io/images/2019-07-02/2019-07-02_8.jpg" alt="" /></p>
 
 <blockquote>
 <p>注意，VPS 上使用了默认的 TCP:443 和 UDP:1194 端口，要记得在 VPS 的防火墙上打开这两个端口，否则会造成客户端连接失败。</p>
@@ -247,15 +247,15 @@ Confirm input: <span style="color:#f92672">[</span>再次输入你的密码<span
 
 <p>在 <a href="https://openvpn.net/community-downloads/" target="_blank">OpenVPN 下载中心</a> 下载 Win7 版的安装包，一路 Next 安装成功后启动 OpenVPN GUI ，首次启动会提示没有配置文件，这时需要在状态栏的 OpenVPN 图标上点击右键，选择 <code>导入配置文件...</code> :</p>
 
-<p><img src="http://exbob.github.io/images/2019-07-02/2019-07-02_9.jpg" alt="" /></p>
+<p><img src="https://exbob.github.io/images/2019-07-02/2019-07-02_9.jpg" alt="" /></p>
 
 <p>导入上一步得到的 <code>vm-231-137-ubunt_openvpn_remote_access_l3.ovpn</code> 配置文件，然后点击 <code>连接</code> ，按提示输入 OpenVPN 服务器中设置的用户名和密码：</p>
 
-<p><img src="http://exbob.github.io/images/2019-07-02/2019-07-02_10.jpg" alt="" /></p>
+<p><img src="https://exbob.github.io/images/2019-07-02/2019-07-02_10.jpg" alt="" /></p>
 
 <p>点击 <code>确定</code> 后开始连接，连接成功后会获得虚拟局域网为本机分配的 IP ：</p>
 
-<p><img src="http://exbob.github.io/images/2019-07-02/2019-07-02_11.jpg" alt="" /></p>
+<p><img src="https://exbob.github.io/images/2019-07-02/2019-07-02_11.jpg" alt="" /></p>
 
 <h2 id="3-在办公室电脑上安装-openvpn-客户端">3. 在办公室电脑上安装 OpenVPN 客户端</h2>
 
@@ -311,11 +311,11 @@ END</code></pre></div>
 
 <p>连接成功后的网络拓扑如下：</p>
 
-<p><img src="http://exbob.github.io/images/2019-07-02/2019-07-02_12.jpg" alt="" /></p>
+<p><img src="https://exbob.github.io/images/2019-07-02/2019-07-02_12.jpg" alt="" /></p>
 
 <p>客户端通过 VPN 隧道连接到了服务器的虚拟 HUB 上，共同组成了一个 <code>192.168.30.0/24</code> 的局域网，客户端直接可以想局域网内一样相互访问，在家里电脑上 ping 办公室内的电脑：</p>
 
-<p><img src="http://exbob.github.io/images/2019-07-02/2019-07-02_13.jpg" alt="" /></p>
+<p><img src="https://exbob.github.io/images/2019-07-02/2019-07-02_13.jpg" alt="" /></p>
 
 <h2 id="5-配置签名证书">5. 配置签名证书</h2>
 
@@ -506,7 +506,7 @@ tun0      Link encap:UNSPEC  HWaddr 00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
                 <div class="pagination__buttons">
                     
                         <span class="button previous">
-                            <a href="http://exbob.github.io/posts/2019/08/%E4%BD%BF%E7%94%A8-openssl-%E8%BF%9B%E8%A1%8C-aes-%E5%8A%A0%E5%AF%86/">
+                            <a href="https://exbob.github.io/posts/2019/08/%E4%BD%BF%E7%94%A8-openssl-%E8%BF%9B%E8%A1%8C-aes-%E5%8A%A0%E5%AF%86/">
                                 <span class="button__icon">←</span>
                                 <span class="button__text">使用 openssl 进行 AES 加密</span>
                             </a>
@@ -515,7 +515,7 @@ tun0      Link encap:UNSPEC  HWaddr 00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
 
                     
                         <span class="button next">
-                            <a href="http://exbob.github.io/posts/2018/12/udp-socket-%E7%BC%96%E7%A8%8B%E5%AE%9E%E8%B7%B5/">
+                            <a href="https://exbob.github.io/posts/2018/12/udp-socket-%E7%BC%96%E7%A8%8B%E5%AE%9E%E8%B7%B5/">
                                 <span class="button__text">UDP socket 编程实践</span>
                                 <span class="button__icon">→</span>
                             </a>
@@ -536,10 +536,10 @@ tun0      Link encap:UNSPEC  HWaddr 00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
         <div class="footer__content">
             <span>&copy; 2020</span>
             
-                <span><a href="http://exbob.github.io">Shaocheng.Li</a></span>
+                <span><a href="https://exbob.github.io">Shaocheng.Li</a></span>
             
             <span><a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></span>
-            <span> <a href="http://exbob.github.io/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+            <span> <a href="https://exbob.github.io/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
         </div>
     </div>
     <div class="footer__inner">
@@ -558,7 +558,7 @@ tun0      Link encap:UNSPEC  HWaddr 00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
 
 
 
-<script type="text/javascript" src="http://exbob.github.io/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+<script type="text/javascript" src="https://exbob.github.io/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
 
 
 

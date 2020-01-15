@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Shaocheng.Li</title>
-    <link>http://exbob.github.io/</link>
+    <link>https://exbob.github.io/</link>
     <description>Recent content on Shaocheng.Li</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
     <lastBuildDate>Wed, 08 Jan 2020 08:00:00 +0800</lastBuildDate>
     
-	<atom:link href="http://exbob.github.io/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://exbob.github.io/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>ip 命令学习笔记</title>
-      <link>http://exbob.github.io/posts/2020/01/ip-%E5%91%BD%E4%BB%A4%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+      <link>https://exbob.github.io/posts/2020/01/ip-%E5%91%BD%E4%BB%A4%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
       <pubDate>Wed, 08 Jan 2020 08:00:00 +0800</pubDate>
       
-      <guid>http://exbob.github.io/posts/2020/01/ip-%E5%91%BD%E4%BB%A4%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+      <guid>https://exbob.github.io/posts/2020/01/ip-%E5%91%BD%E4%BB%A4%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
       <description>ip 命令是 iproute2 工具包提供的 Linux 网络管理工具，集成了原有的 ifconfg 、arp 、route 、netstat 等多种命令的功能，并提供了很多新特性。它的语法是：
 ip [OPTIONS] OBJECT {COMMAND|help} 其中：
  OBJECT 表示操作对象，可选的值有 { link | addr | addrlabel | route | rule | neigh | ntable | tunnel | maddr | mroute | mrule | monitor | xfrm | token } ，常用的对象包括：  link：网络设备 addr：设备上的协议（IP或IPv6）地址 addrlabel：协议地址选择的标签配置 route：路由表条目 rule：路由策略数据库中的规则 neigh: ARP 表  OPTIONS 表示选项，可选的值有 { -V[ersion] | -s[tatistics] | -d[etails] | -r[esolve] | -h[uman-readable] | -iec | -f[amily] { inet | inet6 | ipx | dnet | link } | -o[neline] | -t[imestamp] | -b[atch] [filename] | -rc[vbuf] [size] } 常用的选项包括：  -V，-Version：显示指令版本信息 -s，-stats，statistics：输出详细信息 -h，-human，-human-readable：输出人类可读的统计信息和后缀 -o，-oneline：将每条记录输出到一行，用 \字符替换换行符   1.</description>
@@ -24,10 +24,10 @@ ip [OPTIONS] OBJECT {COMMAND|help} 其中：
     
     <item>
       <title>UCI 和 ubus 学习笔记</title>
-      <link>http://exbob.github.io/posts/2019/12/uci-%E5%92%8C-ubus-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+      <link>https://exbob.github.io/posts/2019/12/uci-%E5%92%8C-ubus-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
       <pubDate>Tue, 24 Dec 2019 08:00:00 +0800</pubDate>
       
-      <guid>http://exbob.github.io/posts/2019/12/uci-%E5%92%8C-ubus-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+      <guid>https://exbob.github.io/posts/2019/12/uci-%E5%92%8C-ubus-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
       <description>UCI 和 ubus 都是 Openwrt 项目提供的软件，UCI 提供了统一的配置文件格式和读写工具，ubus 提供了基于 Unix Socket 的进程间通信框架。两个软件都可以方便的移植到其他 Linux 系统，以 Ubuntu 系统为例，首先要安装一些依赖的软件：
 apt-get install pkg-config apt-get install lua5.1 apt-get install liblua5.1-dev apt-get install cmake apt-get install libjson-c-dev 然后要编译安装 libubox ：
 git clone https://git.openwrt.org/project/libubox.git cd libubox cmake . make make install 编译时可能出现找不到头文件的错误：
@@ -37,10 +37,10 @@ git clone https://git.openwrt.org/project/libubox.git cd libubox cmake . make ma
     
     <item>
       <title>Python Socket 编程笔记</title>
-      <link>http://exbob.github.io/posts/2019/11/python-socket-%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0/</link>
+      <link>https://exbob.github.io/posts/2019/11/python-socket-%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0/</link>
       <pubDate>Tue, 26 Nov 2019 08:00:00 +0800</pubDate>
       
-      <guid>http://exbob.github.io/posts/2019/11/python-socket-%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0/</guid>
+      <guid>https://exbob.github.io/posts/2019/11/python-socket-%E7%BC%96%E7%A8%8B%E7%AC%94%E8%AE%B0/</guid>
       <description>1. 套接字 套接字（Socket）是一种操作系统提供的进程间通信机制，可以用于不同主机间的进程通信，最早由 UNIX 提出，现在广泛用于各种操作系统，同时也特指这种机制下的通信端点。根据通信地址的不同种类，Socket 可以分为三类：
  INET ，这是 IPv4 地址域的套接字，用于 IPv4 网络间的通信。 INET6 ，这是 IPv6 地址域的套接字，用于 IPv6 网络间的通信。 UNIX ，这是 UNIX 域的套接字，用于主机内的进程间通信。  套接字常用的报文类型有两种：
  SOCK_DGRAM，固定长度，无连接不可靠的报文传递，两个对等进程之间通信时不需要建立逻辑连接，直接向对方的套接字发送报文即可。在 INET 套接字中，这种报文使用的默认协议是 UDP 。 SOCK_STREAM，有序的，可靠的，双向的，面向连接的字节流，两个对等进程在正式通信之前，要先建立逻辑连接。在 INET 套接字中，这种报文使用的默认协议是 TCP 。  Python 提供了 socket 模块用于底层 socket 通信，模块提供了一个同名的类，以及其他读写 socket 的方法。
@@ -50,10 +50,10 @@ $ python3 Python 3.7.4 (default, Jul 9 2019, 18:13:23) [Clang 10.0.1 (clang-1001
     
     <item>
       <title>Ubuntu 下获取和编译内核源码的方法</title>
-      <link>http://exbob.github.io/posts/2019/09/ubuntu-%E4%B8%8B%E8%8E%B7%E5%8F%96%E5%92%8C%E7%BC%96%E8%AF%91%E5%86%85%E6%A0%B8%E6%BA%90%E7%A0%81%E7%9A%84%E6%96%B9%E6%B3%95/</link>
+      <link>https://exbob.github.io/posts/2019/09/ubuntu-%E4%B8%8B%E8%8E%B7%E5%8F%96%E5%92%8C%E7%BC%96%E8%AF%91%E5%86%85%E6%A0%B8%E6%BA%90%E7%A0%81%E7%9A%84%E6%96%B9%E6%B3%95/</link>
       <pubDate>Fri, 20 Sep 2019 08:00:00 +0800</pubDate>
       
-      <guid>http://exbob.github.io/posts/2019/09/ubuntu-%E4%B8%8B%E8%8E%B7%E5%8F%96%E5%92%8C%E7%BC%96%E8%AF%91%E5%86%85%E6%A0%B8%E6%BA%90%E7%A0%81%E7%9A%84%E6%96%B9%E6%B3%95/</guid>
+      <guid>https://exbob.github.io/posts/2019/09/ubuntu-%E4%B8%8B%E8%8E%B7%E5%8F%96%E5%92%8C%E7%BC%96%E8%AF%91%E5%86%85%E6%A0%B8%E6%BA%90%E7%A0%81%E7%9A%84%E6%96%B9%E6%B3%95/</guid>
       <description>以 Ubuntu 16.04 为例，如果只想获得当前内核版本的源码可以用 apt-get ，如果想获取当前系统的所有内核源码建议用 git 。
 1. apt-get 通常是用 apt-get source 下载：
 apt-get source linux-image-$(uname -r)  源码会直接下载到当前目录，并自动解压，所以建议在 /usr/src/ 目录下执行：
@@ -63,10 +63,10 @@ tar xfvz &amp;lt;filname&amp;gt;.orig.tar.gz gunzip &amp;lt;filename&amp;gt;.dif
     
     <item>
       <title>使用 keepalived 实现双机热备</title>
-      <link>http://exbob.github.io/posts/2019/08/%E4%BD%BF%E7%94%A8-keepalived-%E5%AE%9E%E7%8E%B0%E5%8F%8C%E6%9C%BA%E7%83%AD%E5%A4%87/</link>
+      <link>https://exbob.github.io/posts/2019/08/%E4%BD%BF%E7%94%A8-keepalived-%E5%AE%9E%E7%8E%B0%E5%8F%8C%E6%9C%BA%E7%83%AD%E5%A4%87/</link>
       <pubDate>Sat, 24 Aug 2019 08:00:00 +0800</pubDate>
       
-      <guid>http://exbob.github.io/posts/2019/08/%E4%BD%BF%E7%94%A8-keepalived-%E5%AE%9E%E7%8E%B0%E5%8F%8C%E6%9C%BA%E7%83%AD%E5%A4%87/</guid>
+      <guid>https://exbob.github.io/posts/2019/08/%E4%BD%BF%E7%94%A8-keepalived-%E5%AE%9E%E7%8E%B0%E5%8F%8C%E6%9C%BA%E7%83%AD%E5%A4%87/</guid>
       <description>keepalived 是一个用 C 语言编写的免费开源软件，它实现了 VRRP协议，同时提供了强大的负载均衡 (LVS) 功能。我们可以用他的 VRRP 功能实现路由器或者服务器等网络设备的双机热备。简单的说，两台路由器，一台作为主机，一台作为备机，两台路由器有自己的独立 IP ，同时共享一个虚拟 IP ，主机正常是，这个虚拟 IP 指向主机，当主机出现故障时，虚拟 IP 指向备机，实现了路由器的无缝自动切换。网络拓扑如下图所示：
 虚拟 IP 的实现方式有很多种，比较可靠的方法是为一个网卡定义多个 IP ，端口名用冒号隔开一个数字，用 ifconfig 命令实现，例如：
 ifconfig eth0:0 192.168.6.100 netmask 255.255.255.0 up   用点隔开一个数字的端口名属于 VLAN 网卡，例如 eth0.100 ，具有不同的特性和应用。
@@ -78,10 +78,10 @@ vrrp_instance VI_1 { # 定义一个 VRRP 实例，VI_1 表示这个实例的名�
     
     <item>
       <title>使用 openssl 进行 AES 加密</title>
-      <link>http://exbob.github.io/posts/2019/08/%E4%BD%BF%E7%94%A8-openssl-%E8%BF%9B%E8%A1%8C-aes-%E5%8A%A0%E5%AF%86/</link>
+      <link>https://exbob.github.io/posts/2019/08/%E4%BD%BF%E7%94%A8-openssl-%E8%BF%9B%E8%A1%8C-aes-%E5%8A%A0%E5%AF%86/</link>
       <pubDate>Sun, 18 Aug 2019 08:00:00 +0800</pubDate>
       
-      <guid>http://exbob.github.io/posts/2019/08/%E4%BD%BF%E7%94%A8-openssl-%E8%BF%9B%E8%A1%8C-aes-%E5%8A%A0%E5%AF%86/</guid>
+      <guid>https://exbob.github.io/posts/2019/08/%E4%BD%BF%E7%94%A8-openssl-%E8%BF%9B%E8%A1%8C-aes-%E5%8A%A0%E5%AF%86/</guid>
       <description>aes 加密需要一个字符串作为密钥，自己写一个，或者用完成的工具生成一随机的，假设密钥为 passphrase ，加密一个文件 file：
 openssl enc -aes-128-cbc -in file -out file.enc -k passphrase  也可以把密钥存放在一个文本文件，然后用 -kfile 选项指定：
 openssl enc -aes-128-cbc -in file -out file.enc -kfile passphrase.txt  </description>
@@ -89,10 +89,10 @@ openssl enc -aes-128-cbc -in file -out file.enc -kfile passphrase.txt  </descrip
     
     <item>
       <title>使用 OpenVPN 实现远程访问</title>
-      <link>http://exbob.github.io/posts/2019/07/%E4%BD%BF%E7%94%A8-openvpn-%E5%AE%9E%E7%8E%B0%E8%BF%9C%E7%A8%8B%E8%AE%BF%E9%97%AE/</link>
+      <link>https://exbob.github.io/posts/2019/07/%E4%BD%BF%E7%94%A8-openvpn-%E5%AE%9E%E7%8E%B0%E8%BF%9C%E7%A8%8B%E8%AE%BF%E9%97%AE/</link>
       <pubDate>Tue, 02 Jul 2019 08:00:00 +0800</pubDate>
       
-      <guid>http://exbob.github.io/posts/2019/07/%E4%BD%BF%E7%94%A8-openvpn-%E5%AE%9E%E7%8E%B0%E8%BF%9C%E7%A8%8B%E8%AE%BF%E9%97%AE/</guid>
+      <guid>https://exbob.github.io/posts/2019/07/%E4%BD%BF%E7%94%A8-openvpn-%E5%AE%9E%E7%8E%B0%E8%BF%9C%E7%A8%8B%E8%AE%BF%E9%97%AE/</guid>
       <description>有时我们需要连接不同局域网的两台主机，使其可以互相访问，比如用家里的电脑登录办公室电脑的某个服务。我们可以使用 OpenVPN 实现这个功能，它的原理是在两台电脑上安装 OpenVPN 客户端，同时连接公网上的 OpenVPN 服务器，OpenVPN 会将这两台电脑组成一个虚拟局域网，它们就可以像局域网内一样互相访问了。搭建 VPN 前的网络拓扑如下：
 家里的电脑是 Windows7 系统，办公室的电脑安装了 Ubuntu16.04 ，公网上的 VPS 安装了 Ubuntu16.04 。如果全部都是 Windows 系统，配置起来会更方便一点，Linux 下的文本操作略显繁琐，好在 SoftEther 提供了可以远程管理的 GUI 工具。
 1. 在 VPS 上安装 SoftEther SoftEther 这套软件其实是一个完整的夸平台 VPN 解决方案，在单一软件内集成了 OpenVPN 、L2TP 、IPsec 等 VPN 协议，我们可以用它在 VPS 上搭建一个 OpenVPN 的服务器，非常方便。
@@ -101,10 +101,10 @@ openssl enc -aes-128-cbc -in file -out file.enc -kfile passphrase.txt  </descrip
     
     <item>
       <title>UDP socket 编程实践</title>
-      <link>http://exbob.github.io/posts/2018/12/udp-socket-%E7%BC%96%E7%A8%8B%E5%AE%9E%E8%B7%B5/</link>
+      <link>https://exbob.github.io/posts/2018/12/udp-socket-%E7%BC%96%E7%A8%8B%E5%AE%9E%E8%B7%B5/</link>
       <pubDate>Thu, 20 Dec 2018 08:00:00 +0800</pubDate>
       
-      <guid>http://exbob.github.io/posts/2018/12/udp-socket-%E7%BC%96%E7%A8%8B%E5%AE%9E%E8%B7%B5/</guid>
+      <guid>https://exbob.github.io/posts/2018/12/udp-socket-%E7%BC%96%E7%A8%8B%E5%AE%9E%E8%B7%B5/</guid>
       <description>UDP 是面向非连接的，如果通讯双方都在局域网中，服务器端和客户端没有区别，如果是局域网内的主机与公网上的主机通讯，由于 NAT 地址转换协议的作用，必须由局域网内的主机主动向公网的主句发送数据，公网的主机作为服务器端，必须接收客户端的数据后，解析出源 IP 和端口，再反向发送，实现双向通讯。下面是一个简单的 Demo 。
 服务器端：
 // server.c  #include &amp;lt;stdio.h&amp;gt; #include &amp;lt;unistd.h&amp;gt; #include &amp;lt;sys/types.h&amp;gt; #include &amp;lt;sys/socket.h&amp;gt; #include &amp;lt;netinet/in.h&amp;gt; #include &amp;lt;arpa/inet.h&amp;gt; #include &amp;lt;string.h&amp;gt; #define SERVER_PORT 6789  #define CPU_PORT 9009  #define BUFF_LEN 1024  int main(int argc, char* argv[]) { int server_fd, count; struct sockaddr_in ser_addr; struct sockaddr_in src_addr; socklen_t len; char buf[BUFF_LEN]; server_fd = socket(AF_INET, SOCK_DGRAM, 0); //IPV4,UDP  memset(&amp;amp;ser_addr, 0, sizeof(ser_addr)); ser_addr.sin_family = AF_INET; ser_addr.</description>
@@ -112,10 +112,10 @@ openssl enc -aes-128-cbc -in file -out file.enc -kfile passphrase.txt  </descrip
     
     <item>
       <title>iptables 学习笔记</title>
-      <link>http://exbob.github.io/posts/2018/12/iptables-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+      <link>https://exbob.github.io/posts/2018/12/iptables-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
       <pubDate>Wed, 12 Dec 2018 08:00:00 +0800</pubDate>
       
-      <guid>http://exbob.github.io/posts/2018/12/iptables-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+      <guid>https://exbob.github.io/posts/2018/12/iptables-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
       <description>关于 iptables 的原理，这里有一份教程写得深入浅出，浅显易懂：
  iptables 详解  常用的命令可以参考参考 iptables 手册
 下面记录一些常见的 iptables 应用场景。
@@ -127,10 +127,10 @@ openssl enc -aes-128-cbc -in file -out file.enc -kfile passphrase.txt  </descrip
     
     <item>
       <title>用 timedatectl 管理系统时间</title>
-      <link>http://exbob.github.io/posts/2018/09/%E7%94%A8-timedatectl-%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E6%97%B6%E9%97%B4/</link>
+      <link>https://exbob.github.io/posts/2018/09/%E7%94%A8-timedatectl-%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E6%97%B6%E9%97%B4/</link>
       <pubDate>Mon, 24 Sep 2018 08:00:00 +0800</pubDate>
       
-      <guid>http://exbob.github.io/posts/2018/09/%E7%94%A8-timedatectl-%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E6%97%B6%E9%97%B4/</guid>
+      <guid>https://exbob.github.io/posts/2018/09/%E7%94%A8-timedatectl-%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E6%97%B6%E9%97%B4/</guid>
       <description>查看当前系统时间：
 $ timedatectl status Local time: Thu 2018-09-20 09:42:53 CST Universal time: Thu 2018-09-20 01:42:53 UTC RTC time: Thu 2018-09-20 01:42:53 Time zone: Asia/Chongqing (CST, +0800) Network time on: yes NTP synchronized: yes RTC in local TZ: no RTC in local TZ: no 表示 RTC 时钟不是用本地时间，而是使用 UTC 时间，可以改成使用本地时间，但是并不推荐这么做：
 $ timedatectl set-local-rtc 1 $ timedatectl Local time: Thu 2018-09-20 03:57:58 CEST Universal time: Thu 2018-09-20 01:57:58 UTC RTC time: Thu 2018-09-20 03:57:59 Time zone: Europe/Paris (CEST, +0200) Network time on: yes NTP synchronized: yes RTC in local TZ: yes Warning: The system is configured to read the RTC time in the local time zone.</description>

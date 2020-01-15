@@ -13,7 +13,7 @@ openssl 集成了多种加密算法和使用工具，生成私钥和相应的公
 <meta name="keywords" content="" />
 <meta name="robots" content="noodp" />
 <meta name="theme-color" content="#252627" />
-<link rel="canonical" href="http://exbob.github.io/posts/2017/05/rsa-%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E4%B8%8E%E6%95%B0%E5%AD%97%E8%AF%81%E4%B9%A6/" />
+<link rel="canonical" href="https://exbob.github.io/posts/2017/05/rsa-%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E4%B8%8E%E6%95%B0%E5%AD%97%E8%AF%81%E4%B9%A6/" />
 
 
     <title>
@@ -29,17 +29,17 @@ openssl 集成了多种加密算法和使用工具，生成私钥和相应的公
 
 
 
-<link rel="stylesheet" href="http://exbob.github.io/main.min.73f55a8d452be4a71b2960620b80252cf69abd84d63fe7501abf0a39b1a70a78.css">
+<link rel="stylesheet" href="https://exbob.github.io/main.min.73f55a8d452be4a71b2960620b80252cf69abd84d63fe7501abf0a39b1a70a78.css">
 
 
 
 
-    <link rel="apple-touch-icon" sizes="180x180" href="http://exbob.github.io/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="http://exbob.github.io/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="http://exbob.github.io/favicon-16x16.png">
-    <link rel="manifest" href="http://exbob.github.io/site.webmanifest">
-    <link rel="mask-icon" href="http://exbob.github.io/safari-pinned-tab.svg" color="#252627">
-    <link rel="shortcut icon" href="http://exbob.github.io/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://exbob.github.io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://exbob.github.io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://exbob.github.io/favicon-16x16.png">
+    <link rel="manifest" href="https://exbob.github.io/site.webmanifest">
+    <link rel="mask-icon" href="https://exbob.github.io/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="https://exbob.github.io/favicon.ico">
     <meta name="msapplication-TileColor" content="#252627">
     <meta name="theme-color" content="#252627">
 
@@ -59,7 +59,7 @@ openssl 集成了多种加密算法和使用工具，生成私钥和相应的公
 
 <meta itemprop="keywords" content="" />
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="http://exbob.github.io"/>
+<meta name="twitter:image" content="https://exbob.github.io"/>
 
 <meta name="twitter:title" content="RSA 加密算法与数字证书"/>
 <meta name="twitter:description" content="1. RSA 加密算法 RSA 是一种非对称加密算法，同时生成一对密钥，分为公钥和私钥，它有几个重要的特点：
@@ -87,7 +87,7 @@ openssl 集成了多种加密算法和使用工具，生成私钥和相应的公
         <div class="container">
             <header class="header">
     <span class="header__inner">
-        <a href="http://exbob.github.io/" style="text-decoration: none;">
+        <a href="https://exbob.github.io/" style="text-decoration: none;">
     <div class="logo">
         
             <span class="logo__mark">></span>
@@ -101,7 +101,7 @@ openssl 集成了多种加密算法和使用工具，生成私钥和相应的公
         <span class="header__right">
             
                 <nav class="menu">
-    <ul class="menu__inner"><li><a href="http://exbob.github.io/about/">About</a></li><li><a href="http://exbob.github.io/posts/">Posts</a></li>
+    <ul class="menu__inner"><li><a href="https://exbob.github.io/about/">About</a></li><li><a href="https://exbob.github.io/posts/">Posts</a></li>
     </ul>
 </nav>
 
@@ -138,7 +138,7 @@ openssl 集成了多种加密算法和使用工具，生成私钥和相应的公
 
         <article>
             <h1 class="post-title">
-                <a href="http://exbob.github.io/posts/2017/05/rsa-%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E4%B8%8E%E6%95%B0%E5%AD%97%E8%AF%81%E4%B9%A6/">RSA 加密算法与数字证书</a>
+                <a href="https://exbob.github.io/posts/2017/05/rsa-%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E4%B8%8E%E6%95%B0%E5%AD%97%E8%AF%81%E4%B9%A6/">RSA 加密算法与数字证书</a>
             </h1>
                 <hr />
                 <aside id="toc">
@@ -224,7 +224,7 @@ hello
 
 <p>要实现以上两点，通常的做法是，把原文做一次 Hash（md5 或者 sha1 等），生成的 Hash 值也叫做信息摘要或者指纹，用私钥对这个指纹加密作为签名，将原文和签名一起发布，别人收到后，用公钥解密签名得到一段 Hash 值，如果解密成功，则证明信息是我发的，然后对原文做一次 Hash，将结果与前面那一段 Hash 值对比，如果一致，就证明原文没有被篡改。下图是签名和验证的完整过程：</p>
 
-<p><img src="http://exbob.github.io/images/2017-05-16/2017-05-16_1.png" alt="" /></p>
+<p><img src="https://exbob.github.io/images/2017-05-16/2017-05-16_1.png" alt="" /></p>
 
 <p>用 OpenSSL 完成一次签名和验证。首先，使用私钥、sha1 算法，对文件 hello 签名，生成签名文件 sign ：</p>
 
@@ -245,14 +245,14 @@ Verified OK
 
 <p>这样又带来一个问题，如何获取 CA 的公钥，并保证 CA 公钥的安全？CA 除了给别人签发证书，它们也有自己的证书，证书内含 CA 公钥(明文)和用 CA 私钥生成的数字签名，微软等操作系统厂商会选取一些信用良好且有一定安全认证的 CA ，把这些 CA 的证书默认安装在操作系统里，并设置为操作系统信任的根证书，以 macOS 为例：</p>
 
-<p><img src="http://exbob.github.io/images/2017-05-16/2017-05-16_2.png" alt="" />
+<p><img src="https://exbob.github.io/images/2017-05-16/2017-05-16_2.png" alt="" />
 以 https 为例，如果某网站的数字证书的签发机构 (CA) 不在操作系统信任列表里，登录时浏览器就会警告，比如 <a href="https://www.12306.cn" target="_blank">https://www.12306.cn</a> ：</p>
 
-<p><img src="http://exbob.github.io/images/2017-05-16/2017-05-16_3.png" alt="" /></p>
+<p><img src="https://exbob.github.io/images/2017-05-16/2017-05-16_3.png" alt="" /></p>
 
 <p>现实情况通常更复杂一点，我们不会直接找到根证书签发机构，可能会向一个中级证书签发机构申请证书，而他们自己的证书又通过根 CA 签发，这就形成了一个证书链，浏览器验证证书有效性的时候，也会根据证书中的签发者信息，层层上溯，直到找到受信任的根 CA ，再用相应的公钥向下层层验证。以 google 为例，在 chrome 浏览器中打开 <a href="https://www.google.com.hk" target="_blank">https://www.google.com.hk</a> ，打开开发者工具，点击 Security 标签页中的 View certificate 按钮，就可以看到这个网站的证书详情：</p>
 
-<p><img src="http://exbob.github.io/images/2017-05-16/2017-05-16_4.png" alt="" /></p>
+<p><img src="https://exbob.github.io/images/2017-05-16/2017-05-16_4.png" alt="" /></p>
 
 <p>可以看到每层证书的详情，包括签发者，有效期，公钥的内容和算法，证书指纹的内容和算法等。</p>
 
@@ -288,7 +288,7 @@ Verified OK
                 <div class="pagination__buttons">
                     
                         <span class="button previous">
-                            <a href="http://exbob.github.io/posts/2017/05/paho-python-client-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+                            <a href="https://exbob.github.io/posts/2017/05/paho-python-client-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
                                 <span class="button__icon">←</span>
                                 <span class="button__text">Paho Python Client 学习笔记</span>
                             </a>
@@ -297,7 +297,7 @@ Verified OK
 
                     
                         <span class="button next">
-                            <a href="http://exbob.github.io/posts/2017/05/raspberrypi-3-%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/">
+                            <a href="https://exbob.github.io/posts/2017/05/raspberrypi-3-%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/">
                                 <span class="button__text">RaspberryPi 3 使用笔记</span>
                                 <span class="button__icon">→</span>
                             </a>
@@ -318,10 +318,10 @@ Verified OK
         <div class="footer__content">
             <span>&copy; 2020</span>
             
-                <span><a href="http://exbob.github.io">Shaocheng.Li</a></span>
+                <span><a href="https://exbob.github.io">Shaocheng.Li</a></span>
             
             <span><a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></span>
-            <span> <a href="http://exbob.github.io/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+            <span> <a href="https://exbob.github.io/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
         </div>
     </div>
     <div class="footer__inner">
@@ -340,7 +340,7 @@ Verified OK
 
 
 
-<script type="text/javascript" src="http://exbob.github.io/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+<script type="text/javascript" src="https://exbob.github.io/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
 
 
 

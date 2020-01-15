@@ -15,7 +15,7 @@
 <meta name="keywords" content="" />
 <meta name="robots" content="noodp" />
 <meta name="theme-color" content="#252627" />
-<link rel="canonical" href="http://exbob.github.io/posts/2018/12/iptables-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" />
+<link rel="canonical" href="https://exbob.github.io/posts/2018/12/iptables-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" />
 
 
     <title>
@@ -31,17 +31,17 @@
 
 
 
-<link rel="stylesheet" href="http://exbob.github.io/main.min.73f55a8d452be4a71b2960620b80252cf69abd84d63fe7501abf0a39b1a70a78.css">
+<link rel="stylesheet" href="https://exbob.github.io/main.min.73f55a8d452be4a71b2960620b80252cf69abd84d63fe7501abf0a39b1a70a78.css">
 
 
 
 
-    <link rel="apple-touch-icon" sizes="180x180" href="http://exbob.github.io/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="http://exbob.github.io/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="http://exbob.github.io/favicon-16x16.png">
-    <link rel="manifest" href="http://exbob.github.io/site.webmanifest">
-    <link rel="mask-icon" href="http://exbob.github.io/safari-pinned-tab.svg" color="#252627">
-    <link rel="shortcut icon" href="http://exbob.github.io/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://exbob.github.io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://exbob.github.io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://exbob.github.io/favicon-16x16.png">
+    <link rel="manifest" href="https://exbob.github.io/site.webmanifest">
+    <link rel="mask-icon" href="https://exbob.github.io/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="https://exbob.github.io/favicon.ico">
     <meta name="msapplication-TileColor" content="#252627">
     <meta name="theme-color" content="#252627">
 
@@ -63,7 +63,7 @@
 
 <meta itemprop="keywords" content="" />
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="http://exbob.github.io"/>
+<meta name="twitter:image" content="https://exbob.github.io"/>
 
 <meta name="twitter:title" content="iptables 学习笔记"/>
 <meta name="twitter:description" content="关于 iptables 的原理，这里有一份教程写得深入浅出，浅显易懂：
@@ -93,7 +93,7 @@
         <div class="container">
             <header class="header">
     <span class="header__inner">
-        <a href="http://exbob.github.io/" style="text-decoration: none;">
+        <a href="https://exbob.github.io/" style="text-decoration: none;">
     <div class="logo">
         
             <span class="logo__mark">></span>
@@ -107,7 +107,7 @@
         <span class="header__right">
             
                 <nav class="menu">
-    <ul class="menu__inner"><li><a href="http://exbob.github.io/about/">About</a></li><li><a href="http://exbob.github.io/posts/">Posts</a></li>
+    <ul class="menu__inner"><li><a href="https://exbob.github.io/about/">About</a></li><li><a href="https://exbob.github.io/posts/">Posts</a></li>
     </ul>
 </nav>
 
@@ -144,7 +144,7 @@
 
         <article>
             <h1 class="post-title">
-                <a href="http://exbob.github.io/posts/2018/12/iptables-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">iptables 学习笔记</a>
+                <a href="https://exbob.github.io/posts/2018/12/iptables-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">iptables 学习笔记</a>
             </h1>
 
             
@@ -158,7 +158,7 @@
 <li><a href="http://www.zsythink.net/archives/1199" target="_blank">iptables 详解</a></li>
 </ul>
 
-<p><img src="http://exbob.github.io/images/2018-12-12/2018-12-12_1.png" alt="" /></p>
+<p><img src="https://exbob.github.io/images/2018-12-12/2018-12-12_1.png" alt="" /></p>
 
 <p>常用的命令可以参考参考 <a href="https://linux.die.net/man/8/iptables" target="_blank">iptables 手册</a></p>
 
@@ -168,7 +168,7 @@
 
 <p>IP 转发也可以叫做路由转发，用于连接两个不同的网段，做软路由时经常用到，如下是一个应用场景的网络拓扑：</p>
 
-<p><img src="http://exbob.github.io/images/2018-12-12/2018-12-12_2.png" alt="" /></p>
+<p><img src="https://exbob.github.io/images/2018-12-12/2018-12-12_2.png" alt="" /></p>
 
 <p>中间的路由器上是 Linux 系统，有两张网卡，eth0 作为 LAN 口连接内网，wan 作为 WAN 口连接公网。要实现软路由功能，使内网的设备可以通过 WAN 口上网。首先需要开启内核的 IP 转发功能，可以用 sysctl 命令或者直接查看 <code>/proc/sys/net/ipv4/ip_forward</code> 文件获得当前系统的 ip_forward 是否开启：</p>
 
@@ -211,7 +211,7 @@ iptables -t nat -A POSTROUTING -o wwan -j MASQUERADE
 
 <p>端口映射就是将外网主机的一个端口映射到内网中某台主机的某个端口，当用户访问外网主机的这个端口时，实际上是由内网主机的相应端口通讯。如下是一个典型的应用场景：</p>
 
-<p><img src="http://exbob.github.io/images/2018-12-12/2018-12-12_3.png" alt="" /></p>
+<p><img src="https://exbob.github.io/images/2018-12-12/2018-12-12_3.png" alt="" /></p>
 
 <p>在这个网络拓扑里，右侧 192.168.2.101 的主机想要访问下方路由器连接的 192.168.1.101 主机的 HTTP 服务，该怎么办呢？</p>
 
@@ -259,7 +259,7 @@ iptables -t filter -I INPUT -p icmp -m icmp --icmp-type &quot;echo-request&quot;
                 <div class="pagination__buttons">
                     
                         <span class="button previous">
-                            <a href="http://exbob.github.io/posts/2018/12/udp-socket-%E7%BC%96%E7%A8%8B%E5%AE%9E%E8%B7%B5/">
+                            <a href="https://exbob.github.io/posts/2018/12/udp-socket-%E7%BC%96%E7%A8%8B%E5%AE%9E%E8%B7%B5/">
                                 <span class="button__icon">←</span>
                                 <span class="button__text">UDP socket 编程实践</span>
                             </a>
@@ -268,7 +268,7 @@ iptables -t filter -I INPUT -p icmp -m icmp --icmp-type &quot;echo-request&quot;
 
                     
                         <span class="button next">
-                            <a href="http://exbob.github.io/posts/2018/09/%E7%94%A8-timedatectl-%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E6%97%B6%E9%97%B4/">
+                            <a href="https://exbob.github.io/posts/2018/09/%E7%94%A8-timedatectl-%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E6%97%B6%E9%97%B4/">
                                 <span class="button__text">用 timedatectl 管理系统时间</span>
                                 <span class="button__icon">→</span>
                             </a>
@@ -289,10 +289,10 @@ iptables -t filter -I INPUT -p icmp -m icmp --icmp-type &quot;echo-request&quot;
         <div class="footer__content">
             <span>&copy; 2020</span>
             
-                <span><a href="http://exbob.github.io">Shaocheng.Li</a></span>
+                <span><a href="https://exbob.github.io">Shaocheng.Li</a></span>
             
             <span><a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></span>
-            <span> <a href="http://exbob.github.io/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+            <span> <a href="https://exbob.github.io/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
         </div>
     </div>
     <div class="footer__inner">
@@ -311,7 +311,7 @@ iptables -t filter -I INPUT -p icmp -m icmp --icmp-type &quot;echo-request&quot;
 
 
 
-<script type="text/javascript" src="http://exbob.github.io/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+<script type="text/javascript" src="https://exbob.github.io/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
 
 
 

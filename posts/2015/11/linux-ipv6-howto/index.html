@@ -13,7 +13,7 @@ IPv4 位址可以很容易的转化为 IPv6 格式。如果 IPv4 的一个地址
 <meta name="keywords" content="" />
 <meta name="robots" content="noodp" />
 <meta name="theme-color" content="#252627" />
-<link rel="canonical" href="http://exbob.github.io/posts/2015/11/linux-ipv6-howto/" />
+<link rel="canonical" href="https://exbob.github.io/posts/2015/11/linux-ipv6-howto/" />
 
 
     <title>
@@ -29,17 +29,17 @@ IPv4 位址可以很容易的转化为 IPv6 格式。如果 IPv4 的一个地址
 
 
 
-<link rel="stylesheet" href="http://exbob.github.io/main.min.73f55a8d452be4a71b2960620b80252cf69abd84d63fe7501abf0a39b1a70a78.css">
+<link rel="stylesheet" href="https://exbob.github.io/main.min.73f55a8d452be4a71b2960620b80252cf69abd84d63fe7501abf0a39b1a70a78.css">
 
 
 
 
-    <link rel="apple-touch-icon" sizes="180x180" href="http://exbob.github.io/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="http://exbob.github.io/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="http://exbob.github.io/favicon-16x16.png">
-    <link rel="manifest" href="http://exbob.github.io/site.webmanifest">
-    <link rel="mask-icon" href="http://exbob.github.io/safari-pinned-tab.svg" color="#252627">
-    <link rel="shortcut icon" href="http://exbob.github.io/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://exbob.github.io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://exbob.github.io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://exbob.github.io/favicon-16x16.png">
+    <link rel="manifest" href="https://exbob.github.io/site.webmanifest">
+    <link rel="mask-icon" href="https://exbob.github.io/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="https://exbob.github.io/favicon.ico">
     <meta name="msapplication-TileColor" content="#252627">
     <meta name="theme-color" content="#252627">
 
@@ -59,7 +59,7 @@ IPv4 位址可以很容易的转化为 IPv6 格式。如果 IPv4 的一个地址
 
 <meta itemprop="keywords" content="" />
 <meta name="twitter:card" content="summary_large_image"/>
-<meta name="twitter:image" content="http://exbob.github.io"/>
+<meta name="twitter:image" content="https://exbob.github.io"/>
 
 <meta name="twitter:title" content="Linux IPv6 HOWTO"/>
 <meta name="twitter:description" content="1. What is IPv6 IPv6 是为了解决 IPv4 地址资源日渐枯竭的问题，使用的是 128bit 地址，可以提供更多的地址空间。IPv6 地址以 16bit 为一组，每组用冒号隔开，可以分为八组，每组以 4 个十六进制数表示，共 32 个十六进制数，例如 2001:0db8:85a3:08d3:1319:8a2e:0370:7344 是一个合法的 IPv6 地址，它又可以分为两个逻辑部分：一个 64 位的网络前缀和一个 64 位的主机地址。
@@ -87,7 +87,7 @@ IPv4 位址可以很容易的转化为 IPv6 格式。如果 IPv4 的一个地址
         <div class="container">
             <header class="header">
     <span class="header__inner">
-        <a href="http://exbob.github.io/" style="text-decoration: none;">
+        <a href="https://exbob.github.io/" style="text-decoration: none;">
     <div class="logo">
         
             <span class="logo__mark">></span>
@@ -101,7 +101,7 @@ IPv4 位址可以很容易的转化为 IPv6 格式。如果 IPv4 的一个地址
         <span class="header__right">
             
                 <nav class="menu">
-    <ul class="menu__inner"><li><a href="http://exbob.github.io/about/">About</a></li><li><a href="http://exbob.github.io/posts/">Posts</a></li>
+    <ul class="menu__inner"><li><a href="https://exbob.github.io/about/">About</a></li><li><a href="https://exbob.github.io/posts/">Posts</a></li>
     </ul>
 </nav>
 
@@ -138,7 +138,7 @@ IPv4 位址可以很容易的转化为 IPv6 格式。如果 IPv4 的一个地址
 
         <article>
             <h1 class="post-title">
-                <a href="http://exbob.github.io/posts/2015/11/linux-ipv6-howto/">Linux IPv6 HOWTO</a>
+                <a href="https://exbob.github.io/posts/2015/11/linux-ipv6-howto/">Linux IPv6 HOWTO</a>
             </h1>
 
             
@@ -158,11 +158,11 @@ IPv4 位址可以很容易的转化为 IPv6 格式。如果 IPv4 的一个地址
 
 <p>首先需要内核支持，2.6 之后的内核都支持 IPv6 ，在 3.x 版本中，通常默认已经编译入内核：</p>
 
-<p><img src="http://exbob.github.io/images/2015-11-27/2015-11-27_1.jpg" alt="" /></p>
+<p><img src="https://exbob.github.io/images/2015-11-27/2015-11-27_1.jpg" alt="" /></p>
 
 <p>如果 IPv6 编译成了模块，可以用 <code>modprobe ipv6</code> 命令加载。内核支持后就可以在 /proc 文件系统中看到 if_net6 文件：</p>
 
-<p><img src="http://exbob.github.io/images/2015-11-27/2015-11-27_2.jpg" alt="" /></p>
+<p><img src="https://exbob.github.io/images/2015-11-27/2015-11-27_2.jpg" alt="" /></p>
 
 <p>要将网口配置成 IPv6 ，也需要配置命令支持 IPv6 ，可以用如下命令检查 ifconfig 是否支持 IPv6 :</p>
 
@@ -178,7 +178,7 @@ IPv4 位址可以很容易的转化为 IPv6 格式。如果 IPv4 的一个地址
 
 <p>为网口添加一个 IPv6 地址 ：</p>
 
-<p><img src="http://exbob.github.io/images/2015-11-27/2015-11-27_3.jpg" alt="" /></p>
+<p><img src="https://exbob.github.io/images/2015-11-27/2015-11-27_3.jpg" alt="" /></p>
 
 <p>可以用 del 参数删除 ：<code>ifconfig eth0 inet6 del 2001:0db8:0:f101::1/64</code></p>
 
@@ -186,7 +186,7 @@ IPv4 位址可以很容易的转化为 IPv6 格式。如果 IPv4 的一个地址
 
 <p>可以用 IPv6 可以用 ping6 命令，例如测试 loopback interface ：</p>
 
-<p><img src="http://exbob.github.io/images/2015-11-27/2015-11-27_4.jpg" alt="" /></p>
+<p><img src="https://exbob.github.io/images/2015-11-27/2015-11-27_4.jpg" alt="" /></p>
 
 <p>ping6 的 -I 参数可以指定网口，例如要测试 eth0 可以用 <code>ping6 -I eth0  fe80::2e0:18ff:fe90:9205</code> 。</p>
 
@@ -218,7 +218,7 @@ IPv4 位址可以很容易的转化为 IPv6 格式。如果 IPv4 的一个地址
                 <div class="pagination__buttons">
                     
                         <span class="button previous">
-                            <a href="http://exbob.github.io/posts/2015/11/%E5%AD%A6%E4%B9%A0-swiftios/">
+                            <a href="https://exbob.github.io/posts/2015/11/%E5%AD%A6%E4%B9%A0-swiftios/">
                                 <span class="button__icon">←</span>
                                 <span class="button__text">学习 Swift&amp;iOS</span>
                             </a>
@@ -227,7 +227,7 @@ IPv4 位址可以很容易的转化为 IPv6 格式。如果 IPv4 的一个地址
 
                     
                         <span class="button next">
-                            <a href="http://exbob.github.io/posts/2015/10/linux-%E4%B8%8B%E8%B0%83%E8%AF%95%E8%93%9D%E7%89%99%E6%A8%A1%E5%9D%97%E7%9A%84%E7%AC%94%E8%AE%B0/">
+                            <a href="https://exbob.github.io/posts/2015/10/linux-%E4%B8%8B%E8%B0%83%E8%AF%95%E8%93%9D%E7%89%99%E6%A8%A1%E5%9D%97%E7%9A%84%E7%AC%94%E8%AE%B0/">
                                 <span class="button__text">Linux 下调试蓝牙模块的笔记</span>
                                 <span class="button__icon">→</span>
                             </a>
@@ -248,10 +248,10 @@ IPv4 位址可以很容易的转化为 IPv6 格式。如果 IPv4 的一个地址
         <div class="footer__content">
             <span>&copy; 2020</span>
             
-                <span><a href="http://exbob.github.io">Shaocheng.Li</a></span>
+                <span><a href="https://exbob.github.io">Shaocheng.Li</a></span>
             
             <span><a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></span>
-            <span> <a href="http://exbob.github.io/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+            <span> <a href="https://exbob.github.io/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
         </div>
     </div>
     <div class="footer__inner">
@@ -270,7 +270,7 @@ IPv4 位址可以很容易的转化为 IPv6 格式。如果 IPv4 的一个地址
 
 
 
-<script type="text/javascript" src="http://exbob.github.io/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+<script type="text/javascript" src="https://exbob.github.io/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
 
 
 
