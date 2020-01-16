@@ -1,0 +1,2178 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="Shaocheng.Li ">
+<meta name="description" content="0. 开始 Tkinter 是 Python 内置的 GUI 框架，安装后 Python 后即可使用：
+Python 3.6.2 (v3.6.2:5fd33b5926, Jul 16 2017, 20:11:06) [GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin Type &amp;quot;help&amp;quot;, &amp;quot;copyright&amp;quot;, &amp;quot;credits&amp;quot; or &amp;quot;license&amp;quot; for more information. &amp;gt;&amp;gt;&amp;gt; import tkinter as tk &amp;gt;&amp;gt;&amp;gt; tk._test()  运行结果：
+下面这个例子只包含一个 Quit 按钮:
+import tkinter as tk window = tk.Tk() #定义一个顶层窗口 window.title(&#39;my window&#39;) #定义窗口的标题 window.geometry(&#39;200x100&#39;) #设置窗口的大小 quitbutton = tk.Button(window, text=&amp;quot;Quit&amp;quot;, command=window.quit) #在 window 上定义一个按钮，显示 Quit ，点击按钮执行 quit 方法 quitbutton." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#252627" />
+<link rel="canonical" href="https://shaocheng.li/posts/2017/12/18/" />
+
+
+    <title>
+        
+            Tkinter 学习笔记 :: Shaocheng.Li  — Hello Friends
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="https://shaocheng.li/main.min.73f55a8d452be4a71b2960620b80252cf69abd84d63fe7501abf0a39b1a70a78.css">
+
+
+    
+        <link rel="stylesheet" type="text/css" href="https://shaocheng.li/css/custom.css">
+    
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://shaocheng.li/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://shaocheng.li/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://shaocheng.li/favicon-16x16.png">
+    <link rel="manifest" href="https://shaocheng.li/site.webmanifest">
+    <link rel="mask-icon" href="https://shaocheng.li/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="https://shaocheng.li/favicon.ico">
+    <meta name="msapplication-TileColor" content="#252627">
+    <meta name="theme-color" content="#252627">
+
+<meta itemprop="name" content="Tkinter 学习笔记">
+<meta itemprop="description" content="0. 开始 Tkinter 是 Python 内置的 GUI 框架，安装后 Python 后即可使用：
+Python 3.6.2 (v3.6.2:5fd33b5926, Jul 16 2017, 20:11:06) [GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information. &gt;&gt;&gt; import tkinter as tk &gt;&gt;&gt; tk._test()  运行结果：
+下面这个例子只包含一个 Quit 按钮:
+import tkinter as tk window = tk.Tk() #定义一个顶层窗口 window.title(&#39;my window&#39;) #定义窗口的标题 window.geometry(&#39;200x100&#39;) #设置窗口的大小 quitbutton = tk.Button(window, text=&quot;Quit&quot;, command=window.quit) #在 window 上定义一个按钮，显示 Quit ，点击按钮执行 quit 方法 quitbutton.">
+
+
+<meta itemprop="datePublished" content="2017-12-18T08:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2017-12-18T08:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="2772">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://shaocheng.li"/>
+
+<meta name="twitter:title" content="Tkinter 学习笔记"/>
+<meta name="twitter:description" content="0. 开始 Tkinter 是 Python 内置的 GUI 框架，安装后 Python 后即可使用：
+Python 3.6.2 (v3.6.2:5fd33b5926, Jul 16 2017, 20:11:06) [GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information. &gt;&gt;&gt; import tkinter as tk &gt;&gt;&gt; tk._test()  运行结果：
+下面这个例子只包含一个 Quit 按钮:
+import tkinter as tk window = tk.Tk() #定义一个顶层窗口 window.title(&#39;my window&#39;) #定义窗口的标题 window.geometry(&#39;200x100&#39;) #设置窗口的大小 quitbutton = tk.Button(window, text=&quot;Quit&quot;, command=window.quit) #在 window 上定义一个按钮，显示 Quit ，点击按钮执行 quit 方法 quitbutton."/>
+
+
+
+
+
+    <meta property="article:published_time" content="2017-12-18 08:00:00 &#43;0800 CST" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://shaocheng.li/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$ cd /home/</span>
+            <span class="logo__cursor" style=""></span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="https://shaocheng.li/about/">About</a></li><li><a href="https://shaocheng.li/posts/">Posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>14 minutes
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            <h1 class="post-title">
+                <a href="https://shaocheng.li/posts/2017/12/18/">Tkinter 学习笔记</a>
+            </h1>
+                <hr />
+                <aside id="toc">
+                <div class="toc-title">Table of Contents</div>
+                    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#0-开始">0. 开始</a></li>
+<li><a href="#1-布局管理">1. 布局管理</a></li>
+<li><a href="#2-一个完整的例子">2. 一个完整的例子</a>
+<ul>
+<li><a href="#2-1-设计">2.1. 设计</a></li>
+<li><a href="#2-2-编码">2.2. 编码</a></li>
+<li><a href="#2-3-打包">2.3. 打包</a></li>
+</ul></li>
+<li><a href="#3-常用控件">3. 常用控件</a>
+<ul>
+<li><a href="#3-1-按钮">3.1. 按钮</a></li>
+<li><a href="#3-2-标签">3.2. 标签</a></li>
+<li><a href="#3-3-输入框">3.3. 输入框</a></li>
+<li><a href="#3-4-框架">3.4. 框架</a></li>
+<li><a href="#3-5-标签框架">3.5. 标签框架</a></li>
+<li><a href="#3-6-菜单">3.6. 菜单</a></li>
+</ul></li>
+<li><a href="#4-顶层窗口">4. 顶层窗口</a>
+<ul>
+<li><a href="#4-1-常用属性">4.1. 常用属性</a></li>
+<li><a href="#4-2-常用方法">4.2. 常用方法</a></li>
+</ul></li>
+<li><a href="#5-通用方法">5. 通用方法</a></li>
+<li><a href="#6-标准属性">6. 标准属性</a>
+<ul>
+<li><a href="#6-1-坐标">6.1. 坐标</a></li>
+<li><a href="#6-2-单位">6.2. 单位</a></li>
+<li><a href="#6-3-颜色">6.3. 颜色</a></li>
+<li><a href="#6-4-几何字符串">6.4. 几何字符串</a></li>
+</ul></li>
+<li><a href="#7-控制变量">7. 控制变量</a></li>
+<li><a href="#8-焦点-引导键盘输入">8. 焦点：引导键盘输入</a></li>
+<li><a href="#9-事件-对刺激做出反应">9. 事件：对刺激做出反应</a>
+<ul>
+<li><a href="#9-1-type">9.1. type</a></li>
+<li><a href="#9-2-modifier">9.2. modifier</a></li>
+<li><a href="#9-3-detail">9.3. detail</a></li>
+</ul></li>
+<li><a href="#10-ttk-主题控件">10. ttk : 主题控件</a>
+<ul>
+<li><a href="#10-1-ttk-button">10.1. ttk.Button</a></li>
+<li><a href="#10-2-ttk-entry">10.2. ttk.Entry</a></li>
+<li><a href="#10-3-ttk-combobox">10.3. ttk.Combobox</a></li>
+<li><a href="#10-4-ttk-frame">10.4. ttk.Frame</a></li>
+<li><a href="#10-5-ttk-label">10.5. ttk.Label</a></li>
+<li><a href="#10-6-ttk-labelframe">10.6. ttk.LabelFrame</a></li>
+<li><a href="#10-7-ttk-notebook">10.7. ttk.Notebook</a></li>
+<li><a href="#10-8-ttk-menubutton">10.8. ttk.Menubutton</a></li>
+</ul></li>
+<li><a href="#11-ttk-的样式和主题">11. ttk 的样式和主题</a>
+<ul>
+<li><a href="#11-1-寻找并使用-theme">11.1. 寻找并使用 theme</a></li>
+<li><a href="#11-2-使用和定制-style">11.2. 使用和定制 style</a></li>
+<li><a href="#11-3-element">11.3. element</a></li>
+</ul></li>
+<li><a href="#12-ttk-的通用方法">12. ttk 的通用方法</a></li>
+<li><a href="#13-ttk-的控件状态">13. ttk 的控件状态</a></li>
+<li><a href="#14-模块化编程">14. 模块化编程</a></li>
+<li><a href="#参考">参考</a></li>
+</ul></li>
+</ul>
+</nav>
+                </aside>
+                <hr />
+
+            
+
+            <div class="post-content">
+                
+
+<h2 id="0-开始">0. 开始</h2>
+
+<p>Tkinter 是 Python 内置的 GUI 框架，安装后 Python 后即可使用：</p>
+
+<pre><code>Python 3.6.2 (v3.6.2:5fd33b5926, Jul 16 2017, 20:11:06)
+[GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin
+Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.
+&gt;&gt;&gt; import tkinter as tk
+&gt;&gt;&gt; tk._test()
+</code></pre>
+
+<p>运行结果：</p>
+
+<p><img src="https://shaocheng.li/images/2017-12-18/2017-12-18_1.png" alt="" /></p>
+
+<p>下面这个例子只包含一个 Quit 按钮:</p>
+
+<pre><code>import tkinter as tk
+
+window = tk.Tk() #定义一个顶层窗口
+window.title('my window')  #定义窗口的标题
+window.geometry('200x100')  #设置窗口的大小
+
+quitbutton = tk.Button(window, text=&quot;Quit&quot;, command=window.quit)  #在 window 上定义一个按钮，显示 Quit ，点击按钮执行 quit 方法
+quitbutton.grid()  #显示这个按钮
+window.mainloop()  #开始主循环
+</code></pre>
+
+<p>运行结果：</p>
+
+<p><img src="https://shaocheng.li/images/2017-12-18/2017-12-18_2.png" alt="" /></p>
+
+<h2 id="1-布局管理">1. 布局管理</h2>
+
+<p>Tkinter 有多种布局管理系统，grid 是最常用的一种。以顶层窗口作为根控件形成一个控件树，一个父控件上可以包含很多子控件，例如顶层窗口上有按钮、输入框等，大体应该是如下的结构：</p>
+
+<p><img src="https://shaocheng.li/images/2017-12-18/2017-12-18_3.png" alt="" /></p>
+
+<p>新建一个控件分为两步：</p>
+
+<pre><code>self.thing = tk.Constructor(parent, ...)
+self.thing.grid(...)
+</code></pre>
+
+<ol>
+<li>定义控件，Constructor 是一种控件的类， 比如 Button、Frame ，parent 表示该控件的父控件</li>
+<li>将控件放到窗口上，所有的控件都有 grid 方法，负责通知布局管理器将这个组件放置到合适的位置</li>
+</ol>
+
+<p>grid 布局将父控件的显示区域划分为网格，使用 grid 布局的过程就是为各个子控件指定行号和列号，左上角的坐标是 (0,0)，不需要为每个单元格指定大小，grid 布局会自动设置一个合适的大小。grid 方法的原型是 <code>w.grid(option=value, ...)</code> ，它将控件 w 注册到父控件的 grid 布局，并设置所处的单元格坐标，常用属性如下：</p>
+
+<ul>
+<li>column ，列坐标，默认是 0</li>
+<li>row ，行坐标，默认是新启一行</li>
+<li>sticky ，控件填充单元格的方式，不设置该选项时默认是横竖居中，它有两种可选值，可以用加号组合：
+
+<ul>
+<li>紧贴单元格的某个角落：sticky=tk.NE (右上角) ， tk.SE (右下角) ， tk.SW (左下角) 或者 tk.NW (左上角)</li>
+<li>紧贴单元格的某条边线：sticky=tk.N (上边居中) ， tk.E (右边居中) ， tk.S (底边居中) 或者 tk.W (左边居中)</li>
+</ul></li>
+<li>padx ，横向内边距</li>
+<li>pady ，纵向内边距</li>
+</ul>
+
+<p>也可以手动设置当前控件的单元格大小：</p>
+
+<ul>
+<li>设置第 N 列：<code>w.columnconfigure(N, option=value, ...)</code></li>
+<li>设置第 N 行：<code>w.rowconfigure(N, option=value, ...)</code></li>
+</ul>
+
+<p>option 有三个属性可选：</p>
+
+<ul>
+<li>minsize ，行或者列的最小尺寸，单位是像素</li>
+<li>pad ，行或者列占用的尺寸大小，单位是像素</li>
+<li>weight ，设置行或者列占用的比例，使网格尺寸具有弹性，</li>
+</ul>
+
+<p>例如：</p>
+
+<pre><code>import tkinter as tk
+
+window = tk.Tk()
+window.title('my window')
+window.geometry('200x100')
+window.columnconfigure(0, weight=1)  #第一列占用 1/3 宽度
+window.columnconfigure(1, weight=2)  #第二列占用 2/3 宽度
+window.rowconfigure(0, weight=1)  #第一行占用全部高度
+
+Abutton = tk.Button(window, text=&quot;A&quot;)
+Abutton.grid()
+Bbutton = tk.Button(window, text=&quot;B&quot;)
+Bbutton.grid(row=0,column=1,sticky=tk.W+tk.E)
+
+window.mainloop()
+</code></pre>
+
+<p>运行结果：</p>
+
+<p><img src="https://shaocheng.li/images/2017-12-18/2017-12-18_4.png" alt="" /></p>
+
+<p>还有一些常用的方法：</p>
+
+<ul>
+<li>w.grid_forget() ，隐藏一个控件</li>
+<li>w.grid_propagate() ，控件的尺寸通常是由控件里的内容决定的，但是有时需要强制设置控件大小，这就要先设置 <code>w.grid_propagate(0)</code> ，然后设置尺寸</li>
+<li>w.grid_info()，返回一个字典，包含了控件的属性名称和值</li>
+<li>w.grid_size()，返回一个元组，包含两个元素，分别是行和列</li>
+<li>w.grid_configure(option, &hellip;) ，设置 grid 的属性，例如 <code>w.grid_configure(padx=5,pady=5)</code></li>
+</ul>
+
+<h2 id="2-一个完整的例子">2. 一个完整的例子</h2>
+
+<h3 id="2-1-设计">2.1. 设计</h3>
+
+<p>这个例子是一个单窗口 GUI 应用，功能是将英尺转换为米，界面草图是这个样子：</p>
+
+<p><img src="https://shaocheng.li/images/2017-12-18/2017-12-18_5.jpg" alt="" /></p>
+
+<p>第一行有一个输入框，单位 feet 放在一个标签里，第二行中间是一个空白标签，用于放置转换后的结果，左右分别是文字说明，右下角是一个 &lsquo;Calculate&rsquo; 按钮，按下时获取输入框中的数值，转换成米后显示在中间的标签中。整个窗口是一个 3x3 的 grid 布局：</p>
+
+<p><img src="https://shaocheng.li/images/2017-12-18/2017-12-18_6.jpg" alt="" /></p>
+
+<p>三行所占高度应该是 1:1:1 ，三列所占的宽度应该是 2:1:1 ，输入框宽度 7 个字符。</p>
+
+<h3 id="2-2-编码">2.2. 编码</h3>
+
+<p>新建一个目录，编辑源文件 mygui.py ，代码如下：</p>
+
+<pre><code>#!~/py3-env/bin/python
+import tkinter as tk
+
+#新建一个根窗口，并设置窗口标题
+window = tk.Tk()
+window.title('Feet to Meters')
+
+#按下按钮是调用的函数，获取输入框的值，转换成米制单位在写入标签
+def calculate(*args):
+    value = float(feet.get())
+    meters.set( (0.3048*value*10000.0 + 0.5) / 10000.0 )
+
+#在窗口上绘制一个框架，并定义框架的内边距
+mainframe = tk.Frame(window,padx=15,pady=25)
+#mainframe 会占满整个窗口
+mainframe.grid(row=0,column=0,sticky=tk.N+tk.W+tk.E+tk.S)
+mainframe.rowconfigure(0,weight=1)
+mainframe.columnconfigure(0,weight=1)
+
+#输入框位于第一行第二列，左右占满，宽度是 7 个字符，内部文本右对齐，并且是程序启动后默认的焦点
+feet=tk.StringVar()
+feet_entry = tk.Entry(mainframe,width=7,justify=tk.RIGHT,textvariable=feet)
+feet_entry.grid(row=0,column=1,sticky=tk.W+tk.E)
+feet_entry.focus()
+
+feet_label = tk.Label(mainframe,text=&quot;Feet&quot;,anchor=tk.W)
+feet_label.grid(row=0,column=2,sticky=tk.W)
+
+meters=tk.StringVar()
+tk.Label(mainframe,text=&quot;is equivalent to&quot;).grid(row=1,column=0,sticky=tk.E)
+tk.Label(mainframe,textvariable=meters).grid(row=1,column=1,sticky=tk.W+tk.E)
+tk.Label(mainframe,text=&quot;Meters&quot;).grid(row=1,column=2,sticky=tk.W+tk.W)
+
+#在右下角放置一个按钮，按下时执行 calculate 函数
+tk.Button(mainframe,text=&quot;Calculate&quot;,command=calculate).grid(row=2,column=2,sticky=tk.W)
+
+#设置 mainframe 内每个控件的内边距为 5
+for child in mainframe.winfo_children():
+    child.grid_configure(padx=5,pady=5)
+
+#按下回车键时也会执行转换
+window.bind('&lt;Return&gt;', calculate)
+
+window.mainloop()
+</code></pre>
+
+<p>保存后运行，看一下效果：</p>
+
+<p><img src="https://shaocheng.li/images/2017-12-18/2017-12-18_7.png" alt="" /></p>
+
+<h3 id="2-3-打包">2.3. 打包</h3>
+
+<p>测试成功后用 pyinstaller 将源码打包，这样在其他计算机上也可以运行，甚至不用安装 python ，但是有一点要注意，在 macOS 下用 pyinstaller 打包的程序只能运行于 macOS ，在 Windows 下用 pyinstaller 打包的程序只能运行于 Windows 。先安装 pyinstaller ：</p>
+
+<pre><code>$ pip  install  pyinstaller
+$ python -m PyInstaller --version
+3.3.1
+</code></pre>
+
+<p>这个版本在 macOS 上有个 Bug ，就是打包的 tkinter 程序在运行时会报如下的错误：</p>
+
+<pre><code>ImportError: dlopen(/var/folders/gk/q_9lv83d6999mzn5d3cjrry80000gn/T/_MEIlRBLqx/_tkinter.so, 2): Library not loaded: @loader_path/Tcl
+  Referenced from: /var/folders/gk/q_9lv83d6999mzn5d3cjrry80000gn/T/_MEIlRBLqx/_tkinter.so
+  Reason: image not found
+</code></pre>
+
+<p>需要安装下面提供的补丁修改 pyinstaller : <a href="https://github.com/pyinstaller/pyinstaller/pull/2969" target="_blank">https://github.com/pyinstaller/pyinstaller/pull/2969</a> 。然后在源码目录下执行：</p>
+
+<pre><code>$ pyinstaller  -w  -F  mygui.py
+</code></pre>
+
+<p>-F 表示将所有文件和库打包成一个文件，这样在没有安装 python 的计算机上也可以运行，-w 表示关闭终端，否则在运行生成的应用在打开时会运行一个终端。生成的应用程序在 dist 目录下，该目录下有两个文件，mygui 是调试版，mygui.app 是发行版，双击 mygui.app 即可运行：</p>
+
+<p><img src="https://shaocheng.li/images/2017-12-18/2017-12-18_8.png" alt="" /></p>
+
+<p>默认打包后的程序是不支持 Retina 屏幕的，所以在 macOS 上会显示模糊。需要先生成一个 spec 文件：</p>
+
+<pre><code>$ pyi-makespec -w -F mygui.py
+</code></pre>
+
+<p>然后编辑生成的 mygui.spec ，添加 <code>info_plist</code> 并设置 <code>'NSHighResolutionCapable': 'True'</code> ：</p>
+
+<pre><code>app = BUNDLE(exe,
+             name='mygui.app',
+             icon=None,
+             bundle_identifier=None,
+             info_plist={
+                 'NSHighResolutionCapable': 'True'
+             }
+            )
+</code></pre>
+
+<p>保存后用这个配置文件执行打包任务：</p>
+
+<pre><code>$ pyinstaller -w -F mygui.spec
+</code></pre>
+
+<p>这样生成的应用就支持 Retina 屏幕了。</p>
+
+<h2 id="3-常用控件">3. 常用控件</h2>
+
+<p>每个控件都是一个类，调用控件的初始化函数就会新建一个实例。</p>
+
+<h3 id="3-1-按钮">3.1. 按钮</h3>
+
+<p>按钮的原型：</p>
+
+<pre><code>w = tk.Button(parent, option=value, ...)
+</code></pre>
+
+<ul>
+<li>bg or background  ，背景颜色</li>
+<li>bd or borderwidth  ，边框宽度，默认是 2</li>
+<li>anchor ，按钮上文字的对齐位置，例如 anchor=tk.NE 表示右上角对齐</li>
+<li>text ，按钮上显示的文字</li>
+<li>textvariable ，为该属性设置一个控制变量 StringVal 类的实例，以后修改这个变量就可以修改标签内显示的文本</li>
+<li>command ，设置按钮按下时的行为，可以指向一个函数或者方法</li>
+<li>width ，按钮的宽度，单位是字符个数，如果按钮显示的是图片，则单位是像素</li>
+<li>padx ，按钮边框与文字之间的横向间距，就是内边距，单位是像素</li>
+<li>pady ，按钮边框与文字之间的纵向间距，单位是像素</li>
+<li>relief ，3D 样式，默认值是 relief=tk.RAISED，可选四个值：tk.GROOVE(边框突出)，tk.RIDGE(边框凹陷)，tk.SUNKEN(整体凹陷)，tk.RAISED(整体突出)，边框宽度由 borderwidth 决定</li>
+<li>state ，按钮的状态，默认是 tk.NORMAL ，鼠标悬停时这个值是 tk.ACTIVE ，设为 tk.DISABLED 时按钮变灰并且失效</li>
+</ul>
+
+<p>它有两个方法：</p>
+
+<ul>
+<li>.invoke() ，调用 command 指定的函数。</li>
+<li>.flash() ，使按钮的颜色在按下和放开之间闪烁几次。</li>
+</ul>
+
+<p>例程：</p>
+
+<pre><code>import tkinter as tk
+
+window = tk.Tk()
+window.title('my window')
+window.geometry('200x100')
+window.columnconfigure(0, weight=1)
+window.rowconfigure(0, weight=1)
+
+button = tk.Button(window, anchor=tk.CENTER, text='Quit', command=window.quit)
+button.grid()
+
+window.mainloop()
+</code></pre>
+
+<p>运行结果：</p>
+
+<p><img src="https://shaocheng.li/images/2017-12-18/2017-12-18_9.png" alt="" /></p>
+
+<h3 id="3-2-标签">3.2. 标签</h3>
+
+<p>标签控件可以显示一行或者多行文本，或者一张图片。</p>
+
+<pre><code>w = tk.Label(parent, option, ...)
+</code></pre>
+
+<p>常用属性；</p>
+
+<ul>
+<li>activebackground ，鼠标经过时的背景颜色</li>
+<li>activeforeground ，鼠标经过时的前景颜色</li>
+<li>anchor ，文本或者图片的对齐位置，默认是  anchor=tk.CENTER</li>
+<li>bg or background ，背景颜色</li>
+<li>bd or borderwidth  ，边框宽度，默认是 2</li>
+<li>text ，显示是文本</li>
+<li>textvariable ，为该属性设置一个控制变量 StringVal 类的实例，以后修改这个变量就可以修改标签内显示的文本</li>
+<li>width ，宽度，单位是字符，如果没有设置，宽度随内容变化</li>
+<li>padx ，按钮边框与文字之间的横向间距，就是内边距，单位是像素</li>
+<li>pady ，按钮边框与文字之间的纵向间距，单位是像素</li>
+<li>relief ，3D 样式，默认值是 relief=tk.FLAT，可选四个值：tk.GROOVE(边框突出)，tk.RIDGE(边框凹陷)，tk.SUNKEN(整体凹陷)，tk.RAISED(整体突出)，边框宽度由 borderwidth 决定</li>
+</ul>
+
+<p>例程：</p>
+
+<pre><code>import tkinter as tk
+
+window = tk.Tk()
+window.title('my window')
+window.geometry('200x100')
+window.columnconfigure(0, weight=1)
+window.rowconfigure(0, weight=1)
+
+label = tk.Label(window, bg='#ff0000', text='Please',padx=5, pady=3)
+label.grid()
+
+window.mainloop()
+</code></pre>
+
+<p>运行结果：</p>
+
+<p><img src="https://shaocheng.li/images/2017-12-18/2017-12-18_10.png" alt="" /></p>
+
+<h3 id="3-3-输入框">3.3. 输入框</h3>
+
+<p>输入框可以显示和输入单行文本，文本中的字符编号从 0 开始，常量 tk.END 表示文本的结尾，tk.INSERT 表示当前光标所处的位置，原型：</p>
+
+<pre><code>w = tk.Entry(parent, option, ...)
+</code></pre>
+
+<p>常用属性：</p>
+
+<ul>
+<li>bg or background  ，背景颜色</li>
+<li>bd or borderwidth  ，边框宽度，默认是 0</li>
+<li>width ，输入框能够容纳的字符数，默认是 20</li>
+<li>show，默认情况下，输入的字符会直接显示，如果是密码，需要隐藏，可以要求输入的字符都显示为星号： <code>show='*'</code></li>
+<li>justify ，输入框内文本的对齐方式，默认是左对齐 justify=tk.LEFT ，还可选 tk.CENTER 和 tk.RIGHT</li>
+<li>validate ，设置检查输入框内容的时机</li>
+<li>validatecommand ，设置一个回调函数，负责检查输入框的内容</li>
+<li>textvariable ，为该属性设置一个控制变量 StringVar 类的实例，就可以用 v.get() 方法取回输入框中内容，或者用 v.set(value) 设置，v 就是这个实例</li>
+<li>state ，默认是 tk.NORMAL ，鼠标悬停时这个值是 tk.ACTIVE ，设为 tk.DISABLED 时输入框变灰，并无法输入。</li>
+</ul>
+
+<p>常用方法：</p>
+
+<ul>
+<li>.delete(first, last=None) ，删除字符，从第 first 个字符到第 last 个字符之前。</li>
+<li>.get() ，获取输入框中的文本，返回值是字符串。</li>
+<li>.insert(index, s) ，在第 index 个字符前插入字符串 s 。</li>
+</ul>
+
+<p>例程：</p>
+
+<pre><code>import tkinter as tk
+
+window = tk.Tk()
+window.title('my window')
+window.geometry('300x100')
+window.columnconfigure(0, weight=1)
+window.columnconfigure(1, weight=2)
+window.rowconfigure(0, weight=1)
+
+label1 = tk.Label(window,text=&quot;Username:&quot;, anchor=tk.E)
+label1.grid(row=0,column=0,sticky=tk.SE)
+user = tk.Entry(window, width=16, justify=tk.RIGHT)
+user.grid(row=0,column=1,sticky=tk.SW)
+
+label2 = tk.Label(window,text=&quot;Password:&quot;, anchor=tk.E)
+label2.grid(row=1,column=0,sticky=tk.NE)
+passwd = tk.Entry(window, width=16,show='*', justify=tk.RIGHT)
+passwd.grid(row=1,column=1,sticky=tk.NW)
+
+window.mainloop()
+</code></pre>
+
+<p>运行结果：</p>
+
+<p><img src="https://shaocheng.li/images/2017-12-18/2017-12-18_11.png" alt="" /></p>
+
+<p>有时我们需要检查输入的文本是否合法，这需要定义一个检测函数，并设置调用它的时间，具体步骤：</p>
+
+<ol>
+<li>定义一个回调函数，负责检查输入的内容，如果合法就返回 True ，否则返回 False</li>
+<li>用 <code>w.register(function)</code> 方法将回掉函数封装为 Tcl ，它会返回一个字符串，用它设置 validatecommand</li>
+<li>设置 validate ，声明调用回掉函数的时机，常用从选项有：
+
+<ul>
+<li>&lsquo;focus&rsquo; ，输入框获得或者失去焦点时</li>
+<li>&lsquo;focusin&rsquo; ，输入框获得焦点时</li>
+<li>&lsquo;focusout&rsquo; ，输入框失去焦点时</li>
+<li>&lsquo;key&rsquo; ，内容改变时</li>
+<li>&lsquo;all&rsquo; ，以上任何情况发生时</li>
+<li>&lsquo;none&rsquo; ，关闭内容检查，这是默认值</li>
+</ul></li>
+</ol>
+
+<h3 id="3-4-框架">3.4. 框架</h3>
+
+<p>框架是其他控件的容器，顶层窗口本质上就是一个框架，默认情况下，框架会紧紧的包裹它的控件，它的原型：</p>
+
+<pre><code>w = Frame(parent, option, ...)
+</code></pre>
+
+<p>常用属性：</p>
+
+<ul>
+<li>bg or background  ，背景颜色</li>
+<li>bd or borderwidth  ，边框宽度，默认是 0</li>
+<li>width ，框架的宽度， <code>w.grid_propagate(0)</code>  时有效</li>
+<li>height ，框架的高度，<code>w.grid_propagate(0)</code>  时有效</li>
+<li>padx ，在框架与控件之间的横向间距，单位是像素</li>
+<li>pady ，在框架与控件之间的纵向间距</li>
+<li>relief ，3D 样式，默认情况下，框架是完全隐形的 relief=tk.FLAT，可选四个值：tk.GROOVE(边框突出)，tk.RIDGE(边框凹陷)，tk.SUNKEN(整体凹陷)，tk.RAISED(整体突出)，边框宽度由 borderwidth 决定</li>
+</ul>
+
+<p>下面是一个例程：</p>
+
+<pre><code>import tkinter as tk
+
+window = tk.Tk()
+window.title('my window')
+window.geometry('200x100')
+window.columnconfigure(0, weight=1)
+window.rowconfigure(0, weight=1)
+
+frame = tk.Frame(window,height=50,width=100,relief=tk.GROOVE,bd=5)
+frame.grid_propagate(0)
+frame.grid()
+
+label = tk.Label(frame, text=&quot;Label&quot;)
+label.grid()
+
+window.mainloop()
+</code></pre>
+
+<p>运行结果：</p>
+
+<p><img src="https://shaocheng.li/images/2017-12-18/2017-12-18_12.png" alt="" /></p>
+
+<h3 id="3-5-标签框架">3.5. 标签框架</h3>
+
+<p>LabelFrame 控件是带有标签的框架，原型：</p>
+
+<pre><code>w = tk.LabelFrame(parent, option, ...)
+</code></pre>
+
+<p>常用属性：</p>
+
+<ul>
+<li>bg or background  ，背景颜色</li>
+<li>bd or borderwidth  ，边框宽度，默认是 2</li>
+<li>width ，框架的宽度， <code>w.grid_propagate(0)</code>  时有效</li>
+<li>height ，框架的高度，<code>w.grid_propagate(0)</code>  时有效</li>
+<li>labelwidget ，可以在标签中插入任何控件，代替原来的文本</li>
+<li>text ，标签中的文字</li>
+
+<li><p>labelanchor ，标签在框架上的位置，默认值是 &lsquo;nw&rsquo; ，可选值：</p>
+
+<p><img src="./_image/2017-12-21-10-35-09.png" alt="" /></p></li>
+
+<li><p>padx=N ，在框架与控件之间，横向添加 N 个像素</p></li>
+
+<li><p>pady=N ，在框架与控件之间，纵向添加 N 个像素</p></li>
+
+<li><p>relief ，3D 样式，默认情况下，默认值是 tk.GROOVE，可选四个值：tk.GROOVE(边框突出)，tk.RIDGE(边框凹陷)，tk.SUNKEN(整体凹陷)，tk.RAISED(整体突出)，边框宽度由 borderwidth 决定</p></li>
+</ul>
+
+<p>例程：</p>
+
+<pre><code>import tkinter as tk
+
+window = tk.Tk()
+window.title('my window')
+window.minsize(width=300,height=150)
+window.columnconfigure(0, weight=1)
+window.rowconfigure(0, weight=1)
+
+login = tk.LabelFrame(window,text=&quot;Login&quot;,labelanchor='n',padx=10,pady=10)
+login.grid()
+
+label1 = tk.Label(login,text=&quot;Username:&quot;, anchor=tk.E)
+label1.grid(row=0,column=0,sticky=tk.SE)
+user = tk.Entry(login, width=16, justify=tk.RIGHT)
+user.grid(row=0,column=1,sticky=tk.SW)
+
+label2 = tk.Label(login,text=&quot;Password:&quot;, anchor=tk.E)
+label2.grid(row=1,column=0,sticky=tk.NE)
+passwd = tk.Entry(login, width=16,show='*', justify=tk.RIGHT)
+passwd.grid(row=1,column=1,sticky=tk.NW)
+
+window.mainloop()
+</code></pre>
+
+<p>运行结果：</p>
+
+<p><img src="https://shaocheng.li/images/2017-12-18/2017-12-18_13.png" alt="" /></p>
+
+<h3 id="3-6-菜单">3.6. 菜单</h3>
+
+<h2 id="4-顶层窗口">4. 顶层窗口</h2>
+
+<p><code>Tk()</code> 是由 root 新建的顶层窗口，如果要新建其他窗口，需要调用 <code>.Toplevel()</code> 方法：</p>
+
+<pre><code>w = tk.Toplevel(option, ...)
+</code></pre>
+
+<h3 id="4-1-常用属性">4.1. 常用属性</h3>
+
+<ul>
+<li>bg or background ，背景颜色</li>
+<li>bd or borderwidth  ，边框宽度，默认是 0</li>
+<li>menu ，为该属性传递一个 menu 控件的实例，会为窗口添加一个菜单栏，如果是 Windows 或者 Unix 系统，菜单栏会出现在串口的顶端，如果是 MacOS ，菜单栏会出现在屏幕顶端</li>
+</ul>
+
+<h3 id="4-2-常用方法">4.2. 常用方法</h3>
+
+<ul>
+<li>.maxsize(width=None, height=None) ，设置窗口的最大尺寸。</li>
+<li>.minsize(width=None, height=None) ，设置窗口的最小尺寸。</li>
+<li>.title(text=None) ，设置窗口标题。</li>
+<li>.withdraw() ，隐藏窗口。</li>
+<li>.geometry(newGeometry=None) ，设置窗口的尺寸，参数 newGeometry 是一个几何字符串。</li>
+</ul>
+
+<h2 id="5-通用方法">5. 通用方法</h2>
+
+<p>下面是每个控件都支持的方法。</p>
+
+<ul>
+<li>w.mainloop() ，主循环，处理各种事件，通常在所有静态控件新建完毕后调用，</li>
+<li>w.quit() ，结束主循环 <code>.mainloop()</code> ，程序退出</li>
+<li>w.bind(sequence=None, func=None, add=None) ，将当前控件上发生的事件与某些函数绑定，sequence 是描述事件的字符串</li>
+<li>w.bind_all(sequence=None, func=None, add=None)，将当前应用上所有控件发生的事件与某写函数绑定</li>
+<li>w.bind_class(className, sequence=None, func=None, add=None) ，将某一类控件发生的事件与某些函数绑定，className 是控件类的名称，比如 &lsquo;Button&rsquo;</li>
+<li>w.winfo_screenheight() ，返回屏幕垂直方向的分辨率</li>
+<li>w.winfo_screenwidth() ，返回屏幕水平方向的分辨率</li>
+<li>w.winfo_children() ，返回一个包含所有子控件的列表，从低到高排序</li>
+<li>w.configure(option=value, &hellip;) ，设置一个或者多个属性</li>
+</ul>
+
+<h2 id="6-标准属性">6. 标准属性</h2>
+
+<h3 id="6-1-坐标">6.1. 坐标</h3>
+
+<p>Tkinter 的坐标系以左上角为原点，横轴是 x ：</p>
+
+<p><img src="https://shaocheng.li/images/2017-12-18/2017-12-18_14.png" alt="" /></p>
+
+<p>Tkinter 还定义了一些常量，用于控制相对位置，比如标签内文字的对齐方向等，下面是这些常量的示意图：</p>
+
+<p><img src="https://shaocheng.li/images/2017-12-18/2017-12-18_15.png" alt="" /></p>
+
+<h3 id="6-2-单位">6.2. 单位</h3>
+
+<p>许多控件的长度、宽度、或者其他尺寸的单位可以是像素、字符，也可以用其他单位描述，只需在数字的后面跟上单位即可：</p>
+
+<table>
+<thead>
+<tr>
+<th>单位</th>
+<th>描述</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>c</td>
+<td>厘米</td>
+</tr>
+
+<tr>
+<td>i</td>
+<td>英寸</td>
+</tr>
+
+<tr>
+<td>m</td>
+<td>毫米</td>
+</tr>
+
+<tr>
+<td>p</td>
+<td>打印机的点</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="6-3-颜色">6.3. 颜色</h3>
+
+<p>Tkinter 中的颜色可以用 RGB 字符串表示：</p>
+
+<table>
+<thead>
+<tr>
+<th>字符串</th>
+<th>描述</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>#rgb</td>
+<td>每种颜色占四位</td>
+</tr>
+
+<tr>
+<td>#rrggbb</td>
+<td>每种颜色占八位</td>
+</tr>
+
+<tr>
+<td>#rrrgggbbb</td>
+<td>每种颜色占十二位</td>
+</tr>
+</tbody>
+</table>
+
+<p>比如 &lsquo;#FFF&rsquo; 是白色，&rsquo;#000000&rsquo; 是黑色，&rsquo;#FF0000&rsquo; 是红色。还可以使用已经定义的标准颜色名称，比如 &lsquo;white&rsquo; ， &lsquo;black&rsquo; ， &lsquo;red&rsquo; ， &lsquo;green&rsquo; ， &lsquo;blue&rsquo; ， &lsquo;cyan&rsquo; ， &lsquo;yellow&rsquo; 和 &lsquo;magenta&rsquo; 。</p>
+
+<h3 id="6-4-几何字符串">6.4. 几何字符串</h3>
+
+<p>几何字符串是描述顶层窗口大小和位置的标准方法，通常的格式是 <code>'wxh±x±y'</code>，由三个部分组成：</p>
+
+<ul>
+<li>w 和 h 分别表示宽和高，单位是像素，用 x 连接，这个部分是必须的</li>
+<li>如果后面跟着 +x ，表示窗口的左边框距离屏幕左边框 x 个像素，如果是 -x ，表示窗口的左边框超出屏幕左边框 x 个像素</li>
+<li>如果后面还正常 +y ，表示窗口的上边框距离屏幕上边框 y 个像素，如果是 -y ，表示窗口的上边框超出屏幕上边框 y 个像素</li>
+</ul>
+
+<h2 id="7-控制变量">7. 控制变量</h2>
+
+<p>Tkinter 的控制变量是一种特定的对象，它的行为类似 Python 的普通变量，就是值的容器。它的特殊之处是可以由一组控件共享，如果某个控制变量 c 调用 <code>c.set()</code> 方法改变了自己的值，那么所有使用 c 的控件都会自动更新。控制变量的作用是保存控件上的某些值。控制变量有三种：</p>
+
+<pre><code>v = tk.DoubleVar()   # Holds a float; default value 0.0
+v = tk.IntVar()      # Holds an int; default value 0
+v = tk.StringVar()   # Holds a string; default value ''
+</code></pre>
+
+<p>控制变量有两个方法：</p>
+
+<ul>
+<li>.get() ，返回变量的值</li>
+<li>.set(value) ，设置变量的值</li>
+</ul>
+
+<p>用到控制变量的控件包括：</p>
+
+<table>
+<thead>
+<tr>
+<th>控件</th>
+<th>属性</th>
+<th>类型</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Button</td>
+<td>textvariable</td>
+<td>StringVar</td>
+</tr>
+
+<tr>
+<td>Entry</td>
+<td>textvariable</td>
+<td>StringVar</td>
+</tr>
+
+<tr>
+<td>Label</td>
+<td>textvariable</td>
+<td>StringVar</td>
+</tr>
+
+<tr>
+<td>Checkbutton</td>
+<td>variable</td>
+<td>IntVar</td>
+</tr>
+
+<tr>
+<td>Menubutton</td>
+<td>textvariable</td>
+<td>StringVar</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="8-焦点-引导键盘输入">8. 焦点：引导键盘输入</h2>
+
+<p>某个控件被设为焦点（focus），意味着键盘输入会直接作用于这个控件。Tkinter 可以设置某个控件为默认焦点，也可以设置各种控件的焦点顺序，也就是用 Tab 键切换时的顺序。</p>
+
+<h2 id="9-事件-对刺激做出反应">9. 事件：对刺激做出反应</h2>
+
+<p>前面我们都在描述怎么绘制图形界面，下面我们讨论如今将控件与后台功能联系起来，让用户的操作得到实际的反馈。</p>
+
+<p>事件（event）就是应用程序上发生的事情，比如键盘输入、鼠标单击或者双击，应用程序应该对此作出反应。很多控件都有一些内置的行为，比如按钮按下时会调用 command 指向的函数。Tkinker 允许为一个或者多个事件定义相应的处理方法，有三中绑定级别：</p>
+
+<ol>
+<li>单独绑定，为一个控件上可能发生的某些事件绑定一个方法：<code>w.bind(sequence=None, func=None, add=None)</code> ，比如在 canvas 控件里为 PageUp 按键绑定一个翻页功能的方法。</li>
+<li>分类绑定，为所用同类控件上可能发生的某些事件绑定一个方法：<code>w.bind_class(className, sequence=None, func=None, add=None)</code> ，比如双击鼠标时所有的按钮同时按下。</li>
+<li>应用绑定，为应用上所有控件可能发生的某些事件绑定一个犯法：<code>w.bind_all(sequence=None, func=None, add=None)</code> 。</li>
+</ol>
+
+<p>Tkinter 用事件序列字符串（sequence） 的方式描述事件，一个字符串可以描述一个或者多个事件，字符串遵循如下格式：</p>
+
+<pre><code>&lt;[modifier-]...type[-detail]&gt;
+</code></pre>
+
+<ul>
+<li>字符串由尖括号 &lt;&gt; 包围</li>
+<li>type 是必选项，指事件类型，例如按键，鼠标等</li>
+<li>modifier 是可选项，可以连续设置多个，与 type 组成混合体来描述组合键，例如按下 shift 的时候单击鼠标</li>
+<li>detail 是可选项，描述具体是哪个键盘按键、哪个鼠标按键。</li>
+</ul>
+
+<p>下面是三个例子：</p>
+
+<table>
+<thead>
+<tr>
+<th>sequence</th>
+<th>描述</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Button-1</td>
+<td>按下鼠标左键</td>
+</tr>
+
+<tr>
+<td>KeyPress-H</td>
+<td>按下键盘上的 H 键</td>
+</tr>
+
+<tr>
+<td>Control-Shift-KeyPress-H</td>
+<td>按下 control-shift-H 组合键</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="9-1-type">9.1. type</h3>
+
+<p>常用的事件类型：</p>
+
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>描述</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Activate</td>
+<td>36</td>
+<td>控件被激活，这个事件是由控件的 state 属性变化引起的</td>
+</tr>
+
+<tr>
+<td>Button</td>
+<td>4</td>
+<td>按下鼠标，具体哪个键被按下由 detail 决定，按了几次由 modifier 决定</td>
+</tr>
+
+<tr>
+<td>ButtonRelease</td>
+<td>5</td>
+<td>松开鼠标，通常松开时触发事件比按下时更好</td>
+</tr>
+
+<tr>
+<td>Configure</td>
+<td>22</td>
+<td>控件的大小发生改变</td>
+</tr>
+
+<tr>
+<td>Deactivate</td>
+<td>37</td>
+<td>控件的状态由激活变为不可用（灰色），这个事件是由控件的 state 属性变化引起的</td>
+</tr>
+
+<tr>
+<td>Destroy</td>
+<td>17</td>
+<td>控件被毁灭</td>
+</tr>
+
+<tr>
+<td>Enter</td>
+<td>7</td>
+<td>鼠标移动到了控件上</td>
+</tr>
+
+<tr>
+<td>Expose</td>
+<td>12</td>
+<td>控件从被其他窗口遮挡的状态变为可见时</td>
+</tr>
+
+<tr>
+<td>FocusIn</td>
+<td>9</td>
+<td>控件获得输入焦点时，这个事件可以由程序内部产生，比如调用 <code>.focus_set()</code>  时</td>
+</tr>
+
+<tr>
+<td>FocusOut</td>
+<td>10</td>
+<td>输入焦点从控件上移开时，这个事件可以由程序内部产生</td>
+</tr>
+
+<tr>
+<td>KeyPress</td>
+<td>2</td>
+<td>按下键盘按键，具体哪个键被按下由 detail 决定，按了几次由 modifier 决定</td>
+</tr>
+
+<tr>
+<td>KeyRelease</td>
+<td>3</td>
+<td>松开键盘按键，</td>
+</tr>
+
+<tr>
+<td>Leave</td>
+<td>8</td>
+<td>鼠标从控件上移开</td>
+</tr>
+
+<tr>
+<td>Map</td>
+<td>19</td>
+<td>控件变为可见时，比如调用 <code>.grid()</code> 方法</td>
+</tr>
+
+<tr>
+<td>Motion</td>
+<td>6</td>
+<td>在控件内移动鼠标</td>
+</tr>
+
+<tr>
+<td>MouseWheel</td>
+<td>38</td>
+<td>上下移动鼠标滚轮，只在 Windows 和 macOS 下有效， Linux 不支持</td>
+</tr>
+
+<tr>
+<td>Unmap</td>
+<td>18</td>
+<td>控件变为不可见状态，比如调用 <code>.grid_remove()</code> 方法</td>
+</tr>
+
+<tr>
+<td>Visibility</td>
+<td>15</td>
+<td>应用程序窗口的一部分在屏幕上变为可见</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="9-2-modifier">9.2. modifier</h3>
+
+<p>所有可选的 modifier 名称：</p>
+
+<table>
+<thead>
+<tr>
+<th>modifier</th>
+<th>描述</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Alt</td>
+<td>按住 Alt 键</td>
+</tr>
+
+<tr>
+<td>Any</td>
+<td>表示任意的，用于概况一类事件，比如 &lsquo;<Any-KeyPress>&rsquo; 表示按下任意按键</td>
+</tr>
+
+<tr>
+<td>Control</td>
+<td>按住 control 键</td>
+</tr>
+
+<tr>
+<td>Double</td>
+<td>双击，即很短的时间内连续发生两次，例如 &lsquo;<Double-Button-1>&rsquo; 表示双击鼠标左键</td>
+</tr>
+
+<tr>
+<td>Lock</td>
+<td>按下 shift lock 键</td>
+</tr>
+
+<tr>
+<td>Shift</td>
+<td>按住 shift 键</td>
+</tr>
+
+<tr>
+<td>Triple</td>
+<td>三击，即很短的时间内连续发生三次</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="9-3-detail">9.3. detail</h3>
+
+<p>对于鼠标事件，1 表示鼠标左键，3 表示鼠标右键。对于键盘事件，Tkinter 提供了多种方式识别按键，这几种方式都是 Event 类支持的属性 ：</p>
+
+<ul>
+<li>.keysym 表示按键的符号，有的按键有两个符号</li>
+<li>.keycode 表示按键的编码，但是这种编码没有区分同一按键上的不同符号，比如小键盘的数字 2 (KP_2) 和向下箭头 (KP_Down) 是同一个按键，编码都是 88 ，也无法区分大小写，所以 a 和 A 的编码是一样的</li>
+<li>.keysym_num 表示与按键符号相对应的编码</li>
+</ul>
+
+<p>下表是美式 101-key 键盘通用字符集的部分符号：</p>
+
+<table>
+<thead>
+<tr>
+<th>.keysym</th>
+<th>.keycode</th>
+<th>.keysym_num</th>
+<th>Key</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Alt_L</td>
+<td>64</td>
+<td>65513</td>
+<td>The left-hand alt key</td>
+</tr>
+
+<tr>
+<td>Alt_R</td>
+<td>113</td>
+<td>65514</td>
+<td>The right-hand alt key</td>
+</tr>
+
+<tr>
+<td>BackSpace</td>
+<td>22</td>
+<td>65288</td>
+<td>backspace</td>
+</tr>
+
+<tr>
+<td>Cancel</td>
+<td>110</td>
+<td>65387</td>
+<td>break</td>
+</tr>
+
+<tr>
+<td>Caps_Lock</td>
+<td>66</td>
+<td>65549</td>
+<td>CapsLock</td>
+</tr>
+
+<tr>
+<td>Control_L</td>
+<td>37</td>
+<td>65507</td>
+<td>The left-hand control key</td>
+</tr>
+
+<tr>
+<td>Control_R</td>
+<td>109</td>
+<td>65508</td>
+<td>The right-hand control key</td>
+</tr>
+
+<tr>
+<td>Delete</td>
+<td>107</td>
+<td>65535</td>
+<td>Delete</td>
+</tr>
+
+<tr>
+<td>Down</td>
+<td>104</td>
+<td>65364</td>
+<td>↓</td>
+</tr>
+
+<tr>
+<td>End</td>
+<td>103</td>
+<td>65367</td>
+<td>end</td>
+</tr>
+
+<tr>
+<td>Escape</td>
+<td>9</td>
+<td>65307</td>
+<td>esc</td>
+</tr>
+
+<tr>
+<td>Execute</td>
+<td>111</td>
+<td>65378</td>
+<td>SysReq</td>
+</tr>
+
+<tr>
+<td>F1</td>
+<td>67</td>
+<td>65470</td>
+<td>Function key F1</td>
+</tr>
+
+<tr>
+<td>F2</td>
+<td>68</td>
+<td>65471</td>
+<td>Function key F2</td>
+</tr>
+
+<tr>
+<td>Fi</td>
+<td>66+i</td>
+<td>65469+i</td>
+<td>Function key Fi</td>
+</tr>
+
+<tr>
+<td>F12</td>
+<td>96</td>
+<td>65481</td>
+<td>Function key F12</td>
+</tr>
+
+<tr>
+<td>Home</td>
+<td>97</td>
+<td>65360</td>
+<td>home</td>
+</tr>
+
+<tr>
+<td>Insert</td>
+<td>106</td>
+<td>65379</td>
+<td>insert</td>
+</tr>
+
+<tr>
+<td>Left</td>
+<td>100</td>
+<td>65361</td>
+<td>←</td>
+</tr>
+
+<tr>
+<td>Linefeed</td>
+<td>54</td>
+<td>106</td>
+<td>Linefeed (control-J)</td>
+</tr>
+
+<tr>
+<td>KP_0</td>
+<td>90</td>
+<td>65438</td>
+<td>0 on the keypad</td>
+</tr>
+
+<tr>
+<td>KP_1</td>
+<td>87</td>
+<td>65436</td>
+<td>1 on the keypad</td>
+</tr>
+
+<tr>
+<td>KP_2</td>
+<td>88</td>
+<td>65433</td>
+<td>2 on the keypad</td>
+</tr>
+
+<tr>
+<td>KP_3</td>
+<td>89</td>
+<td>65435</td>
+<td>3 on the keypad</td>
+</tr>
+
+<tr>
+<td>KP_4</td>
+<td>83</td>
+<td>65430</td>
+<td>4 on the keypad</td>
+</tr>
+
+<tr>
+<td>KP_5</td>
+<td>84</td>
+<td>65437</td>
+<td>5 on the keypad</td>
+</tr>
+
+<tr>
+<td>KP_6</td>
+<td>85</td>
+<td>65432</td>
+<td>6 on the keypad</td>
+</tr>
+
+<tr>
+<td>KP_7</td>
+<td>79</td>
+<td>65429</td>
+<td>7 on the keypad</td>
+</tr>
+
+<tr>
+<td>KP_8</td>
+<td>80</td>
+<td>65431</td>
+<td>8 on the keypad</td>
+</tr>
+
+<tr>
+<td>KP_9</td>
+<td>81</td>
+<td>65434</td>
+<td>9 on the keypad</td>
+</tr>
+
+<tr>
+<td>KP_Add</td>
+<td>86</td>
+<td>65451</td>
+<td>+ on the keypad</td>
+</tr>
+
+<tr>
+<td>KP_Begin</td>
+<td>84</td>
+<td>65437</td>
+<td>The center key (same key as 5) on the keypad</td>
+</tr>
+
+<tr>
+<td>KP_Decimal</td>
+<td>91</td>
+<td>65439</td>
+<td>Decimal (.) on the keypad</td>
+</tr>
+
+<tr>
+<td>KP_Delete</td>
+<td>91</td>
+<td>65439</td>
+<td>delete on the keypad</td>
+</tr>
+
+<tr>
+<td>KP_Divide</td>
+<td>112</td>
+<td>65455</td>
+<td>/ on the keypad</td>
+</tr>
+
+<tr>
+<td>KP_Down</td>
+<td>88</td>
+<td>65433</td>
+<td>↓ on the keypad</td>
+</tr>
+
+<tr>
+<td>KP_End</td>
+<td>87</td>
+<td>65436</td>
+<td>end on the keypad</td>
+</tr>
+
+<tr>
+<td>KP_Enter</td>
+<td>108</td>
+<td>65421</td>
+<td>enter on the keypad</td>
+</tr>
+
+<tr>
+<td>KP_Home</td>
+<td>79</td>
+<td>65429</td>
+<td>home on the keypad</td>
+</tr>
+
+<tr>
+<td>KP_Insert</td>
+<td>90</td>
+<td>65438</td>
+<td>insert on the keypad</td>
+</tr>
+
+<tr>
+<td>KP_Left</td>
+<td>83</td>
+<td>65430</td>
+<td>← on the keypad</td>
+</tr>
+
+<tr>
+<td>KP_Multiply</td>
+<td>63</td>
+<td>65450</td>
+<td>× on the keypad</td>
+</tr>
+
+<tr>
+<td>KP_Next</td>
+<td>89</td>
+<td>65435</td>
+<td>PageDown on the keypad</td>
+</tr>
+
+<tr>
+<td>KP_Prior</td>
+<td>81</td>
+<td>65434</td>
+<td>PageUp on the keypad</td>
+</tr>
+
+<tr>
+<td>KP_Right</td>
+<td>85</td>
+<td>65432</td>
+<td>→ on the keypad</td>
+</tr>
+
+<tr>
+<td>KP_Subtract</td>
+<td>82</td>
+<td>65453</td>
+<td>- on the keypad</td>
+</tr>
+
+<tr>
+<td>KP_Up</td>
+<td>80</td>
+<td>65431</td>
+<td>↑ on the keypad</td>
+</tr>
+
+<tr>
+<td>Next</td>
+<td>105</td>
+<td>65366</td>
+<td>PageDown</td>
+</tr>
+
+<tr>
+<td>Num_Lock</td>
+<td>77</td>
+<td>65407</td>
+<td>NumLock</td>
+</tr>
+
+<tr>
+<td>Pause</td>
+<td>110</td>
+<td>65299</td>
+<td>pause</td>
+</tr>
+
+<tr>
+<td>Print</td>
+<td>111</td>
+<td>65377</td>
+<td>PrintScrn</td>
+</tr>
+
+<tr>
+<td>Prior</td>
+<td>99</td>
+<td>65365</td>
+<td>PageUp</td>
+</tr>
+
+<tr>
+<td>Return</td>
+<td>36</td>
+<td>65293</td>
+<td>The enter key (control-M). The name Enter refers to a mouse-related event, not a keypress; see Section 54, “Events”</td>
+</tr>
+
+<tr>
+<td>Right</td>
+<td>102</td>
+<td>65363</td>
+<td>→</td>
+</tr>
+
+<tr>
+<td>Scroll_Lock</td>
+<td>78</td>
+<td>65300</td>
+<td>ScrollLock</td>
+</tr>
+
+<tr>
+<td>Shift_L</td>
+<td>50</td>
+<td>65505</td>
+<td>The left-hand shift key</td>
+</tr>
+
+<tr>
+<td>Shift_R</td>
+<td>62</td>
+<td>65506</td>
+<td>The right-hand shift key</td>
+</tr>
+
+<tr>
+<td>Tab</td>
+<td>23</td>
+<td>65289</td>
+<td>The tab key</td>
+</tr>
+
+<tr>
+<td>Up</td>
+<td>98</td>
+<td>65362</td>
+<td>↑</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="10-ttk-主题控件">10. ttk : 主题控件</h2>
+
+<p>从 Tk 8.5 开始，正式加入了 ttk 模块，这个模块可以替代大部分 Tkinter 原有的机制，而且带来了很多优势：</p>
+
+<ul>
+<li>在 Tk 8.5 以前，开发者经常抱怨的就是 Tkinter 的 UI 风格无法适应操作系统，显得很难看。ttk 可以在自适应不同的操作系统 UI 风格，无需修改程序代码。</li>
+<li>原有的控件都有一个  ttk 的版本，还增加了一些新的控件</li>
+<li>带来了更加简化和易于操作的控件属性。</li>
+</ul>
+
+<p>推荐使用如下方式导入 ttk 模块：</p>
+
+<pre><code>from tkinter import ttk
+</code></pre>
+
+<p>这样的话，ttk.Label 就表示 Label 控件。</p>
+
+<h3 id="10-1-ttk-button">10.1. ttk.Button</h3>
+
+<p>按钮控件，原型：</p>
+
+<pre><code>w = ttk.Button(parent, option=value, ...)
+</code></pre>
+
+<p>常用属性：</p>
+
+<ul>
+<li>command ，按下按钮是调用的函数</li>
+<li>image ，设置按钮上显示的图片</li>
+<li>text ，设置按钮上显示的文字</li>
+<li>compound ，如果同时设置了 image 和 text ，该属性设置了 image 相对于 text 的位置，有四个可选值：tk.TOP (image 在 text 上面) ，tk.BOTTOM (image 在 text 下面) ，tk.LEFT (image 在 text 左边) ，tk.RIGHT (image 在 text 右边)</li>
+<li>textvariable ，控制变量 StringVal</li>
+<li>width ，按钮的宽度，单位是字符个数，如果按钮显示的是图片，则单位是像素</li>
+<li>underline ，设置一个数字 n ，按钮上的第 n 个字符会显示一条下划线</li>
+<li>style ，原 Tkinter 的样式属性都被这个属性代替了</li>
+</ul>
+
+<p>出来通用方法，它还有一个自己的方法：</p>
+
+<ul>
+<li>.invoke() ，调用 command 指定的函数。</li>
+</ul>
+
+<h3 id="10-2-ttk-entry">10.2. ttk.Entry</h3>
+
+<p>输入框，函数原型：</p>
+
+<pre><code>w = ttk.Entry(parent, option=value, ...)
+</code></pre>
+
+<p>常用属性：</p>
+
+<ul>
+<li>width ，输入框能够容纳的字符数，默认是 20</li>
+<li>show，默认情况下，输入的字符会直接显示，如果是密码，需要隐藏，可以要求输入的字符都显示为星号： <code>show='*'</code></li>
+<li>justify ，输入框内文本的对齐方式，默认是左对齐 justify=tk.LEFT ，还可选 tk.CENTER 和 tk.RIGHT</li>
+<li>validate ，设置检查输入框内容的时机</li>
+<li>validatecommand ，设置一个回调函数，负责检查输入框的内容</li>
+<li>textvariable ，为该属性设置一个控制变量 StringVar 类的实例，就可以用 v.get() 方法取回输入框中内容，或者用 v.set(value) 设置，v 就是这个实例</li>
+<li>style ，原 Tkinter 的样式属性都被这个属性代替了</li>
+</ul>
+
+<p>ttk.Entry  支持所有 ttk 的通用方法和 tk.Entry 的方法。</p>
+
+<h3 id="10-3-ttk-combobox">10.3. ttk.Combobox</h3>
+
+<p>带下拉菜单的输入框，函数原型：</p>
+
+<pre><code>w = ttk.Combobox(parent, option=value, ...)
+</code></pre>
+
+<p>常用属性：</p>
+
+<ul>
+<li>exportselection ，默认情况下，选中的内容会自动复制到剪贴板，设置 <code>exportselection=0</code> 可以关闭这个特性</li>
+<li>height ，设置下拉菜单中选项的最大行数，默认是 20 ，如果超过这个值，会自动出现滚动条</li>
+<li>justify ，输入框内文本的对齐方式，默认是左对齐 justify=tk.LEFT ，还可选 tk.CENTER 和 tk.RIGHT</li>
+<li>postcommand ，设置一个回调函数，当用户点击下拉菜单是会调用，可用于修改 values 属性</li>
+<li>textvariable ，为该属性设置一个控制变量 StringVar 类的实例，就可以用 v.get() 方法取回输入框中内容，或者用 v.set(value) 设置，v 就是这个实例</li>
+<li>validate ，设置检查输入框内容的时机</li>
+<li>validatecommand ，设置一个回调函数，负责检查输入框的内容</li>
+<li>values，设置一个字符串序列，作为下拉菜单中的选项</li>
+<li>width ，输入框能够容纳的字符数，默认是 20</li>
+<li>style ，原 Tkinter 的样式属性都被这个属性代替了</li>
+</ul>
+
+<p>ttk.Combobox 支持所有 ttk 的通用方法和 tk.Entry 的方法，此外还支持：</p>
+
+<ul>
+<li>.current([index]) ,</li>
+<li>.set(value) ，设置空间输入框中的值为 value</li>
+</ul>
+
+<p>ttk.Combobox 的状态会显示不同的行为特性。控件状态由通用方法 <code>.instate()</code> 和 <code>.state()</code> 设置。如果控件处于 disabled 状态，用户无法改变控件的内容；如果空间处于 !disabled &amp; readonly 状态，用户可以通过下拉菜单改变空间内容，但不能直接输入。</p>
+
+<h3 id="10-4-ttk-frame">10.4. ttk.Frame</h3>
+
+<p>框架控件，函数原型：</p>
+
+<pre><code>w = ttk.Frame(parent, option=value, ...)
+</code></pre>
+
+<h3 id="10-5-ttk-label">10.5. ttk.Label</h3>
+
+<p>标签控件，函数原型：</p>
+
+<pre><code>w = ttk.Label(parent, option=value, ...)
+</code></pre>
+
+<h3 id="10-6-ttk-labelframe">10.6. ttk.LabelFrame</h3>
+
+<p>带标签的框架，函数原型：</p>
+
+<pre><code>w = ttk.LabelFrame(parent, option=value, ...)
+</code></pre>
+
+<h3 id="10-7-ttk-notebook">10.7. ttk.Notebook</h3>
+
+<p>标签页控件，函数原型：</p>
+
+<pre><code>w = ttk.Notebook(parent, option=value, ...)
+</code></pre>
+
+<h3 id="10-8-ttk-menubutton">10.8. ttk.Menubutton</h3>
+
+<p>下拉菜单，函数原型：</p>
+
+<pre><code>w = ttk.Menubutton(parent, option=value, ...)
+</code></pre>
+
+<h2 id="11-ttk-的样式和主题">11. ttk 的样式和主题</h2>
+
+<p>绘制 ttk 控件包含三个层面的抽象概念：</p>
+
+<ol>
+<li>theme 表示一个应用中所有控件的设计主题</li>
+<li>style 描述了一种控件本身的显示方式，一个 theme 是由多种 style 组成的，你可以使用内置的 style ，也可以新建自己的 style 。</li>
+
+<li><p>每个 style 都是有一个或者多个 element 组成的，一个按钮的 style 通常有四个 element ：外边框，聚焦时的颜色变化，内边距，按钮标签（文本或者图片）：</p>
+
+<p><img src="./_image/2017-12-25-13-28-07.png" alt="" /></p></li>
+</ol>
+
+<p>下面依次讨论如何寻找、使用和定制这几层样式。</p>
+
+<h3 id="11-1-寻找并使用-theme">11.1. 寻找并使用 theme</h3>
+
+<p>与样式相关的操作都需要新建一个 <code>ttk.Style()</code> 类的实例，例如获取所有可用的 theme 列表：</p>
+
+<pre><code>&gt;&gt;&gt; from tkinter import ttk
+&gt;&gt;&gt; s=ttk.Style()
+&gt;&gt;&gt; s.theme_names()
+('aqua', 'clam', 'alt', 'default', 'classic')
+</code></pre>
+
+<p><code>.theme_names()</code> 会返回一个元组，包含了所有可用的 theme 。如果要查看当前默认的 theme ，直接调用 <code>.theme_use()</code> ，在参数里加上 theme 名就可以改变当前的 theme ：</p>
+
+<pre><code>&gt;&gt;&gt; s.theme_use()
+'aqua'
+&gt;&gt;&gt; s.theme_use('default')
+&gt;&gt;&gt; s.theme_use()
+'default'
+</code></pre>
+
+<h3 id="11-2-使用和定制-style">11.2. 使用和定制 style</h3>
+
+<p>对于一个给定的 theme ，为每一种控件都定义了默认的 style ，本质上是一个类，每个 style 类名就是控件名加上前缀 &ldquo;T&rdquo; ，下表是 ttk 控件对应的 style 名称：</p>
+
+<table>
+<thead>
+<tr>
+<th>Widget class</th>
+<th>Style name</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Button</td>
+<td>TButton</td>
+</tr>
+
+<tr>
+<td>Checkbutton</td>
+<td>TCheckbutton</td>
+</tr>
+
+<tr>
+<td>Combobox</td>
+<td>TCombobox</td>
+</tr>
+
+<tr>
+<td>Entry</td>
+<td>TEntry</td>
+</tr>
+
+<tr>
+<td>Frame</td>
+<td>TFrame</td>
+</tr>
+
+<tr>
+<td>Label</td>
+<td>TLabel</td>
+</tr>
+
+<tr>
+<td>LabelFrame</td>
+<td>TLabelFrame</td>
+</tr>
+
+<tr>
+<td>Menubutton</td>
+<td>TMenubutton</td>
+</tr>
+
+<tr>
+<td>Notebook</td>
+<td>TNotebook</td>
+</tr>
+
+<tr>
+<td>PanedWindow</td>
+<td>TPanedwindow (not TPanedWindow!)</td>
+</tr>
+
+<tr>
+<td>Progressbar</td>
+<td>Horizontal.TProgressbar or Vertical.TProgressbar, depending on the orient option.</td>
+</tr>
+
+<tr>
+<td>Radiobutton</td>
+<td>TRadiobutton</td>
+</tr>
+
+<tr>
+<td>Scale</td>
+<td>Horizontal.TScale or Vertical.TScale, depending on the orient option.</td>
+</tr>
+
+<tr>
+<td>Scrollbar</td>
+<td>Horizontal.TScrollbar or Vertical.TScrollbar, depending on the orient option.</td>
+</tr>
+
+<tr>
+<td>Separator</td>
+<td>TSeparator</td>
+</tr>
+
+<tr>
+<td>Sizegrip</td>
+<td>TSizegrip</td>
+</tr>
+
+<tr>
+<td>Treeview</td>
+<td>Treeview (not TTreview!)</td>
+</tr>
+</tbody>
+</table>
+
+<p>运行时可以调用控件的 <code>.winfo_class()</code> 方法获得当前使用的 style 类名：</p>
+
+<pre><code>&gt;&gt;&gt; b=ttk.Button(None)
+&gt;&gt;&gt; b.winfo_class()
+'TButton'
+</code></pre>
+
+<p>style 类名有两种格式：</p>
+
+<ol>
+<li>对应内置的 sytle 都是一个单词，例如 &lsquo;TButton&rsquo; 或者 &lsquo;TFrame&rsquo;</li>
+<li>在内置 style 之上新建的 style 采用这样的格式： &lsquo;newName.oldName&rsquo; ，例如为输入日期的 Entry 控件新建一个 style 可以命名为 &lsquo;Date.TEntry&rsquo;</li>
+</ol>
+
+<p>每个 style 都定义了一套相应的属性，例如按钮有一个 foreground 属性用于设置按钮上文字的颜色。可以调用 <code>ttk.Style()</code> 类的 <code>.configure()</code> 方法调节这些属性，第一个参数是 style 类名，之后是要修改的属性和相应的值，例如把按钮上的文字改成绿色：</p>
+
+<pre><code>s.configure('TButton', foreground='green')
+</code></pre>
+
+<p>这个方法还可以用来新建 style ，第一个参数定义新 style 类的名称 &lsquo;newName.oldName&rsquo; ，例如新建一个 Style ，按钮上的文字是红褐色：</p>
+
+<pre><code>s = ttk.Style()
+s.configure('Kim.TButton', foreground='maroon')
+</code></pre>
+
+<p>然后就可以用这个新的 style 新建一个按钮：</p>
+
+<pre><code>self.b = ttk.Button(self, text='Friday', style='Kim.TButton',command=self._fridayHandler)
+</code></pre>
+
+<p>你甚至可以构建一套多级 style 。例如新建一个名叫 &lsquo;Panic.Kim.TButton&rsquo; 的 style ，它会继承 &lsquo;Kim.TButton&rsquo; 的所有属性，ttk 要使用某个属性时，首先在 &lsquo;Panic.Kim.TButton&rsquo; 寻找，如果没找到，会上溯到 &lsquo;Kim.TButton&rsquo; ，如果还找不到，再上溯到 &lsquo;TButton&rsquo; 中寻找。</p>
+
+<p>还存在一个 root style 叫做 &lsquo;.&rsquo; ，配置这个 style 的某个属性会对所有控件生效。假设我们想要所有的文本都使用  12-point Helvetica 字体，可以这样配置：</p>
+
+<pre><code>s = ttk.Style()
+s.configure('.', font=('Helvetica', 12))
+</code></pre>
+
+<h3 id="11-3-element">11.3. element</h3>
+
+<p>一个控件是由多种 element 组成的，控件就像一个“空腔”，腔体内的空间由 element 填充。以 classic theme 为例，一个按钮拥有四个同心 element ，从外都内分别是 focus highlight ， border ， padding 和 label 。每个 element 都有一个 &lsquo;sticky&rsquo; 属性，它的作用是告诉这个 element 如何填充当前的腔体，如果一个 element 的 sticky=&lsquo;ew&rsquo; ，意味着这个 element 应该左右方向撑开，紧贴腔体左右边。</p>
+
+<p>大部分内置的 style 使用 layout 概念来组织腔体内的 element ，要获取某个 style 内的 element 显示方式，可以调用 <code>.layout()</code> 方法：</p>
+
+<pre><code>S.layout(styleName)
+</code></pre>
+
+<p>该函数返回一个列表，列表内的元素都是描述 element 显示方式的元组，元组的格式是 (eltName, d) ，eltName 是一个字符串， element 的名称，d 是一个字典，描述 element 显示方式的一些属性，比如：</p>
+
+<ul>
+<li>&lsquo;sticky&rsquo; ，属性取值是一个字符串，描述当前 element 在相对父 element 的位置，可以为空，或者有 &lsquo;n&rsquo; ， &rsquo;s&rsquo; ， &lsquo;e&rsquo; 和 &lsquo;w&rsquo; 四个字符组成，分别代表四个方式的对齐方式</li>
+<li>&lsquo;side&rsquo; ，如果当前 element 拥有多个子 element ，该属性的取值定义了这些子 element 的对齐方式，可选 &lsquo;left&rsquo; ， &lsquo;right&rsquo; ， &lsquo;top&rsquo; 或者 &lsquo;bottom&rsquo;</li>
+<li>&lsquo;children&rsquo; ，如果当前 element 下还有子 element ，可以使用相同格式的列表描述</li>
+</ul>
+
+<p>下面以 classic theme 的按钮控件为例分析它的 Layout：</p>
+
+<pre><code>&gt;&gt;&gt; from tkinter import ttk
+&gt;&gt;&gt; s = ttk.Style()
+&gt;&gt;&gt; s.theme_use('classic')
+&gt;&gt;&gt; b = ttk.Button(None,text=&quot;Yo&quot;)
+&gt;&gt;&gt; bClass = b.winfo_class()
+&gt;&gt;&gt; bClass
+'TButton'
+&gt;&gt;&gt; layout = s.layout('TButton')
+&gt;&gt;&gt; layout
+[('Button.highlight', {'sticky': 'nswe', 'children': [('Button.border', {'sticky': 'nswe', 'border': '1', 'children': [('Button.padding', {'sticky': 'nswe', 'children': [('Button.label', {'sticky': 'nswe'})]})]})]})]
+</code></pre>
+
+<p>这里我们新建了一个按钮，但是没有显示出来，要让它在窗口显示需要调用 <code>.grid()</code> 方法。Button 控件的 style 是 TButton ，它的 element 分为四层：</p>
+
+<pre><code>[('Button.highlight', {'sticky': 'nswe', 'children': 
+    [('Button.border', {'sticky': 'nswe', 'border': '1', 'children': 
+        [('Button.padding', {'sticky': 'nswe', 'children': 
+            [('Button.label', {'sticky': 'nswe'})]}
+        )]}
+    )]}
+)]
+</code></pre>
+
+<p>有外到内：</p>
+
+<ol>
+<li>最外层是 highlight ，sticky=&lsquo;nswe&rsquo; 表示四个方向都撑满</li>
+<li>第二层是 border ，它有一个 border=&lsquo;1&rsquo; 的属性，表示边框宽度一个像素</li>
+<li>第三层是 padding ，表示内边距，默认是 0</li>
+<li>最里面是 label ，显示按钮上的文字或者图片，也是四个方向撑满</li>
+</ol>
+
+<p>每个 element 都由一个字典描述各自的属性，这些属性的名字都是沿用自 Tkinter ，都可以用 <code>s.configure()</code> 方法配置。要获取这些属性的名字可以调用：</p>
+
+<pre><code>S.element_options(elementName)
+</code></pre>
+
+<p>函数返回一个列表：</p>
+
+<pre><code>&gt;&gt;&gt; d = s.element_options('Button.highlight')
+&gt;&gt;&gt; d
+('highlightcolor', 'highlightthickness')
+</code></pre>
+
+<p>要找出某个属性的值可以调用：</p>
+
+<pre><code>s.lookup(layoutName, optName)
+</code></pre>
+
+<p>继续前面的例子：</p>
+
+<pre><code>&gt;&gt;&gt; s.lookup('Button.highlight', 'highlightthickness')
+1
+&gt;&gt;&gt; s.lookup('Button.highlight', 'highlightcolor')
+'#d9d9d9'
+&gt;&gt;&gt; s.element_options('Button.label')
+('compound', 'space', 'text', 'font', 'foreground', 'underline', 'width', 'anchor', 'justify', 'wraplength', 'embossed', 'image', 'stipple', 'background')
+&gt;&gt;&gt; s.lookup('Button.label', 'foreground')
+'black'
+</code></pre>
+
+<h2 id="12-ttk-的通用方法">12. ttk 的通用方法</h2>
+
+<ul>
+<li>w.cget(option) ，返回某个属性的值</li>
+
+<li><p>w.configure(option=value, &hellip;) ，设置某个属性的值，如果没有参数，它会返回一个字典，记录了该控件所有属性，属性的值保持在一个元组，格式 (name, dbName, dbClass, default, current)，例如：</p>
+
+<pre><code>&gt;&gt;&gt; from tkinter import ttk
+&gt;&gt;&gt; b=ttk.Button(text=&quot;Yo&quot;)
+&gt;&gt;&gt; b.configure()
+{'takefocus': ('takefocus', 'takeFocus', 'TakeFocus', '', 'ttk::takefocus'), 'command': ('command', 'command', 'Command', '', ''), 'default': ('default', 'default', 'Default', &lt;index object: 'normal'&gt;, &lt;index object: 'normal'&gt;), 'text': ('text', 'text', 'Text', '', 'Yo'), 'textvariable': ('textvariable', 'textVariable', 'Variable', '', ''), 'underline': ('underline', 'underline', 'Underline', -1, -1), 'width': ('width', 'width', 'Width', '', ''), 'image': ('image', 'image', 'Image', '', ''), 'compound': ('compound', 'compound', 'Compound', &lt;index object: 'none'&gt;, &lt;index object: 'none'&gt;), 'padding': ('padding', 'padding', 'Pad', '', ''), 'state': ('state', 'state', 'State', &lt;index object: 'normal'&gt;, &lt;index object: 'normal'&gt;), 'cursor': ('cursor', 'cursor', 'Cursor', '', ''), 'style': ('style', 'style', 'Style', '', ''), 'class': ('class', '', '', '', '')}
+</code></pre></li>
+
+<li><p>.state(stateSpec=None) ，获取、设置或者清空当前的状态</p></li>
+</ul>
+
+<h2 id="13-ttk-的控件状态">13. ttk 的控件状态</h2>
+
+<p>ttk 的控件有一套 state flags，用于指示控件的状态，这些状态都可以编程打开或者关闭，下表是各种状态的含义：</p>
+
+<table>
+<thead>
+<tr>
+<th>state</th>
+<th>描述</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>active</td>
+<td>鼠标指针正处于控件内</td>
+</tr>
+
+<tr>
+<td>alternate</td>
+<td>该状态为应用程序保留</td>
+</tr>
+
+<tr>
+<td>background</td>
+<td>Under Windows or MacOS, the widget is located in a window that is not the foreground window.</td>
+</tr>
+
+<tr>
+<td>disabled</td>
+<td>禁用控件</td>
+</tr>
+
+<tr>
+<td>focus</td>
+<td>控件处于聚焦状态</td>
+</tr>
+
+<tr>
+<td>invalid</td>
+<td>控件的内容无效</td>
+</tr>
+
+<tr>
+<td>pressed</td>
+<td>控件被按下</td>
+</tr>
+
+<tr>
+<td>readonly</td>
+<td>只读</td>
+</tr>
+
+<tr>
+<td>selected</td>
+<td>控件被选中</td>
+</tr>
+</tbody>
+</table>
+
+<p>很多方法都通过一个 stateSpec 参数来访问 state 。这个参数可以是以下的值：</p>
+
+<ul>
+<li>A single state name such as &lsquo;pressed&rsquo;. A ttk.Button widget is in this state, for example, when the mouse cursor is over the button and mouse button 1 is down.</li>
+<li>A single state name preceded with an exclamation point (!); this matches the widget state only when that state is off. For example, a stateSpec argument &lsquo;!pressed&rsquo; specifies a widget that is not currently being pressed.</li>
+<li>A sequence of state names, or state names preceded by an &lsquo;!&rsquo;. Such a stateSpec matches only when all of its components match. For example, a stateSpec value of (&lsquo;!disabled&rsquo;, &lsquo;focus&rsquo;) matches a widget only when that widget is not disabled and it has focus.</li>
+</ul>
+
+<h2 id="14-模块化编程">14. 模块化编程</h2>
+
+<p>前面我们都是在主程序里，用函数一步步新建控件，绘制界面，如果界面很复杂，这种方式就变的非常麻烦，结构也不清晰，难以维护。一个好的编程方法应该模块化的，按界面的布局划分不同的模块，实现不同的类，每个类里集成了模块上的所有控件，实现对控件的操作方法，然后这个模块就可以新建不同的实例，放在不同的位置。通常用户新建的类可以从 tk.Frame 继承，下面是简单的例子：</p>
+
+<pre><code>import tkinter as tk
+from tkinter import ttk 
+
+class application(ttk.Frame):     #新建 application 类，继承了 ttk.Frame
+    def __init__(self, parent=None):    #初始化函数，根据模块所处的位置设置父类，默认为空
+        ttk.Frame.__init__(self, parent)
+        self.grid()    #显示这个模块
+        self._createWidgets()   #新建模块上的控件
+    def _createWidgets(self):
+        self.button = ttk.Button(self, text='Quit', command=self.quit)
+        self.button.grid()
+
+window = tk.Tk()    #新建一个窗口
+window.title('Sample application')
+app = application(window)  #在窗口上放一个 application 模块
+window.mainloop()
+</code></pre>
+
+<h2 id="参考">参考</h2>
+
+<ul>
+<li><a href="http://infohost.nmt.edu/tcc/help/pubs/tkinter/web/index.html" target="_blank">Tkinter 8.5 reference: a GUI for Python</a></li>
+<li><a href="http://www.tkdocs.com/tutorial/index.html" target="_blank">TkDocs</a></li>
+<li><a href="https://pyinstaller.readthedocs.io/en/stable/" target="_blank">pyinstaller Docs</a></li>
+</ul>
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>2772 Words</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2017-12-18 08:00 &#43;0800</p>
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h"></span>
+                    <hr />
+                </div>
+
+                <div class="pagination__buttons">
+                    
+                        <span class="button previous">
+                            <a href="https://shaocheng.li/posts/2018/04/23/">
+                                <span class="button__icon">←</span>
+                                <span class="button__text">Libpcap 学习笔记</span>
+                            </a>
+                        </span>
+                    
+
+                    
+                        <span class="button next">
+                            <a href="https://shaocheng.li/posts/2017/12/14/">
+                                <span class="button__text">Linux 编程笔记</span>
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    
+                </div>
+            </div>
+        
+
+        
+          <div id="comments" class="thin">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "shaocheng-li" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+        
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2020</span>
+            
+                <span><a href="https://shaocheng.li">Shaocheng.Li</a></span>
+            
+            <span><a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></span>
+            <span> <a href="https://shaocheng.li/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>
+        </div>
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="https://shaocheng.li/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+
+
+
+    </body>
+</html>

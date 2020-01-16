@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="Shaocheng.Li ">
+<meta name="description" content="QNX Neutrino 支持多种触摸屏，可以在官网上查找支持的型号和对应的驱动：
+http://www.qnx.com/developers/hardware_support/
+或者在 Utilities Reference 中查看 devi-* 驱动，然后确定所需的参数，启动驱动。例如，启动一个 Dynapro SC4 触摸屏：
+devi-dyna dyna -4 fd -d/dev/ser1 &amp;amp;  使用 devi-dyna 驱动，SC4 协议（-4），串口1（/dev/ser1）。
+第一次使用驱动时，会返回一个错误状态，无法获取校准文件。要校准触摸屏，需要在 Photon 下使用 calib 工具。
+calib 用于校准触摸屏。成功配置触摸屏后（已经创建了设备文件），必须校准。calib 工具的配置文件保存在 /etc/system/config/calib.$hostname 。关于该文件的格式，可以在 “Writing an Input Device Driver” 的 “Calibration file format” 查看.
+校准的步骤是：
+ 启动 Photon. 运行 calib. 触摸屏幕上的目标点. 点击 Press to Complete Calibration 按钮，完成校准.  语法 calib [options]  参数  -a alg ：指定校准算法。有效算法是 3 和 4 ，默认值是 3 。" />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#252627" />
+<link rel="canonical" href="https://shaocheng.li/posts/2013/09/15/" />
+
+
+    <title>
+        
+            QNX 对触摸屏的支持 :: Shaocheng.Li  — Hello Friends
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="https://shaocheng.li/main.min.73f55a8d452be4a71b2960620b80252cf69abd84d63fe7501abf0a39b1a70a78.css">
+
+
+    
+        <link rel="stylesheet" type="text/css" href="https://shaocheng.li/css/custom.css">
+    
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://shaocheng.li/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://shaocheng.li/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://shaocheng.li/favicon-16x16.png">
+    <link rel="manifest" href="https://shaocheng.li/site.webmanifest">
+    <link rel="mask-icon" href="https://shaocheng.li/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="https://shaocheng.li/favicon.ico">
+    <meta name="msapplication-TileColor" content="#252627">
+    <meta name="theme-color" content="#252627">
+
+<meta itemprop="name" content="QNX 对触摸屏的支持">
+<meta itemprop="description" content="QNX Neutrino 支持多种触摸屏，可以在官网上查找支持的型号和对应的驱动：
+http://www.qnx.com/developers/hardware_support/
+或者在 Utilities Reference 中查看 devi-* 驱动，然后确定所需的参数，启动驱动。例如，启动一个 Dynapro SC4 触摸屏：
+devi-dyna dyna -4 fd -d/dev/ser1 &amp;  使用 devi-dyna 驱动，SC4 协议（-4），串口1（/dev/ser1）。
+第一次使用驱动时，会返回一个错误状态，无法获取校准文件。要校准触摸屏，需要在 Photon 下使用 calib 工具。
+calib 用于校准触摸屏。成功配置触摸屏后（已经创建了设备文件），必须校准。calib 工具的配置文件保存在 /etc/system/config/calib.$hostname 。关于该文件的格式，可以在 “Writing an Input Device Driver” 的 “Calibration file format” 查看.
+校准的步骤是：
+ 启动 Photon. 运行 calib. 触摸屏幕上的目标点. 点击 Press to Complete Calibration 按钮，完成校准.  语法 calib [options]  参数  -a alg ：指定校准算法。有效算法是 3 和 4 ，默认值是 3 。">
+
+
+<meta itemprop="datePublished" content="2013-09-15T08:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2013-09-15T08:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="286">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://shaocheng.li"/>
+
+<meta name="twitter:title" content="QNX 对触摸屏的支持"/>
+<meta name="twitter:description" content="QNX Neutrino 支持多种触摸屏，可以在官网上查找支持的型号和对应的驱动：
+http://www.qnx.com/developers/hardware_support/
+或者在 Utilities Reference 中查看 devi-* 驱动，然后确定所需的参数，启动驱动。例如，启动一个 Dynapro SC4 触摸屏：
+devi-dyna dyna -4 fd -d/dev/ser1 &amp;  使用 devi-dyna 驱动，SC4 协议（-4），串口1（/dev/ser1）。
+第一次使用驱动时，会返回一个错误状态，无法获取校准文件。要校准触摸屏，需要在 Photon 下使用 calib 工具。
+calib 用于校准触摸屏。成功配置触摸屏后（已经创建了设备文件），必须校准。calib 工具的配置文件保存在 /etc/system/config/calib.$hostname 。关于该文件的格式，可以在 “Writing an Input Device Driver” 的 “Calibration file format” 查看.
+校准的步骤是：
+ 启动 Photon. 运行 calib. 触摸屏幕上的目标点. 点击 Press to Complete Calibration 按钮，完成校准.  语法 calib [options]  参数  -a alg ：指定校准算法。有效算法是 3 和 4 ，默认值是 3 。"/>
+
+
+
+
+
+    <meta property="article:published_time" content="2013-09-15 08:00:00 &#43;0800 CST" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://shaocheng.li/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$ cd /home/</span>
+            <span class="logo__cursor" style=""></span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="https://shaocheng.li/about/">About</a></li><li><a href="https://shaocheng.li/posts/">Posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>2 minutes
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            <h1 class="post-title">
+                <a href="https://shaocheng.li/posts/2013/09/15/">QNX 对触摸屏的支持</a>
+            </h1>
+
+            
+
+            <div class="post-content">
+                
+
+<p>QNX Neutrino 支持多种触摸屏，可以在官网上查找支持的型号和对应的驱动：</p>
+
+<p><a href="http://www.qnx.com/developers/hardware_support/" target="_blank">http://www.qnx.com/developers/hardware_support/</a></p>
+
+<p>或者在 Utilities Reference 中查看 <code>devi-*</code> 驱动，然后确定所需的参数，启动驱动。例如，启动一个 Dynapro SC4 触摸屏：</p>
+
+<pre><code>devi-dyna dyna -4 fd -d/dev/ser1 &amp;
+</code></pre>
+
+<p>使用 devi-dyna 驱动，SC4 协议（-4），串口1（/dev/ser1）。</p>
+
+<p>第一次使用驱动时，会返回一个错误状态，无法获取校准文件。要校准触摸屏，需要在 Photon 下使用 calib 工具。</p>
+
+<h2 id="calib">calib</h2>
+
+<p>用于校准触摸屏。成功配置触摸屏后（已经创建了设备文件），必须校准。calib 工具的配置文件保存在 /etc/system/config/calib.$hostname 。关于该文件的格式，可以在 “Writing an Input Device Driver” 的 “Calibration file format” 查看.</p>
+
+<p>校准的步骤是：</p>
+
+<ol>
+<li>启动 Photon.</li>
+<li>运行 calib.</li>
+<li>触摸屏幕上的目标点.</li>
+<li>点击 Press to Complete Calibration 按钮，完成校准.</li>
+</ol>
+
+<h3 id="语法">语法</h3>
+
+<pre><code>calib [options]
+</code></pre>
+
+<h3 id="参数">参数</h3>
+
+<ul>
+<li><p>-a alg ：指定校准算法。有效算法是 3 和 4 ，默认值是 3 。</p></li>
+
+<li><p>-b val ：指定触摸点的验收方差（范围是 0 - 2000）。使能该参数将会强制检查触摸点。</p></li>
+
+<li><p>-c ：如果已经配置文件 /etc/system/config/calib.$(hostname) 已经存在，就停止运行。</p></li>
+
+<li><p>-d w,h ：触摸屏的宽度和高度。如果不设置该参数，calib 会尝试从硬件获取信息。</p></li>
+
+<li><p>-f file ：校准文件的名称和路径，代替默认的 /etc/system/config/calib.$hostname 。</p></li>
+
+<li><p>-l limit ：校准触摸点的个数，默认值是 15 。</p></li>
+
+<li><p>-o offset ：相对于十字线的偏移，用于调整校验。只能用在四点校验。</p></li>
+
+<li><p>-O ：将触摸屏的起点（0,0）设为右下角。默认为左上角。</p></li>
+
+<li><p>-p x,y ：相对于校验起点的偏移。</p></li>
+
+<li><p>-P ：关闭提示。默认会在屏幕上显示提示信息。</p></li>
+
+<li><p>-s server ：服务器节点或设备名称。</p></li>
+
+<li><p>-S ：使用小触摸目标。默认是大的。</p></li>
+
+<li><p>-t timer ：完成按钮的定时值，默认是 10 。</p></li>
+
+<li><p>-v ：输出详情。</p></li>
+
+<li><p>-x x ：初始化 x 坐标。</p></li>
+
+<li><p>-y y ：初始化 y 坐标。</p></li>
+</ul>
+
+<h3 id="例">例</h3>
+
+<p>校准一个四分子一的标准 640*480 VGA 屏：</p>
+
+<pre><code>calib -d 320,240
+</code></pre>
+
+<h2 id="elo-触摸屏">ELO 触摸屏</h2>
+
+<p>Elographics 触摸屏的驱动是 <code>devi-elo</code> ，它会在 Photon 上启动一个 Elographics 输入管理器 。</p>
+
+<h3 id="语法-1">语法</h3>
+
+<pre><code>devi-elo [general_opts] 
+         protocol* [protocol_opts]*
+         device* [device_opts]*
+         filter* [filter_opts]*
+</code></pre>
+
+<blockquote>
+<p>使用 <code>devi-*</code> 触摸屏驱动时，需要一个校准文件。用 <code>calib</code> 工具产生：</p>
+
+<p>calib &gt; calib_file.txt</p>
+</blockquote>
+
+<h3 id="参数-1">参数</h3>
+
+<p>general_opts：</p>
+
+<ul>
+<li><p>-b ：禁止使用 Ctrl-Alt-Shift-Backspace 组合键结束 Photon （默认是允许的）。</p></li>
+
+<li><p>-d device ：设备（默认：/dev/photon 或 $PHOTON ）。</p></li>
+
+<li><p>-G ：启动触摸屏驱动时无需图形驱动。在调试时很有用。</p></li>
+
+<li><p>-g input_group ：输入组（默认是 1 ）。</p></li>
+
+<li><p>-l ：列出内部模块。模块用如下格式显示：</p>
+
+<pre><code>module name | date compiled | revision | class
+</code></pre></li>
+
+<li><p>-v[v]&hellip; ：输出详情，更多的 v 字符导致输出更多的详情。</p></li>
+</ul>
+
+<p>protocol* [protocol_opts]*：</p>
+
+<pre><code>smartset [smartset_opts] [fd fd_opts]|[uart uart_opts]
+</code></pre>
+
+<ul>
+<li><p>smartset —— Elographics smartset 协议</p>
+
+<p>-b baud ：波特率（默认是9600）</p>
+
+<p>-R ：不要 reset 设备（默认是 reset ）</p></li>
+</ul>
+
+<p>device* [device_opts]*：</p>
+
+<ul>
+<li><p>fd —— 通过 open() 打开一个设备</p>
+
+<p>-d device ：设备文件名（默认是 /dev/ser1）</p>
+
+<p>-s ：输入接口是串口</p></li>
+
+<li><p>uart —— 直接访问 8250/16550/16450 UART</p>
+
+<p>-1 ：COM1</p>
+
+<p>-2 ：COM2</p>
+
+<p>-i irq ：串口的 IRQ （默认是 4 ）</p>
+
+<p>-p ioport ：串口的端口地址（默认是 3f8）</p></li>
+</ul>
+
+<p>filter* [filter_opts]*：</p>
+
+<ul>
+<li><p>abs —— 转换和压缩绝对坐标</p>
+
+<p>-b ：点击屏幕代表鼠标右键（默认是左键）</p>
+
+<p>-c ：校准模式；不转换坐标</p>
+
+<p>-f filename ：校准文件</p>
+
+<p>-o x,y ：显示区域的起始点（默认是图形区域的起始点）</p>
+
+<p>-s x,y ：显示区域右下角的坐标（默认是图形区域的宽和高）</p>
+
+<p>-x ：翻转 x 坐标</p>
+
+<p>-y ：翻转 y 坐标</p></li>
+</ul>
+
+<h3 id="例-1">例</h3>
+
+<p>使用 COM1 ，点击屏幕代表鼠标右键：</p>
+
+<pre><code>devi-elo smartset fd -d/dev/ser1 abs -b
+</code></pre>
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>286 Words</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2013-09-15 08:00 &#43;0800</p>
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h"></span>
+                    <hr />
+                </div>
+
+                <div class="pagination__buttons">
+                    
+                        <span class="button previous">
+                            <a href="https://shaocheng.li/posts/2013/10/12/">
+                                <span class="button__icon">←</span>
+                                <span class="button__text">Hello Farbox</span>
+                            </a>
+                        </span>
+                    
+
+                    
+                        <span class="button next">
+                            <a href="https://shaocheng.li/posts/2013/07/28/">
+                                <span class="button__text">QNX 编程</span>
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    
+                </div>
+            </div>
+        
+
+        
+          <div id="comments" class="thin">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "shaocheng-li" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+        
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2020</span>
+            
+                <span><a href="https://shaocheng.li">Shaocheng.Li</a></span>
+            
+            <span><a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></span>
+            <span> <a href="https://shaocheng.li/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>
+        </div>
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="https://shaocheng.li/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+
+
+
+    </body>
+</html>

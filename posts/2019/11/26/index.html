@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="Shaocheng.Li ">
+<meta name="description" content="1. 套接字 套接字（Socket）是一种操作系统提供的进程间通信机制，可以用于不同主机间的进程通信，最早由 UNIX 提出，现在广泛用于各种操作系统，同时也特指这种机制下的通信端点。根据通信地址的不同种类，Socket 可以分为三类：
+ INET ，这是 IPv4 地址域的套接字，用于 IPv4 网络间的通信。 INET6 ，这是 IPv6 地址域的套接字，用于 IPv6 网络间的通信。 UNIX ，这是 UNIX 域的套接字，用于主机内的进程间通信。  套接字常用的报文类型有两种：
+ SOCK_DGRAM，固定长度，无连接不可靠的报文传递，两个对等进程之间通信时不需要建立逻辑连接，直接向对方的套接字发送报文即可。在 INET 套接字中，这种报文使用的默认协议是 UDP 。 SOCK_STREAM，有序的，可靠的，双向的，面向连接的字节流，两个对等进程在正式通信之前，要先建立逻辑连接。在 INET 套接字中，这种报文使用的默认协议是 TCP 。  Python 提供了 socket 模块用于底层 socket 通信，模块提供了一个同名的类，以及其他读写 socket 的方法。
+2. 获得主机信息 获取本机的名字和 IP ：
+$ python3 Python 3.7.4 (default, Jul 9 2019, 18:13:23) [Clang 10.0.1 (clang-1001.0.46.4)] on darwin Type &amp;#34;help&amp;#34;, &amp;#34;copyright&amp;#34;, &amp;#34;credits&amp;#34; or &amp;#34;license&amp;#34; for more information." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#252627" />
+<link rel="canonical" href="https://shaocheng.li/posts/2019/11/26/" />
+
+
+    <title>
+        
+            Python Socket 编程笔记 :: Shaocheng.Li  — Hello Friends
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="https://shaocheng.li/main.min.73f55a8d452be4a71b2960620b80252cf69abd84d63fe7501abf0a39b1a70a78.css">
+
+
+    
+        <link rel="stylesheet" type="text/css" href="https://shaocheng.li/css/custom.css">
+    
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://shaocheng.li/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://shaocheng.li/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://shaocheng.li/favicon-16x16.png">
+    <link rel="manifest" href="https://shaocheng.li/site.webmanifest">
+    <link rel="mask-icon" href="https://shaocheng.li/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="https://shaocheng.li/favicon.ico">
+    <meta name="msapplication-TileColor" content="#252627">
+    <meta name="theme-color" content="#252627">
+
+<meta itemprop="name" content="Python Socket 编程笔记">
+<meta itemprop="description" content="1. 套接字 套接字（Socket）是一种操作系统提供的进程间通信机制，可以用于不同主机间的进程通信，最早由 UNIX 提出，现在广泛用于各种操作系统，同时也特指这种机制下的通信端点。根据通信地址的不同种类，Socket 可以分为三类：
+ INET ，这是 IPv4 地址域的套接字，用于 IPv4 网络间的通信。 INET6 ，这是 IPv6 地址域的套接字，用于 IPv6 网络间的通信。 UNIX ，这是 UNIX 域的套接字，用于主机内的进程间通信。  套接字常用的报文类型有两种：
+ SOCK_DGRAM，固定长度，无连接不可靠的报文传递，两个对等进程之间通信时不需要建立逻辑连接，直接向对方的套接字发送报文即可。在 INET 套接字中，这种报文使用的默认协议是 UDP 。 SOCK_STREAM，有序的，可靠的，双向的，面向连接的字节流，两个对等进程在正式通信之前，要先建立逻辑连接。在 INET 套接字中，这种报文使用的默认协议是 TCP 。  Python 提供了 socket 模块用于底层 socket 通信，模块提供了一个同名的类，以及其他读写 socket 的方法。
+2. 获得主机信息 获取本机的名字和 IP ：
+$ python3 Python 3.7.4 (default, Jul 9 2019, 18:13:23) [Clang 10.0.1 (clang-1001.0.46.4)] on darwin Type &#34;help&#34;, &#34;copyright&#34;, &#34;credits&#34; or &#34;license&#34; for more information.">
+
+
+<meta itemprop="datePublished" content="2019-11-26T08:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2019-11-26T08:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="1087">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://shaocheng.li"/>
+
+<meta name="twitter:title" content="Python Socket 编程笔记"/>
+<meta name="twitter:description" content="1. 套接字 套接字（Socket）是一种操作系统提供的进程间通信机制，可以用于不同主机间的进程通信，最早由 UNIX 提出，现在广泛用于各种操作系统，同时也特指这种机制下的通信端点。根据通信地址的不同种类，Socket 可以分为三类：
+ INET ，这是 IPv4 地址域的套接字，用于 IPv4 网络间的通信。 INET6 ，这是 IPv6 地址域的套接字，用于 IPv6 网络间的通信。 UNIX ，这是 UNIX 域的套接字，用于主机内的进程间通信。  套接字常用的报文类型有两种：
+ SOCK_DGRAM，固定长度，无连接不可靠的报文传递，两个对等进程之间通信时不需要建立逻辑连接，直接向对方的套接字发送报文即可。在 INET 套接字中，这种报文使用的默认协议是 UDP 。 SOCK_STREAM，有序的，可靠的，双向的，面向连接的字节流，两个对等进程在正式通信之前，要先建立逻辑连接。在 INET 套接字中，这种报文使用的默认协议是 TCP 。  Python 提供了 socket 模块用于底层 socket 通信，模块提供了一个同名的类，以及其他读写 socket 的方法。
+2. 获得主机信息 获取本机的名字和 IP ：
+$ python3 Python 3.7.4 (default, Jul 9 2019, 18:13:23) [Clang 10.0.1 (clang-1001.0.46.4)] on darwin Type &#34;help&#34;, &#34;copyright&#34;, &#34;credits&#34; or &#34;license&#34; for more information."/>
+
+
+
+
+
+    <meta property="article:published_time" content="2019-11-26 08:00:00 &#43;0800 CST" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://shaocheng.li/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$ cd /home/</span>
+            <span class="logo__cursor" style=""></span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="https://shaocheng.li/about/">About</a></li><li><a href="https://shaocheng.li/posts/">Posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>6 minutes
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            <h1 class="post-title">
+                <a href="https://shaocheng.li/posts/2019/11/26/">Python Socket 编程笔记</a>
+            </h1>
+                <hr />
+                <aside id="toc">
+                <div class="toc-title">Table of Contents</div>
+                    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#1-套接字">1. 套接字</a></li>
+<li><a href="#2-获得主机信息">2. 获得主机信息</a></li>
+<li><a href="#3-udp-socket">3. UDP socket</a></li>
+<li><a href="#4-tcp-socket">4. TCP socket</a></li>
+<li><a href="#5-unix-socket">5. UNIX socket</a></li>
+<li><a href="#6-bytes-对象">6. bytes 对象</a></li>
+<li><a href="#7-struct-模块">7. Struct 模块</a></li>
+<li><a href="#8-非阻塞和超时">8. 非阻塞和超时</a></li>
+<li><a href="#9-并发">9. 并发</a></li>
+<li><a href="#参考">参考</a></li>
+</ul></li>
+</ul>
+</nav>
+                </aside>
+                <hr />
+
+            
+
+            <div class="post-content">
+                
+
+<h2 id="1-套接字">1. 套接字</h2>
+
+<p>套接字（Socket）是一种操作系统提供的进程间通信机制，可以用于不同主机间的进程通信，最早由 UNIX 提出，现在广泛用于各种操作系统，同时也特指这种机制下的通信端点。根据通信地址的不同种类，Socket 可以分为三类：</p>
+
+<ol>
+<li>INET ，这是 IPv4 地址域的套接字，用于 IPv4 网络间的通信。</li>
+<li>INET6 ，这是 IPv6 地址域的套接字，用于 IPv6 网络间的通信。</li>
+<li>UNIX ，这是 UNIX 域的套接字，用于主机内的进程间通信。</li>
+</ol>
+
+<p>套接字常用的报文类型有两种：</p>
+
+<ul>
+<li>SOCK_DGRAM，固定长度，无连接不可靠的报文传递，两个对等进程之间通信时不需要建立逻辑连接，直接向对方的套接字发送报文即可。在 INET 套接字中，这种报文使用的默认协议是 UDP 。</li>
+<li>SOCK_STREAM，有序的，可靠的，双向的，面向连接的字节流，两个对等进程在正式通信之前，要先建立逻辑连接。在 INET 套接字中，这种报文使用的默认协议是 TCP 。</li>
+</ul>
+
+<p>Python 提供了 socket 模块用于底层 socket 通信，模块提供了一个同名的类，以及其他读写 socket 的方法。</p>
+
+<h2 id="2-获得主机信息">2. 获得主机信息</h2>
+
+<p>获取本机的名字和 IP ：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#960050;background-color:#1e0010">$</span> python3
+Python <span style="color:#ae81ff">3.7</span><span style="color:#f92672">.</span><span style="color:#ae81ff">4</span> (default, Jul  <span style="color:#ae81ff">9</span> <span style="color:#ae81ff">2019</span>, <span style="color:#ae81ff">18</span>:<span style="color:#ae81ff">13</span>:<span style="color:#ae81ff">23</span>)
+[Clang <span style="color:#ae81ff">10.0</span><span style="color:#f92672">.</span><span style="color:#ae81ff">1</span> (clang<span style="color:#f92672">-</span><span style="color:#ae81ff">1001.0</span><span style="color:#f92672">.</span><span style="color:#ae81ff">46.4</span>)] on darwin
+Type <span style="color:#e6db74">&#34;help&#34;</span>, <span style="color:#e6db74">&#34;copyright&#34;</span>, <span style="color:#e6db74">&#34;credits&#34;</span> <span style="color:#f92672">or</span> <span style="color:#e6db74">&#34;license&#34;</span> <span style="color:#66d9ef">for</span> more information<span style="color:#f92672">.</span>
+<span style="color:#f92672">&gt;&gt;&gt;</span> <span style="color:#f92672">import</span> socket
+<span style="color:#f92672">&gt;&gt;&gt;</span> socket<span style="color:#f92672">.</span>gethostname()
+<span style="color:#e6db74">&#39;lscMBP.local&#39;</span>
+<span style="color:#f92672">&gt;&gt;&gt;</span> socket<span style="color:#f92672">.</span>gethostbyname(<span style="color:#e6db74">&#39;lscMBP.local&#39;</span>)
+<span style="color:#e6db74">&#39;127.0.0.1&#39;</span>
+<span style="color:#f92672">&gt;&gt;&gt;</span> socket<span style="color:#f92672">.</span>gethostbyname(<span style="color:#e6db74">&#39;localhost&#39;</span>)
+<span style="color:#e6db74">&#39;127.0.0.1&#39;</span></code></pre></div>
+<p>也可以通过域名获得远程主机的 IP ：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">&gt;&gt;&gt;</span> socket<span style="color:#f92672">.</span>gethostbyname(<span style="color:#e6db74">&#39;www.baidu.com&#39;</span>)
+<span style="color:#e6db74">&#39;14.215.177.38&#39;</span></code></pre></div>
+<p>以上方法返回的 IP 地址都是 str 类型，socket 模块提供格式转换的方法，可以把字符串转换为 32 位的整型：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">&gt;&gt;&gt;</span> addr <span style="color:#f92672">=</span> socket<span style="color:#f92672">.</span>gethostbyname(<span style="color:#e6db74">&#39;localhost&#39;</span>)
+<span style="color:#f92672">&gt;&gt;&gt;</span> addr
+<span style="color:#e6db74">&#39;127.0.0.1&#39;</span>
+<span style="color:#f92672">&gt;&gt;&gt;</span> socket<span style="color:#f92672">.</span>inet_aton(addr)
+<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x7f\x00\x00\x01</span><span style="color:#e6db74">&#39;</span></code></pre></div>
+<p>也可以把 32 位整型 IP 地址转换为字符串：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">&gt;&gt;&gt;</span> socket<span style="color:#f92672">.</span>inet_ntoa(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\xc0\xa8\x00\x01</span><span style="color:#e6db74">&#39;</span>)
+<span style="color:#e6db74">&#39;192.168.0.1&#39;</span></code></pre></div>
+<h2 id="3-udp-socket">3. UDP socket</h2>
+
+<p>socket 编程的第一步，通常是先新建一个 socket 对象，作为通信端点自身的抽象，最基本的方法是：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">socket<span style="color:#f92672">.</span>socket(family<span style="color:#f92672">=</span>AF_INET, type<span style="color:#f92672">=</span>SOCK_STREAM, proto<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>, fileno<span style="color:#f92672">=</span>None)</code></pre></div>
+<p>参数 family 用于设置域，常用的值是：</p>
+
+<ul>
+<li>AF_INET : IPv4 域</li>
+<li>AF_UNIX : UNIX 域</li>
+</ul>
+
+<p>参数 type 用于设置报文的类型，常用的值是：</p>
+
+<ul>
+<li>SOCK_STREAM : 有序的，可靠的，双向的，面向连接的字节流</li>
+<li>SOCK_DGRAM : 固定长度的，无连接的，不可靠的数据报</li>
+</ul>
+
+<p>参数 proto 用于设置协议类型，0 表示默认，对于 SOCK_STREAM 类型，默认的协议就是 TCP ，对于 SOCK_DGRAM 类型，默认的协议就是 UDP 。</p>
+
+<p>新建 socket 后，可以调用 <code>socket.bind()</code> 方法为 socket 对象绑定一个本机的 IP 和端口，表示用该端口收发数据：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">socket<span style="color:#f92672">.</span>bind(address)</code></pre></div>
+<ul>
+<li>对于 AF_INET , address 应该是一个元组 (host, port) ，host 是一个表示 IPv4 或者域名的字符串，host 是表示端口号的数字。</li>
+<li>对于 AF_UNIX ，address 应该是一个表示 sock 文件绝对路径的字符串</li>
+</ul>
+
+<p>如果没有调用 <code>socket.bind()</code> 绑定端口，系统会为 socket 随机分配可用的端口。所以，接收方必须绑定端口，发送方通常可用等待系统分配，下面是一个简单的例子。</p>
+
+<p>接收方绑定了 UDP:20000 端口，循环接收数据，并打印发送方的地址：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">#!/usr/bin/env  python3</span>
+
+<span style="color:#f92672">import</span> socket
+
+<span style="color:#66d9ef">with</span> socket<span style="color:#f92672">.</span>socket(socket<span style="color:#f92672">.</span>AF_INET, socket<span style="color:#f92672">.</span>SOCK_DGRAM) <span style="color:#66d9ef">as</span> s :
+    s<span style="color:#f92672">.</span>bind((<span style="color:#e6db74">&#39;127.0.0.1&#39;</span>, <span style="color:#ae81ff">20000</span>))
+    <span style="color:#66d9ef">while</span> True :
+        data, addr <span style="color:#f92672">=</span> s<span style="color:#f92672">.</span>recvfrom(<span style="color:#ae81ff">1024</span>)
+        <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#39;Received&#39;</span>, repr(data), <span style="color:#e6db74">&#39;from&#39;</span>, repr(addr))</code></pre></div>
+<p>发送方向指定的地址发送一个字符串：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">#!/usr/bin/env  python3</span>
+
+<span style="color:#f92672">import</span> socket
+
+<span style="color:#66d9ef">with</span> socket<span style="color:#f92672">.</span>socket(socket<span style="color:#f92672">.</span>AF_INET, socket<span style="color:#f92672">.</span>SOCK_DGRAM) <span style="color:#66d9ef">as</span> s :
+    s<span style="color:#f92672">.</span>sendto(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;Hello world&#39;</span>, (<span style="color:#e6db74">&#39;127.0.0.1&#39;</span>, <span style="color:#ae81ff">20000</span>))</code></pre></div>
+<p>对于 UDP ，新建 socket 后，不需要建立连接，可用直接向对方的 IP 和端口发送数据。通常用 <code>socket.redvfrom()</code> 和 <code>socket.sendto()</code> 函数收发 UDP 数据。</p>
+
+<h2 id="4-tcp-socket">4. TCP socket</h2>
+
+<p>TCP 有如下几个特点：</p>
+
+<ul>
+<li>面向连接，发送数据前必须建立连接，确认接收方存在</li>
+<li>有序传送，数据按发送者写入的顺序被读取</li>
+<li>可靠，网络传输中丢失的数据包会被检测到并重新发送</li>
+</ul>
+
+<p>TCP socket 编程的 API 调用次序如下：</p>
+
+<p><img src="https://shaocheng.li/images/2019-11-26/2019-11-26_1.jpg" alt="" /></p>
+
+<p>服务器端的 socket 绑定本机 IP 和端口后，调用 <code>socket.listen()</code> 方法表示愿意接受连接请求：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">socket<span style="color:#f92672">.</span>listen([backlog])</code></pre></div>
+<p>参数 backlog 可选，如果没有设置，系统会提供一个默认值，表示该进程允许进去请求队列的的连接数量的最大值，如果队列满了，会拒绝多余的连接请求。所以，backlog 的值应该基于服务器期望负载和处理的连接数量进行设置。</p>
+
+<p>之后，套接字可以调用 <code>socket.accept()</code> 方法获得连接请求，并建立连接：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">socket<span style="color:#f92672">.</span>accept()</code></pre></div>
+<p>默认情况下这个方法会阻塞，收到客户端的请求后会返回一个元组 (conn, address) ，其中，conn 是客户端的 socket ，用于向客户端收发数据，address 是客户端 socket 绑定的地址。</p>
+
+<p>客户端可以调用 <code>socket.connect()</code> 方法向服务器端发起连接：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">socket<span style="color:#f92672">.</span>connect(address)</code></pre></div>
+<p>参数 address 是表示服务器端地址的元组 (host, port) ，调用失败会抛出一个 OSError 异常。连接成功后，可以调用 <code>socket.send()</code> 和 <code>socket.recv()</code> 收发数据，下面是一个简单的例子。</p>
+
+<p>服务器端：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">#!/usr/bin/env  python3</span>
+
+<span style="color:#f92672">import</span> socket
+
+host <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;127.0.0.1&#34;</span>
+port <span style="color:#f92672">=</span> <span style="color:#ae81ff">20000</span>
+
+<span style="color:#66d9ef">with</span> socket<span style="color:#f92672">.</span>socket(socket<span style="color:#f92672">.</span>AF_INET, socket<span style="color:#f92672">.</span>SOCK_STREAM) <span style="color:#66d9ef">as</span> s :
+    s<span style="color:#f92672">.</span>bind((host, port))
+    s<span style="color:#f92672">.</span>listen()
+    conn, addr <span style="color:#f92672">=</span> s<span style="color:#f92672">.</span>accept()
+    <span style="color:#66d9ef">with</span> conn :
+        <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Connected by&#34;</span>, addr)
+        <span style="color:#66d9ef">while</span> True :
+            data <span style="color:#f92672">=</span> conn<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">1024</span>) <span style="color:#75715e">#阻塞，直到对方 socket 关闭</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> data :
+                <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Received finish&#34;</span>)
+                <span style="color:#66d9ef">break</span>
+            <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Received : &#34;</span>, repr(data))
+            conn<span style="color:#f92672">.</span>sendall(data)
+            <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Reply !&#34;</span>)</code></pre></div>
+<p>客户端：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">#!/usr/bin/env  python3</span>
+
+<span style="color:#f92672">import</span> socket
+
+host <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;127.0.0.1&#34;</span>
+port <span style="color:#f92672">=</span> <span style="color:#ae81ff">20000</span>
+
+<span style="color:#66d9ef">with</span> socket<span style="color:#f92672">.</span>socket(socket<span style="color:#f92672">.</span>AF_INET, socket<span style="color:#f92672">.</span>SOCK_STREAM) <span style="color:#66d9ef">as</span> s :
+    <span style="color:#66d9ef">try</span> :
+        s<span style="color:#f92672">.</span>connect((host, port))
+        s<span style="color:#f92672">.</span>sendall(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;Hello world&#39;</span>)
+        data <span style="color:#f92672">=</span> s<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">1024</span>) <span style="color:#75715e"># 阻塞，直到对方 socket 关闭</span>
+    <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">OSError</span> <span style="color:#66d9ef">as</span> err :
+        <span style="color:#66d9ef">print</span>(err)
+    <span style="color:#66d9ef">else</span> :
+        <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Received : &#34;</span>, repr(data))</code></pre></div>
+<h2 id="5-unix-socket">5. UNIX socket</h2>
+
+<p>UNIX 域套接字用于同一台主机内的进程间通信，也提供 STREAM 和 DGRAM 两种报文类型，但 UNIX 域套接字的 DGRAM 是可靠的，不会丢失也不会传递出错。编程方法与 INET 域类似，只是 UNIX socket 需要绑定的地址是主机上的 socket 类型文件，下面是一个 STREAM 类型的例子。</p>
+
+<p>服务器端：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">#!/usr/bin/env  python3</span>
+
+<span style="color:#f92672">import</span> socket
+<span style="color:#f92672">import</span> os
+
+SOCK <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;./server.sock&#34;</span>
+<span style="color:#66d9ef">if</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>exists(SOCK):
+    os<span style="color:#f92672">.</span>remove(SOCK)
+
+<span style="color:#66d9ef">with</span> socket<span style="color:#f92672">.</span>socket(socket<span style="color:#f92672">.</span>AF_UNIX, socket<span style="color:#f92672">.</span>SOCK_STREAM) <span style="color:#66d9ef">as</span> s :
+    s<span style="color:#f92672">.</span>bind(SOCK)
+    s<span style="color:#f92672">.</span>listen()
+    conn, _ <span style="color:#f92672">=</span> s<span style="color:#f92672">.</span>accept()
+    <span style="color:#66d9ef">with</span> conn :
+        <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Connected by&#34;</span>, SOCK)
+        <span style="color:#66d9ef">while</span> True :
+            data <span style="color:#f92672">=</span> conn<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">1024</span>)
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> data :
+                <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Received finish&#34;</span>)
+                <span style="color:#66d9ef">break</span>
+            <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Received :&#34;</span>, repr(data))
+            conn<span style="color:#f92672">.</span>sendall(data)
+            <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Reply !&#34;</span>)
+
+os<span style="color:#f92672">.</span>remove(SOCK)</code></pre></div>
+<p>客户端：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">#!/usr/bin/env  python3</span>
+
+<span style="color:#f92672">import</span> socket
+
+SOCK <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;./server.sock&#34;</span>
+
+<span style="color:#66d9ef">with</span> socket<span style="color:#f92672">.</span>socket(socket<span style="color:#f92672">.</span>AF_UNIX, socket<span style="color:#f92672">.</span>SOCK_STREAM) <span style="color:#66d9ef">as</span> s :
+    <span style="color:#66d9ef">try</span> :
+        s<span style="color:#f92672">.</span>connect(SOCK)
+        s<span style="color:#f92672">.</span>sendall(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;Hello world&#39;</span>)
+        data <span style="color:#f92672">=</span> s<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">1024</span>)
+    <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">OSError</span> <span style="color:#66d9ef">as</span> err :
+        <span style="color:#66d9ef">print</span>(err)
+    <span style="color:#66d9ef">else</span> :
+        <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Received : &#34;</span>, repr(data))</code></pre></div>
+<h2 id="6-bytes-对象">6. bytes 对象</h2>
+
+<p>socket 只能收发 bytes 类型的数据，这是 Python 内建的一个数据类型，是用于表示字节序列的对象，bytes 对象提供的很多方法仅在处理 ASCII 兼容数据时有效，且与字符串对象密切相关。bytes 类的定义：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">bytes</span>([source[, encoding[, errors]]])</code></pre></div>
+<ul>
+<li>如果 source 是一个整数，会返回一个长度为 source ，内容全为 0 的初始化字节序列。</li>
+
+<li><p>如果 source 是一个字符串，会按照 encoding 指定的编码将字符串转换为字节序列。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">&gt;&gt;&gt;</span> b<span style="color:#f92672">=</span>bytes(<span style="color:#ae81ff">10</span>)
+<span style="color:#f92672">&gt;&gt;&gt;</span> b
+<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00</span><span style="color:#e6db74">&#39;</span>
+<span style="color:#f92672">&gt;&gt;&gt;</span> a<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;hello&#34;</span>
+<span style="color:#f92672">&gt;&gt;&gt;</span> b<span style="color:#f92672">=</span>bytes(a,<span style="color:#e6db74">&#39;ascii&#39;</span>)
+<span style="color:#f92672">&gt;&gt;&gt;</span> b
+<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;hello&#39;</span></code></pre></div></li>
+</ul>
+
+<p>更简便的方法是在一个字符串前面加上字符 <code>b</code> ，表示这是一个 bytes 类型的字符串：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">&gt;&gt;&gt;</span> a<span style="color:#f92672">=</span><span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;hello&#39;</span>
+<span style="color:#f92672">&gt;&gt;&gt;</span> type(a)
+<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">bytes</span><span style="color:#e6db74">&#39;&gt;</span></code></pre></div>
+<p>str 类型的字符串可以调用 <code>encode()</code> 方法转换为 bytes 类型：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">&gt;&gt;&gt;</span> a<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;hello&#39;</span>
+<span style="color:#f92672">&gt;&gt;&gt;</span> a<span style="color:#f92672">.</span>encode()
+<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;hello&#39;</span></code></pre></div>
+<p>bytes 类型的字符串可以调用 <code>decode()</code> 方法转换为 str 类型：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">&gt;&gt;&gt;</span> a<span style="color:#f92672">=</span><span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;hello&#39;</span>
+<span style="color:#f92672">&gt;&gt;&gt;</span> a<span style="color:#f92672">.</span>decode()
+<span style="color:#e6db74">&#39;hello&#39;</span></code></pre></div>
+<p>bytes 类提供了 <code>hex()</code> 方法，可以返回实例的十六进制数字的字符串对象：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">&gt;&gt;&gt;</span> a<span style="color:#f92672">=</span><span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;hello&#39;</span>
+<span style="color:#f92672">&gt;&gt;&gt;</span> a<span style="color:#f92672">.</span>hex()
+<span style="color:#e6db74">&#39;68656c6c6f&#39;</span>
+<span style="color:#f92672">&gt;&gt;&gt;</span> type(a<span style="color:#f92672">.</span>hex())
+<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#a6e22e">str</span><span style="color:#e6db74">&#39;&gt;</span></code></pre></div>
+<p>除了显式 ASCII 字符，也可以直接定义一串十六进制序列，这样，非 ASCII 字符也可以使用 bytes ：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">&gt;&gt;&gt;</span> a<span style="color:#f92672">=</span><span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x68\x65\x6c</span><span style="color:#e6db74">&#39;</span>
+<span style="color:#f92672">&gt;&gt;&gt;</span> a
+<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;hel&#39;</span>
+<span style="color:#f92672">&gt;&gt;&gt;</span> a<span style="color:#f92672">=</span><span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x01\x02</span><span style="color:#e6db74">&#39;</span>
+<span style="color:#f92672">&gt;&gt;&gt;</span> a
+<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x01\x02</span><span style="color:#e6db74">&#39;</span>
+<span style="color:#f92672">&gt;&gt;&gt;</span> a<span style="color:#f92672">.</span>hex()
+<span style="color:#e6db74">&#39;0102&#39;</span></code></pre></div>
+<p>因为 bytes 是以字节为单位的序列，可以用下标索引读取每个字节：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">&gt;&gt;&gt;</span> a<span style="color:#f92672">=</span><span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;hello&#39;</span>
+<span style="color:#f92672">&gt;&gt;&gt;</span> a<span style="color:#f92672">.</span>hex()
+<span style="color:#e6db74">&#39;68656c6c6f&#39;</span>
+<span style="color:#f92672">&gt;&gt;&gt;</span> a[<span style="color:#ae81ff">0</span>]
+<span style="color:#ae81ff">104</span>
+<span style="color:#f92672">&gt;&gt;&gt;</span> a[<span style="color:#ae81ff">0</span>:<span style="color:#ae81ff">2</span>]
+<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;he&#39;</span></code></pre></div>
+<p>也可以用 <code>list()</code> 方法把 bytes 转换为元组，或者用元组定义 bytes ：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">&gt;&gt;&gt;</span> a<span style="color:#f92672">=</span><span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;hello&#39;</span>
+<span style="color:#f92672">&gt;&gt;&gt;</span> list(a)
+[<span style="color:#ae81ff">104</span>, <span style="color:#ae81ff">101</span>, <span style="color:#ae81ff">108</span>, <span style="color:#ae81ff">108</span>, <span style="color:#ae81ff">111</span>]
+<span style="color:#f92672">&gt;&gt;&gt;</span> b<span style="color:#f92672">=</span>bytes([<span style="color:#ae81ff">104</span>, <span style="color:#ae81ff">101</span>, <span style="color:#ae81ff">108</span>, <span style="color:#ae81ff">108</span>, <span style="color:#ae81ff">111</span>])
+<span style="color:#f92672">&gt;&gt;&gt;</span> b
+<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;hello&#39;</span></code></pre></div>
+<p>利用这个特性，我们可以处理非 ASCII 编码的数据，例如把一个 32 位无符号整数变成长度为 4 的 bytes ：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">&gt;&gt;&gt;</span> n <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x12345678</span>
+<span style="color:#f92672">&gt;&gt;&gt;</span> n
+<span style="color:#ae81ff">305419896</span>
+<span style="color:#f92672">&gt;&gt;&gt;</span> b1 <span style="color:#f92672">=</span> (n<span style="color:#f92672">&amp;</span><span style="color:#ae81ff">0xff000000</span>) <span style="color:#f92672">&gt;&gt;</span> <span style="color:#ae81ff">24</span>
+<span style="color:#f92672">&gt;&gt;&gt;</span> b2 <span style="color:#f92672">=</span> (n<span style="color:#f92672">&amp;</span><span style="color:#ae81ff">0xff0000</span>) <span style="color:#f92672">&gt;&gt;</span> <span style="color:#ae81ff">16</span>
+<span style="color:#f92672">&gt;&gt;&gt;</span> b3 <span style="color:#f92672">=</span> (n<span style="color:#f92672">&amp;</span><span style="color:#ae81ff">0xff00</span>) <span style="color:#f92672">&gt;&gt;</span> <span style="color:#ae81ff">8</span>
+<span style="color:#f92672">&gt;&gt;&gt;</span> b4 <span style="color:#f92672">=</span> (n<span style="color:#f92672">&amp;</span><span style="color:#ae81ff">0xff</span>)
+<span style="color:#f92672">&gt;&gt;&gt;</span> bs <span style="color:#f92672">=</span> bytes([b1, b2, b3, b4])
+<span style="color:#f92672">&gt;&gt;&gt;</span> bs
+<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x12</span><span style="color:#e6db74">4Vx&#39;</span>
+<span style="color:#f92672">&gt;&gt;&gt;</span> bs<span style="color:#f92672">.</span>hex()
+<span style="color:#e6db74">&#39;12345678&#39;</span></code></pre></div>
+<h2 id="7-struct-模块">7. Struct 模块</h2>
+
+<p>非 ASCII 编码的数据转换为 bytes 对象比较麻烦，python 提供了 struct 模块来解决二进制数据类型与 bytes 之间的转换。<code>struct.pack()</code> 函数可以把任意数据类型转换为 bytes ：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">struct<span style="color:#f92672">.</span>pack(format, v1, v2, <span style="color:#f92672">...</span>)</code></pre></div>
+<p>第一个参数是处理指令，后面的参数是要处理的数据，返回一个 bytes 对象，例如把一个 32 位无符号整数变成长度为 4 的 bytes ：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">&gt;&gt;&gt;</span> <span style="color:#f92672">import</span> struct
+<span style="color:#f92672">&gt;&gt;&gt;</span> struct<span style="color:#f92672">.</span>pack(<span style="color:#e6db74">&#39;&gt;I&#39;</span>,<span style="color:#ae81ff">0x12345678</span>)
+<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x12</span><span style="color:#e6db74">4Vx&#39;</span></code></pre></div>
+<p><code>&gt;I</code> 中的 <code>&gt;</code> 表示字节序是大端，也就是网络序，<code>I</code> 表示一个 4 字节的无符号整数，后面的数据要和处理指令一致。处理指令的第一个字符总要定义字节序、大小和对齐方式，可选如下字符：</p>
+
+<table>
+<thead>
+<tr>
+<th align="left">字符</th>
+<th>字节序</th>
+<th>大小</th>
+<th>对齐方式</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left">@</td>
+<td>原生</td>
+<td>原生</td>
+<td>原生</td>
+</tr>
+
+<tr>
+<td align="left">=</td>
+<td>原生</td>
+<td>标准</td>
+<td>无</td>
+</tr>
+
+<tr>
+<td align="left">&lt;</td>
+<td>小端</td>
+<td>标准</td>
+<td>无</td>
+</tr>
+
+<tr>
+<td align="left">&gt;</td>
+<td>大端</td>
+<td>标准</td>
+<td>无</td>
+</tr>
+
+<tr>
+<td align="left">!</td>
+<td>网络序（大端）</td>
+<td>标准</td>
+<td>无</td>
+</tr>
+</tbody>
+</table>
+
+<ul>
+<li>如果没有设置，默认使用 <code>@</code> 。</li>
+<li>字节序分为大端和小端，<code>原生</code> 表示与本地的主机系统保持一致。</li>
+<li>大小是指不同类型所占的字节数，<code>原生</code> 表示与本机使用的 C 编译器保持一致，<code>标准</code> 是指 struct 模块内置的标准大小，参考下面的格式字符表。</li>
+<li>字节对齐方式与 C 语言相同。</li>
+</ul>
+
+<p>字节序是指数据存储方式，Intel 处理和 Linux 系统都是小端，也就是低位数据存放在高位地址上，而 TCP/IP 协议使用的网络序是大端，低位数据存放在低位地址上。例如：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">&gt;&gt;&gt;</span> a<span style="color:#f92672">=</span><span style="color:#ae81ff">0x01020304</span>
+<span style="color:#f92672">&gt;&gt;&gt;</span> struct<span style="color:#f92672">.</span>pack(<span style="color:#e6db74">&#34;I&#34;</span>, a)
+<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x04\x03\x02\x01</span><span style="color:#e6db74">&#39;</span>
+<span style="color:#f92672">&gt;&gt;&gt;</span> struct<span style="color:#f92672">.</span>pack(<span style="color:#e6db74">&#34;!I&#34;</span>, a)
+<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x01\x02\x03\x04</span><span style="color:#e6db74">&#39;</span></code></pre></div>
+<p>struct 模块的本质是把 C 语言的数据类型转换为 Python 的数据类型，常用的类型转换如下表所示：</p>
+
+<table>
+<thead>
+<tr>
+<th>字符</th>
+<th>C 类型</th>
+<th>Python 类型</th>
+<th>大小</th>
+<th>备注</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>c</td>
+<td>char</td>
+<td>bytes of length 1</td>
+<td>1</td>
+<td></td>
+</tr>
+
+<tr>
+<td>b</td>
+<td>signed char</td>
+<td>integer</td>
+<td>1</td>
+<td></td>
+</tr>
+
+<tr>
+<td>B</td>
+<td>unsigned char</td>
+<td>integer</td>
+<td>1</td>
+<td></td>
+</tr>
+
+<tr>
+<td>?</td>
+<td>_Bool</td>
+<td>bool</td>
+<td>1</td>
+<td></td>
+</tr>
+
+<tr>
+<td>h</td>
+<td>short</td>
+<td>integer</td>
+<td>2</td>
+<td></td>
+</tr>
+
+<tr>
+<td>H</td>
+<td>unsigned short</td>
+<td>integer</td>
+<td>2</td>
+<td></td>
+</tr>
+
+<tr>
+<td>i</td>
+<td>int</td>
+<td>integer</td>
+<td>4</td>
+<td></td>
+</tr>
+
+<tr>
+<td>I</td>
+<td>unsigned int</td>
+<td>integer</td>
+<td>4</td>
+<td></td>
+</tr>
+
+<tr>
+<td>l</td>
+<td>long</td>
+<td>integer</td>
+<td>4</td>
+<td></td>
+</tr>
+
+<tr>
+<td>L</td>
+<td>unsigned long</td>
+<td>integer</td>
+<td>4</td>
+<td></td>
+</tr>
+
+<tr>
+<td>q</td>
+<td>long long</td>
+<td>integer</td>
+<td>8</td>
+<td></td>
+</tr>
+
+<tr>
+<td>Q</td>
+<td>unsigned long long</td>
+<td>integer</td>
+<td>8</td>
+<td></td>
+</tr>
+
+<tr>
+<td>f</td>
+<td>float</td>
+<td>float</td>
+<td>4</td>
+<td></td>
+</tr>
+
+<tr>
+<td>d</td>
+<td>double</td>
+<td>float</td>
+<td>8</td>
+<td></td>
+</tr>
+
+<tr>
+<td>s</td>
+<td>char[]</td>
+<td>bytes</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+<p>在字符前可以加一个数字，表示有连续多个这样的数据，例如 <code>4I</code> 等同于 <code>IIII</code> 。对于 s 字符，默认只会去 bytes 数据的第一个字节，如果前面加一个数字，表示取 bytes 数去的前面几个字节。</p>
+
+<p>struct.unpack()` 函数可以把 bytes 类型转换为其他数据类型，例如把一个 6 字节的 bytes 转换为一个 4 字节的无符号整数和一个 2 字节的无符号整数：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">&gt;&gt;&gt;</span> struct<span style="color:#f92672">.</span>unpack(<span style="color:#e6db74">&#39;&gt;IH&#39;</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\xf0\xf0\xf0\xf0\x08\x08</span><span style="color:#e6db74">&#39;</span>)
+(<span style="color:#ae81ff">4042322160</span>, <span style="color:#ae81ff">2056</span>)</code></pre></div>
+<p>举例填充一个数据帧，由两个单字节整数，一个四字节整数和四个字符组成：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">&gt;&gt;&gt;</span> buff <span style="color:#f92672">=</span> struct<span style="color:#f92672">.</span>pack(<span style="color:#e6db74">&#39;2BI4s&#39;</span>, <span style="color:#ae81ff">0x01</span>, <span style="color:#ae81ff">0x02</span>, <span style="color:#ae81ff">0x12345678</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;will&#39;</span>)
+<span style="color:#f92672">&gt;&gt;&gt;</span> <span style="color:#66d9ef">print</span>(buff)
+<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x01\x02\x00\x00</span><span style="color:#e6db74">xV4</span><span style="color:#ae81ff">\x12</span><span style="color:#e6db74">will&#39;</span>
+<span style="color:#f92672">&gt;&gt;&gt;</span> a <span style="color:#f92672">=</span> struct<span style="color:#f92672">.</span>unpack(<span style="color:#e6db74">&#39;2BI4s&#39;</span>,buff)
+<span style="color:#f92672">&gt;&gt;&gt;</span> <span style="color:#66d9ef">print</span>(a)
+(<span style="color:#ae81ff">1</span>, <span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">305419896</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;will&#39;</span>)
+<span style="color:#f92672">&gt;&gt;&gt;</span> struct<span style="color:#f92672">.</span>calcsize(<span style="color:#e6db74">&#39;2BI4s&#39;</span>)
+<span style="color:#ae81ff">12</span></code></pre></div>
+<p><code>struct.calcsize()</code> 函数用于计算数据格式所占的字节数，为了与 <code>I</code> 型数据字节对齐，两个 <code>B</code> 型数据都填充了一个字节，所以实际占用了 12 个字节。</p>
+
+<p>上面处理的数据帧中，每个位置的长度都是固定的，而现实中的很多协议都有不定长的字段，处理这种数据时，需要把字段长度也一起打包，后面才方便解包。例如打包一个长度不定的字符串：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">&gt;&gt;&gt;</span> s <span style="color:#f92672">=</span> <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;hello&#39;</span>
+<span style="color:#f92672">&gt;&gt;&gt;</span> data <span style="color:#f92672">=</span> struct<span style="color:#f92672">.</span>pack(<span style="color:#e6db74">&#34;I</span><span style="color:#e6db74">%d</span><span style="color:#e6db74">s&#34;</span> <span style="color:#f92672">%</span> len(s), len(s), s)
+<span style="color:#f92672">&gt;&gt;&gt;</span> data
+<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x05\x00\x00\x00</span><span style="color:#e6db74">hello&#39;</span></code></pre></div>
+<p>解包的时候先获取字符串长度，然后在读取字符串：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">&gt;&gt;&gt;</span> int_size <span style="color:#f92672">=</span> struct<span style="color:#f92672">.</span>calcsize(<span style="color:#e6db74">&#34;I&#34;</span>)
+<span style="color:#f92672">&gt;&gt;&gt;</span> (i,)<span style="color:#f92672">=</span>struct<span style="color:#f92672">.</span>unpack(<span style="color:#e6db74">&#34;I&#34;</span>, data[:int_size])
+<span style="color:#f92672">&gt;&gt;&gt;</span> i
+<span style="color:#ae81ff">5</span>
+<span style="color:#f92672">&gt;&gt;&gt;</span> data_content <span style="color:#f92672">=</span> struct<span style="color:#f92672">.</span>unpack(<span style="color:#e6db74">&#34;I</span><span style="color:#e6db74">%d</span><span style="color:#e6db74">s&#34;</span> <span style="color:#f92672">%</span> i, data)
+<span style="color:#f92672">&gt;&gt;&gt;</span> data_content
+(<span style="color:#ae81ff">5</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;hello&#39;</span>)</code></pre></div>
+<h2 id="8-非阻塞和超时">8. 非阻塞和超时</h2>
+
+<p>sokcet 对象有三种模式：阻塞、非阻塞和超时：</p>
+
+<ul>
+<li>阻塞，会一直等待，直到操作成功，或者返回错误。</li>
+<li>非阻塞，无论操作是否成功，都会立即返回，等待时间为 0 。</li>
+<li>超时，会等待一段时间，之后会返回一个超时错误。</li>
+</ul>
+
+<p>默认情况下，新建的 socket 对象总是阻塞的，<code>accept()</code> 、<code>connect()</code>  和 <code>recv()</code> 等方法都会受到阻塞的影响。可以调用如下函数设为非阻塞：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">socket<span style="color:#f92672">.</span>setblocking(flag)</code></pre></div>
+<ul>
+<li>flag 设为 Ture 表示阻塞。</li>
+<li>flag 设为 False 表示非阻塞。</li>
+</ul>
+
+<p>非阻塞模式下，默认的等待时间是 0 ，可以设置等待时间，这样就会变为超时模式，设置方法是：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">socket<span style="color:#f92672">.</span>settimeout(value)</code></pre></div>
+<p>参数 value 应该设置一个浮点数，时间单位是秒。</p>
+
+<p>通过 <code>socket.accept()</code> 方法返回的 socket 对象是什么模式，取决于多种因素，最好设置一次。</p>
+
+<h2 id="9-并发">9. 并发</h2>
+
+<p>实现 Socket 服务器并发的为了同时接收并处理更多的客户端连接，方法有很多，比如多线程，接收到一个客户端连接后就新建一个线程去处理，主线程继续等待新的连接。以 Unix Socket 为例：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">#!/usr/bin/env  python3</span>
+<span style="color:#f92672">import</span> threading
+<span style="color:#f92672">import</span> socket
+<span style="color:#f92672">import</span> os
+
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">handle</span>(conn):
+    <span style="color:#66d9ef">print</span>(threading<span style="color:#f92672">.</span>current_thread()<span style="color:#f92672">.</span>name)
+    <span style="color:#66d9ef">with</span> conn :
+        <span style="color:#66d9ef">while</span> True :
+            data <span style="color:#f92672">=</span> conn<span style="color:#f92672">.</span>recv(<span style="color:#ae81ff">1024</span>)
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> data :
+                <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Received finish&#34;</span>)
+                <span style="color:#66d9ef">break</span>
+            <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Received :&#34;</span>, repr(data))
+            conn<span style="color:#f92672">.</span>sendall(data)
+            <span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Reply !&#34;</span>)
+    <span style="color:#66d9ef">return</span>
+
+SOCK <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;./server.sock&#34;</span>
+<span style="color:#66d9ef">if</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>exists(SOCK):
+    os<span style="color:#f92672">.</span>remove(SOCK)
+
+<span style="color:#66d9ef">with</span> socket<span style="color:#f92672">.</span>socket(socket<span style="color:#f92672">.</span>AF_UNIX, socket<span style="color:#f92672">.</span>SOCK_STREAM) <span style="color:#66d9ef">as</span> s :
+    s<span style="color:#f92672">.</span>bind(SOCK)
+    s<span style="color:#f92672">.</span>listen()
+    <span style="color:#66d9ef">while</span> True :
+        conn, _ <span style="color:#f92672">=</span> s<span style="color:#f92672">.</span>accept()
+        t <span style="color:#f92672">=</span> threading<span style="color:#f92672">.</span>Thread(target<span style="color:#f92672">=</span>handle, args<span style="color:#f92672">=</span>(conn, ))
+        t<span style="color:#f92672">.</span>start()
+
+os<span style="color:#f92672">.</span>remove(SOCK)</code></pre></div>
+<h2 id="参考">参考</h2>
+
+<ul>
+<li><a href="https://docs.python.org/3/library/socket.html" target="_blank">socket 文档</a></li>
+<li><a href="https://python-parallel-programmning-cookbook.readthedocs.io/zh_CN/latest/index.html" target="_blank">Python并行编程</a></li>
+</ul>
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>1087 Words</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2019-11-26 08:00 &#43;0800</p>
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h"></span>
+                    <hr />
+                </div>
+
+                <div class="pagination__buttons">
+                    
+                        <span class="button previous">
+                            <a href="https://shaocheng.li/posts/2019/12/24/">
+                                <span class="button__icon">←</span>
+                                <span class="button__text">UCI 和 ubus 学习笔记</span>
+                            </a>
+                        </span>
+                    
+
+                    
+                        <span class="button next">
+                            <a href="https://shaocheng.li/posts/2019/09/20/">
+                                <span class="button__text">Ubuntu 下获取和编译内核源码的方法</span>
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    
+                </div>
+            </div>
+        
+
+        
+          <div id="comments" class="thin">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "shaocheng-li" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+        
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2020</span>
+            
+                <span><a href="https://shaocheng.li">Shaocheng.Li</a></span>
+            
+            <span><a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></span>
+            <span> <a href="https://shaocheng.li/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>
+        </div>
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="https://shaocheng.li/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+
+
+
+    </body>
+</html>

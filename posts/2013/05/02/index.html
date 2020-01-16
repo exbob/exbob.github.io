@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="Shaocheng.Li ">
+<meta name="description" content="30天评估版页面：http://www.qnx.com/products/evaluation/ 在该页面下载所需软件，并申请 License 。
+系统环境为：Windows XP 和 VMware 7.0
+1. 安装 Windows 平台的 QNX 开发套件 下载 QNXSDP-6.5.0 和 QNXSDP-6.5.0-SP1 ，依次安装，安装过程中需要输入 License 。
+ 注意：安装目录不能有空格，否则以后使用过程中会出错。
+ 安装后在桌面会出现 QNX Momentics IDE 4.7 的图标:
+2. 在 VMWare 中运行 QNX 在该页面中选择 VMware (PC) target ，下载文件 650SP1-VM.tar 。下载后解压。
+然后用 VMware Workstation 7.0 或 VMware Player 3.0 打开其中的 650SP1-VM.vmx 文件。
+如果在启动过程中 VMWare 弹出对话框提示“虚拟机被移动”，选择 Create 并点击 OK 。
+启动后无需密码可直接用 root 用户登录。
+登录后打开终端，用 ifconfig 查看网卡配置，用 ping 命令查看网络连接。确保可以和宿主机联通。" />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#252627" />
+<link rel="canonical" href="https://shaocheng.li/posts/2013/05/02/" />
+
+
+    <title>
+        
+            搭建 QNX 开发环境 :: Shaocheng.Li  — Hello Friends
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="https://shaocheng.li/main.min.73f55a8d452be4a71b2960620b80252cf69abd84d63fe7501abf0a39b1a70a78.css">
+
+
+    
+        <link rel="stylesheet" type="text/css" href="https://shaocheng.li/css/custom.css">
+    
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://shaocheng.li/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://shaocheng.li/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://shaocheng.li/favicon-16x16.png">
+    <link rel="manifest" href="https://shaocheng.li/site.webmanifest">
+    <link rel="mask-icon" href="https://shaocheng.li/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="https://shaocheng.li/favicon.ico">
+    <meta name="msapplication-TileColor" content="#252627">
+    <meta name="theme-color" content="#252627">
+
+<meta itemprop="name" content="搭建 QNX 开发环境">
+<meta itemprop="description" content="30天评估版页面：http://www.qnx.com/products/evaluation/ 在该页面下载所需软件，并申请 License 。
+系统环境为：Windows XP 和 VMware 7.0
+1. 安装 Windows 平台的 QNX 开发套件 下载 QNXSDP-6.5.0 和 QNXSDP-6.5.0-SP1 ，依次安装，安装过程中需要输入 License 。
+ 注意：安装目录不能有空格，否则以后使用过程中会出错。
+ 安装后在桌面会出现 QNX Momentics IDE 4.7 的图标:
+2. 在 VMWare 中运行 QNX 在该页面中选择 VMware (PC) target ，下载文件 650SP1-VM.tar 。下载后解压。
+然后用 VMware Workstation 7.0 或 VMware Player 3.0 打开其中的 650SP1-VM.vmx 文件。
+如果在启动过程中 VMWare 弹出对话框提示“虚拟机被移动”，选择 Create 并点击 OK 。
+启动后无需密码可直接用 root 用户登录。
+登录后打开终端，用 ifconfig 查看网卡配置，用 ping 命令查看网络连接。确保可以和宿主机联通。">
+
+
+<meta itemprop="datePublished" content="2013-05-02T08:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2013-05-02T08:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="207">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://shaocheng.li"/>
+
+<meta name="twitter:title" content="搭建 QNX 开发环境"/>
+<meta name="twitter:description" content="30天评估版页面：http://www.qnx.com/products/evaluation/ 在该页面下载所需软件，并申请 License 。
+系统环境为：Windows XP 和 VMware 7.0
+1. 安装 Windows 平台的 QNX 开发套件 下载 QNXSDP-6.5.0 和 QNXSDP-6.5.0-SP1 ，依次安装，安装过程中需要输入 License 。
+ 注意：安装目录不能有空格，否则以后使用过程中会出错。
+ 安装后在桌面会出现 QNX Momentics IDE 4.7 的图标:
+2. 在 VMWare 中运行 QNX 在该页面中选择 VMware (PC) target ，下载文件 650SP1-VM.tar 。下载后解压。
+然后用 VMware Workstation 7.0 或 VMware Player 3.0 打开其中的 650SP1-VM.vmx 文件。
+如果在启动过程中 VMWare 弹出对话框提示“虚拟机被移动”，选择 Create 并点击 OK 。
+启动后无需密码可直接用 root 用户登录。
+登录后打开终端，用 ifconfig 查看网卡配置，用 ping 命令查看网络连接。确保可以和宿主机联通。"/>
+
+
+
+
+
+    <meta property="article:published_time" content="2013-05-02 08:00:00 &#43;0800 CST" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://shaocheng.li/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$ cd /home/</span>
+            <span class="logo__cursor" style=""></span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="https://shaocheng.li/about/">About</a></li><li><a href="https://shaocheng.li/posts/">Posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>One minute
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            <h1 class="post-title">
+                <a href="https://shaocheng.li/posts/2013/05/02/">搭建 QNX 开发环境</a>
+            </h1>
+
+            
+
+            <div class="post-content">
+                
+
+<p>30天评估版页面：<a href="http://www.qnx.com/products/evaluation/" target="_blank">http://www.qnx.com/products/evaluation/</a>
+在该页面下载所需软件，并申请 License 。</p>
+
+<p>系统环境为：Windows XP 和 VMware 7.0</p>
+
+<h2 id="1-安装-windows-平台的-qnx-开发套件">1. 安装 Windows 平台的 QNX 开发套件</h2>
+
+<p>下载 QNXSDP-6.5.0 和 QNXSDP-6.5.0-SP1 ，依次安装，安装过程中需要输入 License 。</p>
+
+<blockquote>
+<p>注意：安装目录不能有空格，否则以后使用过程中会出错。</p>
+</blockquote>
+
+<p>安装后在桌面会出现 QNX Momentics IDE 4.7 的图标:</p>
+
+<p><img src="https://shaocheng.li/images/2013-05-02/2013-05-02_1.GIF" alt="" /></p>
+
+<h2 id="2-在-vmware-中运行-qnx">2. 在 VMWare 中运行 QNX</h2>
+
+<p>在该页面中选择 VMware (PC) target ，下载文件 650SP1-VM.tar 。下载后解压。</p>
+
+<p>然后用 VMware Workstation 7.0 或 VMware Player 3.0 打开其中的 650SP1-VM.vmx 文件。</p>
+
+<p>如果在启动过程中 VMWare 弹出对话框提示“虚拟机被移动”，选择 Create 并点击 OK 。</p>
+
+<p>启动后无需密码可直接用 root 用户登录。</p>
+
+<p>登录后打开终端，用 ifconfig 查看网卡配置，用 ping 命令查看网络连接。确保可以和宿主机联通。</p>
+
+<p>默认是用 DHCP 方式获取 IP 。</p>
+
+<h2 id="3-创建程序项目">3. 创建程序项目</h2>
+
+<p>打开 QNX Momentics IDE 。首次打开是根据提示设置 Workspace ，路径中不能有空格。</p>
+
+<p>在菜单上选择 File / New / QNX C Project ，打开 New Project 对话框:</p>
+
+<p><img src="https://shaocheng.li/images/2013-05-02/2013-05-02_2.GIF" alt="" /></p>
+
+<p>输入 Project Name ，点击 Next 。在 Build Variants 标签页中选择 X86(Little Endian) 。最后点击 Finish :</p>
+
+<p><img src="https://shaocheng.li/images/2013-05-02/2013-05-02_3.GIF" alt="" /></p>
+
+<p>这时 IDE 可能还处于 Welcome 页面，点击右上方的 Workbench 图标，进入项目页面。</p>
+
+<p><img src="https://shaocheng.li/images/2013-05-02/2013-05-02_4.GIF" alt="" /></p>
+
+<h2 id="4-qnx-的通讯">4. QNX 的通讯</h2>
+
+<p>目标机系统需要能够响应来自开发环境的请求，所以要保证网络连通，并且在目标机系统的终端里启动 qconn 程序：</p>
+
+<p><img src="https://shaocheng.li/images/2013-05-02/2013-05-02_5.GIF" alt="" /></p>
+
+<p>然后在开发环境的 Window 菜单中选择 Open Perspective&ndash;&gt;QNX System Information ，在打开的 Target Navigator 标签页的空白处点击鼠标右键并选择 New QNX Target&hellip;  :</p>
+
+<p><img src="https://shaocheng.li/images/2013-05-02/2013-05-02_6.GIF" alt="" /></p>
+
+<p>在打开的对话框中输入 Target Name，也可以选择 Same as hostname ，输入目标机的 IP 。点击 Finish :</p>
+
+<p><img src="https://shaocheng.li/images/2013-05-02/2013-05-02_7.GIF" alt="" /></p>
+
+<p>然后在 Target Navigator 中点击刚才新建的目标就可以在右边的 System Summary 页面看到目标机系统的进程列表:</p>
+
+<p><img src="https://shaocheng.li/images/2013-05-02/2013-05-02_8.GIF" alt="" /></p>
+
+<h2 id="5-编译和链接">5. 编译和链接</h2>
+
+<p>点击右上方的 C/C++ 图标从 QNX System Information 页面返回项目源码编辑页面:</p>
+
+<p><img src="https://shaocheng.li/images/2013-05-02/2013-05-02_9.GIF" alt="" /></p>
+
+<p>在项目名称上点击鼠标右键，选择 Build Project 开始编译链接。编译过程应该不会报错。</p>
+
+<h2 id="6-启动和调试">6. 启动和调试</h2>
+
+<p>首先要创建一个启动配置。在工具栏上的 bug 图标下拉菜单中选择 Debug Configurations… ：</p>
+
+<p><img src="https://shaocheng.li/images/2013-05-02/2013-05-02_10.GIF" alt="" /></p>
+
+<p>然后会出现一个对话框，在这里可以创建、管理和启动配置。</p>
+
+<p>在左栏中选择 C/C++ QNX QConn (IP) ，然后点击 New launch configuration  图标：</p>
+
+<p><img src="https://shaocheng.li/images/2013-05-02/2013-05-02_11.GIF" alt="" /></p>
+
+<p>现在只需要设置 main 标签页中的内容。在 C/C++ Application 中点击 C/C++ Application 按钮，选择需要启动和调试的二进制文件，其中带有 <code>_g</code> 后缀的文件带有调试信息，否则只能运行不能调试。选择后点击 OK 。</p>
+
+<p><img src="https://shaocheng.li/images/2013-05-02/2013-05-02_12.GIF" alt="" /></p>
+
+<p>确保目标机在 Target Options 下列表中，然后点击 Apply ，一个新的启动配置就完成了。</p>
+
+<p>现在点击 Debug ，集成开发环境就进入了调试界面，并通过网络将可执行程序传送到了目标机的系统中，然后在调试器中启动它。</p>
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>207 Words</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2013-05-02 08:00 &#43;0800</p>
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h"></span>
+                    <hr />
+                </div>
+
+                <div class="pagination__buttons">
+                    
+                        <span class="button previous">
+                            <a href="https://shaocheng.li/posts/2013/06/02/">
+                                <span class="button__icon">←</span>
+                                <span class="button__text">QNX 编程读写 I/O 端口</span>
+                            </a>
+                        </span>
+                    
+
+                    
+                        <span class="button next">
+                            <a href="https://shaocheng.li/posts/2013/04/28/">
+                                <span class="button__text">xargs 命令</span>
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    
+                </div>
+            </div>
+        
+
+        
+          <div id="comments" class="thin">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "shaocheng-li" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+        
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2020</span>
+            
+                <span><a href="https://shaocheng.li">Shaocheng.Li</a></span>
+            
+            <span><a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></span>
+            <span> <a href="https://shaocheng.li/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>
+        </div>
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="https://shaocheng.li/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+
+
+
+    </body>
+</html>

@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="Shaocheng.Li ">
+<meta name="description" content="一个最简单的内核模块 编写一个最简单的内核模块 hellomod，源码 hellomod.c 如下：
+#include &amp;lt;linux/init.h&amp;gt; #include &amp;lt;linux/module.h&amp;gt; static int __init hellomod_init(void) { printk(&amp;quot;hellomod init\n&amp;quot;); return 0; } static void __exit hellomod_exit(void) { printk(&amp;quot;hellomod exit\n&amp;quot;); } module_init(hellomod_init); module_exit(hellomod_exit); MODULE_LICENSE(&amp;quot;GPL&amp;quot;);  Makefile 文件如下：
+KERDIR=/lib/modules/$(shell uname -r)/build PWD=$(shell pwd) obj-m:=hellomod.o default: make -C ${KERDIR} M=${PWD} modules clean: make -C ${KERDIR} M=${PWD} clean  直接运行 make 即可将其编译为 hellomod.ko 。下面以该模块为例介绍添加到内核的步骤。
+添加到内核 将一个模块源码添加到内核需要如下三个步骤：
+1.将源码文件复制的相应的目录中 我们将 hellomod.c 复制到内核源码的 driver/char/ 目录下。
+2.修改 Makefile 文件 在 driver/char/Makefile 文件中添加新的模块：" />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#252627" />
+<link rel="canonical" href="https://shaocheng.li/posts/2012/12/18/" />
+
+
+    <title>
+        
+            在 Linux 内核中新增模块代码 :: Shaocheng.Li  — Hello Friends
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="https://shaocheng.li/main.min.73f55a8d452be4a71b2960620b80252cf69abd84d63fe7501abf0a39b1a70a78.css">
+
+
+    
+        <link rel="stylesheet" type="text/css" href="https://shaocheng.li/css/custom.css">
+    
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://shaocheng.li/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://shaocheng.li/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://shaocheng.li/favicon-16x16.png">
+    <link rel="manifest" href="https://shaocheng.li/site.webmanifest">
+    <link rel="mask-icon" href="https://shaocheng.li/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="https://shaocheng.li/favicon.ico">
+    <meta name="msapplication-TileColor" content="#252627">
+    <meta name="theme-color" content="#252627">
+
+<meta itemprop="name" content="在 Linux 内核中新增模块代码">
+<meta itemprop="description" content="一个最简单的内核模块 编写一个最简单的内核模块 hellomod，源码 hellomod.c 如下：
+#include &lt;linux/init.h&gt; #include &lt;linux/module.h&gt; static int __init hellomod_init(void) { printk(&quot;hellomod init\n&quot;); return 0; } static void __exit hellomod_exit(void) { printk(&quot;hellomod exit\n&quot;); } module_init(hellomod_init); module_exit(hellomod_exit); MODULE_LICENSE(&quot;GPL&quot;);  Makefile 文件如下：
+KERDIR=/lib/modules/$(shell uname -r)/build PWD=$(shell pwd) obj-m:=hellomod.o default: make -C ${KERDIR} M=${PWD} modules clean: make -C ${KERDIR} M=${PWD} clean  直接运行 make 即可将其编译为 hellomod.ko 。下面以该模块为例介绍添加到内核的步骤。
+添加到内核 将一个模块源码添加到内核需要如下三个步骤：
+1.将源码文件复制的相应的目录中 我们将 hellomod.c 复制到内核源码的 driver/char/ 目录下。
+2.修改 Makefile 文件 在 driver/char/Makefile 文件中添加新的模块：">
+
+
+<meta itemprop="datePublished" content="2012-12-18T08:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2012-12-18T08:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="198">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://shaocheng.li"/>
+
+<meta name="twitter:title" content="在 Linux 内核中新增模块代码"/>
+<meta name="twitter:description" content="一个最简单的内核模块 编写一个最简单的内核模块 hellomod，源码 hellomod.c 如下：
+#include &lt;linux/init.h&gt; #include &lt;linux/module.h&gt; static int __init hellomod_init(void) { printk(&quot;hellomod init\n&quot;); return 0; } static void __exit hellomod_exit(void) { printk(&quot;hellomod exit\n&quot;); } module_init(hellomod_init); module_exit(hellomod_exit); MODULE_LICENSE(&quot;GPL&quot;);  Makefile 文件如下：
+KERDIR=/lib/modules/$(shell uname -r)/build PWD=$(shell pwd) obj-m:=hellomod.o default: make -C ${KERDIR} M=${PWD} modules clean: make -C ${KERDIR} M=${PWD} clean  直接运行 make 即可将其编译为 hellomod.ko 。下面以该模块为例介绍添加到内核的步骤。
+添加到内核 将一个模块源码添加到内核需要如下三个步骤：
+1.将源码文件复制的相应的目录中 我们将 hellomod.c 复制到内核源码的 driver/char/ 目录下。
+2.修改 Makefile 文件 在 driver/char/Makefile 文件中添加新的模块："/>
+
+
+
+
+
+    <meta property="article:published_time" content="2012-12-18 08:00:00 &#43;0800 CST" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://shaocheng.li/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$ cd /home/</span>
+            <span class="logo__cursor" style=""></span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="https://shaocheng.li/about/">About</a></li><li><a href="https://shaocheng.li/posts/">Posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>One minute
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            <h1 class="post-title">
+                <a href="https://shaocheng.li/posts/2012/12/18/">在 Linux 内核中新增模块代码</a>
+            </h1>
+
+            
+
+            <div class="post-content">
+                
+
+<h2 id="一个最简单的内核模块">一个最简单的内核模块</h2>
+
+<p>编写一个最简单的内核模块 <code>hellomod</code>，源码 <code>hellomod.c</code> 如下：</p>
+
+<pre><code>#include &lt;linux/init.h&gt;
+#include &lt;linux/module.h&gt;
+
+static int __init hellomod_init(void)
+{
+    printk(&quot;hellomod init\n&quot;);
+    return 0;
+}
+
+static void __exit hellomod_exit(void)
+{
+    printk(&quot;hellomod exit\n&quot;);
+}
+
+module_init(hellomod_init);
+module_exit(hellomod_exit);
+
+MODULE_LICENSE(&quot;GPL&quot;);
+</code></pre>
+
+<p><code>Makefile</code> 文件如下：</p>
+
+<pre><code>KERDIR=/lib/modules/$(shell uname -r)/build
+PWD=$(shell pwd)
+
+obj-m:=hellomod.o
+
+default:
+    make -C ${KERDIR} M=${PWD} modules
+clean:
+    make -C ${KERDIR} M=${PWD} clean
+</code></pre>
+
+<p>直接运行 <code>make</code> 即可将其编译为 hellomod.ko 。下面以该模块为例介绍添加到内核的步骤。</p>
+
+<h2 id="添加到内核">添加到内核</h2>
+
+<p>将一个模块源码添加到内核需要如下三个步骤：</p>
+
+<h3 id="1-将源码文件复制的相应的目录中">1.将源码文件复制的相应的目录中</h3>
+
+<p>我们将 <code>hellomod.c</code> 复制到内核源码的 <code>driver/char/</code> 目录下。</p>
+
+<h3 id="2-修改-makefile-文件">2.修改 Makefile 文件</h3>
+
+<p>在 <code>driver/char/Makefile</code> 文件中添加新的模块：</p>
+
+<pre><code>obj-$(CONFIG_HELLOMOD) += hellomod.o
+</code></pre>
+
+<p>其中 <code>CONFIG_HELLOMOD</code> 变量是在配置内核是确定的，通常可以取三个值：y 、n 、m 。其中 <code>CONFIG_</code> 是固定的， <code>HELLOMOD</code> 是自定义的，但必须与 Kconfig 文件中的设置一致。</p>
+
+<h3 id="3-修改-kconfig-文件">3.修改 Kconfig 文件</h3>
+
+<p><code>drivers/char/Kconfig</code> 文件的基本结构如下：</p>
+
+<pre><code>menu &quot;Characters devices&quot;
+
+config ...
+...
+
+source &quot;drivers/char/ipmi/Kconfig&quot;
+...
+
+endmenu
+</code></pre>
+
+<p><code>menu</code> 和 <code>endmenu</code> 之间定义了一个 <code>Characters devices</code> 菜单。<code>config</code> 字段定义了一个模块选项，<code>source</code> 导入了一个外部的 <code>Kconfig</code> 。</p>
+
+<p>在 <code>menu</code> 和 <code>endmenu</code> 之间添加：</p>
+
+<pre><code>config HELLOMOD
+    tristate &quot;hellomod&quot;
+    default m
+    help
+        just a module
+</code></pre>
+
+<p><code>HELLOMOD</code> 与 <code>Makefile</code> 中定义的变量是一致的。<code>tristate</code> 设置的是显示在配置界面的条目，<code>default</code> 设置的是该配置的默认值。<code>help</code> 显示的是帮助内容。</p>
+
+<p>如上修改之后，运行 <code>make menuconfig</code> ，就可以在 <code>Device Drivers -&gt; Character devices</code> 中看到 <code>&lt;M&gt;hellomod</code> 。退出保存后可以在 <code>.config</code> 文件中看到 <code>CONFIG_HELLOMOD=m</code> 。</p>
+
+<h2 id="新增一个模块目录">新增一个模块目录</h2>
+
+<p>如果要为 <code>hellomod</code> 新建一个单独的目录，可以按如下步骤完成：</p>
+
+<h3 id="1-新建目录并添加源文件">1.新建目录并添加源文件</h3>
+
+<p>在 <code>drivers/char/</code> 目录下新建 <code>hellomod</code> 目录，并将 <code>hellomod.c</code> 复制到该目录下。</p>
+
+<h3 id="2-添加-makefile">2.添加 Makefile</h3>
+
+<p>在 <code>drivers/char/hellomod/</code> 目录下新建 <code>Makefile</code> 文件，内容如下：</p>
+
+<pre><code>obj-$(CONFIG_HELLOMOD) += hellomod.o
+</code></pre>
+
+<h3 id="3-添加-kconfig">3.添加 Kconfig</h3>
+
+<p>在 <code>drivers/char/hellomod/</code> 目录下新建 <code>Kconfig</code> 文件，内容如下：</p>
+
+<pre><code>menu &quot;hello module&quot;
+    config HELLOMOD
+        tristate &quot;hellomod&quot;
+        default m
+        help
+            just a module
+endmenu
+</code></pre>
+
+<p>然后在上层目录 <code>drivers/chars</code> 的 <code>Kconfig</code> 文件中添加：</p>
+
+<pre><code>source drivers/char/hellomod/Kconfig
+</code></pre>
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>198 Words</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2012-12-18 08:00 &#43;0800</p>
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h"></span>
+                    <hr />
+                </div>
+
+                <div class="pagination__buttons">
+                    
+                        <span class="button previous">
+                            <a href="https://shaocheng.li/posts/2013/01/04/">
+                                <span class="button__icon">←</span>
+                                <span class="button__text">Linux 字符驱动的基本结构</span>
+                            </a>
+                        </span>
+                    
+
+                    
+                        <span class="button next">
+                            <a href="https://shaocheng.li/posts/2012/11/20/">
+                                <span class="button__text">Linux 驱动的异步通知</span>
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    
+                </div>
+            </div>
+        
+
+        
+          <div id="comments" class="thin">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "shaocheng-li" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+        
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2020</span>
+            
+                <span><a href="https://shaocheng.li">Shaocheng.Li</a></span>
+            
+            <span><a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></span>
+            <span> <a href="https://shaocheng.li/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>
+        </div>
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="https://shaocheng.li/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+
+
+
+    </body>
+</html>

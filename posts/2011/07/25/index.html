@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="Shaocheng.Li ">
+<meta name="description" content="原文：
+《Linux Ramdisk mini-HOWTO》
+By Van Emery
+http://www.vanemery.com/Linux/Ramdisk/ramdisk.html
+Translate By Bob
+Friday, July 25, 2011
+Email：gexbob@gmail.com
+Blog：http://shaocheng.li
+简介 什么是RamDisk？RamDisk就是将内存（Ram）的一部分当做硬盘（Disk）来使用。RamDisk有固定的大小，可以像正常硬盘分区那样去使用。 就操作时间来讲，RamDisk比真实的物理硬盘快很多，当系统关闭或断电时，保存在RamDisk中的数据会全部丢失。RamDisk可以成为一个存放临时数据的好地方。
+Linux的2.4内核已经内建支持RamDisk。RamDisk在很多情况下是很有用的，包括：
+ 使用加密文件中的未加密数据； 某些类型的网页内容服务； 挂载loopback文件系统（例如，从软盘或CD运行）  我为什么要写这个文档？因为我需要设置一个16M的RamDisk来查看、创建加密文件。我不想让未加密的文件写入我的工作平台的任何物理介质。我还发现一个有趣的地方，可以轻易的在Ram中创建一个比我的第一个物理硬盘（20M）还大的虚拟硬盘，当时，我根本无法想象怎样填满这个虚拟硬盘。
+这个文档将会带你一步步地经历创建和使用RamDisk的过程。
+平台 我使用Red Hat 9进行测试，但是这应该适用于其他的 2.4 内核的Linux系统，我还假设你的Linux系统已经将RamDisk支持编译到了内核。我的计算机使用 Pentium 4 处理器，256M内存，确切的内核版本是：2.4.20-20.9
+1. 查看你的系统已经创建了什么 RedHat默认创建16个RamDisk，虽然它们没有激活或使用任何Ram。系统列出的设备是ram0~ram19，但是只有ram0~ram15是默认可用的。使用下面的命令可用检出这些块设备：
+[root]# ls -l /dev/ram* lrwxrwxrwx 1 root root 4 Jun 12 00:31 /dev/ram -&amp;gt; ram1 brw-rw---- 1 root disk 1, 0 Jan 30 2003 /dev/ram0 brw-rw---- 1 root disk 1, 1 Jan 30 2003 /dev/ram1 brw-rw---- 1 root disk 1, 10 Jan 30 2003 /dev/ram10 brw-rw---- 1 root disk 1, 11 Jan 30 2003 /dev/ram11 brw-rw---- 1 root disk 1, 12 Jan 30 2003 /dev/ram12 brw-rw---- 1 root disk 1, 13 Jan 30 2003 /dev/ram13 brw-rw---- 1 root disk 1, 14 Jan 30 2003 /dev/ram14 brw-rw---- 1 root disk 1, 15 Jan 30 2003 /dev/ram15 brw-rw---- 1 root disk 1, 16 Jan 30 2003 /dev/ram16 brw-rw---- 1 root disk 1, 17 Jan 30 2003 /dev/ram17 brw-rw---- 1 root disk 1, 18 Jan 30 2003 /dev/ram18 brw-rw---- 1 root disk 1, 19 Jan 30 2003 /dev/ram19 brw-rw---- 1 root disk 1, 2 Jan 30 2003 /dev/ram2 brw-rw---- 1 root disk 1, 3 Jan 30 2003 /dev/ram3 brw-rw---- 1 root disk 1, 4 Jan 30 2003 /dev/ram4 brw-rw---- 1 root disk 1, 5 Jan 30 2003 /dev/ram5 brw-rw---- 1 root disk 1, 6 Jan 30 2003 /dev/ram6 brw-rw---- 1 root disk 1, 7 Jan 30 2003 /dev/ram7 brw-rw---- 1 root disk 1, 8 Jan 30 2003 /dev/ram8 brw-rw---- 1 root disk 1, 9 Jan 30 2003 /dev/ram9 lrwxrwxrwx 1 root root 4 Jun 12 00:31 /dev/ramdisk -&amp;gt; ram0  现在，用grep在dmesg的输出中找出RamDisk的大小" />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#252627" />
+<link rel="canonical" href="https://shaocheng.li/posts/2011/07/25/" />
+
+
+    <title>
+        
+            如何在Linux系统下制作RamDisk :: Shaocheng.Li  — Hello Friends
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="https://shaocheng.li/main.min.73f55a8d452be4a71b2960620b80252cf69abd84d63fe7501abf0a39b1a70a78.css">
+
+
+    
+        <link rel="stylesheet" type="text/css" href="https://shaocheng.li/css/custom.css">
+    
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://shaocheng.li/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://shaocheng.li/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://shaocheng.li/favicon-16x16.png">
+    <link rel="manifest" href="https://shaocheng.li/site.webmanifest">
+    <link rel="mask-icon" href="https://shaocheng.li/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="https://shaocheng.li/favicon.ico">
+    <meta name="msapplication-TileColor" content="#252627">
+    <meta name="theme-color" content="#252627">
+
+<meta itemprop="name" content="如何在Linux系统下制作RamDisk">
+<meta itemprop="description" content="原文：
+《Linux Ramdisk mini-HOWTO》
+By Van Emery
+http://www.vanemery.com/Linux/Ramdisk/ramdisk.html
+Translate By Bob
+Friday, July 25, 2011
+Email：gexbob@gmail.com
+Blog：http://shaocheng.li
+简介 什么是RamDisk？RamDisk就是将内存（Ram）的一部分当做硬盘（Disk）来使用。RamDisk有固定的大小，可以像正常硬盘分区那样去使用。 就操作时间来讲，RamDisk比真实的物理硬盘快很多，当系统关闭或断电时，保存在RamDisk中的数据会全部丢失。RamDisk可以成为一个存放临时数据的好地方。
+Linux的2.4内核已经内建支持RamDisk。RamDisk在很多情况下是很有用的，包括：
+ 使用加密文件中的未加密数据； 某些类型的网页内容服务； 挂载loopback文件系统（例如，从软盘或CD运行）  我为什么要写这个文档？因为我需要设置一个16M的RamDisk来查看、创建加密文件。我不想让未加密的文件写入我的工作平台的任何物理介质。我还发现一个有趣的地方，可以轻易的在Ram中创建一个比我的第一个物理硬盘（20M）还大的虚拟硬盘，当时，我根本无法想象怎样填满这个虚拟硬盘。
+这个文档将会带你一步步地经历创建和使用RamDisk的过程。
+平台 我使用Red Hat 9进行测试，但是这应该适用于其他的 2.4 内核的Linux系统，我还假设你的Linux系统已经将RamDisk支持编译到了内核。我的计算机使用 Pentium 4 处理器，256M内存，确切的内核版本是：2.4.20-20.9
+1. 查看你的系统已经创建了什么 RedHat默认创建16个RamDisk，虽然它们没有激活或使用任何Ram。系统列出的设备是ram0~ram19，但是只有ram0~ram15是默认可用的。使用下面的命令可用检出这些块设备：
+[root]# ls -l /dev/ram* lrwxrwxrwx 1 root root 4 Jun 12 00:31 /dev/ram -&gt; ram1 brw-rw---- 1 root disk 1, 0 Jan 30 2003 /dev/ram0 brw-rw---- 1 root disk 1, 1 Jan 30 2003 /dev/ram1 brw-rw---- 1 root disk 1, 10 Jan 30 2003 /dev/ram10 brw-rw---- 1 root disk 1, 11 Jan 30 2003 /dev/ram11 brw-rw---- 1 root disk 1, 12 Jan 30 2003 /dev/ram12 brw-rw---- 1 root disk 1, 13 Jan 30 2003 /dev/ram13 brw-rw---- 1 root disk 1, 14 Jan 30 2003 /dev/ram14 brw-rw---- 1 root disk 1, 15 Jan 30 2003 /dev/ram15 brw-rw---- 1 root disk 1, 16 Jan 30 2003 /dev/ram16 brw-rw---- 1 root disk 1, 17 Jan 30 2003 /dev/ram17 brw-rw---- 1 root disk 1, 18 Jan 30 2003 /dev/ram18 brw-rw---- 1 root disk 1, 19 Jan 30 2003 /dev/ram19 brw-rw---- 1 root disk 1, 2 Jan 30 2003 /dev/ram2 brw-rw---- 1 root disk 1, 3 Jan 30 2003 /dev/ram3 brw-rw---- 1 root disk 1, 4 Jan 30 2003 /dev/ram4 brw-rw---- 1 root disk 1, 5 Jan 30 2003 /dev/ram5 brw-rw---- 1 root disk 1, 6 Jan 30 2003 /dev/ram6 brw-rw---- 1 root disk 1, 7 Jan 30 2003 /dev/ram7 brw-rw---- 1 root disk 1, 8 Jan 30 2003 /dev/ram8 brw-rw---- 1 root disk 1, 9 Jan 30 2003 /dev/ram9 lrwxrwxrwx 1 root root 4 Jun 12 00:31 /dev/ramdisk -&gt; ram0  现在，用grep在dmesg的输出中找出RamDisk的大小">
+
+
+<meta itemprop="datePublished" content="2011-07-25T08:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2011-07-25T08:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="783">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://shaocheng.li"/>
+
+<meta name="twitter:title" content="如何在Linux系统下制作RamDisk"/>
+<meta name="twitter:description" content="原文：
+《Linux Ramdisk mini-HOWTO》
+By Van Emery
+http://www.vanemery.com/Linux/Ramdisk/ramdisk.html
+Translate By Bob
+Friday, July 25, 2011
+Email：gexbob@gmail.com
+Blog：http://shaocheng.li
+简介 什么是RamDisk？RamDisk就是将内存（Ram）的一部分当做硬盘（Disk）来使用。RamDisk有固定的大小，可以像正常硬盘分区那样去使用。 就操作时间来讲，RamDisk比真实的物理硬盘快很多，当系统关闭或断电时，保存在RamDisk中的数据会全部丢失。RamDisk可以成为一个存放临时数据的好地方。
+Linux的2.4内核已经内建支持RamDisk。RamDisk在很多情况下是很有用的，包括：
+ 使用加密文件中的未加密数据； 某些类型的网页内容服务； 挂载loopback文件系统（例如，从软盘或CD运行）  我为什么要写这个文档？因为我需要设置一个16M的RamDisk来查看、创建加密文件。我不想让未加密的文件写入我的工作平台的任何物理介质。我还发现一个有趣的地方，可以轻易的在Ram中创建一个比我的第一个物理硬盘（20M）还大的虚拟硬盘，当时，我根本无法想象怎样填满这个虚拟硬盘。
+这个文档将会带你一步步地经历创建和使用RamDisk的过程。
+平台 我使用Red Hat 9进行测试，但是这应该适用于其他的 2.4 内核的Linux系统，我还假设你的Linux系统已经将RamDisk支持编译到了内核。我的计算机使用 Pentium 4 处理器，256M内存，确切的内核版本是：2.4.20-20.9
+1. 查看你的系统已经创建了什么 RedHat默认创建16个RamDisk，虽然它们没有激活或使用任何Ram。系统列出的设备是ram0~ram19，但是只有ram0~ram15是默认可用的。使用下面的命令可用检出这些块设备：
+[root]# ls -l /dev/ram* lrwxrwxrwx 1 root root 4 Jun 12 00:31 /dev/ram -&gt; ram1 brw-rw---- 1 root disk 1, 0 Jan 30 2003 /dev/ram0 brw-rw---- 1 root disk 1, 1 Jan 30 2003 /dev/ram1 brw-rw---- 1 root disk 1, 10 Jan 30 2003 /dev/ram10 brw-rw---- 1 root disk 1, 11 Jan 30 2003 /dev/ram11 brw-rw---- 1 root disk 1, 12 Jan 30 2003 /dev/ram12 brw-rw---- 1 root disk 1, 13 Jan 30 2003 /dev/ram13 brw-rw---- 1 root disk 1, 14 Jan 30 2003 /dev/ram14 brw-rw---- 1 root disk 1, 15 Jan 30 2003 /dev/ram15 brw-rw---- 1 root disk 1, 16 Jan 30 2003 /dev/ram16 brw-rw---- 1 root disk 1, 17 Jan 30 2003 /dev/ram17 brw-rw---- 1 root disk 1, 18 Jan 30 2003 /dev/ram18 brw-rw---- 1 root disk 1, 19 Jan 30 2003 /dev/ram19 brw-rw---- 1 root disk 1, 2 Jan 30 2003 /dev/ram2 brw-rw---- 1 root disk 1, 3 Jan 30 2003 /dev/ram3 brw-rw---- 1 root disk 1, 4 Jan 30 2003 /dev/ram4 brw-rw---- 1 root disk 1, 5 Jan 30 2003 /dev/ram5 brw-rw---- 1 root disk 1, 6 Jan 30 2003 /dev/ram6 brw-rw---- 1 root disk 1, 7 Jan 30 2003 /dev/ram7 brw-rw---- 1 root disk 1, 8 Jan 30 2003 /dev/ram8 brw-rw---- 1 root disk 1, 9 Jan 30 2003 /dev/ram9 lrwxrwxrwx 1 root root 4 Jun 12 00:31 /dev/ramdisk -&gt; ram0  现在，用grep在dmesg的输出中找出RamDisk的大小"/>
+
+
+
+
+
+    <meta property="article:published_time" content="2011-07-25 08:00:00 &#43;0800 CST" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://shaocheng.li/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$ cd /home/</span>
+            <span class="logo__cursor" style=""></span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="https://shaocheng.li/about/">About</a></li><li><a href="https://shaocheng.li/posts/">Posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>4 minutes
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            <h1 class="post-title">
+                <a href="https://shaocheng.li/posts/2011/07/25/">如何在Linux系统下制作RamDisk</a>
+            </h1>
+
+            
+
+            <div class="post-content">
+                
+
+<p>原文：</p>
+
+<p>《Linux Ramdisk mini-HOWTO》</p>
+
+<p>By Van Emery</p>
+
+<p><a href="http://www.vanemery.com/Linux/Ramdisk/ramdisk.html" target="_blank">http://www.vanemery.com/Linux/Ramdisk/ramdisk.html</a></p>
+
+<p>Translate By Bob</p>
+
+<p>Friday, July 25, 2011</p>
+
+<p>Email：<a href="mailto:gexbob@gmail.com" target="_blank">gexbob@gmail.com</a></p>
+
+<p>Blog：<a href="http://shaocheng.li" target="_blank">http://shaocheng.li</a></p>
+
+<hr />
+
+<h2 id="简介">简介</h2>
+
+<p>什么是RamDisk？RamDisk就是将内存（Ram）的一部分当做硬盘（Disk）来使用。RamDisk有固定的大小，可以像正常硬盘分区那样去使用。 就操作时间来讲，RamDisk比真实的物理硬盘快很多，当系统关闭或断电时，保存在RamDisk中的数据会全部丢失。RamDisk可以成为一个存放临时数据的好地方。</p>
+
+<p>Linux的2.4内核已经内建支持RamDisk。RamDisk在很多情况下是很有用的，包括：</p>
+
+<ul>
+<li>使用加密文件中的未加密数据；</li>
+<li>某些类型的网页内容服务；</li>
+<li>挂载loopback文件系统（例如，从软盘或CD运行）</li>
+</ul>
+
+<p>我为什么要写这个文档？因为我需要设置一个16M的RamDisk来查看、创建加密文件。我不想让未加密的文件写入我的工作平台的任何物理介质。我还发现一个有趣的地方，可以轻易的在Ram中创建一个比我的第一个物理硬盘（20M）还大的虚拟硬盘，当时，我根本无法想象怎样填满这个虚拟硬盘。</p>
+
+<p>这个文档将会带你一步步地经历创建和使用RamDisk的过程。</p>
+
+<h2 id="平台">平台</h2>
+
+<p>我使用Red Hat 9进行测试，但是这应该适用于其他的 2.4 内核的Linux系统，我还假设你的Linux系统已经将RamDisk支持编译到了内核。我的计算机使用 Pentium 4 处理器，256M内存，确切的内核版本是：2.4.20-20.9</p>
+
+<hr />
+
+<h2 id="1-查看你的系统已经创建了什么">1. 查看你的系统已经创建了什么</h2>
+
+<p>RedHat默认创建16个RamDisk，虽然它们没有激活或使用任何Ram。系统列出的设备是ram0~ram19，但是只有ram0~ram15是默认可用的。使用下面的命令可用检出这些块设备：</p>
+
+<pre><code>[root]# ls -l /dev/ram*  
+lrwxrwxrwx    1 root     root            4 Jun 12 00:31 /dev/ram -&gt; ram1  
+brw-rw----    1 root     disk       1,   0 Jan 30  2003 /dev/ram0  
+brw-rw----    1 root     disk       1,   1 Jan 30  2003 /dev/ram1  
+brw-rw----    1 root     disk       1,  10 Jan 30  2003 /dev/ram10  
+brw-rw----    1 root     disk       1,  11 Jan 30  2003 /dev/ram11  
+brw-rw----    1 root     disk       1,  12 Jan 30  2003 /dev/ram12  
+brw-rw----    1 root     disk       1,  13 Jan 30  2003 /dev/ram13  
+brw-rw----    1 root     disk       1,  14 Jan 30  2003 /dev/ram14  
+brw-rw----    1 root     disk       1,  15 Jan 30  2003 /dev/ram15  
+brw-rw----    1 root     disk       1,  16 Jan 30  2003 /dev/ram16  
+brw-rw----    1 root     disk       1,  17 Jan 30  2003 /dev/ram17  
+brw-rw----    1 root     disk       1,  18 Jan 30  2003 /dev/ram18  
+brw-rw----    1 root     disk       1,  19 Jan 30  2003 /dev/ram19  
+brw-rw----    1 root     disk       1,   2 Jan 30  2003 /dev/ram2  
+brw-rw----    1 root     disk       1,   3 Jan 30  2003 /dev/ram3  
+brw-rw----    1 root     disk       1,   4 Jan 30  2003 /dev/ram4  
+brw-rw----    1 root     disk       1,   5 Jan 30  2003 /dev/ram5  
+brw-rw----    1 root     disk       1,   6 Jan 30  2003 /dev/ram6  
+brw-rw----    1 root     disk       1,   7 Jan 30  2003 /dev/ram7  
+brw-rw----    1 root     disk       1,   8 Jan 30  2003 /dev/ram8  
+brw-rw----    1 root     disk       1,   9 Jan 30  2003 /dev/ram9  
+lrwxrwxrwx    1 root     root            4 Jun 12 00:31 /dev/ramdisk -&gt; ram0  
+</code></pre>
+
+<p>现在，用grep在dmesg的输出中找出RamDisk的大小</p>
+
+<pre><code>[root]# dmesg | grep RAMDISK  
+RAMDISK driver initialized: 16 RAM disks of 4096K size 1024 blocksize  
+RAMDISK: Compressed image found at block 0  
+</code></pre>
+
+<p>你可用看到，RamDisk 默认只有 4MB。我想要一个 16MB 的 RamDisk，所以，下一步要配置 Linux，使得在启动过程中使用一个更大的 RamDisk 。</p>
+
+<h2 id="2-增加ramdisk的大小">2. 增加RamDisk的大小</h2>
+
+<p>RamDisk 的大小是被一个命令行选项控制的，这个选项会在系统启动时传给内核。由于 RedHat9 的默认 bootloader 是 GRUB，我将用新的选项修改 /etc/grub.conf，RamDisk 大小的内核选项是：ramdisk_size=xxxxx ，xxxxx 是指大小为 1024-Byte 的块的个数。下面是我要添加到 /etc/grub.conf 的内容，它将 RamDisk 配置为16MB：</p>
+
+<p>gurb.conf</p>
+
+<pre><code># grub.conf generated by anaconda  
+#  
+# Note that you do not have to rerun grub after making changes to this file  
+# NOTICE:  You have a /boot partition.  This means that  
+#          all kernel and initrd paths are relative to /boot/, eg.  
+#          root (hd0,0)  
+#          kernel /vmlinuz-version ro root=/dev/hda5  
+#          initrd /initrd-version.img  
+#boot=/dev/hda  
+default=0  
+timeout=10  
+splashimage=(hd0,0)/grub/splash.xpm.gz  
+title Red Hat Linux (2.4.20-20.9)  
+        root (hd0,0)  
+        kernel /vmlinuz-2.4.20-20.9 ro root=LABEL=/ hdc=ide-scsi ramdisk_size=16000  
+        initrd /initrd-2.4.20-20.9.img  
+</code></pre>
+
+<p>将文件保存后，你需要重启系统。重启后，通过查看dmesg的输出来确认修改已经生效：</p>
+
+<pre><code>[root]# dmesg | grep RAMDISK  
+RAMDISK driver initialized: 16 RAM disks of 16000K size 1024 blocksize  
+RAMDISK: Compressed image found at block 0  
+</code></pre>
+
+<h2 id="3-格式化ramdisk">3. 格式化RamDisk</h2>
+
+<p>无需将 RamDisk 格式化为日志文件系统，我们将使用 EXT2 文件系统。我只想使用一个 RamDisk ，所以我只格式化 ram0。</p>
+
+<pre><code>[root]# mke2fs -m 0 /dev/ram0  
+mke2fs 1.32 (09-Nov-2002)  
+Filesystem label=  
+OS type: Linux  
+Block size=1024 (log=0)  
+Fragment size=1024 (log=0)  
+4000 inodes, 16000 blocks  
+0 blocks (0.00%) reserved for the super user  
+First data block=1  
+2 block groups  
+8192 blocks per group, 8192 fragments per group  
+2000 inodes per group  
+Superblock backups stored on blocks:  
+        8193  
+
+Writing inode tables: done  
+Writing superblocks and filesystem accounting information: done  
+
+This filesystem will be automatically checked every 22 mounts or  
+180 days, whichever comes first.  Use tune2fs -c or -i to override.  
+</code></pre>
+
+<p>-m 0选项指定了文件系统上root用户保留区块的比例为0，这是默认的特性。我希望普通用户可以使用所有的RamDisk空间。</p>
+
+<h2 id="4-新建一个挂载点并挂载ramdisk">4. 新建一个挂载点并挂载RamDisk</h2>
+
+<p>你已经格式化了RamDisk，现在要为它新建一个挂载点。然后就可以挂载你的RamDisk并使用它。我们将会使用/mnt/rd文件夹。</p>
+
+<pre><code>[root]# mkdir /mnt/rd  
+[root]# mount /dev/ram0 /mnt/rd  
+</code></pre>
+
+<p>检测新挂载的RamDisk</p>
+
+<pre><code>[root]# mount | grep ram0  
+/dev/ram0 on /mnt/rd type ext2 (rw)  
+[root]# df -h | grep ram0  
+/dev/ram0              16M   13K   16M   1% /mnt/rd  
+</code></pre>
+
+<p>你可以用tune2fs命令查看新RamDisk的详细信息</p>
+
+<pre><code>[root]# tune2fs -l /dev/ram0  
+tune2fs 1.32 (09-Nov-2002)  
+Filesystem volume name:   none  
+Last mounted on:          not available  
+Filesystem UUID:          fbb80e9a-8e7c-4bd4-b3d9-37c29813a5f5  
+Filesystem magic number:  0xEF53  
+Filesystem revision #:    1 (dynamic)  
+Filesystem features:      filetype sparse_super  
+Default mount options:    (none)  
+Filesystem state:         not clean  
+Errors behavior:          Continue  
+Filesystem OS type:       Linux  
+Inode count:              4000  
+Block count:              16000  
+Reserved block count:     0  
+Free blocks:              15478  
+Free inodes:              3989  
+First block:              1  
+Block size:               1024  
+Fragment size:            1024  
+Blocks per group:         8192  
+Fragments per group:      8192  
+Inodes per group:         2000  
+Inode blocks per group:   250  
+Filesystem created:       Mon Dec  8 14:33:57 2003  
+Last mount time:          Mon Dec  8 14:35:39 2003  
+Last write time:          Mon Dec  8 14:35:39 2003  
+Mount count:              1  
+Maximum mount count:      22  
+Last checked:             Mon Dec  8 14:33:57 2003  
+Check interval:           15552000 (6 months)  
+Next check after:         Sat Jun  5 14:33:57 2004  
+Reserved blocks uid:      0 (user root)  
+Reserved blocks gid:      0 (group root)  
+First inode:              11  
+Inode size:               128  
+</code></pre>
+
+<p>在我的系统中，我需要&rsquo;var&rsquo;用户能够读写RamDisk，所以必须修改/mnt/rd文件夹的所有者和权限。</p>
+
+<pre><code>[root]# chown van:root /mnt/rd  
+[root]# chmod 0770 /mnt/rd  
+[root]# ls -ald /mnt/rd  
+drwxrwx---    2 van     root         4096 Dec  8 11:09 /mnt/rd  
+</code></pre>
+
+<p>RamDisk挂载点的所有者和权限要根据你的特定情况进行修改。</p>
+
+<h2 id="5-使用ramdisk">5. 使用RamDisk</h2>
+
+<p>RamDisk已经创建成功，现在，你可以像在物理硬盘分区那样，在RamDisk上复制、移动、删除、编辑或列出文件。这是一个查看加密的GPG或OpenSSL文件的好地方，也是一个创建加密文件的好地方。你的主机关闭后，所有在RamDisk上创建的文件都会消失。</p>
+
+<p>用下面的命令可以轻易的卸载RamDisk：</p>
+
+<pre><code>[root]# umount -v /mnt/rd  
+/dev/ram0 umounted  
+</code></pre>
+
+<p><strong>Note：</strong>如果你卸载了RamDisk，你的数据依然会保存在那里。一旦内存被分配给了RamDisk，它就会被标记，之后内核就不会试图重用这块内存。因此，使用了RamDisk后，就不能回收那块内存。正因如此，你要考虑清楚，不要给RamDisk分配太多的内存。在我的系统里，我分配了小于10%的物理内存。你要根据自己的需要确定RamDisk的大小。当然，也可以重启后释放空间。</p>
+
+<hr />
+
+<h2 id="自动创建ramdisk">自动创建RamDisk</h2>
+
+<p>如果你需要每次系统启动后创建和挂载RamDisk，可以通过在/etc/rc.local启动脚本里添加命令来自动执行这个进程。
+下面是我添加的命令：</p>
+
+<pre><code># Formats, mounts, and sets permissions on my 16MB ramdisk
+/sbin/mke2fs -q -m 0 /dev/ram0
+/bin/mount /dev/ram0 /mnt/rd
+/bin/chown van:root /mnt/rd
+/bin/chmod 0750 /mnt/rd
+</code></pre>
+
+<h2 id="结语">结语</h2>
+
+<p>现在你可以尝试在你的UNIX/Linux系统上创建和使用RamDisk。希望这些信息对你有用。</p>
+
+<h2 id="参考">参考</h2>
+
+<ul>
+<li>/usr/src/linux-2.4/Documentation/ramdisk.txt</li>
+<li>/usr/src/linux-2.4/drivers/block/rd.c</li>
+<li>man mke2fs</li>
+<li>Ramdisk article by Mark Nielsen for Red Hat 6.0</li>
+</ul>
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>783 Words</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2011-07-25 08:00 &#43;0800</p>
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h"></span>
+                    <hr />
+                </div>
+
+                <div class="pagination__buttons">
+                    
+                        <span class="button previous">
+                            <a href="https://shaocheng.li/posts/2011/07/26/">
+                                <span class="button__icon">←</span>
+                                <span class="button__text">Linux下分割、合并文件——dd和cat</span>
+                            </a>
+                        </span>
+                    
+
+                    
+                        <span class="button next">
+                            <a href="https://shaocheng.li/posts/2011/07/22/">
+                                <span class="button__text">为Linux系统配置serial console</span>
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    
+                </div>
+            </div>
+        
+
+        
+          <div id="comments" class="thin">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "shaocheng-li" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+        
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2020</span>
+            
+                <span><a href="https://shaocheng.li">Shaocheng.Li</a></span>
+            
+            <span><a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></span>
+            <span> <a href="https://shaocheng.li/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>
+        </div>
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="https://shaocheng.li/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+
+
+
+    </body>
+</html>

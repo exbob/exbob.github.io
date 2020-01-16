@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="Shaocheng.Li ">
+<meta name="description" content="iperf 是一个客户端/服务器端工作模式的网络性能测试工具，用于测试 TCP 或者 UDP 的吞吐量，记录延迟、丢包率、MTU等信息。
+1. 语法 缺省状态下，iperf 使用 TCP 传输协议，服务器端的语法：
+iperf -s -p [port] [ options ]  加 -D 参数可以后台运行。
+客户端的语法：
+iperf -c [server ip] -p [port] [options]  常用的参数有：
+ -f [kmKM] ，分别以 Kbits ， Mbits ， KBytes ， MBytes 格式显示报告，默认是 Mbits 。 -l ，读写缓存区的大小，默认是 8KB 。 -w ，设置 TCP 的窗口大小。 -t ，设置测试时间，默认是 10 秒。 -i ，打印报告的时间间隔，单位是秒。 -o ，输出打印信息到问题。 -u ，设置为 UDP 协议，两端都要加。 -b n[KM] ，设置使用 UDP 协议时的带宽 n bits/sec ，默认是 1Mbit/sec 。  2." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#252627" />
+<link rel="canonical" href="https://shaocheng.li/posts/2017/08/01/" />
+
+
+    <title>
+        
+            用 iperf 测试网络性能 :: Shaocheng.Li  — Hello Friends
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="https://shaocheng.li/main.min.73f55a8d452be4a71b2960620b80252cf69abd84d63fe7501abf0a39b1a70a78.css">
+
+
+    
+        <link rel="stylesheet" type="text/css" href="https://shaocheng.li/css/custom.css">
+    
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://shaocheng.li/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://shaocheng.li/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://shaocheng.li/favicon-16x16.png">
+    <link rel="manifest" href="https://shaocheng.li/site.webmanifest">
+    <link rel="mask-icon" href="https://shaocheng.li/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="https://shaocheng.li/favicon.ico">
+    <meta name="msapplication-TileColor" content="#252627">
+    <meta name="theme-color" content="#252627">
+
+<meta itemprop="name" content="用 iperf 测试网络性能">
+<meta itemprop="description" content="iperf 是一个客户端/服务器端工作模式的网络性能测试工具，用于测试 TCP 或者 UDP 的吞吐量，记录延迟、丢包率、MTU等信息。
+1. 语法 缺省状态下，iperf 使用 TCP 传输协议，服务器端的语法：
+iperf -s -p [port] [ options ]  加 -D 参数可以后台运行。
+客户端的语法：
+iperf -c [server ip] -p [port] [options]  常用的参数有：
+ -f [kmKM] ，分别以 Kbits ， Mbits ， KBytes ， MBytes 格式显示报告，默认是 Mbits 。 -l ，读写缓存区的大小，默认是 8KB 。 -w ，设置 TCP 的窗口大小。 -t ，设置测试时间，默认是 10 秒。 -i ，打印报告的时间间隔，单位是秒。 -o ，输出打印信息到问题。 -u ，设置为 UDP 协议，两端都要加。 -b n[KM] ，设置使用 UDP 协议时的带宽 n bits/sec ，默认是 1Mbit/sec 。  2.">
+
+
+<meta itemprop="datePublished" content="2017-08-01T08:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2017-08-01T08:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="424">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://shaocheng.li"/>
+
+<meta name="twitter:title" content="用 iperf 测试网络性能"/>
+<meta name="twitter:description" content="iperf 是一个客户端/服务器端工作模式的网络性能测试工具，用于测试 TCP 或者 UDP 的吞吐量，记录延迟、丢包率、MTU等信息。
+1. 语法 缺省状态下，iperf 使用 TCP 传输协议，服务器端的语法：
+iperf -s -p [port] [ options ]  加 -D 参数可以后台运行。
+客户端的语法：
+iperf -c [server ip] -p [port] [options]  常用的参数有：
+ -f [kmKM] ，分别以 Kbits ， Mbits ， KBytes ， MBytes 格式显示报告，默认是 Mbits 。 -l ，读写缓存区的大小，默认是 8KB 。 -w ，设置 TCP 的窗口大小。 -t ，设置测试时间，默认是 10 秒。 -i ，打印报告的时间间隔，单位是秒。 -o ，输出打印信息到问题。 -u ，设置为 UDP 协议，两端都要加。 -b n[KM] ，设置使用 UDP 协议时的带宽 n bits/sec ，默认是 1Mbit/sec 。  2."/>
+
+
+
+
+
+    <meta property="article:published_time" content="2017-08-01 08:00:00 &#43;0800 CST" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://shaocheng.li/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$ cd /home/</span>
+            <span class="logo__cursor" style=""></span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="https://shaocheng.li/about/">About</a></li><li><a href="https://shaocheng.li/posts/">Posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>2 minutes
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            <h1 class="post-title">
+                <a href="https://shaocheng.li/posts/2017/08/01/">用 iperf 测试网络性能</a>
+            </h1>
+
+            
+
+            <div class="post-content">
+                
+
+<p>iperf 是一个客户端/服务器端工作模式的网络性能测试工具，用于测试 TCP 或者 UDP 的吞吐量，记录延迟、丢包率、MTU等信息。</p>
+
+<h2 id="1-语法">1. 语法</h2>
+
+<p>缺省状态下，iperf 使用 TCP 传输协议，服务器端的语法：</p>
+
+<pre><code>iperf  -s  -p  [port]  [ options ]
+</code></pre>
+
+<p>加 <code>-D</code> 参数可以后台运行。</p>
+
+<p>客户端的语法：</p>
+
+<pre><code>iperf  -c  [server ip]  -p  [port]  [options]
+</code></pre>
+
+<p>常用的参数有：</p>
+
+<ul>
+<li>-f [kmKM] ，分别以 Kbits ， Mbits ， KBytes ， MBytes 格式显示报告，默认是 Mbits 。</li>
+<li>-l ，读写缓存区的大小，默认是 8KB 。</li>
+<li>-w ，设置 TCP 的窗口大小。</li>
+<li>-t ，设置测试时间，默认是 10 秒。</li>
+<li>-i ，打印报告的时间间隔，单位是秒。</li>
+<li>-o ，输出打印信息到问题。</li>
+<li>-u ，设置为 UDP 协议，两端都要加。</li>
+<li>-b n[KM] ，设置使用 UDP 协议时的带宽 n bits/sec ，默认是 1Mbit/sec 。</li>
+</ul>
+
+<h2 id="2-测试-tcp-的带宽">2. 测试 TCP 的带宽</h2>
+
+<p>原理比较简单，在客户端和服务端建立三次握手连接后，客户端带宽的大小等于发送的总数据除以发送的总时间。对服务端测得的带宽，则是接收的总数据除以所花时间。服务器端：</p>
+
+<pre><code>$ iperf -s -p 8000
+------------------------------------------------------------
+Server listening on TCP port 8000
+TCP window size: 85.3 KByte (default)
+------------------------------------------------------------
+[  4] local 10.104.231.137 port 8000 connected with 14.197.98.229 port 65237
+[ ID] Interval       Transfer     Bandwidth
+[  4]  0.0-10.0 sec  36.8 MBytes  30.7 Mbits/sec
+</code></pre>
+
+<p>客户端：</p>
+
+<pre><code>$ iperf -c 118.89.16.224 -p 8000 -i 2 -t 10
+------------------------------------------------------------
+Client connecting to 118.89.16.224, TCP port 8000
+TCP window size:  128 KByte (default)
+------------------------------------------------------------
+[  5] local 192.168.1.104 port 65237 connected with 118.89.16.224 port 8000
+[ ID] Interval       Transfer     Bandwidth
+[  5]  0.0- 2.0 sec  9.25 MBytes  38.8 Mbits/sec
+[  5]  2.0- 4.0 sec  5.75 MBytes  24.1 Mbits/sec
+[  5]  4.0- 6.0 sec  6.50 MBytes  27.3 Mbits/sec
+[  5]  6.0- 8.0 sec  8.38 MBytes  35.1 Mbits/sec
+[  5]  8.0-10.0 sec  6.75 MBytes  28.3 Mbits/sec
+[  5]  0.0-10.0 sec  36.8 MBytes  30.8 Mbits/sec
+</code></pre>
+
+<h2 id="3-测试-udp-的性能">3. 测试 UDP 的性能</h2>
+
+<p>客户端可以用 <code>-u</code> 设置 UDP 数据流的速率。客户端发送数据时，将根据客户端提供的速率计算数据报发送之间的时延。</p>
+
+<p>客户端还可以指定发送数据报的大小。每个发送的数据报包含一个 ID 号，用来唯一标识报文，服务器端根据该 ID 号来确定数据报丢失和乱序。</p>
+
+<p>当把 UDP 报文大小设置可以将整个报文放入 IP 层的包内时，那么 UDP 所测得的报文丢失数据即为 IP 层包的丢失数据，这提供了一个有效的测试包丢失情况的方法。</p>
+
+<p>数据报传输延迟抖动 (Jitter)的测试由服务器端完成，客户发送的报文数据包含有发送时间戳，服务器端根据该时间信息和接收到报文的时间戳来计算传输延迟抖动。传输延迟抖动反映传输过程中是否平滑。由于它是一个相对值，所以并不需要客户端和服务器端时间同步。</p>
+
+<p>服务器端：</p>
+
+<pre><code>$ iperf -u -s -p 1080
+------------------------------------------------------------
+Server listening on UDP port 1080
+Receiving 1470 byte datagrams
+UDP buffer size:  208 KByte (default)
+------------------------------------------------------------
+[  3] local 10.104.231.137 port 1080 connected with 14.197.98.229 port 58756
+[ ID] Interval       Transfer     Bandwidth        Jitter   Lost/Total Datagrams
+[  3]  0.0-20.0 sec  2.50 MBytes  1.05 Mbits/sec   1.030 ms    0/ 1784 (0%)
+[  3]  0.0-20.0 sec  1 datagrams received out-of-order
+</code></pre>
+
+<p>客户端：</p>
+
+<pre><code>$ iperf -u -c 118.89.16.224 -p 1080 -i 5 -t 20
+------------------------------------------------------------
+Client connecting to 118.89.16.224, UDP port 1080
+Sending 1470 byte datagrams
+UDP buffer size: 9.00 KByte (default)
+------------------------------------------------------------
+[  5] local 192.168.1.104 port 58756 connected with 118.89.16.224 port 1080
+[ ID] Interval       Transfer     Bandwidth
+[  5]  0.0- 5.0 sec   640 KBytes  1.05 Mbits/sec
+[  5]  5.0-10.0 sec   640 KBytes  1.05 Mbits/sec
+[  5] 10.0-15.0 sec   640 KBytes  1.05 Mbits/sec
+[  5] 15.0-20.0 sec   640 KBytes  1.05 Mbits/sec
+[  5]  0.0-20.0 sec  2.50 MBytes  1.05 Mbits/sec
+[  5] Sent 1785 datagrams
+[  5] Server Report:
+[  5]  0.0-20.0 sec  2.50 MBytes  1.05 Mbits/sec   1.030 ms    0/ 1784 (0%)
+[  5]  0.0-20.0 sec  1 datagrams received out-of-order
+</code></pre>
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>424 Words</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2017-08-01 08:00 &#43;0800</p>
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h"></span>
+                    <hr />
+                </div>
+
+                <div class="pagination__buttons">
+                    
+                        <span class="button previous">
+                            <a href="https://shaocheng.li/posts/2017/09/23/">
+                                <span class="button__icon">←</span>
+                                <span class="button__text">Numbers 使用技巧</span>
+                            </a>
+                        </span>
+                    
+
+                    
+                        <span class="button next">
+                            <a href="https://shaocheng.li/posts/2017/07/31/">
+                                <span class="button__text">netcat 基本用法</span>
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    
+                </div>
+            </div>
+        
+
+        
+          <div id="comments" class="thin">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "shaocheng-li" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+        
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2020</span>
+            
+                <span><a href="https://shaocheng.li">Shaocheng.Li</a></span>
+            
+            <span><a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></span>
+            <span> <a href="https://shaocheng.li/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>
+        </div>
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="https://shaocheng.li/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+
+
+
+    </body>
+</html>

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="Shaocheng.Li ">
+<meta name="description" content="devc-ser8250 是 QNX 下的8250串口驱动，支持8250s, 14450s 和 16550s 。
+必须以 root 用户运行该程序。
+语法： devc-ser8250 [[options] [port[^shift][,intr]]]... &amp;amp;  选项：  -b number：初始化波特率，默认是 57600。 -C size ：canonical buffer 的大小，单位是字节，默认是 256 。 -c clock[/divisor] ：自定义时钟频率，单位是 Hz ，divisor 是串口。 -E ：raw 模式（默认）。默认关闭软件流控制。 -e ：edited 模式。默认使能软件流控制。 -F ：关闭硬件流控制，默认使能硬件流控制。edited 模式不支持硬件流控制。 -f ：使能硬件流控制。 -I number ：中断输入 buffer 的大小，单位是字节，默认是2048 。 -O number ：中断输出 buffer 的大小，单位是字节，默认是2048 。 -o opt[,opt&amp;hellip;] ：额外选项，用逗号隔开，包括：
+ nodaemon —— 不要调用 procmgr_daemon() 是驱动在后台运行。如果你需要知道设备终止的时间，可以使用这个选项。 priority=prio —— 设置内部脉冲的工作优先级。  -S|s ：关闭/使能软件流控制。默认：raw 模式时关闭，edited 模式时使能。" />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#252627" />
+<link rel="canonical" href="https://shaocheng.li/posts/2013/06/09/" />
+
+
+    <title>
+        
+            QNX下的串口驱动——devc-ser8250 :: Shaocheng.Li  — Hello Friends
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="https://shaocheng.li/main.min.73f55a8d452be4a71b2960620b80252cf69abd84d63fe7501abf0a39b1a70a78.css">
+
+
+    
+        <link rel="stylesheet" type="text/css" href="https://shaocheng.li/css/custom.css">
+    
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://shaocheng.li/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://shaocheng.li/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://shaocheng.li/favicon-16x16.png">
+    <link rel="manifest" href="https://shaocheng.li/site.webmanifest">
+    <link rel="mask-icon" href="https://shaocheng.li/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="https://shaocheng.li/favicon.ico">
+    <meta name="msapplication-TileColor" content="#252627">
+    <meta name="theme-color" content="#252627">
+
+<meta itemprop="name" content="QNX下的串口驱动——devc-ser8250">
+<meta itemprop="description" content="devc-ser8250 是 QNX 下的8250串口驱动，支持8250s, 14450s 和 16550s 。
+必须以 root 用户运行该程序。
+语法： devc-ser8250 [[options] [port[^shift][,intr]]]... &amp;  选项：  -b number：初始化波特率，默认是 57600。 -C size ：canonical buffer 的大小，单位是字节，默认是 256 。 -c clock[/divisor] ：自定义时钟频率，单位是 Hz ，divisor 是串口。 -E ：raw 模式（默认）。默认关闭软件流控制。 -e ：edited 模式。默认使能软件流控制。 -F ：关闭硬件流控制，默认使能硬件流控制。edited 模式不支持硬件流控制。 -f ：使能硬件流控制。 -I number ：中断输入 buffer 的大小，单位是字节，默认是2048 。 -O number ：中断输出 buffer 的大小，单位是字节，默认是2048 。 -o opt[,opt&hellip;] ：额外选项，用逗号隔开，包括：
+ nodaemon —— 不要调用 procmgr_daemon() 是驱动在后台运行。如果你需要知道设备终止的时间，可以使用这个选项。 priority=prio —— 设置内部脉冲的工作优先级。  -S|s ：关闭/使能软件流控制。默认：raw 模式时关闭，edited 模式时使能。">
+
+
+<meta itemprop="datePublished" content="2013-06-09T08:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2013-06-09T08:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="147">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://shaocheng.li"/>
+
+<meta name="twitter:title" content="QNX下的串口驱动——devc-ser8250"/>
+<meta name="twitter:description" content="devc-ser8250 是 QNX 下的8250串口驱动，支持8250s, 14450s 和 16550s 。
+必须以 root 用户运行该程序。
+语法： devc-ser8250 [[options] [port[^shift][,intr]]]... &amp;  选项：  -b number：初始化波特率，默认是 57600。 -C size ：canonical buffer 的大小，单位是字节，默认是 256 。 -c clock[/divisor] ：自定义时钟频率，单位是 Hz ，divisor 是串口。 -E ：raw 模式（默认）。默认关闭软件流控制。 -e ：edited 模式。默认使能软件流控制。 -F ：关闭硬件流控制，默认使能硬件流控制。edited 模式不支持硬件流控制。 -f ：使能硬件流控制。 -I number ：中断输入 buffer 的大小，单位是字节，默认是2048 。 -O number ：中断输出 buffer 的大小，单位是字节，默认是2048 。 -o opt[,opt&hellip;] ：额外选项，用逗号隔开，包括：
+ nodaemon —— 不要调用 procmgr_daemon() 是驱动在后台运行。如果你需要知道设备终止的时间，可以使用这个选项。 priority=prio —— 设置内部脉冲的工作优先级。  -S|s ：关闭/使能软件流控制。默认：raw 模式时关闭，edited 模式时使能。"/>
+
+
+
+
+
+    <meta property="article:published_time" content="2013-06-09 08:00:00 &#43;0800 CST" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://shaocheng.li/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$ cd /home/</span>
+            <span class="logo__cursor" style=""></span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="https://shaocheng.li/about/">About</a></li><li><a href="https://shaocheng.li/posts/">Posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>One minute
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            <h1 class="post-title">
+                <a href="https://shaocheng.li/posts/2013/06/09/">QNX下的串口驱动——devc-ser8250</a>
+            </h1>
+
+            
+
+            <div class="post-content">
+                
+
+<p>devc-ser8250 是 QNX 下的8250串口驱动，支持8250s, 14450s 和 16550s 。</p>
+
+<p>必须以 root 用户运行该程序。</p>
+
+<h2 id="语法">语法：</h2>
+
+<pre><code>devc-ser8250 [[options] 
+    [port[^shift][,intr]]]... &amp;
+</code></pre>
+
+<h2 id="选项">选项：</h2>
+
+<ul>
+<li>-b number：初始化波特率，默认是 57600。</li>
+<li>-C size ：canonical buffer 的大小，单位是字节，默认是 256 。</li>
+<li>-c clock[/divisor] ：自定义时钟频率，单位是 Hz ，divisor 是串口。</li>
+<li>-E ：raw 模式（默认）。默认关闭软件流控制。</li>
+<li>-e ：edited 模式。默认使能软件流控制。</li>
+<li>-F ：关闭硬件流控制，默认使能硬件流控制。edited 模式不支持硬件流控制。</li>
+<li>-f ：使能硬件流控制。</li>
+<li>-I number ：中断输入 buffer 的大小，单位是字节，默认是2048 。</li>
+<li>-O number ：中断输出 buffer 的大小，单位是字节，默认是2048 。</li>
+
+<li><p>-o opt[,opt&hellip;] ：额外选项，用逗号隔开，包括：</p>
+
+<ul>
+<li>nodaemon —— 不要调用 <code>procmgr_daemon()</code> 是驱动在后台运行。如果你需要知道设备终止的时间，可以使用这个选项。</li>
+<li>priority=prio —— 设置内部脉冲的工作优先级。</li>
+</ul></li>
+
+<li><p>-S|s ：关闭/使能软件流控制。默认：raw 模式时关闭，edited 模式时使能。</p></li>
+
+<li><p>-T number ：使能发送 FIFO 并设置每次 TX 中断发送的字符数：1,4,8 或 14 。默认是 0 （FIFO 关闭）</p></li>
+
+<li><p>-t number ：使能接收 FIFO 并设置字符数为 1,4,8 或 14 。默认是 0 。</p></li>
+
+<li><p>-u number ：在设备名前缀(/dev/ser)附加号码。默认是 1 ；添加设备。</p></li>
+
+<li><p>port ：一个串口的十六进制的 I/O 地址（X86系统）或物理内存地址（PowerPC和MIPS）。</p></li>
+
+<li><p>shift ：设备寄存器的间隔为 2 的幂。例如：</p>
+
+<p>0 寄存器是 1 byte 间隔
+1 寄存器是 2 byte 间隔
+2 寄存器是 4 byte 间隔
+&hellip;
+n 寄存器是 2^n byte 间隔
+默认 shift 是 0 。</p></li>
+
+<li><p>intr ： 该 port 使用的中断。</p></li>
+</ul>
+
+<h2 id="描述">描述：</h2>
+
+<p>如果没有指定 I/O 端口，默认为 COM1(3f8,4) 和 COM2(2f8,3) 。</p>
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>147 Words</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2013-06-09 08:00 &#43;0800</p>
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h"></span>
+                    <hr />
+                </div>
+
+                <div class="pagination__buttons">
+                    
+                        <span class="button previous">
+                            <a href="https://shaocheng.li/posts/2013/07/28/">
+                                <span class="button__icon">←</span>
+                                <span class="button__text">QNX 编程</span>
+                            </a>
+                        </span>
+                    
+
+                    
+                        <span class="button next">
+                            <a href="https://shaocheng.li/posts/2013/06/02/">
+                                <span class="button__text">QNX 编程读写 I/O 端口</span>
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    
+                </div>
+            </div>
+        
+
+        
+          <div id="comments" class="thin">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "shaocheng-li" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+        
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2020</span>
+            
+                <span><a href="https://shaocheng.li">Shaocheng.Li</a></span>
+            
+            <span><a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></span>
+            <span> <a href="https://shaocheng.li/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>
+        </div>
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="https://shaocheng.li/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+
+
+
+    </body>
+</html>

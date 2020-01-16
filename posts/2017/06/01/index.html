@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="Shaocheng.Li ">
+<meta name="description" content="以 Telit HE910 模块为例，在 Linux 下的 AT 命令端口是 /dev/ttyACM3 。可以通过 pyserial 库直接读写端口来与模块通信，也可以使用更高级的 python-gsmmodem 。
+1. Pyserial 如果要直接发送 AT 指令，需要串口读写库，我们常用的是 pyserial ，Python 2.7 默认没有安装这个库，需要自行下载，参考 https://pypi.python.org/pypi/pyserial/2.7，下面是一个简单的例子：
+#!/usr/bin/python import serial ser=serial.Serial(port=&#39;/dev/ttyACM3&#39;, baudrate=115200, bytesize=8, parity=&#39;N&#39;, stopbits=1, timeout=1, xonxoff=False, rtscts=False, dsrdtr=False) cmd=&amp;quot;AT\r&amp;quot; ser.write(cmd.encode()) msg=ser.read(64) print(msg)  保存到文件 atcommand.py ，执行：
+~# ./atcommand.py AT OK  2. Python-gsmmodem 2.1. 简介 python-gsmmodem 是一个用于控制 GSM modem 的 Python 包，基于 pyserial ，提供了 API 和一些命令行交互工具。在这里下载，然后安装：https://github.com/faucamp/python-gsmmodem。它的文档在源码的 docs 目录下，Sphinx 格式，你的电脑需要安装 Sphinx ，然后在 docs 目录下执行 make html 命令，就会在 _build 目录下生产 html 格式的文档，在浏览器中打开即可。python-gsmmodem 有如下几个特性：" />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#252627" />
+<link rel="canonical" href="https://shaocheng.li/posts/2017/06/01/" />
+
+
+    <title>
+        
+            使用 Python 操作 3G 模块 :: Shaocheng.Li  — Hello Friends
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="https://shaocheng.li/main.min.73f55a8d452be4a71b2960620b80252cf69abd84d63fe7501abf0a39b1a70a78.css">
+
+
+    
+        <link rel="stylesheet" type="text/css" href="https://shaocheng.li/css/custom.css">
+    
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://shaocheng.li/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://shaocheng.li/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://shaocheng.li/favicon-16x16.png">
+    <link rel="manifest" href="https://shaocheng.li/site.webmanifest">
+    <link rel="mask-icon" href="https://shaocheng.li/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="https://shaocheng.li/favicon.ico">
+    <meta name="msapplication-TileColor" content="#252627">
+    <meta name="theme-color" content="#252627">
+
+<meta itemprop="name" content="使用 Python 操作 3G 模块">
+<meta itemprop="description" content="以 Telit HE910 模块为例，在 Linux 下的 AT 命令端口是 /dev/ttyACM3 。可以通过 pyserial 库直接读写端口来与模块通信，也可以使用更高级的 python-gsmmodem 。
+1. Pyserial 如果要直接发送 AT 指令，需要串口读写库，我们常用的是 pyserial ，Python 2.7 默认没有安装这个库，需要自行下载，参考 https://pypi.python.org/pypi/pyserial/2.7，下面是一个简单的例子：
+#!/usr/bin/python import serial ser=serial.Serial(port=&#39;/dev/ttyACM3&#39;, baudrate=115200, bytesize=8, parity=&#39;N&#39;, stopbits=1, timeout=1, xonxoff=False, rtscts=False, dsrdtr=False) cmd=&quot;AT\r&quot; ser.write(cmd.encode()) msg=ser.read(64) print(msg)  保存到文件 atcommand.py ，执行：
+~# ./atcommand.py AT OK  2. Python-gsmmodem 2.1. 简介 python-gsmmodem 是一个用于控制 GSM modem 的 Python 包，基于 pyserial ，提供了 API 和一些命令行交互工具。在这里下载，然后安装：https://github.com/faucamp/python-gsmmodem。它的文档在源码的 docs 目录下，Sphinx 格式，你的电脑需要安装 Sphinx ，然后在 docs 目录下执行 make html 命令，就会在 _build 目录下生产 html 格式的文档，在浏览器中打开即可。python-gsmmodem 有如下几个特性：">
+
+
+<meta itemprop="datePublished" content="2017-06-01T08:00:00&#43;08:00" />
+<meta itemprop="dateModified" content="2017-06-01T08:00:00&#43;08:00" />
+<meta itemprop="wordCount" content="640">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://shaocheng.li"/>
+
+<meta name="twitter:title" content="使用 Python 操作 3G 模块"/>
+<meta name="twitter:description" content="以 Telit HE910 模块为例，在 Linux 下的 AT 命令端口是 /dev/ttyACM3 。可以通过 pyserial 库直接读写端口来与模块通信，也可以使用更高级的 python-gsmmodem 。
+1. Pyserial 如果要直接发送 AT 指令，需要串口读写库，我们常用的是 pyserial ，Python 2.7 默认没有安装这个库，需要自行下载，参考 https://pypi.python.org/pypi/pyserial/2.7，下面是一个简单的例子：
+#!/usr/bin/python import serial ser=serial.Serial(port=&#39;/dev/ttyACM3&#39;, baudrate=115200, bytesize=8, parity=&#39;N&#39;, stopbits=1, timeout=1, xonxoff=False, rtscts=False, dsrdtr=False) cmd=&quot;AT\r&quot; ser.write(cmd.encode()) msg=ser.read(64) print(msg)  保存到文件 atcommand.py ，执行：
+~# ./atcommand.py AT OK  2. Python-gsmmodem 2.1. 简介 python-gsmmodem 是一个用于控制 GSM modem 的 Python 包，基于 pyserial ，提供了 API 和一些命令行交互工具。在这里下载，然后安装：https://github.com/faucamp/python-gsmmodem。它的文档在源码的 docs 目录下，Sphinx 格式，你的电脑需要安装 Sphinx ，然后在 docs 目录下执行 make html 命令，就会在 _build 目录下生产 html 格式的文档，在浏览器中打开即可。python-gsmmodem 有如下几个特性："/>
+
+
+
+
+
+    <meta property="article:published_time" content="2017-06-01 08:00:00 &#43;0800 CST" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="https://shaocheng.li/" style="text-decoration: none;">
+    <div class="logo">
+        
+            <span class="logo__mark">></span>
+            <span class="logo__text">$ cd /home/</span>
+            <span class="logo__cursor" style=""></span>
+        
+    </div>
+</a>
+
+
+        <span class="header__right">
+            
+                <nav class="menu">
+    <ul class="menu__inner"><li><a href="https://shaocheng.li/about/">About</a></li><li><a href="https://shaocheng.li/posts/">Posts</a></li>
+    </ul>
+</nav>
+
+                <span class="menu-trigger">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                    </svg>
+                </span>
+            
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <div class="post-info">
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>4 minutes
+
+            
+
+            </p>
+        </div>
+
+        <article>
+            <h1 class="post-title">
+                <a href="https://shaocheng.li/posts/2017/06/01/">使用 Python 操作 3G 模块</a>
+            </h1>
+
+            
+
+            <div class="post-content">
+                
+
+<p>以 Telit HE910 模块为例，在 Linux 下的 AT 命令端口是 /dev/ttyACM3 。可以通过 pyserial 库直接读写端口来与模块通信，也可以使用更高级的 python-gsmmodem 。</p>
+
+<h2 id="1-pyserial">1. Pyserial</h2>
+
+<p>如果要直接发送 AT 指令，需要串口读写库，我们常用的是 pyserial ，Python 2.7 默认没有安装这个库，需要自行下载，参考 <a href="https://pypi.python.org/pypi/pyserial/2.7" target="_blank">https://pypi.python.org/pypi/pyserial/2.7</a>，下面是一个简单的例子：</p>
+
+<pre><code>#!/usr/bin/python
+import serial
+
+ser=serial.Serial(port='/dev/ttyACM3', baudrate=115200, bytesize=8, parity='N', stopbits=1, timeout=1, xonxoff=False, rtscts=False, dsrdtr=False)
+cmd=&quot;AT\r&quot;
+ser.write(cmd.encode())
+msg=ser.read(64)
+print(msg)
+</code></pre>
+
+<p>保存到文件 atcommand.py ，执行：</p>
+
+<pre><code>~# ./atcommand.py   
+AT
+OK
+</code></pre>
+
+<h2 id="2-python-gsmmodem">2. Python-gsmmodem</h2>
+
+<h3 id="2-1-简介">2.1. 简介</h3>
+
+<p>python-gsmmodem 是一个用于控制 GSM modem 的 Python 包，基于 pyserial ，提供了 API 和一些命令行交互工具。在这里下载，然后安装：<a href="https://github.com/faucamp/python-gsmmodem" target="_blank">https://github.com/faucamp/python-gsmmodem</a>。它的文档在源码的 docs 目录下，Sphinx 格式，你的电脑需要安装 Sphinx ，然后在 docs 目录下执行 <code>make html</code> 命令，就会在 _build 目录下生产 html 格式的文档，在浏览器中打开即可。python-gsmmodem 有如下几个特性：</p>
+
+<ul>
+<li>提供了发送短信、查询信号强度等功能的简单方法。</li>
+<li>提供了处理 USSD 业务和语音通话的 API 。</li>
+<li>通过回调函数接电话、收短信。</li>
+<li>支持短信的 PDU 和 Text 模式。</li>
+<li>支持跟踪短信状态报告。</li>
+<li>在 Python 的异常处理中封装了 AT 指令的错误信息。</li>
+<li>直接向模块发送 AT 指令，读取返回值。</li>
+<li>提供测试套件。</li>
+</ul>
+
+<p>该模块提供了几个工具：</p>
+
+<ul>
+<li><p>GSMTerm ：一个简单的串口终端，用于与 GSM modem 通信，内建有 AT 指令帮助。启动后，输入 help 可以获取帮助信息，可以执行 AT 命令，还可以加载外部脚本：</p>
+
+<pre><code>~# gsmterm.py -b 115200 /dev/ttyACM3
+
+GSMTerm connected to /dev/ttyACM3 at 115200bps.
+Press CTRL+] or CTRL+D to exit.
+
+GSM&gt; help
+
+== GSMTerm Help ==
+
+Command History: Press the up &amp; down arrow keys to move backwards or forwards through your command history.
+
+Command Completion: Press the TAB key to provide command completion suggestions. Press the TAB key after a command is fully typed (with or without a &quot;=&quot; character) to quickly see its syntax.
+
+Command Documentation: Type a command, followed with two quesetion marks to access its documentation, e.g. &quot;&lt;COMMAND&gt;??&quot;. Alternatively, precede the command with a question mark (&quot;?&lt;COMMAND&gt;&quot;), or type &quot;help &lt;COMMAND&gt;&quot;.
+
+List Available Commands: Type &quot;ls [category]&quot; to list the available AT commands known to GSMTerm for the given category (or all commands if no category is specified).
+Type &quot;lscat&quot; to see a list of categories.
+
+Load Script: Type &quot;load &lt;filename&gt;&quot; to load and execute a file containing AT commands, separated by newlines, e.g. &quot;load ./myscript.txt&quot;.
+
+To exit GSMTerm, press CTRL+] or CTRL+D.
+
+GSM&gt; AT
+OK              
+GSM&gt; AT+CSQ??
+
+Signal Quality (AT+CSQ)
+
+Category: Network Service
+Description: This command determines the received signal strength indication (&lt;rssi&gt;) and the channel bit error rate (&lt;ber&gt;) with or without a SIM card inserted
+Values: No parameters.
+Response Values: 
+ &lt;rssi&gt; 0: -113 dBm or less
+        1: -111 dBm
+        2 to 30: -109 to -53 dBm
+        31: -51dBm or greater
+        99: not known or not detectable
+ &lt;ber&gt; 0...7: as RXQUAL values in the table GSM 05.08
+Command Syntax:
+ AT+CSQ
+</code></pre></li>
+
+<li><p>sendsms.py ：发送短信的命令行脚本，执行 `` 可以获取帮助信息，下面是一个简单的例子：</p>
+
+<pre><code>~# sendsms.py -i /dev/ttyACM3 -b 115200 13824741490
+Connecting to GSM modem on /dev/ttyACM3...
+Checking for network coverage...
+
+Please type your message and press enter to send it:
+&gt; Hello World!
+
+Sending SMS message...
+Message sent.
+</code></pre></li>
+
+<li><p>identify-modem.py ：用于连接和调试 GSM modem 。</p></li>
+</ul>
+
+<p>python-gsmmodem 主要提供了如下几个编程模块：</p>
+
+<ul>
+<li>serial_comms ，基于 pyserial ，提供了用于低级别串口通讯的类 SerialComms 。</li>
+<li>modem ，提供了几个操作 GSM modem 的类，例如 GsmModem ，SentSms 。</li>
+<li>exceptions ，提供了一些额外的方法，比如超时处理，中断处理，供 GsmModem 使用。</li>
+<li>pdu ，提供了对短信进行 PDU 编码的方法。</li>
+</ul>
+
+<h3 id="2-2-serial-comms">2.2. serial_comms</h3>
+
+<p>serial_comms 的主类是 SerialComms ，使用前先导入：</p>
+
+<pre><code>from serial_comms import GsmModem
+</code></pre>
+
+<h3 id="2-3-modem">2.3. modem</h3>
+
+<p>modem 模块的主类是 GsmModem 类，它的父类是 SerialComms ，提供了与 GSM Modem 交互的大部分方法。使用前要先从 modme 模块导入：</p>
+
+<pre><code>from gsmmodem.modem import GsmModem
+</code></pre>
+
+<p>GsmModem 类的构造函数：</p>
+
+<pre><code>GsmModem(self, port, baudrate=115200, incomingCallCallbackFunc=None, smsReceivedCallbackFunc=None, smsStatusReportCallback=None)
+</code></pre>
+
+<p>参数的含义：</p>
+
+<ul>
+<li>port ，设置 AT 指令端口</li>
+<li>baudrate ，波特率</li>
+<li>incomingCallCallbackFunc ，处理接听电话的回调函数</li>
+<li>smsReceivedCallbackFunc ，处理接收短信的回调函数</li>
+<li>smsStatusReportCallback ，处理短信状态报告的回调函数</li>
+</ul>
+
+<p>新建实例后，要先连接端口，初始化 GSM Modem：</p>
+
+<pre><code>connect(self, pin=None)
+</code></pre>
+
+<p>这个函数会打开 AT 指令端口，初始化 GSM Modem 和 SIM 卡。参数 pin 用于设置 SIM 卡内的 PIN 码 ，字符串类型，通常 SIM 卡没有启动 PIN 码锁定，设为 None 即可。如果 SIM 卡需要 PIN 码而这里没有设置，函数会抛出 PinRequiredError 异常。如果 PIN 码设置错误，函数会抛出 IncorrectPinError 异常。相应的，结束时应该调用 <code>close()</code> 关闭串口，这是从 <code>SerialComms</code> 类继承的方法。</p>
+
+<blockquote>
+<p>新购买的 SIM 卡背面提示中会写有 PIN 码初始值，也可以在运营商官网查询修改，通常是四位数字。PIN 码的作用是增强 SIM 卡安全性，例如可以在手机上为 SIM 卡启动 PIN 码锁定，这样每次开机都要输入 PIN 码。</p>
+</blockquote>
+
+<p>初始化之后，应该确认 GSM Modem 已经成功接入运营商网络。可以调用 <code>waitForNetworkCoverage()</code> ，它会引起阻塞，直到成功入网，或者超时：</p>
+
+<pre><code>waitForNetworkCoverage(self, timeout=None)
+</code></pre>
+
+<p>参数 timeout 可以设置超时时间，int 类型，单位是秒。超时会抛出 TimeoutException 异常，如果有其他错误，会抛出 InvalidStateException 。调用结束后会返回当前的信号强度。</p>
+
+<p>还有一个单独的函数，可以获取信号强度：</p>
+
+<pre><code>signalStrength(self)
+</code></pre>
+
+<p>返回值是整数，范围在 0~99 表示信号强度，-1 表示未知。</p>
+
+<p>还有一些功能函数，可以获取 Modem 的一些状态，这些函数都是执行相关的 AT 指令，如果要执行其他 AT 指令，可以通过 SerialComms 类提供的 wirte 方法直接向 Modem 发送：</p>
+
+<ul>
+<li>manufacturer(self) ，返回 Modem 的厂家信息</li>
+<li>model(self) ，返回 Model 的名称</li>
+<li>revision(self) ， 返回 Modem 的固件版本</li>
+<li>imei(self) ，返回 Modem 的 IMEI 编码</li>
+<li>imsi(self) ，返回 SIM 卡的 IMSI 编码</li>
+<li>networkName(self) ，返回当前 Modem 所注册的网络的名称</li>
+<li>supportedCommands(self) ，返回 Modem 支持的 AT 指令的列表</li>
+</ul>
+
+<p>设置短信编码的格式可以调用 <code>smsTextMode()</code> ：</p>
+
+<pre><code>smsTextMode(self, textMode)
+</code></pre>
+
+<p>参数 textMode 是布尔型，设为 True 表示 text 格式，否则为 PDU 格式。text 格式是明文传输，不适合传输中文，国内目前都是 PDU 格式，初始化时，已经默认设为 PDU 格式。</p>
+
+<p>发送文本类型的短信可以用 <code>sendSms()</code> 函数：</p>
+
+<pre><code>sendSms(self, destination, text, waitForDeliveryReport=False, deliveryTimeout=15, sendFlash=False)
+</code></pre>
+
+<p>参数的含义：</p>
+
+<ul>
+<li>destination ，字符串类型，目标手机的电话号码</li>
+<li>text ，要发送的文本内容</li>
+<li>waitForDeliveryReport ，布尔型，如果设为 True ，函数会阻塞，知道收到短信状态的返回报告</li>
+<li>deliveryTimeout ，整数，或者浮点数，当 waitForDeliveryReport=True 时有效，表示阻塞超时时间。</li>
+</ul>
+
+<p>如果发送过程过程中出现错误，会抛出 CommandError 异常。如果超时，会抛出 TimeoutException 异常。</p>
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>640 Words</p>
+
+            <p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2017-06-01 08:00 &#43;0800</p>
+        </div>
+
+        
+            <div class="pagination">
+                <div class="pagination__title">
+                    <span class="pagination__title-h"></span>
+                    <hr />
+                </div>
+
+                <div class="pagination__buttons">
+                    
+                        <span class="button previous">
+                            <a href="https://shaocheng.li/posts/2017/06/13/">
+                                <span class="button__icon">←</span>
+                                <span class="button__text">Paho JavaScript Client 学习笔记</span>
+                            </a>
+                        </span>
+                    
+
+                    
+                        <span class="button next">
+                            <a href="https://shaocheng.li/posts/2017/05/24/">
+                                <span class="button__text">Linux Test Project 学习笔记</span>
+                                <span class="button__icon">→</span>
+                            </a>
+                        </span>
+                    
+                </div>
+            </div>
+        
+
+        
+          <div id="comments" class="thin">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "shaocheng-li" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+        
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>&copy; 2020</span>
+            
+                <span><a href="https://shaocheng.li">Shaocheng.Li</a></span>
+            
+            <span><a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></span>
+            <span> <a href="https://shaocheng.li/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a></span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span>Made with &#10084; by <a href="https://github.com/rhazdon">rhazdon</a></span>
+        </div>
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="https://shaocheng.li/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+
+
+
+    </body>
+</html>
