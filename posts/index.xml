@@ -5,8 +5,19 @@
         <description>Recent content in Posts on Shaocheng.Li</description>
         <generator>Hugo -- gohugo.io</generator>
         <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-        <lastBuildDate>Wed, 15 Jan 2020 14:31:11 +0800</lastBuildDate>
+        <lastBuildDate>Tue, 24 Mar 2020 21:15:11 +0800</lastBuildDate>
         <atom:link href="https://shaocheng.li/posts/index.xml" rel="self" type="application/rss+xml" />
+        
+        <item>
+            <title>使用 pm2 管理进程</title>
+            <link>https://shaocheng.li/posts/2020/03/24/</link>
+            <pubDate>Tue, 24 Mar 2020 21:15:11 +0800</pubDate>
+            
+            <guid>https://shaocheng.li/posts/2020/03/24/</guid>
+            <description>PM2 是基于 nodejs 的进程管理工具，需要用 npm 安装，通常用于管理 node 进程，也可以管理其他语言编写的软件，官网是 https://pm2.keymetrics.io/ ，具有如下特性：</description>
+            <content type="html"><![CDATA[<p>PM2 是基于 nodejs 的进程管理工具，需要用 npm 安装，通常用于管理 node 进程，也可以管理其他语言编写的软件，官网是 <a href="https://pm2.keymetrics.io/" target="_blank">https://pm2.keymetrics.io/</a> ，具有如下特性：</p>
+]]></content>
+        </item>
         
         <item>
             <title>Markdown Syntax Guide</title>
@@ -119,17 +130,22 @@ H1 H2 H3 H4 H5 H6 Paragraph Xerum, quo qui aut unt expliquam qui dolut labo.</de
         </item>
         
         <item>
-            <title>ip 命令学习笔记</title>
+            <title>iproute2 学习笔记</title>
             <link>https://shaocheng.li/posts/2020/01/08/</link>
             <pubDate>Wed, 08 Jan 2020 08:00:00 +0800</pubDate>
             
             <guid>https://shaocheng.li/posts/2020/01/08/</guid>
-            <description>ip 命令是 iproute2 工具包提供的 Linux 网络管理工具，集成了原有的 ifconfg 、arp 、route 、netstat 等多种命令的功能，并提供了很多新特性。它的语法是：
+            <description>iproute2 是一个 Linux 网络管理工具包，提供了 ip 、tc 、ss 等组件，集成了原有的 ifconfg 、arp 、route 、netstat 等多种命令的功能，并新增了很多特性。
+1. ip 命令 ip 命令的语法是：
 ip [OPTIONS] OBJECT {COMMAND|help} 其中：
  OBJECT 表示操作对象，可选的值有 { link | addr | addrlabel | route | rule | neigh | ntable | tunnel | maddr | mroute | mrule | monitor | xfrm | token } ，常用的对象包括：  link：网络设备 addr：设备上的协议（IP或IPv6）地址 addrlabel：协议地址选择的标签配置 route：路由表条目 rule：路由策略数据库中的规则 neigh: ARP 表  OPTIONS 表示选项，可选的值有 { -V[ersion] | -s[tatistics] | -d[etails] | -r[esolve] | -h[uman-readable] | -iec | -f[amily] { inet | inet6 | ipx | dnet | link } | -o[neline] | -t[imestamp] | -b[atch] [filename] | -rc[vbuf] [size] } 常用的选项包括：  -V，-Version：显示指令版本信息 -s，-stats，statistics：输出详细信息 -h，-human，-human-readable：输出人类可读的统计信息和后缀 -o，-oneline：将每条记录输出到一行，用 \字符替换换行符   1.</description>
             <content type="html"><![CDATA[
 
-<p>ip 命令是 iproute2 工具包提供的 Linux 网络管理工具，集成了原有的 ifconfg 、arp 、route 、netstat 等多种命令的功能，并提供了很多新特性。它的语法是：</p>
+<p>iproute2 是一个 Linux 网络管理工具包，提供了 ip 、tc 、ss 等组件，集成了原有的 ifconfg 、arp 、route 、netstat 等多种命令的功能，并新增了很多特性。</p>
+
+<h2 id="1-ip-命令">1. ip 命令</h2>
+
+<p>ip 命令的语法是：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">ip <span style="color:#f92672">[</span>OPTIONS<span style="color:#f92672">]</span> OBJECT <span style="color:#f92672">{</span>COMMAND|help<span style="color:#f92672">}</span></code></pre></div>
 <p>其中：</p>
 
@@ -154,7 +170,7 @@ ip [OPTIONS] OBJECT {COMMAND|help} 其中：
 </ul></li>
 </ul>
 
-<h2 id="1-配置网卡">1. 配置网卡</h2>
+<h3 id="1-1-配置网卡">1.1 配置网卡</h3>
 
 <p>调用 <code>ip addr</code> 可以查看所有网卡的信息和配置，也可以在后追加网卡的接口名称，单独查看特定网卡，以 <code>enp1s0</code> 为例：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">root@localhost:~# ip addr show enp1s0
@@ -207,7 +223,7 @@ ip [OPTIONS] OBJECT {COMMAND|help} 其中：
     <span style="color:#ae81ff">520406</span>     <span style="color:#ae81ff">6159</span>     <span style="color:#ae81ff">0</span>       <span style="color:#ae81ff">0</span>       <span style="color:#ae81ff">0</span>       <span style="color:#ae81ff">0</span>       
     TX errors: aborted  fifo   window heartbeat transns
                <span style="color:#ae81ff">0</span>        <span style="color:#ae81ff">0</span>       <span style="color:#ae81ff">0</span>       <span style="color:#ae81ff">0</span>       <span style="color:#ae81ff">2</span>       </code></pre></div>
-<h2 id="2-配置路由表">2. 配置路由表</h2>
+<h3 id="1-2-配置路由表">1.2 配置路由表</h3>
 
 <p>显示系统的路由表：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">root@localhost:~# ip route show
@@ -227,7 +243,20 @@ default via <span style="color:#ae81ff">10</span>.76.141.9 dev enp0s29u1u4c2  pr
 <li><p><code>metric 100</code> 表示优先级，数字小的优先。</p></li>
 </ul>
 
-<h2 id="3-配置-arp">3. 配置 ARP</h2>
+<p>添加一条到主机的静态路由：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">ip route add <span style="color:#ae81ff">192</span>.0.2.1 via <span style="color:#ae81ff">192</span>.168.145.2 dev enp1s0</code></pre></div>
+<ul>
+<li><code>add</code> 表示添加，如果要删除可以用 del 命令</li>
+<li><code>192.0.2.1</code> 表示目标主机的 IP</li>
+<li><code>via 192.168.145.2</code> 表示吓一跳地址</li>
+<li><code>dev enp1s0</code> 表示出口的网卡设备</li>
+</ul>
+
+<p>如果要添加到网络的静态路由，将目标地址设为一个网段即可：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">ip route add <span style="color:#ae81ff">192</span>.0.2.1/24 via <span style="color:#ae81ff">192</span>.168.145.2 dev enp1s0</code></pre></div>
+<p>如果要添加一条默认路由，将目标地址设为 default 即可：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">ip route add default via <span style="color:#ae81ff">192</span>.168.145.2 dev enp1s0</code></pre></div>
+<h3 id="1-3-配置-arp">1.3 配置 ARP</h3>
 
 <p>查看系统的 ARP 缓存：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">root@localhost:~# ip neigh show
@@ -261,7 +290,22 @@ fe80::4e54:99ff:fe45:e5d5 dev enp0s29u1u4c2 lladdr 4c:54:99:45:e5:d5 router REAC
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">ip neight delete dev enp1s0 add <span style="color:#ae81ff">192</span>.168.5.50</code></pre></div>
 <p>清空当前 ARP 表：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">ip neight flush dev enp1s0</code></pre></div>
-<h2 id="4-查看端口状态">4. 查看端口状态</h2>
+<h2 id="2-ss-命令">2. ss 命令</h2>
+
+<p>ss 是查看 socket 连接信息的工具。常用的参数有：</p>
+
+<ul>
+<li>-a ，显示所有 socket 连接的信息。</li>
+<li>-4 ，只显示 IPv4 的 socket 。</li>
+<li>-6 ，只显示 IPv6 的 socket 。</li>
+<li>-t ，只显示 TCP 协议的 socket 。</li>
+<li>-u ，只显示 UCP 协议的 socket 。</li>
+<li>-x ，只显示 Unix 域的 socket 。</li>
+<li>-l ，显示处于 LISTEN 状态的 socket 。</li>
+<li>-o ，显示定时器信息。</li>
+<li>-p ，</li>
+<li>-e ，</li>
+</ul>
 
 <h2 id="参考">参考：</h2>
 
@@ -848,7 +892,7 @@ SOCK <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;./ser
 
 <p>在字符前可以加一个数字，表示有连续多个这样的数据，例如 <code>4I</code> 等同于 <code>IIII</code> 。对于 s 字符，默认只会去 bytes 数据的第一个字节，如果前面加一个数字，表示取 bytes 数去的前面几个字节。</p>
 
-<p>struct.unpack()` 函数可以把 bytes 类型转换为其他数据类型，例如把一个 6 字节的 bytes 转换为一个 4 字节的无符号整数和一个 2 字节的无符号整数：</p>
+<p><code>struct.unpack()</code> 函数可以把 bytes 类型转换为其他数据类型，例如把一个 6 字节的 bytes 转换为一个 4 字节的无符号整数和一个 2 字节的无符号整数：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">&gt;&gt;&gt;</span> struct<span style="color:#f92672">.</span>unpack(<span style="color:#e6db74">&#39;&gt;IH&#39;</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\xf0\xf0\xf0\xf0\x08\x08</span><span style="color:#e6db74">&#39;</span>)
 (<span style="color:#ae81ff">4042322160</span>, <span style="color:#ae81ff">2056</span>)</code></pre></div>
 <p>举例填充一个数据帧，由两个单字节整数，一个四字节整数和四个字符组成：</p>
@@ -6417,11 +6461,62 @@ static int pci_conf1_write(unsigned int seg, unsigned int bus, unsigned int devf
 
 <p>访问 PCIe 扩展的配置空间需要用 <code>pci_conf2_read()</code> 和 <code>pci_conf2_write()</code> 函数。</p>
 
-<h2 id="4-参考">4. 参考</h2>
+<h2 id="4-pci-设备的枚举过程">4. PCI 设备的枚举过程</h2>
+
+<p>系统上电后，会采用深度优先算法，从 Host Bridge 开始对所有的 PCI/PCIe 设备进行扫描，其过程简要来说是对每一个可能的分支路径深入到不能再深入为止，而且每个节点只能访问一次。这个过程为 PCI 设备枚举。枚举过程中，系统通过配置读事物包来获取下游设备的信息，通过配置写事物包对下游设备进行设置。以下图为例：</p>
+
+<p><img src="/images/2017-11-27/2017-11-27_5.jpeg" alt="" /></p>
+
+<p>PCI 设备体系是一个树形结构，Host Bridge 扩展的总线为 Bus 0 ，然后从左开始向下搜索，每个 Bridge 扩展一条总线，依次以数字顺序从小到大命名 Bus ID ，向下到尽头后退回。如果去掉了上图的 Bus 3 ，后面设备的 Bus ID 都会发生改变，并向前递进。</p>
+
+<p>在 Linux 系统中，可以用 <code>lspci -t</code> 命令查询系统枚举到的 PCI 设备，结果以树形显示依赖关系，例如：</p>
+
+<pre><code>root@localhost:~# lspci -t -v
+-[0000:00]-+-00.0  Intel Corporation Atom Processor Z36xxx/Z37xxx Series SoC Transaction Register
+           +-02.0  Intel Corporation Atom Processor Z36xxx/Z37xxx Series Graphics &amp; Display
+           +-11.0  Intel Corporation Atom Processor Z36xxx/Z37xxx Series SDIO Controller
+           +-12.0  Intel Corporation Atom Processor Z36xxx/Z37xxx Series SDIO Controller
+           +-13.0  Intel Corporation Atom Processor E3800 Series SATA AHCI Controller
+           +-17.0  Intel Corporation Atom Processor E3800 Series eMMC 4.5 Controller
+           +-1a.0  Intel Corporation Atom Processor Z36xxx/Z37xxx Series Trusted Execution Engine
+           +-1b.0  Intel Corporation Atom Processor Z36xxx/Z37xxx Series High Definition Audio Controller
+           +-1c.0-[01]----00.0  Intel Corporation I210 Gigabit Network Connection
+           +-1c.1-[02]----00.0  Intel Corporation I210 Gigabit Network Connection
+           +-1c.2-[03]----00.0  Intel Corporation Wireless 3165
+           +-1c.3-[04]----00.0  Intel Corporation 82574L Gigabit Network Connection
+           +-1d.0  Intel Corporation Atom Processor Z36xxx/Z37xxx Series USB EHCI
+           +-1f.0  Intel Corporation Atom Processor Z36xxx/Z37xxx Series Power Control Unit
+           \-1f.3  Intel Corporation Atom Processor E3800 Series SMBus Controller
+root@localhost:~# lspci
+00:00.0 Host bridge: Intel Corporation Atom Processor Z36xxx/Z37xxx Series SoC Transaction Register (rev 11)
+00:02.0 VGA compatible controller: Intel Corporation Atom Processor Z36xxx/Z37xxx Series Graphics &amp; Display (rev 11)
+00:11.0 SD Host controller: Intel Corporation Atom Processor Z36xxx/Z37xxx Series SDIO Controller (rev 11)
+00:12.0 SD Host controller: Intel Corporation Atom Processor Z36xxx/Z37xxx Series SDIO Controller (rev 11)
+00:13.0 SATA controller: Intel Corporation Atom Processor E3800 Series SATA AHCI Controller (rev 11)
+00:17.0 SD Host controller: Intel Corporation Atom Processor E3800 Series eMMC 4.5 Controller (rev 11)
+00:1a.0 Encryption controller: Intel Corporation Atom Processor Z36xxx/Z37xxx Series Trusted Execution Engine (rev 11)
+00:1b.0 Audio device: Intel Corporation Atom Processor Z36xxx/Z37xxx Series High Definition Audio Controller (rev 11)
+00:1c.0 PCI bridge: Intel Corporation Atom Processor E3800 Series PCI Express Root Port 1 (rev 11)
+00:1c.1 PCI bridge: Intel Corporation Atom Processor E3800 Series PCI Express Root Port 2 (rev 11)
+00:1c.2 PCI bridge: Intel Corporation Atom Processor E3800 Series PCI Express Root Port 3 (rev 11)
+00:1c.3 PCI bridge: Intel Corporation Atom Processor E3800 Series PCI Express Root Port 4 (rev 11)
+00:1d.0 USB controller: Intel Corporation Atom Processor Z36xxx/Z37xxx Series USB EHCI (rev 11)
+00:1f.0 ISA bridge: Intel Corporation Atom Processor Z36xxx/Z37xxx Series Power Control Unit (rev 11)
+00:1f.3 SMBus: Intel Corporation Atom Processor E3800 Series SMBus Controller (rev 11)
+01:00.0 Ethernet controller: Intel Corporation I210 Gigabit Network Connection (rev 03)
+02:00.0 Ethernet controller: Intel Corporation I210 Gigabit Network Connection (rev 03)
+03:00.0 Network controller: Intel Corporation Wireless 3165 (rev 81)
+04:00.0 Ethernet controller: Intel Corporation 82574L Gigabit Network Connection
+</code></pre>
+
+<p>可以看出，Bus 1~Bus 4 是通过 <code>00:1c.0~00:1c.3</code> 四个 Bridge 设备扩展的。</p>
+
+<h2 id="5-参考">5. 参考</h2>
 
 <ul>
 <li><a href="https://zhuanlan.zhihu.com/p/26172972" target="_blank">深入PCI与PCIe之一：硬件篇</a></li>
 <li><a href="https://zhuanlan.zhihu.com/p/26244141" target="_blank">深入PCI与PCIe之二：软件篇</a></li>
+<li><a href="https://cloud.tencent.com/developer/article/1458755" target="_blank">PCIe 设备的枚举过程</a></li>
 <li><a href="https://en.wikipedia.org/wiki/PCI_configuration_space" target="_blank">PCI configuration space</a></li>
 <li><a href="https://www.kernel.org/doc/Documentation/filesystems/sysfs-pci.txt" target="_blank">sysfs-pci.txt</a></li>
 <li><a href="https://www.kernel.org/doc/Documentation/ABI/testing/sysfs-bus-pci" target="_blank">sysfs-bus-pci</a></li>

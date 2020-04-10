@@ -6,10 +6,19 @@
     <description>Recent content in untagged on Shaocheng.Li</description>
     <generator>Hugo -- gohugo.io</generator>
     <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-    <lastBuildDate>Wed, 15 Jan 2020 14:31:11 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 24 Mar 2020 21:15:11 +0800</lastBuildDate>
     
 	<atom:link href="https://shaocheng.li/tags/untagged/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>使用 pm2 管理进程</title>
+      <link>https://shaocheng.li/posts/2020/03/24/</link>
+      <pubDate>Tue, 24 Mar 2020 21:15:11 +0800</pubDate>
+      
+      <guid>https://shaocheng.li/posts/2020/03/24/</guid>
+      <description>PM2 是基于 nodejs 的进程管理工具，需要用 npm 安装，通常用于管理 node 进程，也可以管理其他语言编写的软件，官网是 https://pm2.keymetrics.io/ ，具有如下特性：</description>
+    </item>
     
     <item>
       <title>Markdown Syntax Guide</title>

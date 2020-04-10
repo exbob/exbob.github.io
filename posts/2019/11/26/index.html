@@ -657,7 +657,7 @@ SOCK <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;./ser
 
 <p>在字符前可以加一个数字，表示有连续多个这样的数据，例如 <code>4I</code> 等同于 <code>IIII</code> 。对于 s 字符，默认只会去 bytes 数据的第一个字节，如果前面加一个数字，表示取 bytes 数去的前面几个字节。</p>
 
-<p>struct.unpack()` 函数可以把 bytes 类型转换为其他数据类型，例如把一个 6 字节的 bytes 转换为一个 4 字节的无符号整数和一个 2 字节的无符号整数：</p>
+<p><code>struct.unpack()</code> 函数可以把 bytes 类型转换为其他数据类型，例如把一个 6 字节的 bytes 转换为一个 4 字节的无符号整数和一个 2 字节的无符号整数：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">&gt;&gt;&gt;</span> struct<span style="color:#f92672">.</span>unpack(<span style="color:#e6db74">&#39;&gt;IH&#39;</span>, <span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\xf0\xf0\xf0\xf0\x08\x08</span><span style="color:#e6db74">&#39;</span>)
 (<span style="color:#ae81ff">4042322160</span>, <span style="color:#ae81ff">2056</span>)</code></pre></div>
 <p>举例填充一个数据帧，由两个单字节整数，一个四字节整数和四个字符组成：</p>

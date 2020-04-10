@@ -3,18 +3,13 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://shaocheng.li/posts/2020/01/15/</loc>
-    <lastmod>2020-01-15T14:31:11+08:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://shaocheng.li/posts/</loc>
-    <lastmod>2020-01-15T14:31:11+08:00</lastmod>
+    <lastmod>2020-03-24T21:15:11+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://shaocheng.li/</loc>
-    <lastmod>2020-01-15T14:31:11+08:00</lastmod>
+    <lastmod>2020-03-24T21:15:11+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
@@ -29,7 +24,7 @@
   
   <url>
     <loc>https://shaocheng.li/tags/</loc>
-    <lastmod>2020-01-15T14:31:11+08:00</lastmod>
+    <lastmod>2020-03-24T21:15:11+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="fr"
@@ -44,6 +39,16 @@
   
   <url>
     <loc>https://shaocheng.li/tags/untagged/</loc>
+    <lastmod>2020-03-24T21:15:11+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://shaocheng.li/posts/2020/03/24/</loc>
+    <lastmod>2020-03-24T21:15:11+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://shaocheng.li/posts/2020/01/15/</loc>
     <lastmod>2020-01-15T14:31:11+08:00</lastmod>
   </url>
   
