@@ -1,0 +1,223 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=author content="Shaocheng.Li"><meta name=description content="1. 硬件 PCI 总线是一个并行总线，一个时钟周期有 32 个 bit （后扩展到 64 bit） 同时传输，带宽 133MB/s ，PCI 设备具有独立的地址空间，叫做 PCI 总线地址空间，通过 Host bridge 隔离处理器系统的存储器域与 PCI 总线域，下面挂在了一个 PCI 总线树，典型的结构如下图：
+PCI 总线主要分为三个部分：
+ PCI 设备。符合 PCI 总线标准的设备就被称为 PCI 设备，PCI 总线架构中可以包含多个 PCI 设备。图中的 Audio、LAN 都是一个 PCI 设备。PCI 设备同时也分为主设备和目标设备两种，主设备是一次访问操作的发起者，而目标设备则是被访问者。 PCI 总线。PCI 总线在系统中可以有多条，类似于树状结构进行扩展，每条 PCI 总线都可以连接多个 PCI 设备/桥，上图中有两条 PCI 总线。 PCI 桥。当一条 PCI 总线的承载量不够时，可以用新的 PCI 总线进行扩展，而 PCI 桥则是连接 PCI 总线之间的纽带，如图的 PCI-to-PCI Bridge 。  后期为了提高数据传输速率，又推出了 PCIe 总线，改为串行总线，差分信号传输，带宽提升至 250MB/s ，最新的 PCIe 3."><meta name=keywords content><meta name=robots content="noodp"><meta name=theme-color content="#252627"><link rel=canonical href=https://shaocheng.li/posts/2017/11/27/><title>x86 计算机的 PCI 总线结构 :: Shaocheng.Li — Hello Friends</title><link href=https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css rel=stylesheet type=text/css><link rel=stylesheet href=https://shaocheng.li/main.min.73f55a8d452be4a71b2960620b80252cf69abd84d63fe7501abf0a39b1a70a78.css><link rel=stylesheet type=text/css href=https://shaocheng.li/css/custom.css><link rel=apple-touch-icon sizes=180x180 href=https://shaocheng.li/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=https://shaocheng.li/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=https://shaocheng.li/favicon-16x16.png><link rel=manifest href=https://shaocheng.li/site.webmanifest><link rel=mask-icon href=https://shaocheng.li/safari-pinned-tab.svg color=#252627><link rel="shortcut icon" href=https://shaocheng.li/favicon.ico><meta name=msapplication-TileColor content="#252627"><meta name=theme-color content="#252627"><meta itemprop=name content="x86 计算机的 PCI 总线结构"><meta itemprop=description content="1. 硬件 PCI 总线是一个并行总线，一个时钟周期有 32 个 bit （后扩展到 64 bit） 同时传输，带宽 133MB/s ，PCI 设备具有独立的地址空间，叫做 PCI 总线地址空间，通过 Host bridge 隔离处理器系统的存储器域与 PCI 总线域，下面挂在了一个 PCI 总线树，典型的结构如下图：
+PCI 总线主要分为三个部分：
+ PCI 设备。符合 PCI 总线标准的设备就被称为 PCI 设备，PCI 总线架构中可以包含多个 PCI 设备。图中的 Audio、LAN 都是一个 PCI 设备。PCI 设备同时也分为主设备和目标设备两种，主设备是一次访问操作的发起者，而目标设备则是被访问者。 PCI 总线。PCI 总线在系统中可以有多条，类似于树状结构进行扩展，每条 PCI 总线都可以连接多个 PCI 设备/桥，上图中有两条 PCI 总线。 PCI 桥。当一条 PCI 总线的承载量不够时，可以用新的 PCI 总线进行扩展，而 PCI 桥则是连接 PCI 总线之间的纽带，如图的 PCI-to-PCI Bridge 。  后期为了提高数据传输速率，又推出了 PCIe 总线，改为串行总线，差分信号传输，带宽提升至 250MB/s ，最新的 PCIe 3."><meta itemprop=datePublished content="2017-11-27T08:00:00&#43;08:00"><meta itemprop=dateModified content="2017-11-27T08:00:00&#43;08:00"><meta itemprop=wordCount content="1953"><meta itemprop=keywords content><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://shaocheng.li"><meta name=twitter:title content="x86 计算机的 PCI 总线结构"><meta name=twitter:description content="1. 硬件 PCI 总线是一个并行总线，一个时钟周期有 32 个 bit （后扩展到 64 bit） 同时传输，带宽 133MB/s ，PCI 设备具有独立的地址空间，叫做 PCI 总线地址空间，通过 Host bridge 隔离处理器系统的存储器域与 PCI 总线域，下面挂在了一个 PCI 总线树，典型的结构如下图：
+PCI 总线主要分为三个部分：
+ PCI 设备。符合 PCI 总线标准的设备就被称为 PCI 设备，PCI 总线架构中可以包含多个 PCI 设备。图中的 Audio、LAN 都是一个 PCI 设备。PCI 设备同时也分为主设备和目标设备两种，主设备是一次访问操作的发起者，而目标设备则是被访问者。 PCI 总线。PCI 总线在系统中可以有多条，类似于树状结构进行扩展，每条 PCI 总线都可以连接多个 PCI 设备/桥，上图中有两条 PCI 总线。 PCI 桥。当一条 PCI 总线的承载量不够时，可以用新的 PCI 总线进行扩展，而 PCI 桥则是连接 PCI 总线之间的纽带，如图的 PCI-to-PCI Bridge 。  后期为了提高数据传输速率，又推出了 PCIe 总线，改为串行总线，差分信号传输，带宽提升至 250MB/s ，最新的 PCIe 3."><meta property="article:published_time" content="2017-11-27 08:00:00 &#43;0800 &#43;0800"></head><body><div class=container><header class=header><span class=header__inner><a href=https://shaocheng.li/ style=text-decoration:none><div class=logo><span class=logo__mark>></span>
+<span class=logo__text>$ cd /home/</span>
+<span class=logo__cursor></span></div></a><span class=header__right><nav class=menu><ul class=menu__inner><li><a href=https://shaocheng.li/about/>About</a></li><li><a href=https://shaocheng.li/posts/>Posts</a></li></ul></nav><span class=menu-trigger><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></span><span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 41C32.4934 41 41 32.4934 41 22 41 11.5066 32.4934 3 22 3 11.5066 3 3 11.5066 3 22s8.5066 19 19 19zM7 22C7 13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22z"/></svg></span></span></span></header><div class=content><main class=post><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>10 minutes</p></div><article><h1 class=post-title><a href=https://shaocheng.li/posts/2017/11/27/>x86 计算机的 PCI 总线结构</a></h1><hr><aside id=toc><div class=toc-title>Table of Contents</div><nav id=TableOfContents><ul><li><ul><li><a href=#1-硬件>1. 硬件</a></li><li><a href=#2-软件>2. 软件</a></li><li><a href=#3-linux>3. Linux</a><ul><li><a href=#3-1-user-space>3.1. user space</a></li><li><a href=#3-2-kernel>3.2. kernel</a></li></ul></li><li><a href=#4-pci-设备的枚举过程>4. PCI 设备的枚举过程</a></li><li><a href=#5-参考>5. 参考</a></li></ul></li></ul></nav></aside><hr><div class=post-content><h2 id=1-硬件>1. 硬件</h2><p>PCI 总线是一个并行总线，一个时钟周期有 32 个 bit （后扩展到 64 bit） 同时传输，带宽 133MB/s ，PCI 设备具有独立的地址空间，叫做 PCI 总线地址空间，通过 Host bridge 隔离处理器系统的存储器域与 PCI 总线域，下面挂在了一个 PCI 总线树，典型的结构如下图：</p><p><img src=https://shaocheng.li/images/2017-11-27/2017-11-27_1.png alt></p><p>PCI 总线主要分为三个部分：</p><ol><li>PCI 设备。符合 PCI 总线标准的设备就被称为 PCI 设备，PCI 总线架构中可以包含多个 PCI 设备。图中的 Audio、LAN 都是一个 PCI 设备。PCI 设备同时也分为主设备和目标设备两种，主设备是一次访问操作的发起者，而目标设备则是被访问者。</li><li>PCI 总线。PCI 总线在系统中可以有多条，类似于树状结构进行扩展，每条 PCI 总线都可以连接多个 PCI 设备/桥，上图中有两条 PCI 总线。</li><li>PCI 桥。当一条 PCI 总线的承载量不够时，可以用新的 PCI 总线进行扩展，而 PCI 桥则是连接 PCI 总线之间的纽带，如图的 PCI-to-PCI Bridge 。</li></ol><p>后期为了提高数据传输速率，又推出了 PCIe 总线，改为串行总线，差分信号传输，带宽提升至 250MB/s ，最新的 PCIe 3.0 已经可以达到 8000MB/s 。</p><h2 id=2-软件>2. 软件</h2><p>在 PCI 总线上，通过 Bus number ，Device number 和 Function number 标识每个 PCI 设备，简称 BDF ，每个 PCI 设备内有单独存储空间，叫做 PCI 配置空间。可以通过 IO 端口 CONFIG_ADDRESS 和 CONFIG_DATA 读取 PCI 配置空间。CONFIG_ADDRESS 的地址是 0xCF8，CONFIG_DATA 的地址是 0xCFC，两个寄存器都为 32bit。CONFIG_ADDRESS 寄存器格式：</p><p><img src=https://shaocheng.li/images/2017-11-27/2017-11-27_2.jpg alt></p><ul><li>bit31 是使能对 PCI Bus CONFIG_DATA 的访问；</li><li>bit 30～24 为保留，为只读，访问时返回值为 0；</li><li>bit 23～16 是Bus号；</li><li>bit 15～10 是设备号；</li><li>bit 10～8 是功能号；</li><li>bit 7～2 是配置空间中的寄存器，单位为 DWORD；</li><li>bit 1～0 为只读，读取时放回为0。</li></ul><p>直接操作 IO 端口读取 PCI 配置信息分为两步：</p><ol><li>向 CONFIG_ADDRESS 寄存器写入要读/写的位置；</li><li>从CONFIG_DATA寄存器（端口0xCFC）读/写所需要数据。</li></ol><p>配置空间共 256 字节（地址 0x00~0xFF）， 前 64 字节（地址 0x00~0x3F ）是所有 PCI 设备必须支持的：</p><p><img src=https://shaocheng.li/images/2017-11-27/2017-11-27_3.png alt></p><p>配置空间都是小端存储。Vendor ID 是厂商 ID ，为保证唯一性，需要设备厂商向 PCI SIG 申请获得，Device ID 由厂商自定义。 Base Address Registers （BAR）用来定义该设备占用的 Memory/IO 空间的类型、起始地址和大小，PCI 设备做多有六个 BAR，PCI 桥最多有两个 BAR 。BAR 在 bit0 来表示该设备是映射到 memory 还是 IO，bar 的 bit0 是 readonly 的，也就是说，设备寄存器是映射到 memory 还是 IO 是由设备制造商决定的，其他人无法修改。空间的大小可以用如下方法读取：</p><ol><li>向寄存器写 0xFFFFFFFF；</li><li>读出寄存器的值，并取反；</li><li>再加 1 就是该空间的大小。</li></ol><p>下面是 BAR 的结构图：</p><p><img src=https://shaocheng.li/images/2017-11-27/2017-11-27_4.png alt></p><p>PCI 枚举是个不断递归调用发现新设备的过程，系统启动时, 从 Host Bridge 开始寻找设备和桥。发现桥后设置 Bus，会发现一个 PCI 设备子树，递归的过程中，BIOS/UEFI (或者 Linux 内核, 如果配置成这样)与每个 PCI 设备进行配置交易, 为其分配安全的地址空间和中断等资源。在整个过程结束后，一颗完整的资源分配完毕的树就建立好了。</p><p>PCIe 规范在 PCI 规范的基础上，将配置空间扩展到 4KB。原来的 CF8/CFC 方法仍然可以访问所有PCIe设备配置空间的头255B，但是该方法访问不了剩下的（255-4k）配置空间。</p><h2 id=3-linux>3. Linux</h2><h3 id=3-1-user-space>3.1. user space</h3><p>Linux 系统下查询 PCI 设备主要用 lspci 命令和 /sys 文件系统，一个 x86 主机为例：</p><pre><code># lspci
+00:00.0 Host bridge: Intel Corporation Device 0958
+00:14.0 SD Host controller: Intel Corporation Device 08a7 (rev 10)
+00:14.1 Serial controller: Intel Corporation Device 0936 (rev 10)
+00:14.2 USB controller: Intel Corporation Device 0939 (rev 10)
+00:14.3 USB controller: Intel Corporation Device 0939 (rev 10)
+00:14.4 USB controller: Intel Corporation Device 093a (rev 10)
+00:14.5 Serial controller: Intel Corporation Device 0936 (rev 10)
+00:14.6 Ethernet controller: Intel Corporation Device 0937 (rev 10)
+00:14.7 Ethernet controller: Intel Corporation Device 0937 (rev 10)
+00:15.0 Serial bus controller [0c80]: Intel Corporation Device 0935 (rev 10)
+00:15.1 Serial bus controller [0c80]: Intel Corporation Device 0935 (rev 10)
+00:15.2 Serial bus controller [0c80]: Intel Corporation Device 0934 (rev 10)
+00:17.0 PCI bridge: Intel Corporation Device 11c3
+00:17.1 PCI bridge: Intel Corporation Device 11c4
+00:1f.0 ISA bridge: Intel Corporation Device 095e
+01:00.0 Network controller: Intel Corporation Centrino Advanced-N 6205 [Taylor Peak] (rev 34)
+</code></pre><p>前面的数字依次是总线号：设备号：功能号，第一个设备就是 Host bridge ，<code>00:1f.0 ISA bridge</code> 是一个 ISA 桥，通过 PCI 扩展了一个 ISA 总线，可以兼容过时的 ISA 总线设备。有个两个 PCI bridge ：<code>00:17.0 PCI bridge</code> 和 <code>00:17.1 PCI bridge</code> ，扩展了两条 PCI 总线，也就是说该主机有三条 PCI 总线。而 <code>01:00.0 Network controller</code> 就是 PCI Bus #1 下的一个设备。单独查看该设备的详细信息：</p><pre><code># lspci -s 01:00.0 -vv
+01:00.0 Network controller: Intel Corporation Centrino Advanced-N 6205 [Taylor Peak] (rev 34)
+        Subsystem: Intel Corporation Centrino Advanced-N 6205 AGN
+        Control: I/O- Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx+
+        Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast &gt;TAbort- &lt;TAbort- &lt;MAbort- &gt;SERR- &lt;PERR- INTx-
+        Latency: 0
+        Interrupt: pin A routed to IRQ 45      #中断管脚和中断号
+        Region 0: Memory at 90000000 (64-bit, non-prefetchable) [size=8K]  #设备占用的地址空间
+        Capabilities: [c8] Power Management version 3
+                Flags: PMEClk- DSI+ D1- D2- AuxCurrent=0mA PME(D0+,D1-,D2-,D3hot+,D3cold+)
+                Status: D0 NoSoftRst- PME-Enable- DSel=0 DScale=0 PME-
+        Capabilities: [d0] MSI: Enable+ Count=1/1 Maskable- 64bit+
+                Address: 00000000fee0100c  Data: 4191
+        Capabilities: [e0] Express (v1) Endpoint, MSI 00
+                DevCap: MaxPayload 128 bytes, PhantFunc 0, Latency L0s &lt;512ns, L1 unlimited
+                        ExtTag- AttnBtn- AttnInd- PwrInd- RBE+ FLReset+
+                DevCtl: Report errors: Correctable- Non-Fatal- Fatal- Unsupported-
+                        RlxdOrd+ ExtTag- PhantFunc- AuxPwr- NoSnoop+ FLReset-
+                        MaxPayload 128 bytes, MaxReadReq 128 bytes
+                DevSta: CorrErr+ UncorrErr- FatalErr- UnsuppReq+ AuxPwr+ TransPend-
+                LnkCap: Port #0, Speed 2.5GT/s, Width x1, ASPM L0s L1, Latency L0 &lt;4us, L1 &lt;32us
+                        ClockPM+ Surprise- LLActRep- BwNot-
+                LnkCtl: ASPM Disabled; RCB 64 bytes Disabled- Retrain- CommClk+
+                        ExtSynch- ClockPM- AutWidDis- BWInt- AutBWInt-
+                LnkSta: Speed 2.5GT/s, Width x1, TrErr- Train- SlotClk+ DLActive- BWMgmt- ABWMgmt-
+        Capabilities: [100 v1] Advanced Error Reporting
+                UESta:  DLP- SDES- TLP- FCP- CmpltTO- CmpltAbrt- UnxCmplt- RxOF- MalfTLP- ECRC- UnsupReq- ACSViol-
+                UEMsk:  DLP- SDES- TLP- FCP- CmpltTO- CmpltAbrt- UnxCmplt- RxOF- MalfTLP- ECRC- UnsupReq- ACSViol-
+                UESvrt: DLP+ SDES- TLP- FCP+ CmpltTO- CmpltAbrt- UnxCmplt- RxOF+ MalfTLP+ ECRC- UnsupReq- ACSViol-
+                CESta:  RxErr- BadTLP- BadDLLP- Rollover- Timeout- NonFatalErr+
+                CEMsk:  RxErr- BadTLP- BadDLLP- Rollover- Timeout- NonFatalErr+
+                AERCap: First Error Pointer: 00, GenCap- CGenEn- ChkCap- ChkEn-
+        Capabilities: [140 v1] Device Serial Number 10-0b-a9-ff-ff-b4-93-2c
+        Kernel driver in use: iwlwifi   #设备驱动
+        Kernel modules: iwlwifi
+</code></pre><p>查看该设备的配置空间：</p><pre><code># lspci -s 01:00.0 -x 
+01:00.0 Network controller: Intel Corporation Centrino Advanced-N 6205 [Taylor Peak] (rev 34)
+00: 86 80 82 00 06 04 10 00 34 00 80 02 00 00 00 00
+10: 04 00 00 90 00 00 00 00 00 00 00 00 00 00 00 00
+20: 00 00 00 00 00 00 00 00 00 00 00 00 86 80 01 13
+30: 00 00 00 00 c8 00 00 00 00 00 00 00 ff 01 00 00
+</code></pre><p>通过 /sys 文件系统可以查看更多信息，/sys/bus/pci/ 目录包含的主要文件：</p><ul><li>devices：目录，包含所有 PCI 设备的文件夹</li><li>drivers ：目录，包含所有 PCI 设备所用的驱动</li><li>rescan : 文件，只写，写入一个非零值会导致系统重新扫描所有的 PCI 总线设备</li></ul><p>在 /sys/bus/pci/devices 下可以查看所有的 PCI 总线设备：</p><pre><code>root@WR-IntelligentDevice:/sys/bus/pci/devices# ls -l
+total 0
+lrwxrwxrwx 1 root root 0 Nov 26 10:57 0000:00:00.0 -&gt; ../../../devices/pci0000:00/0000:00:00.0
+lrwxrwxrwx 1 root root 0 Nov 26 10:57 0000:00:14.0 -&gt; ../../../devices/pci0000:00/0000:00:14.0
+lrwxrwxrwx 1 root root 0 Nov 26 10:57 0000:00:14.1 -&gt; ../../../devices/pci0000:00/0000:00:14.1
+lrwxrwxrwx 1 root root 0 Nov 26 10:57 0000:00:14.2 -&gt; ../../../devices/pci0000:00/0000:00:14.2
+lrwxrwxrwx 1 root root 0 Nov 26 10:57 0000:00:14.3 -&gt; ../../../devices/pci0000:00/0000:00:14.3
+lrwxrwxrwx 1 root root 0 Nov 26 10:57 0000:00:14.4 -&gt; ../../../devices/pci0000:00/0000:00:14.4
+lrwxrwxrwx 1 root root 0 Nov 26 10:57 0000:00:14.5 -&gt; ../../../devices/pci0000:00/0000:00:14.5
+lrwxrwxrwx 1 root root 0 Nov 26 10:57 0000:00:14.6 -&gt; ../../../devices/pci0000:00/0000:00:14.6
+lrwxrwxrwx 1 root root 0 Nov 26 10:57 0000:00:14.7 -&gt; ../../../devices/pci0000:00/0000:00:14.7
+lrwxrwxrwx 1 root root 0 Nov 26 10:57 0000:00:15.0 -&gt; ../../../devices/pci0000:00/0000:00:15.0
+lrwxrwxrwx 1 root root 0 Nov 26 10:57 0000:00:15.1 -&gt; ../../../devices/pci0000:00/0000:00:15.1
+lrwxrwxrwx 1 root root 0 Nov 26 10:57 0000:00:15.2 -&gt; ../../../devices/pci0000:00/0000:00:15.2
+lrwxrwxrwx 1 root root 0 Nov 26 10:57 0000:00:17.0 -&gt; ../../../devices/pci0000:00/0000:00:17.0
+lrwxrwxrwx 1 root root 0 Nov 26 10:57 0000:00:17.1 -&gt; ../../../devices/pci0000:00/0000:00:17.1
+lrwxrwxrwx 1 root root 0 Nov 26 10:57 0000:00:1f.0 -&gt; ../../../devices/pci0000:00/0000:00:1f.0
+lrwxrwxrwx 1 root root 0 Nov 26 10:57 0000:01:00.0 -&gt; ../../../devices/pci0000:00/0000:00:17.0/0000:01:00.0
+</code></pre><p>目录名称的结构是 PCI 域:总线号:设备号:功能号，PCI 域是 Linux 为了容纳更多总线设备而添加的概念。可以看出 <code>0000:01:00.0</code> 是 <code>0000:00:17.0</code> PCI 桥扩展的 PCI Bus #1 下的设备，而其他设备都在 Host bridge 下。进入目录 <code>0000:01:00.0</code>，可以看到 sys 文件系统已经把配置空间解析，并分别显示到各个文件中，主要文件的类型和功能：</p><ul><li>class：PCI class (ascii, ro)</li><li>config：PCI 配置空间 (binary, rw)，可以用 hexdum 命令查看</li><li>device ：PCI device id (ascii, ro)</li><li>vendor：PCI vendor id (ascii, ro)</li><li>enable：设备是否已经使能，1 表示激活，0 表示禁用 (ascii, rw)</li><li>irq：IRQ number (ascii, ro)</li><li>remove：从内核中删除该设备(ascii, wo)</li><li>resource：PCI 设备分配的内存资源 (ascii, ro)</li><li>resource0..N：PCI resource N (binary, mmap, rw[1])</li><li>driver：设备驱动（dir, rw)</li></ul><p>我们可以向 0000:01:00.0/remove 文件写 1 ，删除该设备，再向 0000:00:17.0/rescan 写 1 ，重新扫描添加该设备：</p><pre><code>/sys/bus/pci/devices# echo 1 &gt; 0000\:01\:00.0/remove 
+/sys/bus/pci/devices# ls 
+0000:00:00.0  0000:00:14.2  0000:00:14.5  0000:00:15.0  0000:00:17.0
+0000:00:14.0  0000:00:14.3  0000:00:14.6  0000:00:15.1  0000:00:17.1
+0000:00:14.1  0000:00:14.4  0000:00:14.7  0000:00:15.2  0000:00:1f.0
+/sys/bus/pci/devices# echo 1 &gt; 0000\:00\:17.0/rescan 
+/sys/bus/pci/devices# ls 
+0000:00:00.0  0000:00:14.3  0000:00:14.7  0000:00:17.0
+0000:00:14.0  0000:00:14.4  0000:00:15.0  0000:00:17.1
+0000:00:14.1  0000:00:14.5  0000:00:15.1  0000:00:1f.0
+0000:00:14.2  0000:00:14.6  0000:00:15.2  0000:01:00.0
+</code></pre><p>在 driver 目录下访问设备驱动，例如 <code>01:00.0 Network controller</code> 是一个 Wi-Fi 网卡，可以看出它用的驱动是 iwlwifi ：</p><pre><code>/sys/bus/pci/devices/0000:01:00.0/driver# ls -l
+total 0
+lrwxrwxrwx 1 root root    0 Nov 29 10:02 0000:01:00.0 -&gt; ../../../../devices/pci0000:00/0000:00:17.0/0000:01:00.0
+--w------- 1 root root 4096 Nov 29 10:02 bind
+lrwxrwxrwx 1 root root    0 Nov 29 10:02 module -&gt; ../../../../module/iwlwifi
+--w------- 1 root root 4096 Nov 29 10:02 new_id
+--w------- 1 root root 4096 Nov 29 10:02 remove_id
+--w------- 1 root root 4096 Nov 27 12:02 uevent
+--w------- 1 root root 4096 Nov 29 10:02 unbind
+</code></pre><p>在 module/parameters 可以读取驱动的各项参数：</p><pre><code>/sys/bus/pci/devices/0000:01:00.0/driver/module/parametrs# ls -l
+total 0
+-r--r--r-- 1 root root 4096 Nov 29 10:03 11n_disable
+-r--r--r-- 1 root root 4096 Nov 29 10:03 amsdu_size_8K
+-r--r--r-- 1 root root 4096 Nov 29 10:03 antenna_coupling
+-r--r--r-- 1 root root 4096 Nov 29 10:03 bt_coex_active
+-r--r--r-- 1 root root 4096 Nov 29 10:03 fw_restart
+-r--r--r-- 1 root root 4096 Nov 29 10:03 led_mode
+-r--r--r-- 1 root root 4096 Nov 29 10:03 nvm_file
+-r--r--r-- 1 root root 4096 Nov 29 10:03 power_level
+-r--r--r-- 1 root root 4096 Nov 29 10:03 power_save
+-r--r--r-- 1 root root 4096 Nov 29 10:03 swcrypto
+-r--r--r-- 1 root root 4096 Nov 29 10:03 wd_disable
+/sys/bus/pci/devices/0000:01:00.0/driver/module/parametrs# cat 11n_disable 
+0
+</code></pre><h3 id=3-2-kernel>3.2. kernel</h3><p>Linux 内核通过 CF8/CFC 端口读写 PCI 配置空间，实现函数是 /arch/x86/pci/direct.c 文件的 <code>pci_conf1_read()</code> 和 <code>pci_conf1_write()</code> ：</p><pre><code>#define PCI_CONF1_ADDRESS(bus, devfn, reg)  (0x80000000 | ((reg &amp; 0xF00) &lt;&lt; 16) | (bus &lt;&lt; 16) | (devfn &lt;&lt; 8) | (reg &amp; 0xFC))
+
+static int pci_conf1_read(unsigned int seg, unsigned int bus, unsigned int devfn, int reg, int len, u32 *value)
+{
+    unsigned long flags;
+
+    if (seg || (bus &gt; 255) || (devfn &gt; 255) || (reg &gt; 4095)) {
+        *value = -1;
+        return -EINVAL;
+    }
+
+    raw_spin_lock_irqsave(&amp;pci_config_lock, flags);
+
+    outl(PCI_CONF1_ADDRESS(bus, devfn, reg), 0xCF8);
+
+    switch (len) {
+    case 1:
+        *value = inb(0xCFC + (reg &amp; 3));
+        break;
+    case 2:
+        *value = inw(0xCFC + (reg &amp; 2));
+        break;
+    case 4:
+        *value = inl(0xCFC);
+        break;
+    }
+
+    raw_spin_unlock_irqrestore(&amp;pci_config_lock, flags);
+
+    return 0;
+}
+
+static int pci_conf1_write(unsigned int seg, unsigned int bus, unsigned int devfn, int reg, int len, u32 value)
+{
+    unsigned long flags;
+
+    if (seg || (bus &gt; 255) || (devfn &gt; 255) || (reg &gt; 4095))
+        return -EINVAL;
+
+    raw_spin_lock_irqsave(&amp;pci_config_lock, flags);
+
+    outl(PCI_CONF1_ADDRESS(bus, devfn, reg), 0xCF8);
+
+    switch (len) {
+    case 1:
+        outb((u8)value, 0xCFC + (reg &amp; 3));
+        break;
+    case 2:
+        outw((u16)value, 0xCFC + (reg &amp; 2));
+        break;
+    case 4:
+        outl((u32)value, 0xCFC);
+        break;
+    }
+
+    raw_spin_unlock_irqrestore(&amp;pci_config_lock, flags);
+
+    return 0;
+}
+</code></pre><p>访问 PCIe 扩展的配置空间需要用 <code>pci_conf2_read()</code> 和 <code>pci_conf2_write()</code> 函数。</p><h2 id=4-pci-设备的枚举过程>4. PCI 设备的枚举过程</h2><p>系统上电后，会采用深度优先算法，从 Host Bridge 开始对所有的 PCI/PCIe 设备进行扫描，其过程简要来说是对每一个可能的分支路径深入到不能再深入为止，而且每个节点只能访问一次。这个过程为 PCI 设备枚举。枚举过程中，系统通过配置读事物包来获取下游设备的信息，通过配置写事物包对下游设备进行设置。以下图为例：</p><p><img src=https://shaocheng.li/images/2017-11-27/2017-11-27_5.jpeg alt></p><p>PCI 设备体系是一个树形结构，Host Bridge 扩展的总线为 Bus 0 ，然后从左开始向下搜索，每个 Bridge 扩展一条总线，依次以数字顺序从小到大命名 Bus ID ，向下到尽头后退回。如果去掉了上图的 Bus 3 ，后面设备的 Bus ID 都会发生改变，并向前递进。</p><p>在 Linux 系统中，可以用 <code>lspci -t</code> 命令查询系统枚举到的 PCI 设备，结果以树形显示依赖关系，例如：</p><pre><code>root@localhost:~# lspci -t -v
+-[0000:00]-+-00.0  Intel Corporation Atom Processor Z36xxx/Z37xxx Series SoC Transaction Register
+           +-02.0  Intel Corporation Atom Processor Z36xxx/Z37xxx Series Graphics &amp; Display
+           +-11.0  Intel Corporation Atom Processor Z36xxx/Z37xxx Series SDIO Controller
+           +-12.0  Intel Corporation Atom Processor Z36xxx/Z37xxx Series SDIO Controller
+           +-13.0  Intel Corporation Atom Processor E3800 Series SATA AHCI Controller
+           +-17.0  Intel Corporation Atom Processor E3800 Series eMMC 4.5 Controller
+           +-1a.0  Intel Corporation Atom Processor Z36xxx/Z37xxx Series Trusted Execution Engine
+           +-1b.0  Intel Corporation Atom Processor Z36xxx/Z37xxx Series High Definition Audio Controller
+           +-1c.0-[01]----00.0  Intel Corporation I210 Gigabit Network Connection
+           +-1c.1-[02]----00.0  Intel Corporation I210 Gigabit Network Connection
+           +-1c.2-[03]----00.0  Intel Corporation Wireless 3165
+           +-1c.3-[04]----00.0  Intel Corporation 82574L Gigabit Network Connection
+           +-1d.0  Intel Corporation Atom Processor Z36xxx/Z37xxx Series USB EHCI
+           +-1f.0  Intel Corporation Atom Processor Z36xxx/Z37xxx Series Power Control Unit
+           \-1f.3  Intel Corporation Atom Processor E3800 Series SMBus Controller
+root@localhost:~# lspci
+00:00.0 Host bridge: Intel Corporation Atom Processor Z36xxx/Z37xxx Series SoC Transaction Register (rev 11)
+00:02.0 VGA compatible controller: Intel Corporation Atom Processor Z36xxx/Z37xxx Series Graphics &amp; Display (rev 11)
+00:11.0 SD Host controller: Intel Corporation Atom Processor Z36xxx/Z37xxx Series SDIO Controller (rev 11)
+00:12.0 SD Host controller: Intel Corporation Atom Processor Z36xxx/Z37xxx Series SDIO Controller (rev 11)
+00:13.0 SATA controller: Intel Corporation Atom Processor E3800 Series SATA AHCI Controller (rev 11)
+00:17.0 SD Host controller: Intel Corporation Atom Processor E3800 Series eMMC 4.5 Controller (rev 11)
+00:1a.0 Encryption controller: Intel Corporation Atom Processor Z36xxx/Z37xxx Series Trusted Execution Engine (rev 11)
+00:1b.0 Audio device: Intel Corporation Atom Processor Z36xxx/Z37xxx Series High Definition Audio Controller (rev 11)
+00:1c.0 PCI bridge: Intel Corporation Atom Processor E3800 Series PCI Express Root Port 1 (rev 11)
+00:1c.1 PCI bridge: Intel Corporation Atom Processor E3800 Series PCI Express Root Port 2 (rev 11)
+00:1c.2 PCI bridge: Intel Corporation Atom Processor E3800 Series PCI Express Root Port 3 (rev 11)
+00:1c.3 PCI bridge: Intel Corporation Atom Processor E3800 Series PCI Express Root Port 4 (rev 11)
+00:1d.0 USB controller: Intel Corporation Atom Processor Z36xxx/Z37xxx Series USB EHCI (rev 11)
+00:1f.0 ISA bridge: Intel Corporation Atom Processor Z36xxx/Z37xxx Series Power Control Unit (rev 11)
+00:1f.3 SMBus: Intel Corporation Atom Processor E3800 Series SMBus Controller (rev 11)
+01:00.0 Ethernet controller: Intel Corporation I210 Gigabit Network Connection (rev 03)
+02:00.0 Ethernet controller: Intel Corporation I210 Gigabit Network Connection (rev 03)
+03:00.0 Network controller: Intel Corporation Wireless 3165 (rev 81)
+04:00.0 Ethernet controller: Intel Corporation 82574L Gigabit Network Connection
+</code></pre><p>可以看出，Bus 1~Bus 4 是通过 <code>00:1c.0~00:1c.3</code> 四个 Bridge 设备扩展的。</p><h2 id=5-参考>5. 参考</h2><ul><li><a href=https://zhuanlan.zhihu.com/p/26172972 target=_blank>深入PCI与PCIe之一：硬件篇</a></li><li><a href=https://zhuanlan.zhihu.com/p/26244141 target=_blank>深入PCI与PCIe之二：软件篇</a></li><li><a href=https://cloud.tencent.com/developer/article/1458755 target=_blank>PCIe 设备的枚举过程</a></li><li><a href=https://en.wikipedia.org/wiki/PCI_configuration_space target=_blank>PCI configuration space</a></li><li><a href=https://www.kernel.org/doc/Documentation/filesystems/sysfs-pci.txt target=_blank>sysfs-pci.txt</a></li><li><a href=https://www.kernel.org/doc/Documentation/ABI/testing/sysfs-bus-pci target=_blank>sysfs-bus-pci</a></li></ul></div></article><hr><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>1953 Words</p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>2017-11-27 00:00 &#43;0000</p></div><div class=pagination><div class=pagination__title><span class=pagination__title-h></span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://shaocheng.li/posts/2017/11/28/><span class=button__icon>←</span>
+<span class=button__text>Linux 系统的 USB 设备结构</span></a></span>
+<span class="button next"><a href=https://shaocheng.li/posts/2017/11/24/><span class=button__text>Appweb 学习笔记</span>
+<span class=button__icon>→</span></a></span></div></div><div id=comments class=thin><div id=disqus_thread></div><script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return;}
+var d=document,s=d.createElement('script');s.async=true;s.src='//'+"shaocheng-li"+'.disqus.com/embed.js';s.setAttribute('data-timestamp',+new Date());(d.head||d.body).appendChild(s);})();</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></div></main></div><footer class=footer><div class=footer__inner><div class=footer__content><span>&copy; 2020</span>
+<span><a href=https://shaocheng.li>Shaocheng.Li</a></span>
+<span><a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>CC BY-NC 4.0</a></span>
+<span><a href=https://shaocheng.li/posts/index.xml target=_blank title=rss><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg></a></span></div></div><div class=footer__inner><div class=footer__content><span>Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>Made with &#10084; by <a href=https://github.com/rhazdon>rhazdon</a></span></div></div></footer></div><script type=text/javascript src=https://shaocheng.li/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script></body></html>

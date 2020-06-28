@@ -1,0 +1,86 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=author content="Shaocheng.Li"><meta name=description content="环境：fedora12，gcc4.4.4
+C语言参数个数可变的函数，叫做VA函数（variable argument function），例如printf()函数。要实现VA函数需要包含stdarg.h:
+#include &amp;lt;stdarg.h&amp;gt;  主要使用下面三个宏定义：
+va_start(ap, A) va_arg(ap, T) va_end(ap)  ap 是类型是 va_list ，va_list 的定义如下：
+typedef char *va_list;  它用来指向函数的参数。
+A是函数的最后一个固定参数，一个VA函数必须有至少一个固定参数。
+T是参数的类型，例如int，char&amp;hellip;,等等。
+ va_start(ap,A)：初始化函数参数指针ap，使ap指向A的右边的第一个参数，即函数可变参数中的第一个； va_arg(ap,T）：返回ap指向的参数的值，参数的类型用T确定，然后将ap指向下一个参数； va_end（ap）：释放ap。  下面的例子定义了一个va函数，作用是依次打印传递给函数的int型参数。
+#include &amp;lt;stdio.h&amp;gt; #include &amp;lt;stdarg.h&amp;gt; int va_function(const char *start,...) { int n=1; va_list arg; va_start(arg,start); printf(&amp;quot;%s/n&amp;quot;,start); while(n != 0) { n=va_arg(arg,int); printf(&amp;quot;%d/n&amp;quot;,n); } va_end(arg); return 0; } int main(void) { va_function(&amp;quot;start&amp;quot;,1,2,3,-1,-2,0); return 0; }  注意：
+ VA函数的可变参数类型必须在函数中自行确定，编译器无法自动识别。 必须在VA函数中定义可变参数的结束标志，如果没有结束标志，va_arg会依次返回内存中的值，直到访问到非法内存而出错退出。  这几个宏在不同的编译器中有不同的定义，但是功能是一样的，在linux的内核源码中也用定义，可以参考。在内核源码的 /include/acpi/platform/acenv."><meta name=keywords content><meta name=robots content="noodp"><meta name=theme-color content="#252627"><link rel=canonical href=https://shaocheng.li/posts/2011/05/17/><title>C语言的参数可变函数 :: Shaocheng.Li — Hello Friends</title><link href=https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css rel=stylesheet type=text/css><link rel=stylesheet href=https://shaocheng.li/main.min.73f55a8d452be4a71b2960620b80252cf69abd84d63fe7501abf0a39b1a70a78.css><link rel=stylesheet type=text/css href=https://shaocheng.li/css/custom.css><link rel=apple-touch-icon sizes=180x180 href=https://shaocheng.li/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=https://shaocheng.li/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=https://shaocheng.li/favicon-16x16.png><link rel=manifest href=https://shaocheng.li/site.webmanifest><link rel=mask-icon href=https://shaocheng.li/safari-pinned-tab.svg color=#252627><link rel="shortcut icon" href=https://shaocheng.li/favicon.ico><meta name=msapplication-TileColor content="#252627"><meta name=theme-color content="#252627"><meta itemprop=name content="C语言的参数可变函数"><meta itemprop=description content="环境：fedora12，gcc4.4.4
+C语言参数个数可变的函数，叫做VA函数（variable argument function），例如printf()函数。要实现VA函数需要包含stdarg.h:
+#include &lt;stdarg.h&gt;  主要使用下面三个宏定义：
+va_start(ap, A) va_arg(ap, T) va_end(ap)  ap 是类型是 va_list ，va_list 的定义如下：
+typedef char *va_list;  它用来指向函数的参数。
+A是函数的最后一个固定参数，一个VA函数必须有至少一个固定参数。
+T是参数的类型，例如int，char&hellip;,等等。
+ va_start(ap,A)：初始化函数参数指针ap，使ap指向A的右边的第一个参数，即函数可变参数中的第一个； va_arg(ap,T）：返回ap指向的参数的值，参数的类型用T确定，然后将ap指向下一个参数； va_end（ap）：释放ap。  下面的例子定义了一个va函数，作用是依次打印传递给函数的int型参数。
+#include &lt;stdio.h&gt; #include &lt;stdarg.h&gt; int va_function(const char *start,...) { int n=1; va_list arg; va_start(arg,start); printf(&#34;%s/n&#34;,start); while(n != 0) { n=va_arg(arg,int); printf(&#34;%d/n&#34;,n); } va_end(arg); return 0; } int main(void) { va_function(&#34;start&#34;,1,2,3,-1,-2,0); return 0; }  注意：
+ VA函数的可变参数类型必须在函数中自行确定，编译器无法自动识别。 必须在VA函数中定义可变参数的结束标志，如果没有结束标志，va_arg会依次返回内存中的值，直到访问到非法内存而出错退出。  这几个宏在不同的编译器中有不同的定义，但是功能是一样的，在linux的内核源码中也用定义，可以参考。在内核源码的 /include/acpi/platform/acenv."><meta itemprop=datePublished content="2011-05-17T08:00:00&#43;08:00"><meta itemprop=dateModified content="2011-05-17T08:00:00&#43;08:00"><meta itemprop=wordCount content="141"><meta itemprop=keywords content><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://shaocheng.li"><meta name=twitter:title content="C语言的参数可变函数"><meta name=twitter:description content="环境：fedora12，gcc4.4.4
+C语言参数个数可变的函数，叫做VA函数（variable argument function），例如printf()函数。要实现VA函数需要包含stdarg.h:
+#include &lt;stdarg.h&gt;  主要使用下面三个宏定义：
+va_start(ap, A) va_arg(ap, T) va_end(ap)  ap 是类型是 va_list ，va_list 的定义如下：
+typedef char *va_list;  它用来指向函数的参数。
+A是函数的最后一个固定参数，一个VA函数必须有至少一个固定参数。
+T是参数的类型，例如int，char&hellip;,等等。
+ va_start(ap,A)：初始化函数参数指针ap，使ap指向A的右边的第一个参数，即函数可变参数中的第一个； va_arg(ap,T）：返回ap指向的参数的值，参数的类型用T确定，然后将ap指向下一个参数； va_end（ap）：释放ap。  下面的例子定义了一个va函数，作用是依次打印传递给函数的int型参数。
+#include &lt;stdio.h&gt; #include &lt;stdarg.h&gt; int va_function(const char *start,...) { int n=1; va_list arg; va_start(arg,start); printf(&#34;%s/n&#34;,start); while(n != 0) { n=va_arg(arg,int); printf(&#34;%d/n&#34;,n); } va_end(arg); return 0; } int main(void) { va_function(&#34;start&#34;,1,2,3,-1,-2,0); return 0; }  注意：
+ VA函数的可变参数类型必须在函数中自行确定，编译器无法自动识别。 必须在VA函数中定义可变参数的结束标志，如果没有结束标志，va_arg会依次返回内存中的值，直到访问到非法内存而出错退出。  这几个宏在不同的编译器中有不同的定义，但是功能是一样的，在linux的内核源码中也用定义，可以参考。在内核源码的 /include/acpi/platform/acenv."><meta property="article:published_time" content="2011-05-17 08:00:00 &#43;0800 &#43;0800"></head><body><div class=container><header class=header><span class=header__inner><a href=https://shaocheng.li/ style=text-decoration:none><div class=logo><span class=logo__mark>></span>
+<span class=logo__text>$ cd /home/</span>
+<span class=logo__cursor></span></div></a><span class=header__right><nav class=menu><ul class=menu__inner><li><a href=https://shaocheng.li/about/>About</a></li><li><a href=https://shaocheng.li/posts/>Posts</a></li></ul></nav><span class=menu-trigger><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></span><span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 41C32.4934 41 41 32.4934 41 22 41 11.5066 32.4934 3 22 3 11.5066 3 3 11.5066 3 22s8.5066 19 19 19zM7 22C7 13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22z"/></svg></span></span></span></header><div class=content><main class=post><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>One minute</p></div><article><h1 class=post-title><a href=https://shaocheng.li/posts/2011/05/17/>C语言的参数可变函数</a></h1><div class=post-content><p>环境：fedora12，gcc4.4.4</p><p>C语言参数个数可变的函数，叫做VA函数（variable argument function），例如printf()函数。要实现VA函数需要包含stdarg.h:</p><pre><code>#include &lt;stdarg.h&gt;
+</code></pre><p>主要使用下面三个宏定义：</p><pre><code>va_start(ap, A)
+va_arg(ap, T)
+va_end(ap)
+</code></pre><p>ap 是类型是 va_list ，va_list 的定义如下：</p><pre><code>typedef char *va_list;
+</code></pre><p>它用来指向函数的参数。</p><p>A是函数的最后一个固定参数，一个VA函数必须有至少一个固定参数。</p><p>T是参数的类型，例如int，char&hellip;,等等。</p><ul><li>va_start(ap,A)：初始化函数参数指针ap，使ap指向A的右边的第一个参数，即函数可变参数中的第一个；</li><li>va_arg(ap,T）：返回ap指向的参数的值，参数的类型用T确定，然后将ap指向下一个参数；</li><li>va_end（ap）：释放ap。</li></ul><p>下面的例子定义了一个va函数，作用是依次打印传递给函数的int型参数。</p><pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdarg.h&gt;
+
+int va_function(const char *start,...)
+{
+    int n=1;
+
+    va_list arg;
+    va_start(arg,start);
+    printf(&quot;%s/n&quot;,start);
+
+    while(n != 0)
+    {
+        n=va_arg(arg,int);
+        printf(&quot;%d/n&quot;,n);
+    }
+
+    va_end(arg);
+
+    return 0;
+}
+
+
+int main(void)
+{
+    va_function(&quot;start&quot;,1,2,3,-1,-2,0);
+         return 0;
+}
+</code></pre><p>注意：</p><ol><li>VA函数的可变参数类型必须在函数中自行确定，编译器无法自动识别。</li><li>必须在VA函数中定义可变参数的结束标志，如果没有结束标志，va_arg会依次返回内存中的值，直到访问到非法内存而出错退出。</li></ol><p>这几个宏在不同的编译器中有不同的定义，但是功能是一样的，在linux的内核源码中也用定义，可以参考。在内核源码的 <code>/include/acpi/platform/acenv.h</code> 文件内：</p><pre><code>typedef char *va_list;
+　　
+/*
+Storage alignment properties 
+*/
+#define _AUPBND (sizeof (acpi_native_uint) - 1)
+#define _ADNBND (sizeof (acpi_native_uint) - 1)
+　
+/*
+Variable argument list macro definitions 
+*/
+#define _bnd(X, bnd) (((sizeof (X)) + (bnd)) &amp; (~(bnd)))
+#define va_arg(ap, T) (*(T *)(((ap) += (_bnd (T, _AUPBND))) - (_bnd (T,_ADNBND))))
+#define va_end(ap) (void) 0
+#define va_start(ap, A) (void) ((ap) = (((char *) &amp;(A)) + (_bnd (A,_AUPBND))))
+</code></pre><p>参考：</p><p><a href=http://writeblog.csdn.net/#resources target=_blank>深入浅出VA函数</a></p><p><a href=http://blog.csdn.net/storylike/archive/2011/01/26/6164240.aspx target=_blank>linux kernel中的变长参数宏</a></p><p>《The Open Group Base Specifications Issue 6》</p></div></article><hr><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>141 Words</p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>2011-05-17 00:00 &#43;0000</p></div><div class=pagination><div class=pagination__title><span class=pagination__title-h></span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://shaocheng.li/posts/2011/05/28/><span class=button__icon>←</span>
+<span class=button__text>用getopt处理main函数的参数</span></a></span>
+<span class="button next"><a href=https://shaocheng.li/posts/2011/04/10/><span class=button__text>键盘上各个按键的英文名</span>
+<span class=button__icon>→</span></a></span></div></div><div id=comments class=thin><div id=disqus_thread></div><script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return;}
+var d=document,s=d.createElement('script');s.async=true;s.src='//'+"shaocheng-li"+'.disqus.com/embed.js';s.setAttribute('data-timestamp',+new Date());(d.head||d.body).appendChild(s);})();</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></div></main></div><footer class=footer><div class=footer__inner><div class=footer__content><span>&copy; 2020</span>
+<span><a href=https://shaocheng.li>Shaocheng.Li</a></span>
+<span><a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>CC BY-NC 4.0</a></span>
+<span><a href=https://shaocheng.li/posts/index.xml target=_blank title=rss><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg></a></span></div></div><div class=footer__inner><div class=footer__content><span>Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>Made with &#10084; by <a href=https://github.com/rhazdon>rhazdon</a></span></div></div></footer></div><script type=text/javascript src=https://shaocheng.li/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script></body></html>

@@ -1,0 +1,185 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=author content="Shaocheng.Li"><meta name=description content="假设字符设备名为 led ，源文件为led.c ，不涉及实际的硬件操作。基本的驱动代码结构如下：
+1. 包含必要的头文件 #include &amp;lt;linux/init.h&amp;gt; //module_init() 和 module_exit() #include &amp;lt;linux/sched.h&amp;gt; //包含大部分内核API的定义 #include &amp;lt;linux/module.h&amp;gt; //什么模块信息的宏，例如MODULE_AUTHOR(author) #include &amp;lt;linux/version.h&amp;gt; //包含内核版本信息的头文件 #include &amp;lt;linux/moduleparam.h&amp;gt; //创建模块参数的宏 #include &amp;lt;linux/kernel.h&amp;gt; //printk等函数 #include &amp;lt;linux/types.h&amp;gt; //内核模块的各种数据类型，例如dev_t #include &amp;lt;linux/fs.h&amp;gt; //文件系统 #include &amp;lt;linux/cdev.h&amp;gt;  还可以根据需要添加其他头文件。
+2. 定义一个设备私有数据结构 通常会将设备名，设备号，cdev等都放入这个数据结构。
+struct led_dev_t { char dev_name[10]; dev_t dev_num; struct cdev cdev; } struct led_dev_t *led_dev;  3. 实现 file_operations 结构 file_operations 结构首先要实现 .owner 然后再根据需要实现相关函数。
+struct file_operations led_fops = { .owner = THIS_MODULE, ."><meta name=keywords content><meta name=robots content="noodp"><meta name=theme-color content="#252627"><link rel=canonical href=https://shaocheng.li/posts/2013/01/04/><title>Linux 字符驱动的基本结构 :: Shaocheng.Li — Hello Friends</title><link href=https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css rel=stylesheet type=text/css><link rel=stylesheet href=https://shaocheng.li/main.min.73f55a8d452be4a71b2960620b80252cf69abd84d63fe7501abf0a39b1a70a78.css><link rel=stylesheet type=text/css href=https://shaocheng.li/css/custom.css><link rel=apple-touch-icon sizes=180x180 href=https://shaocheng.li/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=https://shaocheng.li/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=https://shaocheng.li/favicon-16x16.png><link rel=manifest href=https://shaocheng.li/site.webmanifest><link rel=mask-icon href=https://shaocheng.li/safari-pinned-tab.svg color=#252627><link rel="shortcut icon" href=https://shaocheng.li/favicon.ico><meta name=msapplication-TileColor content="#252627"><meta name=theme-color content="#252627"><meta itemprop=name content="Linux 字符驱动的基本结构"><meta itemprop=description content="假设字符设备名为 led ，源文件为led.c ，不涉及实际的硬件操作。基本的驱动代码结构如下：
+1. 包含必要的头文件 #include &lt;linux/init.h&gt; //module_init() 和 module_exit() #include &lt;linux/sched.h&gt; //包含大部分内核API的定义 #include &lt;linux/module.h&gt; //什么模块信息的宏，例如MODULE_AUTHOR(author) #include &lt;linux/version.h&gt; //包含内核版本信息的头文件 #include &lt;linux/moduleparam.h&gt; //创建模块参数的宏 #include &lt;linux/kernel.h&gt; //printk等函数 #include &lt;linux/types.h&gt; //内核模块的各种数据类型，例如dev_t #include &lt;linux/fs.h&gt; //文件系统 #include &lt;linux/cdev.h&gt;  还可以根据需要添加其他头文件。
+2. 定义一个设备私有数据结构 通常会将设备名，设备号，cdev等都放入这个数据结构。
+struct led_dev_t { char dev_name[10]; dev_t dev_num; struct cdev cdev; } struct led_dev_t *led_dev;  3. 实现 file_operations 结构 file_operations 结构首先要实现 .owner 然后再根据需要实现相关函数。
+struct file_operations led_fops = { .owner = THIS_MODULE, ."><meta itemprop=datePublished content="2013-01-04T08:00:00&#43;08:00"><meta itemprop=dateModified content="2013-01-04T08:00:00&#43;08:00"><meta itemprop=wordCount content="470"><meta itemprop=keywords content><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://shaocheng.li"><meta name=twitter:title content="Linux 字符驱动的基本结构"><meta name=twitter:description content="假设字符设备名为 led ，源文件为led.c ，不涉及实际的硬件操作。基本的驱动代码结构如下：
+1. 包含必要的头文件 #include &lt;linux/init.h&gt; //module_init() 和 module_exit() #include &lt;linux/sched.h&gt; //包含大部分内核API的定义 #include &lt;linux/module.h&gt; //什么模块信息的宏，例如MODULE_AUTHOR(author) #include &lt;linux/version.h&gt; //包含内核版本信息的头文件 #include &lt;linux/moduleparam.h&gt; //创建模块参数的宏 #include &lt;linux/kernel.h&gt; //printk等函数 #include &lt;linux/types.h&gt; //内核模块的各种数据类型，例如dev_t #include &lt;linux/fs.h&gt; //文件系统 #include &lt;linux/cdev.h&gt;  还可以根据需要添加其他头文件。
+2. 定义一个设备私有数据结构 通常会将设备名，设备号，cdev等都放入这个数据结构。
+struct led_dev_t { char dev_name[10]; dev_t dev_num; struct cdev cdev; } struct led_dev_t *led_dev;  3. 实现 file_operations 结构 file_operations 结构首先要实现 .owner 然后再根据需要实现相关函数。
+struct file_operations led_fops = { .owner = THIS_MODULE, ."><meta property="article:published_time" content="2013-01-04 08:00:00 &#43;0800 &#43;0800"></head><body><div class=container><header class=header><span class=header__inner><a href=https://shaocheng.li/ style=text-decoration:none><div class=logo><span class=logo__mark>></span>
+<span class=logo__text>$ cd /home/</span>
+<span class=logo__cursor></span></div></a><span class=header__right><nav class=menu><ul class=menu__inner><li><a href=https://shaocheng.li/about/>About</a></li><li><a href=https://shaocheng.li/posts/>Posts</a></li></ul></nav><span class=menu-trigger><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></span><span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 41C32.4934 41 41 32.4934 41 22 41 11.5066 32.4934 3 22 3 11.5066 3 3 11.5066 3 22s8.5066 19 19 19zM7 22C7 13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22z"/></svg></span></span></span></header><div class=content><main class=post><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>3 minutes</p></div><article><h1 class=post-title><a href=https://shaocheng.li/posts/2013/01/04/>Linux 字符驱动的基本结构</a></h1><div class=post-content><p>假设字符设备名为 led ，源文件为led.c ，不涉及实际的硬件操作。基本的驱动代码结构如下：</p><h2 id=1-包含必要的头文件>1. 包含必要的头文件</h2><pre><code>#include &lt;linux/init.h&gt;    //module_init() 和 module_exit() 
+#include &lt;linux/sched.h&gt;   //包含大部分内核API的定义
+#include &lt;linux/module.h&gt;  //什么模块信息的宏，例如MODULE_AUTHOR(author)
+#include &lt;linux/version.h&gt; //包含内核版本信息的头文件
+#include &lt;linux/moduleparam.h&gt;  //创建模块参数的宏
+#include &lt;linux/kernel.h&gt;  //printk等函数
+#include &lt;linux/types.h&gt;   //内核模块的各种数据类型，例如dev_t
+#include &lt;linux/fs.h&gt;      //文件系统
+#include &lt;linux/cdev.h&gt;    
+</code></pre><p>还可以根据需要添加其他头文件。</p><h2 id=2-定义一个设备私有数据结构>2. 定义一个设备私有数据结构</h2><p>通常会将设备名，设备号，cdev等都放入这个数据结构。</p><pre><code>struct led_dev_t {
+    char dev_name[10];
+    dev_t dev_num;
+    struct cdev cdev;
+}
+struct led_dev_t *led_dev;
+</code></pre><h2 id=3-实现-file-operations-结构>3. 实现 file_operations 结构</h2><p>file_operations 结构首先要实现 <code>.owner</code> 然后再根据需要实现相关函数。</p><pre><code>struct file_operations led_fops = {
+    .owner = THIS_MODULE,
+    .open = led_open,
+    .release = led_close,
+}
+</code></pre><h2 id=4-实现模块初始化函数>4. 实现模块初始化函数</h2><p>模块加载函数应该依次完成如下几个步骤：</p><ol><li>为设备私有数据结构分配内存，然后初始化。</li><li>申请设备号。</li><li>注册字符设备。即初始化 <code>cdev</code> ，将 <code>file_operations</code> 结构和设备号与 <code>cdev</code> 绑定。</li></ol><p>最后用 <code>module_init()</code> 宏向内核说明初始化函数的位置。</p><h2 id=5-实现模块卸载函数>5. 实现模块卸载函数</h2><p>模块卸载函数的内容基本是加载函数的逆过程：</p><ol><li>释放设备号。</li><li>删除 <code>cdev</code> 。</li><li>释放申请的内存。</li></ol><p>最后用 <code>module_exit()</code> 宏向内核说明卸载函数的位置。</p><h2 id=6-实现文件操作函数>6. 实现文件操作函数</h2><p>open 和 close 函数通常是必须的。</p><p>open 函数的原型是</p><pre><code>int (*open)(struct inode *,struct file *)
+</code></pre><p><code>inode</code> 结构的成员 <code>i_cdev</code> 指向的就是先前设置的 <code>cdev</code> 。要确保设备成功打开，应该通过 <code>inode-&gt;i_cdev</code> 找到包含 <code>cdev</code> 的设备私有数据结构的实例。内核提供 <code>container_of</code> 宏来完成这项工作：</p><pre><code>container_of(poiner,container_type,container_field);
+</code></pre><p>用法如下：</p><pre><code>struct led_dev_t *dev;
+dev = container_of(inode-&gt;i_cdev,struct led_dev_t,cdev);
+DEBUG(&quot;open %s\n&quot;,dev-&gt;dev_name);
+filp-&gt;private_data = dev;
+</code></pre><p>close 函数的原型是</p><pre><code>int (*release)(struct inode *,struct file *)
+</code></pre><h2 id=7-模块参数>7. 模块参数</h2><p>模块的参数通过 <code>module_param(name,type,flag)</code> 声明，并且应该有一个默认值，例如：</p><pre><code>static int addr=0x300;
+module_param(addr,int,S_IRUGO|S_IWUSR);
+</code></pre><p>如果参数类型为字符串，type 应该设为 <code>charp</code> 。</p><p>flag 是访问许可值，可用的值定义在 <code>&lt;linux/stat.h&gt;</code> 中。<code>S_IRUGO</code> 表示任何人都可以读取该参数，但不能修改；<code>S_IWUSR</code> 表示 root 用户可以修改该参数。</p><h2 id=8-声明许可证>8. 声明许可证</h2><pre><code>MODULE_LICENSE(&quot;GPL&quot;);
+</code></pre><h2 id=9-关于调试>9. 关于调试</h2><p>最常用的调试手段是内核打印函数 <code>printk</code> ，使用方法与标准库函数 <code>printf</code> 类似。<code>printk</code> 打印的信息通常用 <code>dmesg</code> 命令查看。</p><p>为了方便在最终发布时去掉打印的调试信息，通常将 <code>printk</code> 函数封装为一个宏 ：</p><pre><code>#define PRINT_DEBUG
+#ifdef PRINT_DEBUG
+    #define DEBUG(fmt,args...) printk(&quot;LED:&quot;fmt,##args)
+#else
+    #define DEBUG(fmt,args...)
+#endif
+</code></pre><p>发布时只需将第一行注释掉，就可以去掉打印信息。</p><h2 id=10-makefile>10. Makefile</h2><pre><code>KERNELDIR=/lib/modules/$(shell uname -r)/build
+PWD=$(shell pwd)
+
+obj-m := led.o
+
+default:
+    $(MAKE) -C $(KERNELDIR) M=$(PWD) modules
+clean:
+    $(MAKE) -C $(KERNELDIR) M=$(PWD) clean
+</code></pre><p>如果模块包含多个源文件，比如 file1.c 和 file2.c ，Makefile 应该如下编写：</p><pre><code>obj-m := modulename.o
+modulename-objs := file1.o file2.o
+</code></pre><p>modulename 是模块的名称，最好不要与源文件同名。</p><h2 id=11-加载驱动>11. 加载驱动</h2><p>用 insmod 命令加载驱动，加载时可以指定参数，例如：</p><pre><code>insmod led.ko addr=0x300
+</code></pre><p>加载成功后，<code>/sys/modules/</code> 下会出现相应的目录，<code>/proc/modules</code>文件（lsmod 即查看的该文件）中会出现模块的信息， <code>/proc/devices</code> 文件中可以看到设备名和主设备号：</p><pre><code>cat /proc/devices | grep led
+</code></pre><p>可以根据主设备号创建设备节点。</p><h2 id=12-附录-完整代码>12. 附录：完整代码</h2><pre><code>#include &lt;linux/init.h&gt;
+#include &lt;linux/module.h&gt;
+#include &lt;linux/slab.h&gt;
+#include &lt;linux/mm.h&gt;
+#include &lt;linux/fs.h&gt;
+#include &lt;linux/types.h&gt;
+#include &lt;linux/cdev.h&gt;
+#include &lt;linux/version.h&gt;
+
+#define PRINT_DEBUG
+#ifdef PRINT_DEBUG
+    #define DEBUG(fmt,args...) printk(&quot;LED : &quot;fmt,##args)
+#else
+    #define DEBUG(fmt,args...)
+#endif
+
+
+struct led_dev_t {
+    const char *dev_name;
+    dev_t dev_num;
+    struct cdev cdev;
+};
+
+struct led_dev_t *led_dev;
+
+int led_open(struct inode *inode,struct file *filp)
+{
+    struct led_dev_t *dev;
+    dev = container_of(inode-&gt;i_cdev,struct led_dev_t,cdev);
+    DEBUG(&quot;open %s\n&quot;,dev-&gt;dev_name);
+    filp-&gt;private_data = dev;
+
+    return 0;
+}
+
+int led_close(struct inode *inode,struct file *filp)
+{
+    DEBUG(&quot;close %s\n&quot;,((struct led_dev_t *)filp-&gt;private_data)-&gt;dev_name);
+
+    return 0;
+}
+
+struct file_operations led_fops = {
+    .owner = THIS_MODULE,
+    .open = led_open,
+    .release = led_close,
+};
+
+static int __init led_init(void)
+{
+    int ret = 0;
+    unsigned int dev_major = 0;
+    unsigned int dev_minor = 0;
+
+    //初始化设备私有数据结构
+    led_dev = kmalloc(sizeof(struct led_dev_t),GFP_KERNEL);
+    if(led_dev &lt;= 0) {
+    DEBUG(&quot;led init kmalloc failed\n&quot;);
+    return -1;
+    }
+    memset(led_dev,0,sizeof(struct led_dev_t));
+    led_dev-&gt;dev_name = &quot;led&quot;;  //定义设备名
+
+    //申请设备号
+    if(dev_major) {
+    led_dev-&gt;dev_num = MKDEV(dev_major,dev_minor);
+    ret = register_chrdev_region(led_dev-&gt;dev_num,1,led_dev-&gt;dev_name);
+    }
+    else {
+    ret = alloc_chrdev_region(&amp;(led_dev-&gt;dev_num),dev_minor,1,led_dev-&gt; dev_name);
+    dev_major = MAJOR(led_dev-&gt;dev_num);
+    }
+
+    if(ret) {
+    DEBUG(&quot;register chrdev region failed\n&quot;);
+    return ret;
+    }
+    else {
+    DEBUG(&quot;Major: %d, Minor: %d\n&quot;,dev_major,dev_minor);
+    }
+
+    //初始化 cdev
+    cdev_init(&amp;(led_dev-&gt;cdev),&amp;led_fops);
+    led_dev-&gt;cdev.owner = THIS_MODULE;
+    ret = cdev_add(&amp;(led_dev-&gt;cdev),led_dev-&gt;dev_num,1);
+
+    if(ret&lt;0) {
+    DEBUG(&quot;cdev add failed\n&quot;);
+    return ret;
+    }
+
+    DEBUG(&quot;led init\n&quot;);
+
+    return 0;
+}
+
+
+static void __exit led_exit(void)
+{
+
+    DEBUG(&quot;device is %s\n&quot;,led_dev-&gt;dev_name);
+    unregister_chrdev_region(led_dev-&gt;dev_num,1);
+    cdev_del(&amp;led_dev-&gt;cdev);
+    kfree(led_dev);
+    DEBUG(&quot;led exit\n&quot;);
+}
+
+module_init(led_init);
+module_exit(led_exit);
+
+
+MODULE_AUTHOR(&quot;Li Shaocheng&quot;);
+MODULE_LICENSE(&quot;GPL&quot;);
+</code></pre></div></article><hr><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>470 Words</p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>2013-01-04 00:00 &#43;0000</p></div><div class=pagination><div class=pagination__title><span class=pagination__title-h></span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://shaocheng.li/posts/2013/01/05/><span class=button__icon>←</span>
+<span class=button__text>使用 udev 管理设备</span></a></span>
+<span class="button next"><a href=https://shaocheng.li/posts/2012/12/18/><span class=button__text>在 Linux 内核中新增模块代码</span>
+<span class=button__icon>→</span></a></span></div></div><div id=comments class=thin><div id=disqus_thread></div><script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return;}
+var d=document,s=d.createElement('script');s.async=true;s.src='//'+"shaocheng-li"+'.disqus.com/embed.js';s.setAttribute('data-timestamp',+new Date());(d.head||d.body).appendChild(s);})();</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></div></main></div><footer class=footer><div class=footer__inner><div class=footer__content><span>&copy; 2020</span>
+<span><a href=https://shaocheng.li>Shaocheng.Li</a></span>
+<span><a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>CC BY-NC 4.0</a></span>
+<span><a href=https://shaocheng.li/posts/index.xml target=_blank title=rss><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg></a></span></div></div><div class=footer__inner><div class=footer__content><span>Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>Made with &#10084; by <a href=https://github.com/rhazdon>rhazdon</a></span></div></div></footer></div><script type=text/javascript src=https://shaocheng.li/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script></body></html>

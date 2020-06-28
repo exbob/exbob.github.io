@@ -1,0 +1,85 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=author content="Shaocheng.Li"><meta name=description content="Zmodem 是跨平台的文件传输协议，可以很方便的在不同的操作系统之间接传输文件。lzrsz 是该协议的实现方式：https://ohse.de/uwe/software/lrzsz.html 。安装后，在 Mac 的 ITerm2 中用 SSH 登陆远程的 Linux 主机，然后用 rz 、sz 命令传输文件。
+在 Ubuntu 中安装:
+$ sudo apt-get install lrzsz  在 Mac 中安装：
+$ brew install lrzsz  为方便 ITerm2 中使用，需要下载两个脚本：
+cd /usr/local/bin sudo wget https://raw.github.com/mmastrac/iterm2-zmodem/master/iterm2-send-zmodem.sh sudo wget https://raw.github.com/mmastrac/iterm2-zmodem/master/iterm2-recv-zmodem.sh sudo chmod 777 /usr/local/bin/iterm2-*  然后打开 ITerm2 ，点击 preferences &amp;gt; profiles ，选中 Default ，在右侧的 Advanced 标签页中，点击 Tirggers 框的 Edit 按钮，按如下设置添加两个条目：
+   Regular expression Action Parameters Instant     rz waiting to receive."><meta name=keywords content><meta name=robots content="noodp"><meta name=theme-color content="#252627"><link rel=canonical href=https://shaocheng.li/posts/2017/01/10/><title>在 ITerm2 中使用 Zmodem 协议传输文件 :: Shaocheng.Li — Hello Friends</title><link href=https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css rel=stylesheet type=text/css><link rel=stylesheet href=https://shaocheng.li/main.min.73f55a8d452be4a71b2960620b80252cf69abd84d63fe7501abf0a39b1a70a78.css><link rel=stylesheet type=text/css href=https://shaocheng.li/css/custom.css><link rel=apple-touch-icon sizes=180x180 href=https://shaocheng.li/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=https://shaocheng.li/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=https://shaocheng.li/favicon-16x16.png><link rel=manifest href=https://shaocheng.li/site.webmanifest><link rel=mask-icon href=https://shaocheng.li/safari-pinned-tab.svg color=#252627><link rel="shortcut icon" href=https://shaocheng.li/favicon.ico><meta name=msapplication-TileColor content="#252627"><meta name=theme-color content="#252627"><meta itemprop=name content="在 ITerm2 中使用 Zmodem 协议传输文件"><meta itemprop=description content="Zmodem 是跨平台的文件传输协议，可以很方便的在不同的操作系统之间接传输文件。lzrsz 是该协议的实现方式：https://ohse.de/uwe/software/lrzsz.html 。安装后，在 Mac 的 ITerm2 中用 SSH 登陆远程的 Linux 主机，然后用 rz 、sz 命令传输文件。
+在 Ubuntu 中安装:
+$ sudo apt-get install lrzsz  在 Mac 中安装：
+$ brew install lrzsz  为方便 ITerm2 中使用，需要下载两个脚本：
+cd /usr/local/bin sudo wget https://raw.github.com/mmastrac/iterm2-zmodem/master/iterm2-send-zmodem.sh sudo wget https://raw.github.com/mmastrac/iterm2-zmodem/master/iterm2-recv-zmodem.sh sudo chmod 777 /usr/local/bin/iterm2-*  然后打开 ITerm2 ，点击 preferences &gt; profiles ，选中 Default ，在右侧的 Advanced 标签页中，点击 Tirggers 框的 Edit 按钮，按如下设置添加两个条目：
+   Regular expression Action Parameters Instant     rz waiting to receive."><meta itemprop=datePublished content="2017-01-10T08:00:00&#43;08:00"><meta itemprop=dateModified content="2017-01-10T08:00:00&#43;08:00"><meta itemprop=wordCount content="435"><meta itemprop=keywords content><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://shaocheng.li"><meta name=twitter:title content="在 ITerm2 中使用 Zmodem 协议传输文件"><meta name=twitter:description content="Zmodem 是跨平台的文件传输协议，可以很方便的在不同的操作系统之间接传输文件。lzrsz 是该协议的实现方式：https://ohse.de/uwe/software/lrzsz.html 。安装后，在 Mac 的 ITerm2 中用 SSH 登陆远程的 Linux 主机，然后用 rz 、sz 命令传输文件。
+在 Ubuntu 中安装:
+$ sudo apt-get install lrzsz  在 Mac 中安装：
+$ brew install lrzsz  为方便 ITerm2 中使用，需要下载两个脚本：
+cd /usr/local/bin sudo wget https://raw.github.com/mmastrac/iterm2-zmodem/master/iterm2-send-zmodem.sh sudo wget https://raw.github.com/mmastrac/iterm2-zmodem/master/iterm2-recv-zmodem.sh sudo chmod 777 /usr/local/bin/iterm2-*  然后打开 ITerm2 ，点击 preferences &gt; profiles ，选中 Default ，在右侧的 Advanced 标签页中，点击 Tirggers 框的 Edit 按钮，按如下设置添加两个条目：
+   Regular expression Action Parameters Instant     rz waiting to receive."><meta property="article:published_time" content="2017-01-10 08:00:00 &#43;0800 &#43;0800"></head><body><div class=container><header class=header><span class=header__inner><a href=https://shaocheng.li/ style=text-decoration:none><div class=logo><span class=logo__mark>></span>
+<span class=logo__text>$ cd /home/</span>
+<span class=logo__cursor></span></div></a><span class=header__right><nav class=menu><ul class=menu__inner><li><a href=https://shaocheng.li/about/>About</a></li><li><a href=https://shaocheng.li/posts/>Posts</a></li></ul></nav><span class=menu-trigger><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></span><span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 41C32.4934 41 41 32.4934 41 22 41 11.5066 32.4934 3 22 3 11.5066 3 3 11.5066 3 22s8.5066 19 19 19zM7 22C7 13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22z"/></svg></span></span></span></header><div class=content><main class=post><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>3 minutes</p></div><article><h1 class=post-title><a href=https://shaocheng.li/posts/2017/01/10/>在 ITerm2 中使用 Zmodem 协议传输文件</a></h1><div class=post-content><p>Zmodem 是跨平台的文件传输协议，可以很方便的在不同的操作系统之间接传输文件。lzrsz 是该协议的实现方式：<a href=https://ohse.de/uwe/software/lrzsz.html target=_blank>https://ohse.de/uwe/software/lrzsz.html</a> 。安装后，在 Mac 的 ITerm2 中用 SSH 登陆远程的 Linux 主机，然后用 rz 、sz 命令传输文件。</p><p>在 Ubuntu 中安装:</p><pre><code>$ sudo apt-get install lrzsz
+</code></pre><p>在 Mac 中安装：</p><pre><code>$ brew install lrzsz
+</code></pre><p>为方便 ITerm2 中使用，需要下载两个脚本：</p><pre><code>cd /usr/local/bin
+sudo wget https://raw.github.com/mmastrac/iterm2-zmodem/master/iterm2-send-zmodem.sh
+sudo wget https://raw.github.com/mmastrac/iterm2-zmodem/master/iterm2-recv-zmodem.sh
+sudo chmod 777 /usr/local/bin/iterm2-*
+</code></pre><p>然后打开 ITerm2 ，点击 preferences &gt; profiles ，选中 Default ，在右侧的 Advanced 标签页中，点击 Tirggers 框的 Edit 按钮，按如下设置添加两个条目：</p><table><thead><tr><th>Regular expression</th><th>Action</th><th>Parameters</th><th>Instant</th></tr></thead><tbody><tr><td>rz waiting to receive.**B0100</td><td>Run Silent Coprocess</td><td>/usr/local/bin/iterm2-send-zmodem.sh</td><td>checked</td></tr><tr><td>**B00000000000000</td><td>Run Silent Coprocess</td><td>/usr/local/bin/iterm2-recv-zmodem.sh</td><td>checked</td></tr></tbody></table><p><img src=https://shaocheng.li/images/2017-01-10/2017-01-10_1.png alt></p><p>向远程 Linux 主机发送文件：</p><ol><li>在 Ubuntu 上执行 rc</li><li>在弹出的对话框中选中要发送的文件</li><li>等待发送完成</li></ol><p>接收远程 Linux 发来的文件：</p><ol><li>在 Ubuntu 上执行 <code>sz filename1 filename2 ...</code></li><li>在弹出的对话框中选中接收文件的目录</li><li>等待接收完成。</li></ol><p>iterm2-send-zmodem.sh 内容：</p><pre><code>#!/bin/bash
+# Author: Matt Mastracci (matthew@mastracci.com)
+# AppleScript from http://stackoverflow.com/questions/4309087/cancel-button-on-osascript-in-a-bash-script
+# licensed under cc-wiki with attribution required
+# Remainder of script public domain
+
+osascript -e 'tell application &quot;iTerm2&quot; to version' &gt; /dev/null 2&gt;&amp;1 &amp;&amp; NAME=iTerm2 || NAME=iTerm
+if [[ $NAME = &quot;iTerm&quot; ]]; then
+    FILE=`osascript -e 'tell application &quot;iTerm&quot; to activate' -e 'tell application &quot;iTerm&quot; to set thefile to choose file with prompt &quot;Choose a file to send&quot;' -e &quot;do shell script (\&quot;echo \&quot;&amp;(quoted form of POSIX path of thefile as Unicode text)&amp;\&quot;\&quot;)&quot;`
+else
+    FILE=`osascript -e 'tell application &quot;iTerm2&quot; to activate' -e 'tell application &quot;iTerm2&quot; to set thefile to choose file with prompt &quot;Choose a file to send&quot;' -e &quot;do shell script (\&quot;echo \&quot;&amp;(quoted form of POSIX path of thefile as Unicode text)&amp;\&quot;\&quot;)&quot;`
+fi
+if [[ $FILE = &quot;&quot; ]]; then
+    echo Cancelled.
+    # Send ZModem cancel
+    echo -e \\x18\\x18\\x18\\x18\\x18
+    sleep 1
+    echo
+    echo \# Cancelled transfer
+else
+    /usr/local/bin/sz &quot;$FILE&quot; -e -b
+    sleep 1
+    echo
+    echo \# Received $FILE
+fi
+</code></pre><p>iterm2-recv-zmodem.sh 内容：</p><pre><code>#!/bin/bash
+# Author: Matt Mastracci (matthew@mastracci.com)
+# AppleScript from http://stackoverflow.com/questions/4309087/cancel-button-on-osascript-in-a-bash-script
+# licensed under cc-wiki with attribution required
+# Remainder of script public domain
+
+osascript -e 'tell application &quot;iTerm2&quot; to version' &gt; /dev/null 2&gt;&amp;1 &amp;&amp; NAME=iTerm2 || NAME=iTerm
+if [[ $NAME = &quot;iTerm&quot; ]]; then
+    FILE=`osascript -e 'tell application &quot;iTerm&quot; to activate' -e 'tell application &quot;iTerm&quot; to set thefile to choose folder with prompt &quot;Choose a folder to place received files in&quot;' -e &quot;do shell script (\&quot;echo \&quot;&amp;(quoted form of POSIX path of thefile as Unicode text)&amp;\&quot;\&quot;)&quot;`
+else
+    FILE=`osascript -e 'tell application &quot;iTerm2&quot; to activate' -e 'tell application &quot;iTerm2&quot; to set thefile to choose folder with prompt &quot;Choose a folder to place received files in&quot;' -e &quot;do shell script (\&quot;echo \&quot;&amp;(quoted form of POSIX path of thefile as Unicode text)&amp;\&quot;\&quot;)&quot;`
+fi
+
+if [[ $FILE = &quot;&quot; ]]; then
+    echo Cancelled.
+    # Send ZModem cancel
+    echo -e \\x18\\x18\\x18\\x18\\x18
+    sleep 1
+    echo
+    echo \# Cancelled transfer
+else
+    cd &quot;$FILE&quot;
+    /usr/local/bin/rz -E -e -b
+    sleep 1
+    echo
+    echo
+    echo \# Sent \-\&gt; $FILE
+fi
+</code></pre></div></article><hr><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>435 Words</p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>2017-01-10 00:00 &#43;0000</p></div><div class=pagination><div class=pagination__title><span class=pagination__title-h></span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://shaocheng.li/posts/2017/03/27/><span class=button__icon>←</span>
+<span class=button__text>Linux 串口编程笔记</span></a></span>
+<span class="button next"><a href=https://shaocheng.li/posts/2017/01/07/><span class=button__text>Sublime Text 3 常用插件</span>
+<span class=button__icon>→</span></a></span></div></div><div id=comments class=thin><div id=disqus_thread></div><script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return;}
+var d=document,s=d.createElement('script');s.async=true;s.src='//'+"shaocheng-li"+'.disqus.com/embed.js';s.setAttribute('data-timestamp',+new Date());(d.head||d.body).appendChild(s);})();</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></div></main></div><footer class=footer><div class=footer__inner><div class=footer__content><span>&copy; 2020</span>
+<span><a href=https://shaocheng.li>Shaocheng.Li</a></span>
+<span><a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>CC BY-NC 4.0</a></span>
+<span><a href=https://shaocheng.li/posts/index.xml target=_blank title=rss><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg></a></span></div></div><div class=footer__inner><div class=footer__content><span>Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>Made with &#10084; by <a href=https://github.com/rhazdon>rhazdon</a></span></div></div></footer></div><script type=text/javascript src=https://shaocheng.li/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script></body></html>

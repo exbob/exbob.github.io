@@ -1,0 +1,146 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=author content="Shaocheng.Li"><meta name=description content="概述 最近要将 Redhat9.02 移植到一块嵌入式 586 的主板上，空间有限，还要有图形环境，支持中文。所以，要建立一个精简的图像环境，先选择 TinyX&#43;GTK 的方式进行研究。TinyX 是 XFree86 针对嵌入式的编译选项，体积小，启动速度快。 本文使用虚拟机 vmware 安装 Redhat-9.02 文本系统，然后用 XFree86-4.3.0 编译 TinyX ，最后编译 GTK&#43;-2.0。"><meta name=keywords content><meta name=robots content="noodp"><meta name=theme-color content="#252627"><link rel=canonical href=https://shaocheng.li/posts/2011/11/15/><title>在Redhat9下构建TinyX&#43;GTK图形环境 :: Shaocheng.Li — Hello Friends</title><link href=https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css rel=stylesheet type=text/css><link rel=stylesheet href=https://shaocheng.li/main.min.73f55a8d452be4a71b2960620b80252cf69abd84d63fe7501abf0a39b1a70a78.css><link rel=stylesheet type=text/css href=https://shaocheng.li/css/custom.css><link rel=apple-touch-icon sizes=180x180 href=https://shaocheng.li/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=https://shaocheng.li/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=https://shaocheng.li/favicon-16x16.png><link rel=manifest href=https://shaocheng.li/site.webmanifest><link rel=mask-icon href=https://shaocheng.li/safari-pinned-tab.svg color=#252627><link rel="shortcut icon" href=https://shaocheng.li/favicon.ico><meta name=msapplication-TileColor content="#252627"><meta name=theme-color content="#252627"><meta itemprop=name content="在Redhat9下构建TinyX&#43;GTK图形环境"><meta itemprop=description content="概述
+
+最近要将 Redhat9.02 移植到一块嵌入式 586 的主板上，空间有限，还要有图形环境，支持中文。所以，要建立一个精简的图像环境，先选择 TinyX&#43;GTK 的方式进行研究。TinyX 是 XFree86 针对嵌入式的编译选项，体积小，启动速度快。
+本文使用虚拟机 vmware 安装 Redhat-9.02 文本系统，然后用 XFree86-4.3.0 编译 TinyX ，最后编译 GTK&#43;-2.0。"><meta itemprop=datePublished content="2011-11-15T08:00:00&#43;08:00"><meta itemprop=dateModified content="2011-11-15T08:00:00&#43;08:00"><meta itemprop=wordCount content="477"><meta itemprop=keywords content><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://shaocheng.li"><meta name=twitter:title content="在Redhat9下构建TinyX&#43;GTK图形环境"><meta name=twitter:description content="概述
+
+最近要将 Redhat9.02 移植到一块嵌入式 586 的主板上，空间有限，还要有图形环境，支持中文。所以，要建立一个精简的图像环境，先选择 TinyX&#43;GTK 的方式进行研究。TinyX 是 XFree86 针对嵌入式的编译选项，体积小，启动速度快。
+本文使用虚拟机 vmware 安装 Redhat-9.02 文本系统，然后用 XFree86-4.3.0 编译 TinyX ，最后编译 GTK&#43;-2.0。"><meta property="article:published_time" content="2011-11-15 08:00:00 &#43;0800 &#43;0800"></head><body><div class=container><header class=header><span class=header__inner><a href=https://shaocheng.li/ style=text-decoration:none><div class=logo><span class=logo__mark>></span>
+<span class=logo__text>$ cd /home/</span>
+<span class=logo__cursor></span></div></a><span class=header__right><nav class=menu><ul class=menu__inner><li><a href=https://shaocheng.li/about/>About</a></li><li><a href=https://shaocheng.li/posts/>Posts</a></li></ul></nav><span class=menu-trigger><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></span><span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 41C32.4934 41 41 32.4934 41 22 41 11.5066 32.4934 3 22 3 11.5066 3 3 11.5066 3 22s8.5066 19 19 19zM7 22C7 13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22z"/></svg></span></span></span></header><div class=content><main class=post><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>3 minutes</p></div><article><h1 class=post-title><a href=https://shaocheng.li/posts/2011/11/15/>在Redhat9下构建TinyX+GTK图形环境</a></h1><div class=post-content><h2 id=概述>概述</h2><p>最近要将 Redhat9.02 移植到一块嵌入式 586 的主板上，空间有限，还要有图形环境，支持中文。所以，要建立一个精简的图像环境，先选择 TinyX+GTK 的方式进行研究。TinyX 是 XFree86 针对嵌入式的编译选项，体积小，启动速度快。
+本文使用虚拟机 vmware 安装 Redhat-9.02 文本系统，然后用 XFree86-4.3.0 编译 TinyX ，最后编译 GTK+-2.0。</p><h2 id=1-安装redhat-9-02>1. 安装Redhat-9.02</h2><p>在 vmware 上新建一个虚拟机，硬盘空间为 4GB，内存 512MB。开始安装 Redhat-9.02，选择 linux text 模式，中文安装语言，swap 分区为 512MB，其余空间都挂载到根目录下。bootloader 用 Grub，自定义安装软件包，选择的软件包如下：</p><pre><code>Administration tools
+Development Tools
+Editors
+Ftp Server
+Kernel Development
+NetWork Server
+Printing Support
+Server Configuration Tools
+Sound and Video
+System Tool
+</code></pre><p>选择系统支持的语言为 Chinese+English。</p><p>安装后将 /etc/sysconfig/ 下的 i18n 文件修改如下：</p><pre><code>LC_CTYPE=&quot;zh_CN.GB2312&quot;
+SUPPORTED=&quot;zh_CN.GB2312:en_US.UTF-8:en_US:en&quot;
+SYSFONT=&quot;latercyrheb-sun16&quot;
+SYSFONTACM=&quot;iso01&quot;
+</code></pre><h2 id=2-编译libpng-1-2-16>2. 编译libpng-1.2.16</h2><p>编译 TinyX 时需要 png.h 文件，所以要重新安装 libpng。先删除原有的 libpng：</p><pre><code>rm -rf /usr/lib/libpng*
+</code></pre><p>下载 libpng-1.2.16.tar.bz2 ，复制到 /root 目录下解压：</p><pre><code>tar -xvjf  libpng-1.2.16.tar.bz2
+</code></pre><p>源码包中的 README 和 INSTALL 文件有关于 libpng 的详细信息和编译安装方法，用如下命令编译安装：</p><pre><code>cd /root/libpng-1.2.16
+./configure
+make
+make install
+</code></pre><p>默认安装在 /usr/local/ 目录下，支持 pkg-config，pkg-config 文件放在 /usr/lib/pkg-config/ 目录下。如果想卸载 libpng，执行：make uninstall。</p><h2 id=3-编译freetype-2-2-1>3.编译freetype-2.2.1</h2><p>删除原有的 freetype：</p><pre><code>rm -rf /usr/lib/libfreetype*
+</code></pre><p>下载 freetype-2.2.1.tar.gz：<a href=http://download.savannah.gnu.org/releases/freetype/ target=_blank>http://download.savannah.gnu.org/releases/freetype/</a></p><p>复制到 <code>/root/</code> 目录下解压：</p><pre><code>tar -xvzf  freetype-2.2.1.tar.gz
+</code></pre><p>编译、安装：</p><pre><code>cd /root/freetype-2.2.1
+./configure
+make
+make install
+</code></pre><p>默认安装到 <code>/usr/local/</code> 目录下，支持 pkg-config。</p><h2 id=4-编译tinyx>4.编译TinyX</h2><p>先删除原系统的 X-window：</p><pre><code>rm -rf /usr/X11R6
+rm -rf /etc/X11
+</code></pre><p>下载XFree86-4.3.0：<a href=ftp://ftp.xfree86.org/pub/XFree86/4.3.0/，共下载7个软件包： target=_blank>ftp://ftp.xfree86.org/pub/XFree86/4.3.0/，共下载7个软件包：</a></p><pre><code>X430src-1.tgz 
+X430src-2.tgz
+X430src-3.tgz
+X430src-4.tgz 
+X430src-5.tgz
+X430src-6.tgz 
+X430src-7.tgz
+</code></pre><p>全部复制到 <code>/root</code> 下解压，解压后的源码都会放在 <code>/root/xc</code> 目录下。</p><p>先编译一个 lndir 工具：</p><pre><code>cd  /root/xc/config/util
+make -f Makefile.ini lndir
+cd ../../../
+</code></pre><p>用 lndir 制作一个源文件的符号链接目录：</p><pre><code>mkdir build 
+cd build
+../xc/config/util/lndir  ../xc
+</code></pre><p>用 TinyX.cf 的配置安装：</p><pre><code>cd config/cf
+cp -arf TinyX.cf host.def
+</code></pre><p>修改 host.def 为：</p><pre><code>#define KDriveXServer  YES  
+#define TinyXServer    YES  
+#define XfbdevServer   YES  
+#define BuildLBX                YES  
+#define BuildFonts              YES  
+#define BuildAppgroup           NO  
+#define BuildDBE                NO  
+#define BuildXCSecurity         YES  
+#define FontServerAccess        NO  
+#undef BuildXF86RushExt  
+#define BuildXF86RushExt        NO  
+#undef BuildRender  
+#define BuildRender             YES  
+#define UseRgbTxt               YES  
+#define BuildFontServer         NO  
+</code></pre><p>然后：</p><pre><code>cd ../../
+touch xf86Date.h
+touch xf86Version.h
+make World
+make install
+</code></pre><p>主要的库、头文件、可执行文件和配置文件等都安装了在 <code>/etc/X11</code> 和 <code>/usr/X11R6</code> 下。</p><p>TinyX 依赖于 framebuffer，要打开 framebuffer。修改 <code>/etc/grub.conf</code> 文件，在 <code>kernel</code> 一行添加：</p><pre><code>vga=0x311 fb：on
+0x311为640x480，16bpp。
+</code></pre><p>然后重启系统，启动时，屏幕左上方会出现一个企鹅 Logo。</p><p>重启后运行 /usr/X11R6/bin/Xfbdev，即可启动 Xserver，可以看到灰色背景上有一个 X 形的鼠标。
+为 Xfbdev 建立一个符号链接：</p><pre><code>ln -s Xfbdev X
+</code></pre><p>这样就可以用startx命令启动 X-window。用Ctrl+Alt+Backspace组合键退出X-window。</p><p>这里可能出现加载链接库的错误，查看 /etc/ld.so.conf 文件中是否有 /usr/X11R6/lib，然后执行 ldconfig -v。</p><h2 id=5-设置pkg-config>5.设置pkg-config</h2><p>在 /root/.bashrc 文件中添加 PKG_CONFIG_PATH 环境变量：</p><pre><code>export PKG\_CONFIG\_PATH=/usr/local/lib/pkgconfig:/usr/X11R6/lib/pkgconfig
+</code></pre><h2 id=6-编译glib-2-0>6.编译Glib-2.0</h2><p>先删除原有的 glib：</p><pre><code>rm -rf /usr/lib/libglib*
+rm -rf /usr/lib/libgmoudle*
+rm -rf /usr/lib/libgobject*
+rm -rf /usr/lib/gthread*
+</code></pre><p>下载 glib-2.0.0.tar.bz2：<a href=http://ftp.gnome.org/pub/gnome/sources/glib/2.0/ target=_blank>http://ftp.gnome.org/pub/gnome/sources/glib/2.0/</a></p><p>复制到/root/目录下解压：</p><pre><code>tar -xvjf  glib-2.0.0.tar.bz2
+</code></pre><p>编译、安装：</p><pre><code>cd /root/glib-2.0.0
+./configure
+make
+make install
+</code></pre><p>默认安装到/usr/local/目录下，支持pkg-config。</p><h2 id=7-编译atk-1-0-0>7.编译atk-1.0.0</h2><p>删除原有的 atk：</p><pre><code>rm -rf /usr/lib/libatk*
+</code></pre><p>修改 /etc/ld.so.conf 文件，添加：</p><pre><code>/usr/local/lib
+</code></pre><p>下载 atk-1.0.0.tar.bz2：<a href=http://ftp.gnome.org/pub/gnome/sources/atk/1.0/ target=_blank>http://ftp.gnome.org/pub/gnome/sources/atk/1.0/</a></p><p>复制到/root/目录下解压：</p><pre><code>tar -xvjf  atk-1.0.0.tar.bz2
+</code></pre><p>编译、安装：</p><pre><code>cd /root/atk-1.0.0
+./configure
+make
+make install
+</code></pre><p>默认安装到 /usr/local/ 目录下，支持 pkg-config。</p><h2 id=8-编译pango-1-0-0>8.编译pango-1.0.0</h2><p>删除原有的pango：</p><pre><code>rm -rf /usr/lib/libpango*
+rm -rf /usr/lib/pango
+</code></pre><p>下载pango-1.0.0.tar.bz2：<a href=http://ftp.gnome.org/pub/gnome/sources/pango/1.0/ target=_blank>http://ftp.gnome.org/pub/gnome/sources/pango/1.0/</a></p><p>复制到 /root/ 目录下解压：</p><pre><code>tar -xvjf  pango-1.0.0.tar.bz2
+</code></pre><p>编译、安装：</p><pre><code>cd  /root/pango-1.0.0
+./configure
+make
+make install
+</code></pre><p>默认安装到 /usr/local/ 目录下，支持 pkg-config。</p><h2 id=9-编译libjpeg-6b>9.编译libjpeg-6b</h2><p>删除原有的 libjpeg：</p><pre><code>rm -rf  /usr/lib/libjpeg*
+</code></pre><p>下载libjpeg-6b.tar.gz：<a href=http://jaist.dl.sourceforge.net/project/cross-stuff/cross-stuff/1.0/libjpeg-6b.tar.gz target=_blank>http://jaist.dl.sourceforge.net/project/cross-stuff/cross-stuff/1.0/libjpeg-6b.tar.gz</a></p><p>复制到 /root/ 目录下解压：</p><pre><code>tar -xvzf  libjpeg-6b.tar.gz
+</code></pre><p>编译、安装：</p><pre><code>cd  /root/libjpeg-6b
+./configure  --enable-shared
+make
+make install
+</code></pre><p>默认安装到/usr/local/目录下。</p><h2 id=10-编译gtk-2-0>10.编译gtk+-2.0</h2><p>删除原有的gtk:</p><pre><code>rm -rf  /etc/gtk*
+rm -rf  /etc/gnome
+rm -rf  /usr/bin/*gtk*
+rm -rf  /usr/lib/libgtk*
+rm -rf  /usr/lib/gtk*
+</code></pre><p>下载gtk+-2.0.0.tar.bz2：<a href=http://ftp.gnome.org/pub/gnome/sources/gtk+/2.0/ target=_blank>http://ftp.gnome.org/pub/gnome/sources/gtk+/2.0/</a></p><p>复制到/root/目录下解压：</p><pre><code>tar -xvjf  gtk+-2.0.0.tar.bz2
+</code></pre><p>编译、安装：</p><pre><code>cd  /root/gtk+-2.0.0
+./configure  --without-libtiff
+make
+make install
+</code></pre><p>默认安装到/usr/local/目录下，支持pkg-config。</p><h2 id=11-测试>11.测试</h2><p>运行 startx，可以启动 X-window。
+然后运行gtk-demo，可以启动 gtk-demo 程序。
+编写 demo.c 文件：</p><pre><code>#include &lt;gtk/gtk.h&gt;  
+char *_(char *c)  
+{  
+    return(g_locale_to_utf8(c,-1,0,0,0));  
+}  
+int  main(int argc,char *argv[])  
+{  
+    GtkWidget *window;  
+    gtk_init(&amp;argc,&amp;argv);  
+    window = gtk_window_new(GTK_WINDOW_TOPLEVEL);  
+    gtk_window_set_title(GTK_WINDOW(window),_(&quot;中文窗口&quot;));   //定义窗口的标题  
+    gtk_window_set_default_size(GTK_WINDOW(window),200,200);   //设置窗口的大小  
+    gtk_window_set_position(GTK_WINDOW(window),GTK_WIN_POS_MOUSE);   //设置窗口显示的位置为鼠标的位置  
+    gtk_widget_show(window);  
+    gtk_main();  
+    return 1;  
+}  
+</code></pre><p>编译：</p><pre><code>gcc -Wall -o demo demo.c `pkg-config --cflags --libs gtk+-2.0` 
+</code></pre><p>执行：</p><pre><code>./demo
+</code></pre><p>效果：</p><p><img src=https://shaocheng.li/images/2011-11-15/2011-11-15_1.JPG alt></p></div></article><hr><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>477 Words</p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>2011-11-15 00:00 &#43;0000</p></div><div class=pagination><div class=pagination__title><span class=pagination__title-h></span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://shaocheng.li/posts/2011/11/19/><span class=button__icon>←</span>
+<span class=button__text>pkg-config指南</span></a></span>
+<span class="button next"><a href=https://shaocheng.li/posts/2011/11/08/><span class=button__text>从源码建立XFree86</span>
+<span class=button__icon>→</span></a></span></div></div><div id=comments class=thin><div id=disqus_thread></div><script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return;}
+var d=document,s=d.createElement('script');s.async=true;s.src='//'+"shaocheng-li"+'.disqus.com/embed.js';s.setAttribute('data-timestamp',+new Date());(d.head||d.body).appendChild(s);})();</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></div></main></div><footer class=footer><div class=footer__inner><div class=footer__content><span>&copy; 2020</span>
+<span><a href=https://shaocheng.li>Shaocheng.Li</a></span>
+<span><a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>CC BY-NC 4.0</a></span>
+<span><a href=https://shaocheng.li/posts/index.xml target=_blank title=rss><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg></a></span></div></div><div class=footer__inner><div class=footer__content><span>Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>Made with &#10084; by <a href=https://github.com/rhazdon>rhazdon</a></span></div></div></footer></div><script type=text/javascript src=https://shaocheng.li/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script></body></html>
