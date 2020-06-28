@@ -1,31 +1,788 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Shaocheng.Li</title><link>https://shaocheng.li/</link><description>Recent content on Shaocheng.Li</description><generator>Hugo -- gohugo.io</generator><copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright><lastBuildDate>Tue, 24 Mar 2020 21:15:11 +0800</lastBuildDate><atom:link href="https://shaocheng.li/index.xml" rel="self" type="application/rss+xml"/><item><title>使用 pm2 管理进程</title><link>https://shaocheng.li/posts/2020/03/24/</link><pubDate>Tue, 24 Mar 2020 21:15:11 +0800</pubDate><guid>https://shaocheng.li/posts/2020/03/24/</guid><description>PM2 是基于 nodejs 的进程管理工具，需要用 npm 安装，通常用于管理 node 进程，也可以管理其他语言编写的软件，官网是 https://pm2.keymetrics.io/ ，具有如下特性：</description></item><item><title>Markdown Syntax Guide</title><link>https://shaocheng.li/posts/2020/01/15/</link><pubDate>Wed, 15 Jan 2020 14:31:11 +0800</pubDate><guid>https://shaocheng.li/posts/2020/01/15/</guid><description>This article offers a sample of basic Markdown syntax that can be used in Hugo content files, also it shows whether basic HTML elements are decorated with CSS in a Hugo theme.
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Shaocheng.Li</title><link>https://shaocheng.li/</link><description>Recent content on Shaocheng.Li</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright><lastBuildDate>Tue, 24 Mar 2020 21:15:11 +0800</lastBuildDate><atom:link href="https://shaocheng.li/index.xml" rel="self" type="application/rss+xml"/><item><title>使用 pm2 管理进程</title><link>https://shaocheng.li/posts/2020-03-24/</link><pubDate>Tue, 24 Mar 2020 21:15:11 +0800</pubDate><guid>https://shaocheng.li/posts/2020-03-24/</guid><description>PM2 是基于 nodejs 的进程管理工具，需要用 npm 安装，通常用于管理 node 进程，也可以管理其他语言编写的软件，官网是 https://pm2.keymetrics.io/ ，具有如下特性：</description></item><item><title>Markdown Syntax Guide</title><link>https://shaocheng.li/posts/2020-01-15/</link><pubDate>Wed, 15 Jan 2020 14:31:11 +0800</pubDate><guid>https://shaocheng.li/posts/2020-01-15/</guid><description>This article offers a sample of basic Markdown syntax that can be used in Hugo content files, also it shows whether basic HTML elements are decorated with CSS in a Hugo theme.
 Headings The following HTML &amp;lt;h1&amp;gt;—&amp;lt;h6&amp;gt; elements represent six levels of section headings. &amp;lt;h1&amp;gt; is the highest section level while &amp;lt;h6&amp;gt; is the lowest.
-H1 H2 H3 H4 H5 H6 Paragraph Xerum, quo qui aut unt expliquam qui dolut labo.</description></item><item><title>iproute2 学习笔记</title><link>https://shaocheng.li/posts/2020/01/08/</link><pubDate>Wed, 08 Jan 2020 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2020/01/08/</guid><description>iproute2 是一个 Linux 网络管理工具包，提供了 ip 、tc 、ss 等组件，集成了原有的 ifconfg 、arp 、route 、netstat 等多种命令的功能，并新增了很多特性。
+H1 H2 H3 H4 H5 H6 Paragraph Xerum, quo qui aut unt expliquam qui dolut labo.</description></item><item><title>iproute2 学习笔记</title><link>https://shaocheng.li/posts/2020-01-08/</link><pubDate>Wed, 08 Jan 2020 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2020-01-08/</guid><description>iproute2 是一个 Linux 网络管理工具包，提供了 ip 、tc 、ss 等组件，集成了原有的 ifconfg 、arp 、route 、netstat 等多种命令的功能，并新增了很多特性。
 1. ip 命令 ip 命令的语法是：
 ip [OPTIONS] OBJECT {COMMAND|help} 其中：
-OBJECT 表示操作对象，可选的值有 { link | addr | addrlabel | route | rule | neigh | ntable | tunnel | maddr | mroute | mrule | monitor | xfrm | token } ，常用的对象包括： link：网络设备 addr：设备上的协议（IP或IPv6）地址 addrlabel：协议地址选择的标签配置 route：路由表条目 rule：路由策略数据库中的规则 neigh: ARP 表 OPTIONS 表示选项，可选的值有 { -V[ersion] | -s[tatistics] | -d[etails] | -r[esolve] | -h[uman-readable] | -iec | -f[amily] { inet | inet6 | ipx | dnet | link } | -o[neline] | -t[imestamp] | -b[atch] [filename] | -rc[vbuf] [size] } 常用的选项包括： -V，-Version：显示指令版本信息 -s，-stats，statistics：输出详细信息 -h，-human，-human-readable：输出人类可读的统计信息和后缀 -o，-oneline：将每条记录输出到一行，用 \字符替换换行符 1.</description></item><item><title>UCI 和 ubus 学习笔记</title><link>https://shaocheng.li/posts/2019/12/24/</link><pubDate>Tue, 24 Dec 2019 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2019/12/24/</guid><description>UCI 和 ubus 都是 Openwrt 项目提供的软件，UCI 提供了统一的配置文件格式和读写工具，ubus 提供了基于 Unix Socket 的进程间通信框架。两个软件都可以方便的移植到其他 Linux 系统，以 Ubuntu 系统为例，首先要安装一些依赖的软件：
+OBJECT 表示操作对象，可选的值有 { link | addr | addrlabel | route | rule | neigh | ntable | tunnel | maddr | mroute | mrule | monitor | xfrm | token } ，常用的对象包括： link：网络设备 addr：设备上的协议（IP或IPv6）地址 addrlabel：协议地址选择的标签配置 route：路由表条目 rule：路由策略数据库中的规则 neigh: ARP 表 OPTIONS 表示选项，可选的值有 { -V[ersion] | -s[tatistics] | -d[etails] | -r[esolve] | -h[uman-readable] | -iec | -f[amily] { inet | inet6 | ipx | dnet | link } | -o[neline] | -t[imestamp] | -b[atch] [filename] | -rc[vbuf] [size] } 常用的选项包括： -V，-Version：显示指令版本信息 -s，-stats，statistics：输出详细信息 -h，-human，-human-readable：输出人类可读的统计信息和后缀 -o，-oneline：将每条记录输出到一行，用 \字符替换换行符 1.</description></item><item><title>UCI 和 ubus 学习笔记</title><link>https://shaocheng.li/posts/2019-12-24/</link><pubDate>Tue, 24 Dec 2019 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2019-12-24/</guid><description>UCI 和 ubus 都是 Openwrt 项目提供的软件，UCI 提供了统一的配置文件格式和读写工具，ubus 提供了基于 Unix Socket 的进程间通信框架。两个软件都可以方便的移植到其他 Linux 系统，以 Ubuntu 系统为例，首先要安装一些依赖的软件：
 apt-get install pkg-config apt-get install lua5.1 apt-get install liblua5.1-dev apt-get install cmake apt-get install libjson-c-dev 然后要编译安装 libubox ：
 git clone https://git.openwrt.org/project/libubox.git cd libubox cmake . make make install 编译时可能出现找不到头文件的错误：
 /root/libubox/lua/uloop.c:21:17: fatal error: lua.h: No such file or directory 这是路径问题，因为 lua 的头文件在 /usr/include/lua5.1 目录下，所有修改 uloop.c 文件，为 lua.h 等头文件前面加上 lua5.1/ 路径：
-#include &amp;lt;lua5.1/lua.h&amp;gt;#include &amp;lt;lua5.1/lualib.h&amp;gt;#include &amp;lt;lua5.1/lauxlib.h&amp;gt; 1. UCI 编译安装 uci</description></item><item><title>Python Socket 编程笔记</title><link>https://shaocheng.li/posts/2019/11/26/</link><pubDate>Tue, 26 Nov 2019 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2019/11/26/</guid><description>1. 套接字 套接字（Socket）是一种操作系统提供的进程间通信机制，可以用于不同主机间的进程通信，最早由 UNIX 提出，现在广泛用于各种操作系统，同时也特指这种机制下的通信端点。根据通信地址的不同种类，Socket 可以分为三类：
+#include &amp;lt;lua5.1/lua.h&amp;gt; #include &amp;lt;lua5.</description></item><item><title>Python Socket 编程笔记</title><link>https://shaocheng.li/posts/2019-11-26/</link><pubDate>Tue, 26 Nov 2019 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2019-11-26/</guid><description>1. 套接字 套接字（Socket）是一种操作系统提供的进程间通信机制，可以用于不同主机间的进程通信，最早由 UNIX 提出，现在广泛用于各种操作系统，同时也特指这种机制下的通信端点。根据通信地址的不同种类，Socket 可以分为三类：
 INET ，这是 IPv4 地址域的套接字，用于 IPv4 网络间的通信。 INET6 ，这是 IPv6 地址域的套接字，用于 IPv6 网络间的通信。 UNIX ，这是 UNIX 域的套接字，用于主机内的进程间通信。 套接字常用的报文类型有两种：
 SOCK_DGRAM，固定长度，无连接不可靠的报文传递，两个对等进程之间通信时不需要建立逻辑连接，直接向对方的套接字发送报文即可。在 INET 套接字中，这种报文使用的默认协议是 UDP 。 SOCK_STREAM，有序的，可靠的，双向的，面向连接的字节流，两个对等进程在正式通信之前，要先建立逻辑连接。在 INET 套接字中，这种报文使用的默认协议是 TCP 。 Python 提供了 socket 模块用于底层 socket 通信，模块提供了一个同名的类，以及其他读写 socket 的方法。
 2. 获得主机信息 获取本机的名字和 IP ：
-$ python3 Python 3.7.4 (default, Jul 9 2019, 18:13:23) [Clang 10.0.1 (clang-1001.0.46.4)] on darwin Type &amp;#34;help&amp;#34;, &amp;#34;copyright&amp;#34;, &amp;#34;credits&amp;#34; or &amp;#34;license&amp;#34; for more information.</description></item><item><title>Ubuntu 下获取和编译内核源码的方法</title><link>https://shaocheng.li/posts/2019/09/20/</link><pubDate>Fri, 20 Sep 2019 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2019/09/20/</guid><description>以 Ubuntu 16.04 为例，如果只想获得当前内核版本的源码可以用 apt-get ，如果想获取当前系统的所有内核源码建议用 git 。
+$ python3 Python 3.7.4 (default, Jul 9 2019, 18:13:23) [Clang 10.0.1 (clang-1001.0.46.4)] on darwin Type &amp;quot;help&amp;quot;, &amp;quot;copyright&amp;quot;, &amp;quot;credits&amp;quot; or &amp;quot;license&amp;quot; for more information.</description></item><item><title>Ubuntu 下获取和编译内核源码的方法</title><link>https://shaocheng.li/posts/2019-09-20/</link><pubDate>Fri, 20 Sep 2019 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2019-09-20/</guid><description>以 Ubuntu 16.04 为例，如果只想获得当前内核版本的源码可以用 apt-get ，如果想获取当前系统的所有内核源码建议用 git 。
 1. apt-get 通常是用 apt-get source 下载：
 apt-get source linux-image-$(uname -r) 源码会直接下载到当前目录，并自动解压，所以建议在 /usr/src/ 目录下执行：
 root@ubuntu:/usr/src# ls linux-4.4.0 linux_4.4.0-161.189.dsc linux-headers-4.4.0-142 linux_4.4.0-161.189.diff.gz linux_4.4.0.orig.tar.gz linux-headers-4.4.0-142-generic linux_4.4.0.orig.tar.gz 是标准内核源码 linux_4.4.0-161.189.diff.gz 是 Ubuntu kernel 的补丁 linux_4.4.0-161.189.dsc 是 Debian Source Control 文档，用于描述源码版本的相关信息 linux-4.4.0 是前两个文件解压打补丁后的源码目录 这样自动下载的小版本号通常是最新的，如果想精确匹配当前的内核版本，可以在 https://launchpad.net/ubuntu/+source/linux/ 搜索所需的版本，也是这样的三个文件，下载后需要手动解压打补丁：
-tar xfvz &amp;lt;filname&amp;gt;.orig.tar.gz gunzip &amp;lt;filename&amp;gt;.diff.gz cd ./&amp;lt;filename&amp;gt; patch -p1 -i &amp;lt;file name&amp;gt;.diff 此外，用 apt-cache search linux-source 和 apt-get install linux-source 也可以搜索并下载当前内核版本的源码，并自动解压到 /usr/src/ 目录下。</description></item><item><title>使用 keepalived 实现双机热备</title><link>https://shaocheng.li/posts/2019/08/24/</link><pubDate>Sat, 24 Aug 2019 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2019/08/24/</guid><description>keepalived 是一个用 C 语言编写的免费开源软件，它实现了 VRRP协议，同时提供了强大的负载均衡 (LVS) 功能。我们可以用他的 VRRP 功能实现路由器或者服务器等网络设备的双机热备。简单的说，两台路由器，一台作为主机，一台作为备机，两台路由器有自己的独立 IP ，同时共享一个虚拟 IP ，主机正常是，这个虚拟 IP 指向主机，当主机出现故障时，虚拟 IP 指向备机，实现了路由器的无缝自动切换。网络拓扑如下图所示：
+tar xfvz &amp;lt;filname&amp;gt;.orig.tar.gz gunzip &amp;lt;filename&amp;gt;.diff.gz cd ./&amp;lt;filename&amp;gt; patch -p1 -i &amp;lt;file name&amp;gt;.diff 此外，用 apt-cache search linux-source 和 apt-get install linux-source 也可以搜索并下载当前内核版本的源码，并自动解压到 /usr/src/ 目录下。</description></item><item><title>使用 keepalived 实现双机热备</title><link>https://shaocheng.li/posts/2019-08-24/</link><pubDate>Sat, 24 Aug 2019 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2019-08-24/</guid><description>keepalived 是一个用 C 语言编写的免费开源软件，它实现了 VRRP协议，同时提供了强大的负载均衡 (LVS) 功能。我们可以用他的 VRRP 功能实现路由器或者服务器等网络设备的双机热备。简单的说，两台路由器，一台作为主机，一台作为备机，两台路由器有自己的独立 IP ，同时共享一个虚拟 IP ，主机正常是，这个虚拟 IP 指向主机，当主机出现故障时，虚拟 IP 指向备机，实现了路由器的无缝自动切换。网络拓扑如下图所示：
 虚拟 IP 的实现方式有很多种，比较可靠的方法是为一个网卡定义多个 IP ，端口名用冒号隔开一个数字，用 ifconfig 命令实现，例如：
 ifconfig eth0:0 192.168.6.100 netmask 255.255.255.0 up 用点隔开一个数字的端口名属于 VLAN 网卡，例如 eth0.100 ，具有不同的特性和应用。
 安装 keepalived 官网在 https://www.keepalived.org/ ，可以编译源码进行安装。在 ubuntu 系统下，直接用 apt 安装：
 apt-get install keepalived 配置 keepalived 只有一个配置文件 keepalived.conf，通常位于 /etc/keepalived/ 目录下，keepalived 还提供了很多配置文件的实例，安装在 /usr/share/doc/keepalived/sample/ 目录下。对于双机热备，最简单的配置如下：
 主机 ：
-vrrp_instance VI_1 { # 定义一个 VRRP 实例，VI_1 表示这个实例的名称，同一组 VRRP 路由器的实例名称必须一致 state MASTER # 定义本机的初始状态，MASTER 表示主机，BACKUP 表示备机 interface enp3s0 # 指定 VRRP 运行的网卡 virtual_router_id 51 # 定义 VRRP 路由器的 ID ，取值 1~255 ，同一组 VRRP 路由器的 ID 必须一致，这个 ID 会用于虚拟路由器的 MAC 地址 priority 100 # 定义本机的优先级，取值 1~254 ，数字越大，优先级越高，MASTER 应该比 BACKUP 高 50 以上。 virtual_ipaddress { # 定义虚拟 IP 192.</description></item><item><title>使用 openssl 进行 AES 加密</title><link>https://shaocheng.li/posts/2019/08/18/</link><pubDate>Sun, 18 Aug 2019 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2019/08/18/</guid><description>aes 加密需要一个字符串作为密钥，自己写一个，或者用完成的工具生成一随机的，假设密钥为 passphrase ，加密一个文件 file：
+vrrp_instance VI_1 { # 定义一个 VRRP 实例，VI_1 表示这个实例的名称，同一组 VRRP 路由器的实例名称必须一致 state MASTER # 定义本机的初始状态，MASTER 表示主机，BACKUP 表示备机 interface enp3s0 # 指定 VRRP 运行的网卡 virtual_router_id 51 # 定义 VRRP 路由器的 ID ，取值 1~255 ，同一组 VRRP 路由器的 ID 必须一致，这个 ID 会用于虚拟路由器的 MAC 地址 priority 100 # 定义本机的优先级，取值 1~254 ，数字越大，优先级越高，MASTER 应该比 BACKUP 高 50 以上。 virtual_ipaddress { # 定义虚拟 IP 192.</description></item><item><title>使用 openssl 进行 AES 加密</title><link>https://shaocheng.li/posts/2019-08-18/</link><pubDate>Sun, 18 Aug 2019 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2019-08-18/</guid><description>aes 加密需要一个字符串作为密钥，自己写一个，或者用完成的工具生成一随机的，假设密钥为 passphrase ，加密一个文件 file：
 openssl enc -aes-128-cbc -in file -out file.enc -k passphrase 也可以把密钥存放在一个文本文件，然后用 -kfile 选项指定：
-openssl enc -aes-128-cbc -in file -out file.enc -kfile passphrase.txt</description></item><item><title>使用 OpenVPN 实现远程访问</title><link>https://shaocheng.li/posts/2019/07/02/</link><pubDate>Tue, 02 Jul 2019 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2019/07/02/</guid><description>有时我们需要连接不同局域网的两台主机，使其可以互相访问，比如用家里的电脑登录办公室电脑的某个服务。我们可以使用 OpenVPN 实现这个功能，它的原理是在两台电脑上安装 OpenVPN 客户端，同时连接公网上的 OpenVPN 服务器，OpenVPN 会将这两台电脑组成一个虚拟局域网，它们就可以像局域网内一样互相访问了。搭建 VPN 前的网络拓扑如下：
+openssl enc -aes-128-cbc -in file -out file.enc -kfile passphrase.txt</description></item><item><title>使用 OpenVPN 实现远程访问</title><link>https://shaocheng.li/posts/2019-07-02/</link><pubDate>Tue, 02 Jul 2019 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2019-07-02/</guid><description>有时我们需要连接不同局域网的两台主机，使其可以互相访问，比如用家里的电脑登录办公室电脑的某个服务。我们可以使用 OpenVPN 实现这个功能，它的原理是在两台电脑上安装 OpenVPN 客户端，同时连接公网上的 OpenVPN 服务器，OpenVPN 会将这两台电脑组成一个虚拟局域网，它们就可以像局域网内一样互相访问了。搭建 VPN 前的网络拓扑如下：
 家里的电脑是 Windows7 系统，办公室的电脑安装了 Ubuntu16.04 ，公网上的 VPS 安装了 Ubuntu16.04 。如果全部都是 Windows 系统，配置起来会更方便一点，Linux 下的文本操作略显繁琐，好在 SoftEther 提供了可以远程管理的 GUI 工具。
 1. 在 VPS 上安装 SoftEther SoftEther 这套软件其实是一个完整的夸平台 VPN 解决方案，在单一软件内集成了 OpenVPN 、L2TP 、IPsec 等 VPN 协议，我们可以用它在 VPS 上搭建一个 OpenVPN 的服务器，非常方便。
-首先在 SoftEther 下载中心 下载 X64-Linux 平台的 SoftEther VPN Server，我下载的版本是 softether-vpnserver-v4.29-9680-rtm-2019.02.28-linux-x64-64bit.tar.gz ，将其解压到 VPS 的用户根目录下，得到一个名为 vpnserver 的文件夹，在这个文件夹下执行 ./.install.sh ，根据提示依次输入三次数字 1 并按回车即可完成编译安装，所有的可执行文件还是在这个路径下，先执行 sudo ./vpnserver start 让服务器在后台运行，然后执行 ./vpncmd 开始初始化配置，按如下输入：</description></item><item><title>UDP socket 编程实践</title><link>https://shaocheng.li/posts/2018/12/20/</link><pubDate>Thu, 20 Dec 2018 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2018/12/20/</guid><description>UDP 是面向非连接的，如果通讯双方都在局域网中，服务器端和客户端没有区别，如果是局域网内的主机与公网上的主机通讯，由于 NAT 地址转换协议的作用，必须由局域网内的主机主动向公网的主句发送数据，公网的主机作为服务器端，必须接收客户端的数据后，解析出源 IP 和端口，再反向发送，实现双向通讯。下面是一个简单的 Demo 。
+首先在 SoftEther 下载中心 下载 X64-Linux 平台的 SoftEther VPN Server，我下载的版本是 softether-vpnserver-v4.29-9680-rtm-2019.02.28-linux-x64-64bit.tar.gz ，将其解压到 VPS 的用户根目录下，得到一个名为 vpnserver 的文件夹，在这个文件夹下执行 ./.install.sh ，根据提示依次输入三次数字 1 并按回车即可完成编译安装，所有的可执行文件还是在这个路径下，先执行 sudo ./vpnserver start 让服务器在后台运行，然后执行 ./vpncmd 开始初始化配置，按如下输入：</description></item><item><title>UDP socket 编程实践</title><link>https://shaocheng.li/posts/2018-12-20/</link><pubDate>Thu, 20 Dec 2018 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2018-12-20/</guid><description>UDP 是面向非连接的，如果通讯双方都在局域网中，服务器端和客户端没有区别，如果是局域网内的主机与公网上的主机通讯，由于 NAT 地址转换协议的作用，必须由局域网内的主机主动向公网的主句发送数据，公网的主机作为服务器端，必须接收客户端的数据后，解析出源 IP 和端口，再反向发送，实现双向通讯。下面是一个简单的 Demo 。
 服务器端：
-// server.c #include &amp;lt;stdio.h&amp;gt; #include &amp;lt;unistd.h&amp;gt; #include &amp;lt;sys/types.h&amp;gt; #include &amp;lt;sys/socket.h&amp;gt; #include &amp;lt;netinet/in.h&amp;gt; #include &amp;lt;arpa/inet.h&amp;gt; #include &amp;lt;string.h&amp;gt; #define SERVER_PORT 6789 #define CPU_PORT 9009 #define BUFF_LEN 1024 int main(int argc, char* argv[]) { int server_fd, count; struct sockaddr_in ser_addr; struct sockaddr_in src_addr; socklen_t len; char buf[BUFF_LEN]; server_fd = socket(AF_INET, SOCK_DGRAM, 0); //IPV4,UDP memset(&amp;amp;ser_addr, 0, sizeof(ser_addr)); ser_addr.sin_family = AF_INET; ser_addr.</description></item></channel></rss>
+// server.c #include &amp;lt;stdio.h&amp;gt; #include &amp;lt;unistd.h&amp;gt; #include &amp;lt;sys/types.h&amp;gt; #include &amp;lt;sys/socket.h&amp;gt; #include &amp;lt;netinet/in.h&amp;gt; #include &amp;lt;arpa/inet.h&amp;gt; #include &amp;lt;string.h&amp;gt; #define SERVER_PORT 6789 #define CPU_PORT 9009 #define BUFF_LEN 1024 int main(int argc, char* argv[]) { int server_fd, count; struct sockaddr_in ser_addr; struct sockaddr_in src_addr; socklen_t len; char buf[BUFF_LEN]; server_fd = socket(AF_INET, SOCK_DGRAM, 0); //IPV4,UDP memset(&amp;amp;ser_addr, 0, sizeof(ser_addr)); ser_addr.sin_family = AF_INET; ser_addr.sin_addr.s_addr = htonl(INADDR_ANY); // any ip ser_addr.</description></item><item><title>iptables 学习笔记</title><link>https://shaocheng.li/posts/2018-12-12/</link><pubDate>Wed, 12 Dec 2018 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2018-12-12/</guid><description>关于 iptables 的原理，这里有一份教程写得深入浅出，浅显易懂：
+iptables 详解 常用的命令可以参考参考 iptables 手册
+下面记录一些常见的 iptables 应用场景。
+1. IP 转发 IP 转发也可以叫做路由转发，用于连接两个不同的网段，做软路由时经常用到，如下是一个应用场景的网络拓扑：
+中间的路由器上是 Linux 系统，有两张网卡，eth0 作为 LAN 口连接内网，wan 作为 WAN 口连接公网。要实现软路由功能，使内网的设备可以通过 WAN 口上网。首先需要开启内核的 IP 转发功能，可以用 sysctl 命令或者直接查看 /proc/sys/net/ipv4/ip_forward 文件获得当前系统的 ip_forward 是否开启：
+~# sysctl net.ipv4.ip_forward net.ipv4.ip_forward = 0 ~# cat /proc/sys/net/ipv4/ip_forward 0 Linux 系统默认是禁止 IP 转发的，所有返回 0 ，可以用 sysctl 命令或者直接向 /proc/sys/net/ipv4/ip_forward 文件写 1 来开启 IP 转发，如果要永久开启，可以在 /etc/sysctl.conf 文件中修改配置：
+~# cat /etc/sysctl.conf | grep ip_forward net.</description></item><item><title>用 timedatectl 管理系统时间</title><link>https://shaocheng.li/posts/2018-09-24/</link><pubDate>Mon, 24 Sep 2018 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2018-09-24/</guid><description>查看当前系统时间：
+$ timedatectl status Local time: Thu 2018-09-20 09:42:53 CST Universal time: Thu 2018-09-20 01:42:53 UTC RTC time: Thu 2018-09-20 01:42:53 Time zone: Asia/Chongqing (CST, +0800) Network time on: yes NTP synchronized: yes RTC in local TZ: no RTC in local TZ: no 表示 RTC 时钟不是用本地时间，而是使用 UTC 时间，可以改成使用本地时间，但是并不推荐这么做：
+$ timedatectl set-local-rtc 1 $ timedatectl Local time: Thu 2018-09-20 03:57:58 CEST Universal time: Thu 2018-09-20 01:57:58 UTC RTC time: Thu 2018-09-20 03:57:59 Time zone: Europe/Paris (CEST, +0200) Network time on: yes NTP synchronized: yes RTC in local TZ: yes Warning: The system is configured to read the RTC time in the local time zone.</description></item><item><title>包管理器 dnf 学习笔记</title><link>https://shaocheng.li/posts/2018-09-21/</link><pubDate>Fri, 21 Sep 2018 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2018-09-21/</guid><description>dnf 是 Fedora 上的新一代软件包管理器，从 Fedora22 开始取代了原有的 yum 。拥有超级用户权限才可以使用 dnf 在系统上安装、更新和删除软件包。
+1. 配置 dnf 的配置文件位于 /etc/dnf/dnf.conf ,文件里的配置信息按不同种类分为多个小节，其中必须的 [main] 小节包含了所有全局选项，还可能包含一些 [repository] 小节用于设置特定存储库的选项，但是建议在 /etc/yum.repos.d/ 目录中的 .repo 文件里定义某个存储库的选项，这些选项的值会覆盖 [main] 小节的同名选项。
+最简单的 /etc/dnf/dnf.conf 文件类似如下：
+[main] gpgcheck=1 installonly_limit=3 clean_requirements_on_remove=true 常用的选项和含义包括：
+gpgcheck=value ，value 可选两个值，0 表示禁止所有 GPG 签名检查，1 表示对所有安装的包进行 GPG 签名检查。 installonlypkgs=space separated list of packages ，这个选项中列出的软件包只安装不更新，多个软件包之间用空格分开。 installonly_limit=value ，value 是一个整数，表示 installonlypkgs 指令中列出的软件包可以同时安装的最大版本数。installonlypkgs 指令的默认值包括几个不同的内核包，因此，更改 installonly_limit 的值也会影响任何单个内核包的最大安装版本数。 /etc/dnf/dnf.conf 中列出的默认值为 installonly_limit = 3，建议不要降低此值，尤其是低于2。 keepcache=value ，value 可选两个值，0 表示成功安装后不保留标头和软件包的缓存，这是默认值。1 表示成功安装后保留缓存。 2.</description></item><item><title>Linux 系统如何获取 CPU 主频</title><link>https://shaocheng.li/posts/2018-08-07/</link><pubDate>Tue, 07 Aug 2018 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2018-08-07/</guid><description>1.CPU 主频 CPU 的主频是指 CPU 核心的时钟频率，它是 CPU 执行指令的最小时间单位。CPU 内部有时钟管理模块，通过外部振荡器（获取其他时钟电路）输入一个特定的频率（外频），经过内部的 PLL 电路（倍频器）锁定到一个很高的频率，再经过不同的分频，供给不同的模块和总线使用，供给 CPU 的就称为主频,就是通常所说的“主频 = 外频 x 倍频”。目前桌面 X86 CPU 的外频由主板供给，通常是 100MHz ，倍频通常是固定设置的。如果要超频，通常是在主板的 BIOS 中修改倍频因子，也有特殊情况可以增加外频。
+X86-Linux 体系有三种硬件时钟：
+Real Time Clock(RTC) ，实时时钟，通常位于 CMOS ，独立工作 Programmalbe Interval Timer(PIT) ，可编程的间隔定时器，通常由 8254 芯片实现 Time Stamp Counter(TSC) ，时间戳控制器，记录 CPU 时钟周期 Linux 内核在计算 CPU 主频时会用到 PIT 和 TSC 。以下是在 kernel 3.4 版本中分析。
+2.Programmalbe Interval Timer (PIT) Programmalbe Interval Timer (PIT) 是现代计算机的重要组成部分，尤其是在多任务环境中。 PIT 是用 8253&amp;frasl;8254 芯片实现的，由于历史原因，外接的晶振频率是 1.</description></item><item><title>Linux 内核调试方法</title><link>https://shaocheng.li/posts/2018-07-05/</link><pubDate>Thu, 05 Jul 2018 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2018-07-05/</guid><description>基于 Ubuntu 14.04 ，Linux Kernel 4.0 以上版本。
+1. printk() printk() 是内核提供的函数，用于将内核空间的信息打印到用户空间缓冲区，打印的信息可以通过 demsg 命令查看，或者直接查看 /proc/kmsg 文件。缓冲区是一个环形队列的结构，消息太多时，旧的消息就会被逐渐覆盖，缓冲区大小是在 kernel/printk/printk.c 文件中的代码设置的：
+#define __LOG_BUF_LEN (1 &amp;lt;&amp;lt; CONFIG_LOG_BUF_SHIFT) static char __log_buf[__LOG_BUF_LEN] __aligned(LOG_ALIGN); 缓冲区大小是 CONFIG_LOG_BUF_SHIFT*2 个字节，CONFIG_LOG_BUF_SHIFT 是在 init/Kconfig 文件中设置的，我们可以在 menuconfig 的相关路径中修改：
+General setup -&amp;gt; Kernel log buffer size(16 =&amp;gt; 64KB, 17 =&amp;gt; 128kB) 还可以在加载内核时用启动参数 log_buf_len=n[KMG] 设置，其中的 n 必须是 2 的整数倍。
+在调用 printk() 函数时要设置消息级别，从 0 到 7 ，数值越小级别越高，相应的宏定义在 include/linux/kern_levels.h 文件中：
+#define KERN_EMERG KERN_SOH &amp;quot;0&amp;quot; /* system is unusable */ #define KERN_ALERT KERN_SOH &amp;quot;1&amp;quot; /* action must be taken immediately */ #define KERN_CRIT KERN_SOH &amp;quot;2&amp;quot; /* critical conditions */ #define KERN_ERR KERN_SOH &amp;quot;3&amp;quot; /* error conditions */ #define KERN_WARNING KERN_SOH &amp;quot;4&amp;quot; /* warning conditions */ #define KERN_NOTICE KERN_SOH &amp;quot;5&amp;quot; /* normal but significant condition */ #define KERN_INFO KERN_SOH &amp;quot;6&amp;quot; /* informational */ #define KERN_DEBUG KERN_SOH &amp;quot;7&amp;quot; /* debug-level messages */ #define KERN_DEFAULT KERN_SOH &amp;quot;d&amp;quot; /* the default kernel loglevel */ 内核中还有一个默认日志级别，只有数值小于这个级别的消息才会被打印到控制台上，大于或者等于这个数值的消息不会显示，它设置在 lib/Kconfig.</description></item><item><title>systemd 的网络管理</title><link>https://shaocheng.li/posts/2018-05-09/</link><pubDate>Wed, 09 May 2018 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2018-05-09/</guid><description>0. 简介 systemd 是 freedesktop 的项目，官网 https://www.freedesktop.org/wiki/Software/systemd/ ,项目源码在 github 上发布，可以在 https://github.com/systemd/systemd 查看所有版本更新、 Bug Fix 和版本对应的文档等。
+systemd-networkd 是 systemd 默认提供的网络管理服务，可以完全管理以太网，对于无线网卡，还需要其他服务支持，比如管理 Wi-Fi 的 wpa_supplicant@.service ，管理 PPP 的 ppp@.service 。
+管理网卡前，应该确保各网卡的驱动都已经正常加载，systemd 的 systemd-modules-load.service 负责在系统启动时静态加载内核模块。它会从以下路径搜索可用的配置文件：
+/etc/modules-load.d/*.conf /run/modules-load.d/*.conf /usr/lib/modules-load.d/*.conf 配置文件的内容就是一个内核模块名称的列表，可以用井号 # 或者分号 ; 注释单个模块。
+1. 基本配置 我的系统中，systemd 的版本是 216 ，有两个以太网卡和一个 Wi-Fi 网卡，先查看一下网卡列表，再查看 systemd-networkd.service 的状态：
+~# networkctl list IDX LINK TYPE OPERATIONAL SETUP 1 lo loopback carrier unmanaged 2 wlp1s0 wlan off unmanaged 3 enp0s20f6 ether routable configured 4 enp0s20f7 ether no-carrier configured 4 links listed.</description></item><item><title>Yocto 学习笔记</title><link>https://shaocheng.li/posts/2018-04-27/</link><pubDate>Fri, 27 Apr 2018 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2018-04-27/</guid><description>0. Quick Start 构建一个 yocto 系统镜像的基本流程如下：
+1. 准备宿主机系统，安装必要的开发工具。 2. 初始化构建环境，通常是利用 oe-init-build-env 脚本，默认会新建一个构建目录 build 。 3. 编辑 build/conf/local.conf 文件，确认 MACHINE 变量，为 4. 开始构建系统镜像，最终的镜像文件会生成在 build/tmp/deploy/images/ 目录下。
+先在宿主机安装 Ubuntu Server 18.04 ，至少预留 50GB 硬盘空间，推荐 100GB ，然后安装如下软件包：
+$ sudo apt-get install gawk wget git-core diffstat unzip texinfo gcc-multilib build-essential chrpath socat cpio python python3 python3-pip python3-pexpect xz-utils debianutils iputils-ping libsdl1.2-dev xterm 用 git 克隆一份 yocto 源码：
+$ git clone git://git.yoctoproject.org/poky Cloning into &#39;poky&#39;.</description></item><item><title>Libpcap 学习笔记</title><link>https://shaocheng.li/posts/2018-04-23/</link><pubDate>Mon, 23 Apr 2018 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2018-04-23/</guid><description>0. 简介 libpcap 是用于捕获 TCP/IP 网络数据包的 C/C++ 库，支持 Linux 系统，Tcpdump 就是在其基础上开发的，通常用于网络嗅探、数据抓取、协议分析等，官网是 http://www.tcpdump.org ，主要的功能有：
+数据包捕获：捕获流经网卡的原始数据包 规则过滤：提供自带规则过滤功能，按需要选择过滤规则 流量采集与统计：采集网络中的流量信息 自定义数据包发送：构造任何格式的原始数据包 包捕获机制是在数据链路层增加一个旁路处理，并不干扰系统自身的网络协议栈的处理，对发送和接收的数据包通过 Linux 内核做过滤和缓冲处理，最后直接传递给上层应用程序。在 Linux 发行版上可以直接安装 libpcap 或者开发库 libpcap-devel ，也可以下载源码后编译安装。
+1. 编程 调用 libpcap 库函数前要包含的头文件：
+#include &amp;lt;pcap/pcap.h&amp;gt; 调用 libpcap 库抓包的流程：
+查找网卡，目的是发现可用的网卡，实现的函数为 pcap_lookupdev() 。 获得网卡参数，这里是利用 pcap_lookupnet() 函数，获得指定网卡的 IP 地址和子网掩码。 打开网卡，利用第一步的返回值，决定使用哪个网卡，调用 pcap_open_live() 将其打开。 编译过滤策略，Lipcap 的重要功能就是提供数据包的过滤，实现的函数是 pcap_compile() 。 设置过滤器，调用 pcap_setfilter() 函数将编译好的过滤策略设置到相应网卡。 开始捕获数据包，有多种实现函数，具有不同的特性。 关闭网卡，释放资源。 如果是用源码包编译安装的话，在 tests 目录下有几个例程可以参考。
+1.1. 查找网卡 char errbuf[PCAP_ERRBUF_SIZE]; int pcap_findalldevs(pcap_if_t **alldevsp, char *errbuf); void pcap_freealldevs(pcap_if_t *alldevs); pcap_freealldevs() 函数可以搜索当前系统中的网卡，并构造一个网卡设备链表。如果调用成功，函数返回 0 ，指针 alldevsp 会指向列表的第一个元素；否则返回 -1 ，指针为 NULL ，并在 errbuf 中存放错误信息，errbuf 至少应该是 PCAP_ERRBUF_SIZE 个字节长度的。链表中的每个元素都是 pcap_if_t 类型：</description></item><item><title>Tkinter 学习笔记</title><link>https://shaocheng.li/posts/2017-12-18/</link><pubDate>Mon, 18 Dec 2017 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2017-12-18/</guid><description>0. 开始 Tkinter 是 Python 内置的 GUI 框架，安装后 Python 后即可使用：
+Python 3.6.2 (v3.6.2:5fd33b5926, Jul 16 2017, 20:11:06) [GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin Type &amp;quot;help&amp;quot;, &amp;quot;copyright&amp;quot;, &amp;quot;credits&amp;quot; or &amp;quot;license&amp;quot; for more information. &amp;gt;&amp;gt;&amp;gt; import tkinter as tk &amp;gt;&amp;gt;&amp;gt; tk._test() 运行结果：
+下面这个例子只包含一个 Quit 按钮:
+import tkinter as tk window = tk.Tk() #定义一个顶层窗口 window.title(&#39;my window&#39;) #定义窗口的标题 window.geometry(&#39;200x100&#39;) #设置窗口的大小 quitbutton = tk.Button(window, text=&amp;quot;Quit&amp;quot;, command=window.quit) #在 window 上定义一个按钮，显示 Quit ，点击按钮执行 quit 方法 quitbutton.</description></item><item><title>Linux 编程笔记</title><link>https://shaocheng.li/posts/2017-12-14/</link><pubDate>Thu, 14 Dec 2017 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2017-12-14/</guid><description>1. sysconfig() sysconfig() 是获取系统运行时配置信息的函数，包括内存、CPU 等。函数声明：
+#include &amp;lt;unistd.h&amp;gt; long sysconf(int name); 参数 name 用于指示要获取的信息，通过返回值将结果返回。新建一个 test.c ，获取当前系统的信息：
+#include &amp;lt;stdio.h&amp;gt; #include &amp;lt;unistd.h&amp;gt; #define ONE_MB (1024 * 1024) int main() { printf(&amp;quot;The number of processors configured is :%ld\n&amp;quot;, sysconf(_SC_NPROCESSORS_CONF)); printf(&amp;quot;The number of processors currently online (available) is :%ld\n&amp;quot;, sysconf(_SC_NPROCESSORS_ONLN)); printf(&amp;quot;The pagesize: %ld\n&amp;quot;, sysconf(_SC_PAGESIZE)); printf(&amp;quot;The number of pages: %ld\n&amp;quot;, sysconf(_SC_PHYS_PAGES)); printf(&amp;quot;The number of available pages: %ld\n&amp;quot;, sysconf(_SC_AVPHYS_PAGES)); printf(&amp;quot;The memory size: %lld MB\n&amp;quot;, (long long)sysconf(_SC_PAGESIZE) * (long long)sysconf(_SC_PHYS_PAGES) / ONE_MB ); printf(&amp;quot;The number of files max opened:: %ld\n&amp;quot;, sysconf(_SC_OPEN_MAX)); printf(&amp;quot;The number of ticks per second: %ld\n&amp;quot;, sysconf(_SC_CLK_TCK)); printf(&amp;quot;The max length of host name: %ld\n&amp;quot;, sysconf(_SC_HOST_NAME_MAX)); printf(&amp;quot;The max length of login name: %ld\n&amp;quot;, sysconf(_SC_LOGIN_NAME_MAX)); return 0; } 编译后执行：</description></item><item><title>计算机是如何实现重启的</title><link>https://shaocheng.li/posts/2017-11-30/</link><pubDate>Thu, 30 Nov 2017 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2017-11-30/</guid><description>1. Soft Power 早期的计算机主板都是使用 AT 电源管理技术，AT 电源系统非常简单，电源键是机械式开关，只有开闭两种状态，闭合后电流从开关上流过为主板供电，断开后主板上的所有器件同时断电，无法实现待机、软关机等功能，这个时期的 Windows 系统关机后会一直显示一条 &amp;ldquo;It is now safe to turn off your computer&amp;rdquo; 的信息，因为操作系统无法切断电源。这时期的电源可以叫做 Hard Power ，因为全部都是硬件控制的。
+后来英特尔提出了 ATX 主板标准，它带来了 Soft Power ，它使用的 ATX 电源没有直接连到电脑的开关，而是插在主板上，可以通过软件控制，下面是 ATX 主板电源接口的信号定义：
+它还带来了两个重要的变化：
+备份电源：主板电源接口上有一个 &amp;ldquo;+5VSB&amp;rdquo; 或者 &amp;ldquo;+5V Standby&amp;rdquo; 的信号，即使计算机已经关机，这个 5V 信号也会一直供给主板，主板可以持续运行一些最简单的功能，也就是待机状态，我们可以随时唤醒计算机。该信号还有一个作用就是替代 CMOS 电池。 智能电源控制：电源接口还有 PS-ON 和 PW-OK/PS-RDY 信号，代表“电源接通”和“电源就绪”。你可以试试将 PS-ON 信号与地线短接，ATX 电源会立即启动，风扇开始旋转。主板上某个由 +5VSB 供电的组件就是通过短接 PS-ON 和地来启动计算机的。由于电源中有些部分启动一段时间后才能稳定，电源完全稳定后才会打开 PW-OK/PS-RDY 信号，主板会等待该信号打开后才开始引到启动。 所以，计算机的电源键不再是“打开”计算机，它连接在主板的基本控制器上，控制器检测到电源键按下，再启动电源，引导系统。电源键不再是启动系统的唯一方式，扩展总线上的其他设备也可以。这很重要，计算机关机时，以太网适配器还是保持打开的，这样就可以通过以太网远程启动计算机。
+2. 电源管理 现在的计算机都采用了 ACPI(Advanced Configuration and Power Interface) 技术，它是英特尔等公司提出的操作系统应用程序管理所有电源管理接口的规范，包括了软件和硬件方面的规范，操作系统的电源管理功能通过调用 ACPI 接口，实现对符合 ACPI 规范的硬件设备的电源管理，下面是电源管理与 ACPI 的全局结构图：</description></item><item><title>Linux 系统的 USB 设备结构</title><link>https://shaocheng.li/posts/2017-11-28/</link><pubDate>Tue, 28 Nov 2017 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2017-11-28/</guid><description>以一台 x86 主机为例，用 lsusb 可以查看它的所有 USB 设备：
+# lsusb Bus 001 Device 003: ID 1bc7:0021 Telit HE910 Bus 002 Device 002: ID 04e2:1410 Exar Corp. Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub Bus 002 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub 在 sys 文件系统的 /sys/bus/usb/devices/ 目录下可以看到所有 USB 设备的树形结构：
+/sys/bus/usb/devices# ls -l total 0 lrwxrwxrwx 1 root root 0 Nov 26 10:57 1-0:1.0 -&amp;gt; .</description></item><item><title>x86 计算机的 PCI 总线结构</title><link>https://shaocheng.li/posts/2017-11-27/</link><pubDate>Mon, 27 Nov 2017 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2017-11-27/</guid><description>1. 硬件 PCI 总线是一个并行总线，一个时钟周期有 32 个 bit （后扩展到 64 bit） 同时传输，带宽 133MB/s ，PCI 设备具有独立的地址空间，叫做 PCI 总线地址空间，通过 Host bridge 隔离处理器系统的存储器域与 PCI 总线域，下面挂在了一个 PCI 总线树，典型的结构如下图：
+PCI 总线主要分为三个部分：
+PCI 设备。符合 PCI 总线标准的设备就被称为 PCI 设备，PCI 总线架构中可以包含多个 PCI 设备。图中的 Audio、LAN 都是一个 PCI 设备。PCI 设备同时也分为主设备和目标设备两种，主设备是一次访问操作的发起者，而目标设备则是被访问者。 PCI 总线。PCI 总线在系统中可以有多条，类似于树状结构进行扩展，每条 PCI 总线都可以连接多个 PCI 设备/桥，上图中有两条 PCI 总线。 PCI 桥。当一条 PCI 总线的承载量不够时，可以用新的 PCI 总线进行扩展，而 PCI 桥则是连接 PCI 总线之间的纽带，如图的 PCI-to-PCI Bridge 。 后期为了提高数据传输速率，又推出了 PCIe 总线，改为串行总线，差分信号传输，带宽提升至 250MB/s ，最新的 PCIe 3.</description></item><item><title>Appweb 学习笔记</title><link>https://shaocheng.li/posts/2017-11-24/</link><pubDate>Fri, 24 Nov 2017 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2017-11-24/</guid><description>1. 概述 Appweb 是一个快速、高效、安全的开源嵌入式 web server ，同时包含了 ESP web 框架和一系列扩展支持，可以极大的缩短开放时间，官网：https://embedthis.com/ ，包含如下组件：
+HTTP web server 程序和库 HTTP client 程序和库 管理和监视进程 ESP web 框架 可选的 CGI、Ejscript、ESP 和 PHP 模块 SSL/TLS 支持包 文档和源码 特性：
+快速开发。Appweb 提供最简单、最低消耗的开发 web 应用方法，它包含了嵌入式 web 应用开发所需的全部特性，极大的缩短了开发时间。 最小的资源需求。Appweb 非常简洁和快速，只需要极小的系统资源，最小只需 2MB 的存储空间，运行时最少只需 1MB 内存。 可定制的开发环境。Appweb 高度模块化，你可以只选择所需的特性，并且支持运行时模块加载和编译时控制。 安全可靠。支持 SSL/TLS，提供最基本的验证，沙盒限制，访问和错误日志。 性能。事件驱动的多线程核心提供了最快的响应，。 标准化。Appweb 支持 HTTP/1.0 、HTTP/1.1 、CGI/1.1 、SSL RFC 2246 、HTTP RFC 2617 。 可移植。Appweb 支持 Linux 、Windows 、Mac OSX ，支持 ARM 、MIPS 、i386/X86/X86_64 、PowerPC 等。 2.</description></item><item><title>用 seafile 自建云存储</title><link>https://shaocheng.li/posts/2017-11-18/</link><pubDate>Sat, 18 Nov 2017 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2017-11-18/</guid><description>Seafile 是一款开源的企业云盘，注重可靠性和性能。支持 Windows, Mac, Linux, iOS, Android 平台。支持文件同步或者直接挂载到本地访问，国人开发，官方网站：https://www.seafile.com 。
+1. 部署 Seafile 服务器 我的云服务器是 Ubuntu Server 16.04.1 LTS 64位 ，新建一个工作目录 ~/seafile ，下载最新的服务器安装包 seafile-server_6.2.3_x86-64.tar.gz 到该目录，然后在该目录下做如下工作：
+mkdir installed mv seafile-server_6.2.3_x86-64.tar.gz installed tar xvf installed/seafile-server_6.2.3_x86-64.tar.gz 现在的目录结构如下：
+$ tree -L 2 . |-- installed | `-- seafile-server_6.2.3_x86-64.tar.gz |-- seafile-server-6.2.3 | |-- check_init_admin.py | |-- reset-admin.sh | |-- runtime | |-- seaf-fsck.sh | |-- seaf-fuse.sh | |-- seaf-gc.sh | |-- seafile | |-- seafile.</description></item><item><title>用 Supervisor 管理进程</title><link>https://shaocheng.li/posts/2017-11-09/</link><pubDate>Thu, 09 Nov 2017 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2017-11-09/</guid><description>Supervisor 是一个 Python 编写的进程管理工具，可以帮助我们实现进程的启动、关闭和重启，可以对多个进程独立管理，或者分组管理，通常用于 Linux 服务器的进程管理，官方网站 supervisord.org 。有两个主要的组成部分：
+supervisord，运行 Supervisor 时会启动一个进程 supervisord，它负责启动所管理的进程，并将所管理的进程作为自己的子进程来启动，而且可以在所管理的进程出现崩溃时自动重启。 supervisorctl，命令行管理工具，可以用来执行 stop、start、restart 等命令，来对这些子进程进行管理。 1. 安装 可以用 pip 安装：
+sudo pip install supervisor 如果是 Ubuntu 系统，也可以用 apt-get ：
+sudo apt-get install supervisor 2. 配置 安装成功后，需要手动生成一个配置文件，安装包提供了 echo_supervisord_conf 工具完成这项工作：
+sudo echo_supervisord_conf &amp;gt; /etc/supervisord.conf 出去注释部分，一些有用的配置选项：
+[unix_http_server] file=/tmp/supervisor.sock ; UNIX socket 文件，supervisorctl 会使用 [supervisord] logfile=/tmp/supervisord.log ; 日志文件，默认是 $CWD/supervisord.log logfile_maxbytes=50MB ; 日志文件大小，超出会 rotate，默认 50MB logfile_backups=10 ; 日志文件保留备份数量默认 10 loglevel=info ; 日志级别，默认 info，其它: debug,warn,trace pidfile=/tmp/supervisord.</description></item><item><title>VScode 使用笔记</title><link>https://shaocheng.li/posts/2017-11-07/</link><pubDate>Tue, 07 Nov 2017 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2017-11-07/</guid><description>1. Python 开发环境 为 vscode 安装 Python 插件，然后选择 Python 版本：
+通过 shift+command+p 组合键打开命令控制板 选择 Python:Select Workspace Interpreter 选择 Python 版本 2. 在终端打开 vscode 在 zsh 终端里用 vscode 直接打开当前目录，编辑配置文件 ~/.zshrc ，在最后加一行：
+alias code=&#39;/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin/code&#39; 保存后重启终端，找一个项目文件夹，直接打开 vscode ：
+$ code . 3. 远程 FTP 同步 ftp-sync 是一个自动将本地工作目录文件同步到远程 FTP/SFTP 服务器的插件。安装后可以通过三个命令完成同步：
+Ftp-sync: Init，在 .vscode 目录下新建一个默认的 ftp-sync 配置文件 Ftp-sync: Sync Local to Remote，同步本地文件到远程服务器 Ftp-sync: Sync Remote to Local，同步远程服务器的文件到本地目录 4.</description></item><item><title>用 pyvenv 创建虚拟环境</title><link>https://shaocheng.li/posts/2017-10-27/</link><pubDate>Fri, 27 Oct 2017 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2017-10-27/</guid><description>Mac 默认安装的是 Python2.7 ，再安装一个 Python3.6 ，就出现了两个版本共存的问题，不同的项目、不同的程序要用不同的版本，就需要创建虚拟环境，切换版本。Python3 提供了 pyvenv 模块原生支持虚拟环境，
+要创建一个虚拟环境，首先决定一个你想要存放的目录，接着运行 pyvenv 后面携带着目录名:
+pyvenv tutorial-env 如果目录不存在的话，这将会创建一个 tutorial-env 目录，并且也在目录里面创建一个包含 Python 解释器，标准库，以及各种配套文件的 Python “副本”。之后你必须激活它：
+source tutorial-env/bin/activate 激活了虚拟环境会改变你的 shell 提示符，显示你正在使用的虚拟环境，并且修改了环境变量以致运行 python 将会让你得到了特定的 Python 版本，以后用 pip 安装的包都会放在虚拟环境的目录下。例如:
+~$ python --version Python 2.7.10 ~$ source tutorial-env/bin/activate ~(tutorial-env) $ python --version Python 3.6.2 ~(tutorial-env) $ pip --version pip 9.0.1 from /Users/lishaocheng/Workspace/py3/lib/python3.6/site-packages (python 3.6) 如果要退回原来的环境，执行 exit 或者再开一个终端即可。
+参考：虚拟环境和包</description></item><item><title>用 VPS 自建科学上网</title><link>https://shaocheng.li/posts/2017-10-17/</link><pubDate>Tue, 17 Oct 2017 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2017-10-17/</guid><description>1. 购买 VPS 推荐 https://www.vultr.com ，注册成功后先充值，Vultr 支持信用卡、比特币和支付宝等，支付宝比较方便：
+充值完毕后，点击右上角的蓝色加号购买服务器，然后选择服务器位置、系统和配置，国内推荐东京：
+选择 Ubuntu 16.04 系统，$5/月的套餐，可以先购买一个月试用：
+使能私有 IP ：
+点击左下角的 Deploy Now 完成购买，稍等片刻，安装完成后：
+点击服务器名称，进入详情页，记下 IP Address、Username 和 Password ：
+现在就可以用 SSH 客户端连接服务器，也可以点击右上第一个图标 View Console ，打开一个 Console 对话框，输入用户名和密码登录：
+2. 安装 SSR 有一个一键安装的脚本，项目主页在 https://github.com/teddysun/shadowsocks_install，在服务器上运行如下命令：
+wget --no-check-certificate https://raw.githubusercontent.com/teddysun/shadowsocks_install/master/shadowsocksR.sh chmod +x shadowsocksR.sh ./shadowsocksR.sh 2&amp;gt;&amp;amp;1 | tee shadowsocksR.log 根据提示配置：
+服务器端口：自己设定（如不设定，默认为 8989） 密码：自己设定（如不设定，默认为 teddysun.com） 加密方式：自己设定（如不设定，默认为 aes-256-cfb） 协议（Protocol）：自己设定（如不设定，默认为 origin） 混淆（obfs）：自己设定（如不设定，默认为 plain） 安装完成后，脚本会提示如下,，记住自己的配置：
+Congratulations, ShadowsocksR server install completed! Your Server IP :your_server_ip Your Server Port :your_server_port Your Password :your_password Your Protocol :your_protocol Your obfs :your_obfs Your Encryption Method:your_encryption_method Welcome to visit:https://shadowsocks.</description></item><item><title>Numbers 使用技巧</title><link>https://shaocheng.li/posts/2017-09-23/</link><pubDate>Sat, 23 Sep 2017 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2017-09-23/</guid><description>1. 自动填充 有时我们需要将一个单元格的内容复制到整行，或者整列，那么我们可以选中单元格，然后拖动边框的黄点即可：
+如果想要填充的字母或者数字自动递增，需要先将单元格的数据格式换成文本，然后再拖动黄点：
+2. 拷贝样式 Numbers 也有类似微软 Office 的格式刷功能，叫做拷贝/粘贴样式。这个两个功能可以在“格式”菜单栏中找到，可以将它们添加到自定义工具栏中，方便使用：
+然后选中一个单元格，拷贝/粘贴样式即可：
+3. 减法 Numbers 的公式可以用减号直接实现减法，如下实现了两个时间相减，计算出持续时间：</description></item><item><title>用 iperf 测试网络性能</title><link>https://shaocheng.li/posts/2017-08-01/</link><pubDate>Tue, 01 Aug 2017 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2017-08-01/</guid><description>iperf 是一个客户端/服务器端工作模式的网络性能测试工具，用于测试 TCP 或者 UDP 的吞吐量，记录延迟、丢包率、MTU等信息。
+1. 语法 缺省状态下，iperf 使用 TCP 传输协议，服务器端的语法：
+iperf -s -p [port] [ options ] 加 -D 参数可以后台运行。
+客户端的语法：
+iperf -c [server ip] -p [port] [options] 常用的参数有：
+-f [kmKM] ，分别以 Kbits ， Mbits ， KBytes ， MBytes 格式显示报告，默认是 Mbits 。 -l ，读写缓存区的大小，默认是 8KB 。 -w ，设置 TCP 的窗口大小。 -t ，设置测试时间，默认是 10 秒。 -i ，打印报告的时间间隔，单位是秒。 -o ，输出打印信息到问题。 -u ，设置为 UDP 协议，两端都要加。 -b n[KM] ，设置使用 UDP 协议时的带宽 n bits/sec ，默认是 1Mbit/sec 。 2.</description></item><item><title>netcat 基本用法</title><link>https://shaocheng.li/posts/2017-07-31/</link><pubDate>Mon, 31 Jul 2017 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2017-07-31/</guid><description>netcat 是一个任意 TCP 和 UDP 连接和监听的工具，有时别名也叫 nc 。可以用于各种 TCP 或 UDP 相关的任务，包括打开 TCP 连接，发送 UDP 数据包，监听任意 TCP 和 UDP 端口，同时支持 IPv4 和 IPv6 。
+1. 语法 netcat [option] ip port 常用参数：
+-e ，建立链接后执行外部程序。 -l ，使 netcat 处于监听状态。 -u ，使用 UDP ，缺省状态下是 TCP 协议。 -v ，输出详细信息。 -z ，执行端口扫描。对于 TCP 端口（缺省），尝试在不发送数据的情况下执行连接扫描（完整三路信号握手）。对于 UDP (–u)，缺省情况下会发送空 UDP 包。 2. 端口扫描 用于扫描远程主机的某个端口是否处于监听状态，假设一台服务器的端口情况：
+$ netstat -nlp (Not all processes could be identified, non-owned process info will not be shown, you would have to be root to see it all.</description></item><item><title>LeetCode 刷题</title><link>https://shaocheng.li/posts/2017-06-26/</link><pubDate>Mon, 26 Jun 2017 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2017-06-26/</guid><description>用 LeetCode 练习 Python ，难度都是选择 Easy 。
+1. Two Sum Given an array of integers, return indices of the two numbers such that they add up to a specific target.
+You may assume that each input would have exactly one solution, and you may not use the same element twice.
+Example:
+Given nums = [2, 7, 11, 15], target = 9, Because nums[0] + nums[1] = 2 + 7 = 9, return [0, 1].</description></item><item><title>Python 对 list 的处理</title><link>https://shaocheng.li/posts/2017-06-25/</link><pubDate>Sun, 25 Jun 2017 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2017-06-25/</guid><description>list 是一种有序的数据集合，索引从 0 开始，类似 C 语言中的数组。比如定义一个 list ：
+&amp;gt;&amp;gt;&amp;gt; array=[2,3,4] &amp;gt;&amp;gt;&amp;gt; print array [2, 3, 4] &amp;gt;&amp;gt;&amp;gt; print array[0] 2 1. 基本操作 获取 list 元素的个数可以用 len() 函数：
+&amp;gt;&amp;gt;&amp;gt; len(array) 3 所以，最后一个元素的索引是 len()-1 ，还可以用 -1 做索引，直接获取最后一个元素，以此类推，可以获取倒数第二个，倒数第三个元素：
+&amp;gt;&amp;gt;&amp;gt; array[-1] 4 &amp;gt;&amp;gt;&amp;gt; array[-2] 3 追加一个元素:
+&amp;gt;&amp;gt;&amp;gt; array.append(5) &amp;gt;&amp;gt;&amp;gt; array [2, 3, 4, 5] 在指定位置插入一个元素：
+&amp;gt;&amp;gt;&amp;gt; array.insert(1,9) &amp;gt;&amp;gt;&amp;gt; array [2, 9, 3, 4, 5] 删除某个元素可以用 pop() 函数，参数是元素的索引，不带参数的话，默认删除末尾的元素，返回值是删除的元素的内容：
+&amp;gt;&amp;gt;&amp;gt; array.</description></item><item><title>Paho JavaScript Client 学习笔记</title><link>https://shaocheng.li/posts/2017-06-13/</link><pubDate>Tue, 13 Jun 2017 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2017-06-13/</guid><description> Paho JavaScript Client 是一个用 JavaScript 写的，基于浏览器的 MQTT Client 库，用于使用 WebSockets 协议连接 MQTT Broker 。
+官网是 http://www.eclipse.org/paho/clients/js/ GitHub 是 https://github.com/eclipse/paho.mqtt.javascript 1. 安装 通过 git 克隆到本地：
+git clone https://github.com/eclipse/paho.mqtt.javascript.git 默认克隆的是 master 分支，是正式发布的版本，远程还有一个 develop 分支，用于开发测试，包含了一个基于 maven 构建的简单客户端，可以用于单元测试。首先要手动检出：
+git checkout -b develop remotes/origin/develop 然后再构建测试：
+$ mvn $ cd src/tests $ mvn test -Dtest.server=iot.eclipse.com -Dtest.server.port=80 -Dtest.server.path=/ws</description></item><item><title>使用 Python 操作 3G 模块</title><link>https://shaocheng.li/posts/2017-06-01/</link><pubDate>Thu, 01 Jun 2017 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2017-06-01/</guid><description>以 Telit HE910 模块为例，在 Linux 下的 AT 命令端口是 /dev/ttyACM3 。可以通过 pyserial 库直接读写端口来与模块通信，也可以使用更高级的 python-gsmmodem 。
+1. Pyserial 如果要直接发送 AT 指令，需要串口读写库，我们常用的是 pyserial ，Python 2.7 默认没有安装这个库，需要自行下载，参考 https://pypi.python.org/pypi/pyserial/2.7，下面是一个简单的例子：
+#!/usr/bin/python import serial ser=serial.Serial(port=&#39;/dev/ttyACM3&#39;, baudrate=115200, bytesize=8, parity=&#39;N&#39;, stopbits=1, timeout=1, xonxoff=False, rtscts=False, dsrdtr=False) cmd=&amp;quot;AT\r&amp;quot; ser.write(cmd.encode()) msg=ser.read(64) print(msg) 保存到文件 atcommand.py ，执行：
+~# ./atcommand.py AT OK 2. Python-gsmmodem 2.1. 简介 python-gsmmodem 是一个用于控制 GSM modem 的 Python 包，基于 pyserial ，提供了 API 和一些命令行交互工具。在这里下载，然后安装：https://github.com/faucamp/python-gsmmodem。它的文档在源码的 docs 目录下，Sphinx 格式，你的电脑需要安装 Sphinx ，然后在 docs 目录下执行 make html 命令，就会在 _build 目录下生产 html 格式的文档，在浏览器中打开即可。python-gsmmodem 有如下几个特性：</description></item><item><title>Linux Test Project 学习笔记</title><link>https://shaocheng.li/posts/2017-05-24/</link><pubDate>Wed, 24 May 2017 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2017-05-24/</guid><description>1. 简介 Linux Test Projec 是一个开源项目，简称 LTP ，致力于提供一套测试工具，用于测试和验证 Linux 内核的功能和稳定性，官网地址：https://linux-test-project.github.io。
+2. 安装 安装前要准备 git、gcc、automake、autoconf、m4、bison、byacc、flex 。然后从 github 克隆源码：
+$ git clone https://github.com/linux-test-project/ltp.git $ cd ltp 配置、编译、安装，文件都安装在 /opt/ltp/ 目录下。：
+$ ../configure $ make all $ make install $ cd /opt/ltp/ $ ls bin IDcheck.sh runltp runltplite.sh runtest scenario_groups share testcases testscripts ver_linux Version 3. 结构说明 整套测试工具分为三大部分：测试脚本、测试驱动和测试用例。测试脚本位于 testscripts/ 目录下，包含了文件系统、磁盘、内核等各种测试项目的脚本；测试驱动位于 bin/ 目录下，主要是一些测试用的辅助脚本，比如 ltp-pan 和 ltp-scanner ；测试用例位于 testcase/ 目录下。其他各目录和文件的功能：
+IDcheck.sh ，检查系统是否缺少执行 LTP 测试套件所需的用户和用户组，如果缺少，就自动创建。 runltp ，执行 LTP 测试套件的脚本。 runltplite.</description></item><item><title>Paho Python Client 学习笔记</title><link>https://shaocheng.li/posts/2017-05-23/</link><pubDate>Tue, 23 May 2017 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2017-05-23/</guid><description>Paho 是一个开源的 MQTT 客户端项目，提供多种语言的 MQTT 客户端实现，包括 C、C++、C#、Java、Python、JavaScript 等，完全支持 MQTT v3.1 和 v3.1.1 。Paho Python Client 是它的 Python 语言版本，支持 Python 2.7 和 3.x 。更多特性可以查看 http://www.eclipse.org/paho/clients/python/ ，源码和文档在 https://github.com/eclipse/paho.mqtt.python 。
+该项目提供了一个测试用的 MQTT broker ：iot.eclipse.org ，端口 1883 ，无密码。
+1. 安装 在 Python 环境中用 pip install paho-mqtt 命令安装，或者下载源码：
+git clone https://github.com/eclipse/paho.mqtt.python.git cd org.eclipse.paho.mqtt.python.git python setup.py install 下面是一个简单的例子，连接一个 borker ，订阅系统默认话题，获取 broker 的版本号：
+import paho.mqtt.client as mqtt def on_connect(client, userdata, flags, rc): print(&amp;quot;Connected with result code &amp;quot;+str(rc)) client.</description></item><item><title>RSA 加密算法与数字证书</title><link>https://shaocheng.li/posts/2017-05-16/</link><pubDate>Tue, 16 May 2017 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2017-05-16/</guid><description>1. RSA 加密算法 RSA 是一种非对称加密算法，同时生成一对密钥，分为公钥和私钥，它有几个重要的特点：
+公钥可以向外发布给多人，私钥必须单独保留确保安全 使用私钥加密的信息只能要公钥解密，使用公钥加密的信息只能用私钥解密 密钥越长，被破解的难度越大，可靠性越高，普通用户应使用 1024 位密钥，证书认证机构应该使用 2048 位或以上 RSA 加密算法有两个重要的应用：信息加密和数字签名。
+2. 信息加密 如果将 RSA 用于数据加密，必然不希望别人知道数据内容，只有我可以解密，这时需要用公钥加密，私钥解密。例如，我生成了一对密钥，将公钥分给很多人，私钥自己保留，Alice 想要给我发信息时，就可以用这个公钥加密之后发给我，只有我可以用私钥解密。
+openssl 集成了多种加密算法和使用工具，生成私钥和相应的公钥：
+~$ openssl genrsa -out rsa.key 1024 Generating RSA private key, 1024 bit long modulus .....................++++++ ....++++++ e is 65537 (0x10001) ~$ openssl rsa -in rsa.key -pubout -out rsa_pub.key writing RSA key ~$ cat rsa_pub.key -----BEGIN PUBLIC KEY----- MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDHZUoPjBXGA4trMaPosiDJkR3x JGfsZRZ7i6bjKjKmocc0umiFcOCFDrP1u4o90lXa/9XVzZ7OUIZSWCaCm/YQDxih oeXTAIPVeCHbfAb9kcE+GjRpCj7VTwN2e96rYyTwBMPdSsDmcdHUAXNJHpA6eST+ 7JE1OHAYGz33AbYhaQIDAQAB -----END PUBLIC KEY----- 假设有个文件 hello ，内容是 hello ，用公钥加密，并生成加密文件，然后再用私钥解密：</description></item><item><title>RaspberryPi 3 使用笔记</title><link>https://shaocheng.li/posts/2017-05-09/</link><pubDate>Tue, 09 May 2017 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2017-05-09/</guid><description>0. 准备 Raspberry Pi 3 Model B 32GB Class10 TF 卡（官方推荐 8GB 以上）和读卡器 5V2A USB 电源，比如 iPad 电源适配器 microUSB 电源线 HDMI 数据线 显示器 USB 键盘 1. 安装系统 下载 Raspbian jessie lite ：2017-04-10-raspbian-jessie-lite.img ，这是一个官方支持的精简系统，基于 Debian 开发，只有文本界面。
+将 TF 卡插入 MacBook ，在终端里用 df 命令可以看到 TF 卡已经被挂载：
+[22:16]~/ ❯ df Filesystem 512-blocks Used Available Capacity iused ifree %iused Mounted on /dev/disk1 487830528 299357448 187961080 62% 1687373 4293279906 0% / devfs 377 377 0 100% 654 0 100% /dev map -hosts 0 0 0 100% 0 0 100% /net map auto_home 0 0 0 100% 0 0 100% /home /dev/disk3s1 60612608 226616 60385992 1% 76 4294967203 0% /Volumes/Pi 然后卸载：</description></item><item><title>Linux 串口编程笔记</title><link>https://shaocheng.li/posts/2017-03-27/</link><pubDate>Mon, 27 Mar 2017 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2017-03-27/</guid><description>1. 串口简介 这里的串口是指美国电子工业联盟（EIA）制定的三种串行数据通信的接口标准， RS-232 、RS-485 和 RS422 ，RS-232 是单端信号全双工，RS-485 是差分信号半双工，RS-422 是差分信号全双工。差分信号的通信速率更高，通信距离更长，RS-232 的通信距离通常小于 15 米，而 RS-485 和 RS-422 可以达到 100 米以上。
+以 RS-232 为例，设计之初是用来连接调制解调器做传输之用，也因此它的脚位意义通常也和调制解调器传输有关。RS-232 的设备可以分为数据终端设备（DTE，Data Terminal Equipment, For example, PC）和数据通信设备（DCE，Data Communication Equipment）两类，这种分类定义了不同的线路用来发送和接受信号。一般来说，计算机和终端设备有DTE连接器，调制解调器和打印机有DCE连接器。标准的 232 接口有 25 针，不过常用的是 9 针的 DB-9 接口，信号定义如下：
+脚位 简写 意义 说明 Pin1 DCD Carrier Detect 调制解调器通知电脑有载波被侦测到。 Pin2 RXD Receiver 接收数据。 Pin3 TXD Transmit 发送数据。 Pin4 DTR Data Terminal Ready 电脑告诉调制解调器可以进行传输。 Pin5 GND Ground 地线。 Pin6 DSR Data Set Ready 调制解调器告诉电脑一切准备就绪。 Pin7 RTS Request To Send 电脑要求调制解调器将数据提交。 Pin8 CTS Clear To Send 调制解调器通知电脑可以传数据过来。 Pin9 RI Ring Indicator 调制解调器通知电脑有电话进来。 这个信号说明是从 DTE 设备的角度出发的，TXD、DTR 和 RTS 信号是由 DTE 产生的，RXD、DSR、CTS、DCD 和 RI 信号是由 DCE 产生的。</description></item><item><title>在 ITerm2 中使用 Zmodem 协议传输文件</title><link>https://shaocheng.li/posts/2017-01-10/</link><pubDate>Tue, 10 Jan 2017 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2017-01-10/</guid><description>Zmodem 是跨平台的文件传输协议，可以很方便的在不同的操作系统之间接传输文件。lzrsz 是该协议的实现方式：https://ohse.de/uwe/software/lrzsz.html 。安装后，在 Mac 的 ITerm2 中用 SSH 登陆远程的 Linux 主机，然后用 rz 、sz 命令传输文件。
+在 Ubuntu 中安装:
+$ sudo apt-get install lrzsz 在 Mac 中安装：
+$ brew install lrzsz 为方便 ITerm2 中使用，需要下载两个脚本：
+cd /usr/local/bin sudo wget https://raw.github.com/mmastrac/iterm2-zmodem/master/iterm2-send-zmodem.sh sudo wget https://raw.github.com/mmastrac/iterm2-zmodem/master/iterm2-recv-zmodem.sh sudo chmod 777 /usr/local/bin/iterm2-* 然后打开 ITerm2 ，点击 preferences &amp;gt; profiles ，选中 Default ，在右侧的 Advanced 标签页中，点击 Tirggers 框的 Edit 按钮，按如下设置添加两个条目：
+Regular expression Action Parameters Instant rz waiting to receive.</description></item><item><title>Sublime Text 3 常用插件</title><link>https://shaocheng.li/posts/2017-01-07/</link><pubDate>Sat, 07 Jan 2017 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2017-01-07/</guid><description>0. Package Control 用于下载、管理插件的插件，安装方法见项目主页。有时安装后会出现 “There are no packages available for installation” 这样的错误，这是因为无法下载插件资源列表文件。解决方法是在菜单栏中选择 Preferences &amp;gt; Package Settings &amp;gt; Package Control &amp;gt; Settings-User ，在打开的配置文件中添加：
+&amp;quot;channels&amp;quot;: [ &amp;quot;https://gist.githubusercontent.com/stanwu/679f8af0c9a43f800974/raw/5e3561bfb8b3ddc92680052c89e73c7dabc92f94/channel_v3.json&amp;quot;, &amp;quot;https://web.archive.org/web/20150905194312/https://packagecontrol.io/channel_v3.json&amp;quot; ], 1. Predawn 一款为Sublime和Atom打造的暗色主题，可以定义Tab的大小，SideBar大小，Find栏大小，并提供主题同款的ICON。
+安装后重启 Sublime Text ，通过菜单栏 Preferences -&amp;gt; Settings 打开用户配置文件，添加：
+&amp;quot;theme&amp;quot;: &amp;quot;predawn-DEV.sublime-theme&amp;quot;, //软件 UI 主题 &amp;quot;color_scheme&amp;quot;: &amp;quot;Packages/Predawn/predawn.tmTheme&amp;quot;, //编辑器配色 &amp;quot;font_size&amp;quot;: 15, &amp;quot;predawn_findreplace_small&amp;quot;: true, //查找对话框设为最小 &amp;quot;predawn_sidebar_small&amp;quot;: true, //侧边栏设为最小 &amp;quot;predawn_tabs_active_underline&amp;quot;: true, //使能当前标签页高亮 &amp;quot;predawn_tabs_small&amp;quot;: true, //标签页设为最小 更多选项可以在项目主页查看。
+2. SideBarFolder 打开的文件夹都太多了，可以用这个来管理，安装后会在菜单栏多一个 Folders 。
+3. SideBarEnhancements 扩展右键选项：</description></item><item><title>推荐一款 Markdown 编辑器</title><link>https://shaocheng.li/posts/2016-12-24/</link><pubDate>Sat, 24 Dec 2016 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2016-12-24/</guid><description>Markdown 语法解决了文本编辑时，内容与样式分离的问题，让我们更专注于内容，少在排版上浪费时间。
+Cmd Markdown 这款编辑器扩展了 Markdown 语法，实现了很多实用的功能：
+实时同步预览 编程语言高亮，显示行号 支持绘制表格、流程图、甘特图 支持 LaTeX 公式 支持段落批注 支持 Vim 编辑模式 可导出 Html 和 PDF 文件 支持云端同步存储 提供 Linux、Windows、Mac 桌面端编辑器和 Web 端编辑器</description></item><item><title>Linux Wireless HowTo</title><link>https://shaocheng.li/posts/2016-10-26/</link><pubDate>Wed, 26 Oct 2016 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2016-10-26/</guid><description>这里的无线（Wireless）指无线局域网，它的通用标准是 IEEE 802.11 协议，定义了数据链路层（MAC层）和物理层协议，工作载波的频率为 2.4GHz ，划分了 11 个频道，最新的协议已经有 5GHz 的工作频率。协议的演进方向是 802.11a-&amp;gt;802.11b-&amp;gt;802.11g-&amp;gt;802.11n 。
+而 802.11i 是 802.11 的无线安全协议，它的技术实现是 WPA 和 WPA2 ，都是开放秘钥认证方式，都属于 Wi-Fi 联盟，WPA2 是比 WPA 更高级的一种安全方式，RSN 是 WPA2 的别名。PSK 和 802.1X 是两种无线安全实现的方式，PSK 是个人级别的，而 802.1X 是企业级别的，较为复杂，但更安全。TKIP 和 CCMP 是两种数据加密算法，在 WPA 和 WPA2 中都可以使用。而 AES 是 CCMP 算法中的核心算法，且目前来看，是最可靠的加密算法。
+Wi-Fi 是一个厂商联盟的标志，目的是建立一个统一的、基于 IEEE 802.11 协议的技术实现。可以简单把 Wi-Fi 设备理解为符合 IEEE 802.11 协议标准的设备。
+Linux 系统中的无线网卡通常用到两种模式，一种是 Station 模式，也就是作为普通 Wi-Fi 设备去连接无线路由器；另一种是 AccessPoint（AP）模式，就是让无线网卡作为 Wi-Fi 热点，供其他 Wi-Fi 设备连接，这需要用到 hostapd ，可以参考 http://shaocheng.</description></item><item><title>Linux 3G Module HowTo</title><link>https://shaocheng.li/posts/2016-10-25/</link><pubDate>Tue, 25 Oct 2016 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2016-10-25/</guid><description>Linux 中 3G 模块的层次结构：
+硬件模块就是 3G 模块，通常通过 USB 总线接入计算机。内核中的 3G 模块驱动可以在应用层生成串行设备，例如 ttyUSB*、ttyACM* 等。3G 模块的拨号连接过程遵循 ppp 协议，它提供了通过串行点对点链路传输数据报的方法，Linux 内核集成了 ppp 协议栈，pppd 程序是 ppp 协议在用户空间的守护进程，chat 程序负责通过串行设备与 pppd 之间的通信。
+1. 硬件和驱动 大部分 3G 模块是挂在 USB 总线上，以 Telit HE910 模块为例，这是一个支持 WCDMA ，即联通 3G 的模块 ：
+[root@localhost ~]# lsusb Bus 001 Device 006: ID 09da:0260 A4Tech Co., Ltd. KV-300H Isolation Keyboard Bus 001 Device 005: ID 0424:2514 Standard Microsystems Corp. USB 2.0 Hub Bus 001 Device 004: ID 1bc7:0021 Telit Wireless Solutions HE910 Linux 系统包含一个通用的 USB 驱动 CDC_ACM，很多 3G 模块都用它来驱动，HE910 就是这样。驱动加载成功后会创建多个 tty 设备文件，其中两个比较重要：</description></item><item><title>NetworkManager 使用笔记</title><link>https://shaocheng.li/posts/2016-10-13/</link><pubDate>Thu, 13 Oct 2016 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2016-10-13/</guid><description>NetworkManager 是目前 Linux 系统中提供网络连接管理服务的一套软件，也支持传统的 ifcfg 类型配置文件。核心是 NetworkManager 守护进程，还提供了命令行工具 nmcli ，以及图形界面配置工具。NetworkManager 可用于以下连接类型：以太网、VLAN、网桥、绑定、成组、Wi-Fi、移动宽带（比如移动网络 3G）及 IP-over-InfiniBand。在这些连接类型中，NetworkManager 可配置网络别名、IP 地址、静态路由器、DNS 信息及 VPN 连接以及很多具体连接参数。最后，NetworkManager 通过 D-bus 提供 API，D-Bus 允许应用程序查询并控制网络配置及状态。
+启动、停止、查看 NetworkManager 服务：
+[root@localhost ~]# systemctl start|stop|restart|status NetworkManager NetworkManager 的配置文件和脚本保存在 /etc/sysconfig/ 目录中。大多数网络配置信息都保存在这里，VPN、移动宽带及 PPPoE 配置除外，这些配置保存在 /etc/NetworkManager/ 子目录中。例如，接口的具体信息是保存在 /etc/sysconfig/network-scripts/ 目录下的 ifcfg-* 文件中。全局设置使用 /etc/sysconfig/network 文件
+在命令行中，可以使用 nmcli 工具与 NetworkManager 进行交互。例如，修改了某个 ifcfg-* 文件后，需要手动载入，可以执行：
+[root@localhost ~]# nmcli connection load /etc/sysconfig/network-scripts/ifcfg-ifname 如果要重新载入全部配置文件，可以执行 ：
+[root@localhost ~]# nmcli connection reload 可以执行 nmcli help 查看该命令的语法，命令的各种参数都可以用 Tab 键补全。</description></item><item><title>BitBake 使用笔记</title><link>https://shaocheng.li/posts/2016-09-12/</link><pubDate>Mon, 12 Sep 2016 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2016-09-12/</guid><description>1. 简介 BitBake 是用 Python 写的一个程序，它是 OpenEmbedded 构建系统时使用的生产工具，现在有很多嵌入式系统都是在使用，比如Yocto 、WindRiver Linux 等。它是一个多任务引擎，可以并行执行 shell 和 Python 任务，每个任务单元根据预定义的元数据来管理源码、配置、编译、打包，并最终将每个任务生成的文件集合成为系统镜像。例如要从源码构建一个 Linux 系统，需要搭建一个生产环境，然后依次生成 Grub、Kernel、各种库文件、各种可执行文件，然后集合到一个文件系统里。如果你玩过 LFS ，就会了解这个过程的复杂性。BitBake 存在的意义就是提供了一个高效的工具，将这个过程标准化、流程化。BitBake 与 GNU Make 的关系就像 GNU Make 之于 GCC ，运作方式也类似 GNU Make ，又有很多不同：
+BitBake 根据预先定义的元数据执行任务，这些元数据定义了执行任务所需的变量，执行任务的过程，以及任务之间的依赖关系，它们存储在 recipe(.bb)、append(.bbappend)、configuration(.conf)、include(.inc) 和 class(.bbclass) 文件中。 BitBake 包含一个抓取器，用于从不同的位置获取源码，例如本地文件、源码控制器(git)、网站等。 每一个任务单元的结构通过 recipe 文件描述，描述的信息有依赖关系、源码位置、版本信息、校验和、说明等等。 BitBake 包含了一个 C/S 的抽象概念，可以通过命令行或者 XML-RPC 使用，拥有多种用户接口。 几个概念：
+Recipe 。Recipe 文件是最基本的元数据文件，每个任务单元对应一个 Recipe 文件，后缀是 .bb ，这种文件为 BitBake 提供的信息包括软件包的基本信息（作者、版本、License等）、依赖关系、源码的位置和获取方法、补丁、配置和编译方法、如何打包和安装。 Configuration 。Configuration 文件的后缀是 .conf ，它会在很多地方出现，定义了多种变量，包括硬件架构选项、编译器选项、通用配置选项、用户配置选项。主 Configuration 文件是 bitbake.</description></item><item><title>Start Developing iOS Apps (Swift)</title><link>https://shaocheng.li/posts/2016-05-06/</link><pubDate>Fri, 06 May 2016 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2016-05-06/</guid><description>原文：Start Developing iOS Apps (Swift)
+Translated by Bob
+2016-05-06
+Blog：http://shaocheng.li
+1. Get Start 1.1. Jump Right In 这是一个很好的 iPad/iPhone App 开发入门文档。这一系列课程可以逐步指导你写出第一个 App ，包括工具的使用、主要概念和实践。
+每一节课都包含一个教程和你需要了解的概念。带领你一步一步创建一个简单的可运行 iOS App 。
+在构建 APP 的过程中，你会学习到 iOS App 开发中所需的概念，更深入的理解 Swift 语言，了解到 Xcode 很多有用的特性。
+####About The Lessons
+在这些课程中，你将构建一个名叫 FoodTracker 的 App 。App 中会显示一份美食列表，包含美食的名称、评价和图片。用户可以添加一个新的美食、删除或者编辑已经存在的美食。添加或者编辑时，会进入一个新的页面，那里可以填写美食的名称、评价和图片。
+第一节课是 playground ，playground 是 Xcode 的一种文件，可以让你在编辑代码的同时，立即看到代码执行的结果。其余的课程都是 Xcode project 文件。每节课的结尾提供下载，你可以下载后检查。
+####Get the Tools
+要开发本课程中的 iOS App ，需要一个 Mac 电脑(OSX 10.10 以上版本），运行最新的 Xcode ，Xcode 包含了设计、开发和调试 iOS App 所需的所有特性。 Xcode 还包含 iOS SDK ，它提供了 iOS 开发中所需的工具、编译器和框架。</description></item><item><title>晴天钟 Documentation</title><link>https://shaocheng.li/posts/2016-04-06/</link><pubDate>Wed, 06 Apr 2016 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2016-04-06/</guid><description>1. 简介 晴天钟是一系列天气预测产品的总称，它们主要提取于美国国家大气海洋局/气候环境预测局(NOAA/NCEP)的“全球预测系统”(Global Forecast System, GFS)数值模式。由叶泉志开发，目前由中国科学院上海天文台中国天文科普网提供硬件及网络支持。
+2. 使用 域名是 http://7timer.org ，IP 访问 http://202.127.24.18/ 。域名不太稳定，通常用 IP 访问 。由于它使用的是 Google 地图，所有要开启翻墙代理，还要选择英文，否则就看不到地图了。
+我通常用它来查看天文用途的天气预报。在地图上单击选点，然后选择 ASTRO ：
+就可以看到天文用途的三天天气预报：
+各种图标的含义：
+3. API 有两种 API ：图表 API 和程序 API 。
+图表 API 调用图表 API 将会返回类似晴天钟网站所见的预报图表，API 是一个 URL ，返回的图表为PNG格式，直接用浏览器访问如下 URL 即可：
+http://202.127.24.18/v4/bin/astro.php?lon=113.17&amp;amp;lat=23.09&amp;amp;ac=0&amp;amp;lang=en&amp;amp;unit=metric&amp;amp;output=internal&amp;amp;tzshift=0
+可以通过参数来控制返回结果，这些参数的含义：
+lon, lat - 指定地点的经纬度，必须是浮点数。 ac – 高度改正，只对天文用途预报有效。可取 0（默认）、2 或 7。只适用于图表 API。 lang – 语言，en 表示英文，zh-CN 表示中文。只适用于图表 API 。 unit – 公制或英制，metric/imperial 。对程序 API 无效。 output – 可设定为 internal（图表输出）、xml 或 json（程序 API ）。 tzshift – 时区微调，可取 0、1 或 -1。对程序 API 无效。 product – 为程序 API 选择产品，应为 astro（天文用途）, civil, civillight, meteo 或 two 。 程序 API 程序 API 若被成功调用，将会返回一系列数据。这些数据使用 XML 或 JSON 格式封装，其地址分别为：</description></item><item><title>Linux 下调试低功耗蓝牙的笔记</title><link>https://shaocheng.li/posts/2016-04-05/</link><pubDate>Tue, 05 Apr 2016 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2016-04-05/</guid><description>蓝牙 4.0 版本推出了低功耗规范，简称 BLE (Bluetooth Low Energy)，很多小型设备，例如小米手环，都是使用低功耗蓝牙。要与这类模块连接，主设备的蓝牙模块必须支持低功耗，例如 intel 2230 ：
+现在有一个 BLE 的透传模块，会不断的发出数据，我的主机安装了 Linux ，使用 intel 2230 接收数据。协议栈依然是 BlueZ 。
+1. GATT 协议 BLE 连接都是建立在 GATT 协议之上的。介绍 GATT 之前，需要了解 GAP（Generic Access Profile）。它在用来控制设备连接和广播。GAP 使你的设备被其他设备可见，并决定了你的设备是否可以或者怎样与合同设备进行交互。GAP 给设备定义了若干角色，其中主要的两个是：外围设备（Peripheral）和中心设备（Central），外设必须不停的向外广播，让中心设备知道它的存在。中心设备扫描到外设后，发起并建立 GATT 连接。
+GATT 连接是独占的，也就是一个 BLE 外设同时只能被一个中心设备连接。一旦外设被连接，它就会马上停止广播。中心设备和外设需要双向通信的话，唯一的方式就是建立 GATT 连接。一个外设只能连接一个中心设备，而一个中心设备可以连接多个外设。GATT 定义 BLE 通信的双方是 C/S 关系，外设作为服务端（Server），也叫从设备（Slave），中心设备是客户端（Client），也叫主设备（Master）。所有的通信事件，都是由 Client 发起请求，Server 作出响应。但 GATT 还有两个特性：notification 和 indication。这意味着 server 可以主动发出通知和指示，使 client 端不用轮询。
+GATT 是一个在蓝牙连接之上的发送和接收很短的数据段的通用规范（ATT），这些很短的数据段被称为属性（Attribute）。一个 attribute 由三种元素组成：
+一个16位的句柄（handle） 一个定长的值（value） 一个 UUID，定义了 attribute 的类型，value 的意义完全由 UUID 决定。 attribute 的 handle 具有唯一性，仅用作区分不用的 attribute（因为可能有很多不同的 attribute 拥有相同的 UUID）</description></item><item><title>BlueZ 蓝牙编程笔记</title><link>https://shaocheng.li/posts/2016-03-23/</link><pubDate>Wed, 23 Mar 2016 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2016-03-23/</guid><description>1. 简介 BlueZ 是 Linux 官方的蓝牙协议栈，官网地址： 。
+BlueZ 的代码由两个部分组成：内核代码和用户空间程序。内核代码包括驱动和核心协议栈，用户空间程序包括应用程序接口和操作蓝牙设备的工具。BlueZ 的体系结构如下图：
+我使用的版本是 bluez-4.101 。
+2. 扫描 下面这个例程展示了搜索蓝牙设备的过程，并显示设备名称和地址。
+//samplescan.c #include &amp;lt;stdio.h&amp;gt; #include &amp;lt;stdlib.h&amp;gt; #include &amp;lt;unistd.h&amp;gt; #include &amp;lt;sys/socket.h&amp;gt; #include &amp;lt;bluetooth/bluetooth.h&amp;gt; #include &amp;lt;bluetooth/hci.h&amp;gt; #include &amp;lt;bluetooth/hci_lib.h&amp;gt; int main(int argc, char **argv) { inquiry_info *ii = NULL; int max_rsp, num_rsp; int dev_id, sock, len, flags; int i; char addr[19] = { 0 }; char name[248] = { 0 }; dev_id = hci_get_route(NULL); sock = hci_open_dev( dev_id ); if (dev_id &amp;lt; 0 || sock &amp;lt; 0) { perror(&amp;quot;opening socket&amp;quot;); exit(1); } len = 8; max_rsp = 255; flags = IREQ_CACHE_FLUSH; ii = (inquiry_info*)malloc(max_rsp * sizeof(inquiry_info)); num_rsp = hci_inquiry(dev_id, len, max_rsp, NULL, &amp;amp;ii, flags); if( num_rsp &amp;lt; 0 ) perror(&amp;quot;hci_inquiry&amp;quot;); for (i = 0; i &amp;lt; num_rsp; i++) { ba2str(&amp;amp;(ii+i)-&amp;gt;bdaddr, addr); memset(name, 0, sizeof(name)); if (hci_read_remote_name(sock, &amp;amp;(ii+i)-&amp;gt;bdaddr, sizeof(name), name, 0) &amp;lt; 0) strcpy(name, &amp;quot;[unknown]&amp;quot;); printf(&amp;quot;%s %s\n&amp;quot;, addr, name); } free( ii ); close( sock ); return 0; } 编译 gcc -o simplescan simplescan.</description></item><item><title>核桃</title><link>https://shaocheng.li/posts/2016-02-23/</link><pubDate>Tue, 23 Feb 2016 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2016-02-23/</guid><description>朦胧中，好像醒了。
+抬眼看窗外，天还黑，
+拿起手机，才五点。
+隐约听到什么声音，应该是楼上吧，
+持续不断，越来越清晰…
+这声音让我想起去年养过的一只猫。
+有天晚上，不知道它从哪弄来一个核桃，自己扑着玩儿，核桃在地板上滚来滚去，格楞楞地响…
+我清醒了，等了一会儿，那声音还在，就在我家里。
+起床，穿鞋，来到客厅，声音消失了…
+我打开所有房间的灯，在厨房的地板上，发现了一个核桃。
+……
+我家从没买过核桃，那个核桃被猫滚到了床底下，后来猫走了，核桃一直留在那。</description></item><item><title>Logrotate</title><link>https://shaocheng.li/posts/2016-01-21/</link><pubDate>Thu, 21 Jan 2016 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2016-01-21/</guid><description>在 Linux 系统中存在各种日志文件，例如保存启动信息和内核信息的 /var/log/dmesg ，保存系统日志的 /var/log/syslog 等。如果连续运行时间太长，这些日志会越来越大，最终占据太多系统空间。所以，我们需要定期清理系统日志。Logrotate 的主要功能就是定时将旧的日志文件归档，同时创建一个新的空的日志文件，归档的文件可以选择压缩或者发送到指定的邮箱，这个过程叫做轮替（rotate）：
+Logrotate 是基于 cron 运行的，他的脚本是 /etc/cron.daily/logrotate :
+#!/bin/sh /usr/sbin/logrotate /etc/logrotate.conf EXITVALUE=$? if [ $EXITVALUE != 0 ]; then /usr/bin/logger -t logrotate &amp;quot;ALERT exited abnormally with [$EXITVALUE]&amp;quot; fi exit 0 cron 用于设置周期性被执行的指令，是运行在后台的守护进程。
+Logrotate 的主配置文件是 /etc/logrotate.conf ：
+# see &amp;quot;man logrotate&amp;quot; for details # rotate log files weekly weekly # keep 4 weeks worth of backlogs rotate 4 # create new (empty) log files after rotating old ones create # use date as a suffix of the rotated file dateext # uncomment this if you want your log files compressed #compress # RPM packages drop log rotation information into this directory include /etc/logrotate.</description></item><item><title>Openemu on Mac</title><link>https://shaocheng.li/posts/2016-01-10/</link><pubDate>Sun, 10 Jan 2016 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2016-01-10/</guid><description>Openemu 是一款多功能游戏机模拟器软件，可以在 Mac 上模拟多种游戏机，从早期的 GBA 到索尼的 PSP ，有了它，我就可以在 Mac 上玩超级马里奥顶蘑菇了。
+你可以在官网 Openemu.org 下载，解压后即可运行。模拟器没有自带游戏，可以在 Homebrew 中浏览下载，但是可选择的并不多。另一个网站 emuparadise.me 提供了大量的游戏 ROM ，我在这里可以搜索马里奥：
+然后下载、解压，将游戏 ROM 拖拽到模拟器界面即可完成安装。</description></item><item><title>lsof 命令入门</title><link>https://shaocheng.li/posts/2016-01-08/</link><pubDate>Fri, 08 Jan 2016 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2016-01-08/</guid><description>以前只是用 lsof 命令查看某个文件被那些进程打开了，直到看了这篇文章：An lsof Primer ，展示了 lsof 强大的一面。网上有很多翻译，找不到原始版本了，我修改了一些地方。
+lsof 是系统管理/安全的高级工具（über-tool）。大多数时候，我用它来获取系统中与网络连接相关的信息，但那只是这个强大有小众的命令的第一步。将这个工具称之为 lsof 真是名副其实，因为它是指“列出打开的文件（lists openfiles）”。切记，在 Unix 中一切（包括网络套接字）都是文件。
+有趣的是，lsof 也是有着最多开关的 Linux/Unix 命令之一。它有那么多的开关，许多选项支持使用 - 和 + 前缀。
+usage: [-?abhlnNoOPRstUvV] [+|-c c] [+|-d s] [+D D] [+|-f[cgG]] [-F [f]] [-g [s]] [-i [i]] [+|-L [l]] [+|-M] [-o [o]] [-p s] [+|-r [t]] [-S [t]] [-T [t]] [-u s] [+|-w] [-x [fl]] [--] [names] 如你所见，lsof 有着实在是令人惊讶的选项数量。你可以使用它来获得系统上的设备信息，了解指定的用户在指定的地点正在碰什么东西，甚至是一个进程正在使用什么文件或网络连接。
+对于我，lsof 替代了 netstat 和 ps 的全部工作。它带来那些工具的所有功能，而且要比那些工具还多得多。那么，让我们来看看它的一些基本能力吧。</description></item><item><title>hostapd HOWTO</title><link>https://shaocheng.li/posts/2016-01-01/</link><pubDate>Fri, 01 Jan 2016 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2016-01-01/</guid><description>1. About hostapd 是一个运行在 Linux 用户空间的 daemon 程序，它可以将 IEEE 802.11 无线网卡切换为 AP 模式，也就是实现软 AP 功能，并提供 IEEE 802.1X/WPA/WPA2/EAP/RADIUS 的认证服务。它使用 nl80211 接口与内核进行通信，支持基于 mac80211 框架的无线驱动。下面是 Linux 的无线网络架构：
+IEEE 802.11 是现在的无线局域网通用的标准，我们通常把它与 Wi-Fi 混为一谈。 mac80211 是 Linux 内核的 802.11 无线设备驱动框架，intel 的无线网卡驱动 iwlwifi 就是基于这个框架。 cfg80211 是 Linux 内核中配置和管理 802.11 无线设备的接口，与 FullMAC 驱动, mac80211 驱动一起工作。 nl80211 和 wext 是两种面向用户空间的接口标准，用于在用户空间配置和管理 802.11 无线设备，内核的 cfg80211 一起工作，目前两种标准同时存在于内核中，nl80211 正在逐步替代 wext ，hostapd 只支持 nl80211 。 iw 就是一个使用 nl80211 接口的命令，用它可以查看和配置无线网卡，支持 nl80211 标准，不支持老的 wext 标准。用 iw list 可以获取当前无线网卡的全部特性，在 Supported interface modes 和 software interface modes 中看到无线网卡是否支持 AP 模式，已经 AP 类型：</description></item><item><title>Git 笔记</title><link>https://shaocheng.li/posts/2015-12-29/</link><pubDate>Tue, 29 Dec 2015 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2015-12-29/</guid><description>1. 配置 git 的全局配置文件是用户目录下的 .gitconfig 文件。设置用户信息：
+git config [--global] user.name &amp;quot;[name]&amp;quot; git config [--global] user.email &amp;quot;[email address]&amp;quot; 2. 创建新仓库 在当前目录下创建新仓库 git init 克隆远程服务器上的仓库 git clone [url] 创建新仓库时会生成 .git 文件夹，包含了该仓库的所有配置文件。
+3. 工作流 源码目录称为工作区 workspace ,本地仓库叫做 Repository ，远程仓库叫做 Remote ，在本地仓库和工作区之间存在一个暂存区 Index 。通常的工作流程是修改源码、放入暂存区、提交到仓库、推送到远程服务器：
+4. 添加 add 添加当前目录的所有文件到暂存区 git add . 添加指定文件到暂存区 git add [file1] [file2] ... 添加指定目录到暂存区，包括子目录 git add [dir] 5. 删除 delete 删除工作区文件，并且将这次删除放入暂存区 git rm [file1] [file2] .</description></item><item><title>学习 Swift&amp;iOS</title><link>https://shaocheng.li/posts/2015-11-30/</link><pubDate>Mon, 30 Nov 2015 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2015-11-30/</guid><description> Swift The Swift Programming Language 中文版 如果没有苹果电脑，可用 swift 在线编译器 使用 Playground 快速练习 Swift 语法</description></item><item><title>Linux IPv6 HOWTO</title><link>https://shaocheng.li/posts/2015-11-27/</link><pubDate>Fri, 27 Nov 2015 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2015-11-27/</guid><description>1. What is IPv6 IPv6 是为了解决 IPv4 地址资源日渐枯竭的问题，使用的是 128bit 地址，可以提供更多的地址空间。IPv6 地址以 16bit 为一组，每组用冒号隔开，可以分为八组，每组以 4 个十六进制数表示，共 32 个十六进制数，例如 2001:0db8:85a3:08d3:1319:8a2e:0370:7344 是一个合法的 IPv6 地址，它又可以分为两个逻辑部分：一个 64 位的网络前缀和一个 64 位的主机地址。
+IPv6 中的 loopback interface 定义为 0000:0000:0000:0000:0000:0000:0000:0001 ，也可以表示为 ::1 ，因为每组中的前导 0 可以省略，一对连续的冒号表示多组 0 ，一个 IPv6 地址中允许出现一对连冒号。
+IPv4 位址可以很容易的转化为 IPv6 格式。如果 IPv4 的一个地址为135.75.43.52（十六进制为 0x874B2B34 ），它可以被转化为0000:0000:0000:0000:0000:ffff:874B:2B34 或者 ::ffff:874B:2B34 。同时，还可以使用混合符号（IPv4-compatible address），则地址可以为 ::ffff:135.75.43.52 。
+2. Linux support 首先需要内核支持，2.6 之后的内核都支持 IPv6 ，在 3.x 版本中，通常默认已经编译入内核：
+如果 IPv6 编译成了模块，可以用 modprobe ipv6 命令加载。内核支持后就可以在 /proc 文件系统中看到 if_net6 文件：</description></item><item><title>Linux 下调试蓝牙模块的笔记</title><link>https://shaocheng.li/posts/2015-10-22/</link><pubDate>Thu, 22 Oct 2015 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2015-10-22/</guid><description>1. 蓝牙简介 蓝牙是一种支持设备短距离通信的无线电技术，使用 2.4GHz 频段，数据速率为1Mbps 。采用时分复用方案实现全双工传输。
+蓝牙技术将设备分为两种：主设备和从设备。
+蓝牙主设备的特点：主设备一般具有输入端。在进行蓝牙匹配操作时，用户通过输入端可输入随机的匹配密码来将两个设备匹配。蓝牙手机、安装有蓝牙模块的 PC 等都是主设备。（例如：蓝牙手机和蓝牙 PC 进行匹配时，用户可在蓝牙手机上任意输入一组数字，然后在蓝牙PC上输入相同的一组数字，来完成这两个设备之间的匹配。）
+蓝牙从设备特点：从设备一般不具备输入端。因此从设备在出厂时，在其蓝牙芯片中，固化有一个4位或6位数字的匹配密码。蓝牙耳机等都是从设备。（例如：蓝牙 PC 与蓝牙耳机匹配时，用户将蓝牙耳机上的匹配密码输入到蓝牙 PC 上，完成匹配。）
+蓝牙设备的呼叫过程：
+蓝牙主端设备发起呼叫，首先是查找，找出周围处于可被查找的蓝牙设备，此时从端设备需要处于可被查找状态。 主端设备找到从端蓝牙设备后，与从端蓝牙设备进行配对，此时需要输入从端设备的 PIN 码。 配对完成后，从端蓝牙设备会记录主端设备的信任信息，此时主端即可向从端设备发起呼叫，根据应用不同，可能是ACL数据链路呼叫或SCO语音链路呼叫，已配对的设备在下次呼叫时，不再需要重新配对。 已配对的设备，做为从端的蓝牙耳机也可以发起建链请求，但做数据通讯的蓝牙模块一般不发起呼叫。 链路建立成功后，主从两端之间即可进行双向的数据通讯。在通信状态下，主端和从端设备都可以发起断链，断开蓝牙链路。 蓝牙协议栈：
+RFCOMM 叫做电缆替代协议，它在蓝牙基带协议上仿真 RS-232 控制和数据信号，为使用串行线传送机制的上层协议（如 OBEX ）提供服务。 OBEX 叫做对象交换协议，采用简单的和自发的方式交换目标，用于传输文件。 2. Linux 对蓝牙的支持 2.6 之后的内核都提供了蓝牙支持，通常都已经是默认的设置：
+[*] Networking support ---&amp;gt; [CONFIG_NET] &amp;lt;/M&amp;gt; Bluetooth subsystem support ---&amp;gt; [CONFIG_BT] &amp;lt;*/M&amp;gt; RFCOMM protocol support [CONFIG_BT_RFCOMM] [*] RFCOMM TTY support [CONFIG_BT_RFCOMM_TTY] &amp;lt;*/M&amp;gt; BNEP protocol support [CONFIG_BT_BNEP] [*] Multicast filter support [CONFIG_BT_BNEP_MC_FILTER] [*] Protocol filter support [CONFIG_BT_BNEP_PROTO_FILTER] &amp;lt;*/M&amp;gt; HIDP protocol support [CONFIG_BT_HIDP] Bluetooth device drivers ---&amp;gt; (Select the appropriate drivers for your Bluetooth hardware) &amp;lt;*/M&amp;gt; RF switch subsystem support ---&amp;gt; [CONFIG_RFKILL] Linux 官方的蓝牙协议栈是 BlueZ ，BlueZ 包括 ： * HCI Core * HCI UART, USB and Virtual HCI device drivers * L2CAP module * Configuration and testing utilities</description></item><item><title>Linux 命令行下的 3G 模块配置工具 comgt</title><link>https://shaocheng.li/posts/2015-09-09/</link><pubDate>Wed, 09 Sep 2015 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2015-09-09/</guid><description>comgt帮助文档
+comgt 是一个 GPRS/EDGE/3G/HSDPA 和 3G/GPRS 模块配置工具。它更像是一个脚本语言解释器，通过调用内建、或者外部脚本与 GPRS 和 3G 模块通讯。
+语法 comgt -d device -ehstvVx script
+参数 -d device ：指定模块的通讯口，例如 /dev/ttyUSB2 或 /dev/modem -e ：打开串口通信的 echo -h ：显示帮助信息 -s ：在外部脚本执行前，不要运行内建的默认脚本 -t ：使用备用线路终端 -v ：运行详细模式，会显示详细的通讯过程 -V ：显示版本信息 -x ：将内建和外部脚本中的波特率 115200 改为 57600 内建脚本 comgt ：运行默认的内建脚本。如果运行 comgt 时没有指定任何脚本，例如 comgt -d /dev/ttyS1 ,它会依次执行几个内建的脚本 PIN 、reg、sig 。 comgt help ：列出所有帮助信息。 comgt info ：列出当前模块的配置。 comgt sig ：获取信号强度。 comgt reg ：显示注册状态。 comgt 3G ：将模块设为 3G only (UMTS/HSDPA) 模式。 comgt 2G ：将模块设为 2G only (GSM/GPRS/EDGE) 模式。 comgt 3G2G ：将模块设为 3G preferred (UMTS/HSDPA and GSM/GPRS/EDGE) 模式 外部脚本 以 sendmsg.</description></item><item><title>用 Python 解析 GPS 轨迹数据</title><link>https://shaocheng.li/posts/2015-09-08/</link><pubDate>Tue, 08 Sep 2015 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2015-09-08/</guid><description>常见的 GPS 数据文件格式有 GPS、CVS、KML 等，这些数据格式本身并不复杂，基本都是对坐标点的集合，大部分 GPS 记录仪都支持多种格式的数据文件的导入和导出。但是有时还是需要做格式转换，比如 Google Earth 只支持 KML 格式导入。所以，我准备做一个 GPS 数据格式转换工具，使用 Python，做一个基于命令行的工具。
+1. GPX GPX（GPS eXchange Format，GPS交换格式）是一个XML格式，它可以用来描述路点、轨迹、路程。这个格式是免费的，可以在不需要付任何许可费用的前提下使用。它的标签保存位置，海拔和时间。
+在GPX中，一个没有顺序关系的点集合，叫路点。一个有顺序的点的集合叫轨迹或者路程。轨迹是一个人曾经走过的记录，路程是一个建议的下一步要走的地方。所以，一般来讲，轨迹里的点，包含时间信息，路程里的点，没有时间信息。
+最小的一个GPX文件，仅仅包含一个经纬度坐标的点，其它的都是可选的。
+GPX 1.1 : http://www.topografix.com/GPX/1/1/
+2. CSV CSV （Comma-Separated Values，逗号分隔值） 文件格式并没有通用的标准，其文件以纯文本形式存储表格数据（数字和文本）。纯文本意味着该文件是一个字符序列，不含必须像二进制数字那样被解读的数据。CSV 文件由任意数目的记录组成，记录间以某种换行符分隔；每条记录由字段组成，字段间的分隔符是其它字符或字符串，最常见的是逗号或制表符。CSV 文件是纯文本文件，但是可以直接用 Office Excel 软件打开。
+下图是一个 CSV 格式的 GPS 轨迹数据文件，每条记录有三个字段，分别表示经度、纬度、海拔。（注：北纬为正，南纬为负，东经为正，西经为负）
+对 CSV 数据读写可以直接调用 Python 的 csv 模块 ：https://docs.python.org/2/library/csv.html
+csv 模块定义了如下几个函数：
+csv.reader(csvfile, dialect=&amp;lsquo;excel&amp;rsquo;, **fmtparams)
+改函数会遍历 csvfile 中的每一行，然后返回一个 reader 对象， csvfile 可以是任何支持 iterator 协议的对象，每次调用它的 next() 方法都会返回一个字符串。
+3.</description></item><item><title>可自定义的 Mac 桌面扩展 Übersicht</title><link>https://shaocheng.li/posts/2015-08-29/</link><pubDate>Sat, 29 Aug 2015 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2015-08-29/</guid><description>Keep an eye on what is happening on your machine and in the World
+http://tracesof.net/uebersicht/
+At a Glance Übersicht lets you run system commands and display their output on your desktop in little containers, called widgets. Widgets are written using HTML5, which means they
+are easy to write and customize can show data in tables, charts, graphs &amp;hellip; you name it can react to different screen sizes The following screenshots give you a glimpse of Übersicht in action:</description></item><item><title>获得 IP 所在地的网站 freegeoip.net</title><link>https://shaocheng.li/posts/2015-08-22/</link><pubDate>Sat, 22 Aug 2015 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2015-08-22/</guid><description>About http://freegeoip.net provides a public HTTP API for software developers to search the geolocation of IP addresses. It uses a database of IP addresses that are associated to cities along with other relevant information like time zone, latitude and longitude.
+You&amp;rsquo;re allowed up to 10,000 queries per hour by default. Once this limit is reached, all of your requests will result in HTTP 403, forbidden, until your quota is cleared.</description></item><item><title>MQTT 协议和 mosquitto</title><link>https://shaocheng.li/posts/2015-08-11/</link><pubDate>Tue, 11 Aug 2015 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2015-08-11/</guid><description>1. MQTT 介绍 http://mqtt.org/
+MQTT 是一个轻型协议，使用基于 TCP/IP 协议的发布/订阅消息转发模式，专门用于机器对机器 (M2M) 通信。 MQTT 协议的中心是 MQTT 服务器或代理 (broker) ，支持发布程序和订阅程序进行访问，如下图所示：
+用户可以使用 MQTT 构建一个传感器网络，其中各种传感器都能够以其传感器独有的消息形式发布传感器值。 订阅程序能够订阅不同的消息，以据此采取措施。 MQTT 代理将处理从发布程序到订阅程序的转发消息。
+如果已经有了一个 broker ，可以直接用 MQTT 客户端软件测试。这里有一个跨平台的 MQTT 客户端 MQTT.fx 。
+2. Mosquitto mosquitto 是一个开源的 MQTT broker ，目前支持 v3.1 和 v3.1.1 协议 ，同时提供了一个 C 语言动态链接库 libmosquitto ，用于实现 mqtt 客户端：
+http://mosquitto.org/documentation/
+下载 mosquitto-1.4.2.tar.gz 后，解压，然后执行 make ，make install 。即可得到几个二进制可执行文件：
+mosquitto : mqtt broker mosquitto_passwd : 管理 mosquitto 密码文件的命令行工具 mosquitto_sub : mqtt 订阅者程序 mosquitto_pub ： mqtt 发布者程序 相关的配置文件安装在 /etc/mosquitto/ 目录下。在 Ubuntu 下可以直接安装 sudo apt-get install mosquitto 。</description></item><item><title>Python 的多线程</title><link>https://shaocheng.li/posts/2015-07-27/</link><pubDate>Mon, 27 Jul 2015 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2015-07-27/</guid><description>Python 的标准库提供了两个模块支持多线程：thread 和 threading ，thread 是低级模块，threading 是对 thread 进行了封装的高级模块，通常直接用 threading 模块。
+threading 库：https://docs.python.org/2/library/threading.html
+1. 创建线程 threading 模块定义了 Thread 对象，创建一个线程就是创建一个 Thread 实例，用 name 参数指定线程的名称，用 target 参数指定该线程执行的函数。然后调用 start() 方法开始执行，join() 方法的作用是等待线程结束，它可以带一个参数，表示超时时间：
+import threading,time def loop(): print &amp;quot;this a thread&amp;quot; n=0 while n&amp;lt;5: print &amp;quot;n = %d&amp;quot; %(n) n=n+1 time.sleep(1) print &amp;quot;thread exit&amp;quot; print &amp;quot;thread running...&amp;quot; t=threading.Thread(target=loop) t.start() t.join() print &amp;quot;thread ended&amp;quot; 我们还可以通过创建自己的线程类来使用多线程，这个类需要继承 threading.Thread ,然后重写 Thread 对象的 run() 方法，run() 方法就是这个线程要实现的功能，调用 start() 方法就会执行 run() ，例如：</description></item><item><title>Python 对 JSON 的处理</title><link>https://shaocheng.li/posts/2015-07-21/</link><pubDate>Tue, 21 Jul 2015 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2015-07-21/</guid><description>1.什么是 JSON JSON 介绍：http://json.org/json-zh.html
+JSON 是 JavaScript 对象表示法语法的子集，是一种轻量级的数据交换格式。一个 JSON 对象是 “名称:值” 对的无序集合，用花括号包含，“名称:值” 对包含一个字段名称（在双引号中），然后跟一个冒号，最后是值，例如：
+{ &amp;quot;name&amp;quot;: &amp;quot;sample_app&amp;quot;, &amp;quot;cmd&amp;quot;: [&amp;quot;python&amp;quot;, &amp;quot;$MOD/sample.py&amp;quot;, &amp;quot;-c&amp;quot;, &amp;quot;$MOD/init.cfg&amp;quot;], &amp;quot;depends&amp;quot;: [&amp;quot;modbus_USBV0&amp;quot;, &amp;quot;cloud_client&amp;quot;, &amp;quot;defaultdb&amp;quot;], &amp;quot;version&amp;quot;: &amp;quot;1.0.0&amp;quot; } 这里的值可以是：
+数字（整数或浮点数） 字符串（在双引号中） 逻辑值（true 或 false） 数组（在方括号中） 对象（在花括号中） null 2.json 库 Python 提供了 json 库（https://docs.python.org/2/library/json.html），可以完成对 JSON 对象的编解码（encoding and decoding），就是 JSON 对象转换为 Python 的数据结构，或者逆过程：
+JSON Python Object dict string string number int,long,float array list,tuple true True false False null None 基本操作 dumps 方法可以将 Python 数据转换为 JSON 格式的字符串，然后返回，例如：</description></item><item><title>Linux 系统中的时间</title><link>https://shaocheng.li/posts/2015-07-01/</link><pubDate>Wed, 01 Jul 2015 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2015-07-01/</guid><description>1. 时区 Linux 系统中通过 /etc/localtime 文件设置系统时区，所有的时区文件在 /usr/share/zoneinfo/ 目录下
+如果要修改时区，直接将 /usr/share/zoneinfo/ 下的相应时区文件复制到 /etc/ 下，改名为 localtime 即可。
+2. 系统时间的显示和设置 常用的显示或设置系统时间的命令是 date 。
+直接执行 date 就可以显示当前的日期时间和时区，如果要格式化显示，需要用加号指定格式化参数，例如按 “年-月-日 时:分:秒”当前时间：
+~# date +&amp;quot;%Y-%m-%d %H:%M:%S&amp;quot; 2015-07-01 11:00:40 设置时间需要用 -s 参数，例如：
+~# date -s &amp;quot;20150701 12:03:00&amp;quot; Wed Jul 1 12:03:00 HKT 2015 查看硬件时钟的时间用 hwclock命令：
+~# hwclock Wed Jul 1 11:09:54 2015 -0.127600 seconds 将系统时间写入硬件时钟：
+~# hwclock --systohc 读取硬件时钟设置系统时间：
+~# hwclock --hctosys 3.</description></item><item><title>Python 学习资料</title><link>https://shaocheng.li/posts/2015-06-13/</link><pubDate>Sat, 13 Jun 2015 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2015-06-13/</guid><description> 基础教程： 廖雪峰的 Python 2.7 教程 ：http://www.liaoxuefeng.com/wiki/001374738125095c955c1e6d8bb493182103fac9270762a000 Python 标准库 ： http://python.usyiyi.cn/python_278/library/index.html 网络编程： Python Socket 网络编程 ：http://www.jianshu.com/p/49750ca1589d Sockets programming in Python ：http://www.ibm.com/developerworks/linux/tutorials/l-pysocks/ Python TCP Communication ：https://wiki.python.org/moin/TcpCommunication 数据库 SQLite 教程 ：http://www.w3cschool.cc/sqlite/sqlite-tutorial.html Pillow Pillow 快速入门 ：http://pillow-cn.readthedocs.org/zh_CN/latest/handbook/tutorial.html Pillow Tutorial ：https://pillow.readthedocs.org/handbook/tutorial.html#cutting-pasting-and-merging-images Pillow Reference ：https://pillow.readthedocs.org/reference/index.html Requests Python Requests的安装与简单运用 ：http://www.zhidaow.com/post/python-requests-install-and-brief-introduction Python Requests 1.1.0 快速上手： http://requests-docs-cn.readthedocs.org/zh_CN/latest/user/quickstart.html 爬虫 Python 爬虫系列教程 ：http://cuiqingcai.com/1052.html Scrapy 框架文档 ：http://scrapy-chs.readthedocs.org/zh_CN/0.24/index.html</description></item><item><title>Libmodbus 编程说明</title><link>https://shaocheng.li/posts/2015-05-24/</link><pubDate>Sun, 24 May 2015 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2015-05-24/</guid><description>项目主页：http://libmodbus.org
+程序中必须包含头文件，编译时连接到 libmodbus ：
+#include &amp;lt;modbus.h&amp;gt; cc `pkg-config --cflags --libs libmodbus` files 在程序中使用 libmodbus 主要是如下几个步骤。
+1. 新建环境 新建一个 libmodbus 环境，如果是串口连接的modbus设备，用 modbus_new_rtu() 函数，如果是tcp连接的modbus 设备，用 modbus_new_tcp() 函数。如果新建成功会返回一个 struct modbus_t 指针，以后我们操作modbus设备，就是对这个指针进行操作；失败返回空指针。
+一个物理接口可以连接多个 modbus 从设备，每个modbus 从设备有自己独立的 ID， 叫做”从设备编号“，是一个整数。所有要用 modbus_set_slave() 函数为 modbus_t 结构设置从设备编号，表示要连接的是哪个 modbus 设备。
+释放一个 libmodbus 环境，用 modbus_free() 函数。
+2. 连接 新建成功后，就可以建立连接，用 modbus_connect() 函数。 关闭连接用 modbus_class() 函数。 刷新连接用 modbus_flush() 函数。
+3. 读写 连接成功后，可以调用相关函数对modbus设备进行操作。
+4. 相关函数说明 新建一个 RTU 类型的 libmodbus 环境，返回一个 modbus_t 结构</description></item><item><title>C 语言日志函数库 zlog</title><link>https://shaocheng.li/posts/2015-02-06/</link><pubDate>Fri, 06 Feb 2015 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2015-02-06/</guid><description> 项目主页：http://hardysimpson.github.io/zlog/ 下载地址：https://github.com/HardySimpson/zlog/releases 中文使用手册：http://hardysimpson.github.io/zlog/UsersGuide-CN.html 下载后解压安装：
+[21:15]Workspace/ ❯ tar xvf zlog-latest-stable.tar.gz [21:16]Workspace/ ❯ cd zlog-latest-stable [21:17]zlog-latest-stable/ ❯ make</description></item><item><title>科学上网利器 Shadowsocks</title><link>https://shaocheng.li/posts/2015-01-20/</link><pubDate>Tue, 20 Jan 2015 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2015-01-20/</guid><description>Shadowsocks 可以为浏览器，支持代理服务器的软件（例如 Dropbox）提供代理服务。
+首先购买一个付费的 Shadowsocks 服务账号，推荐 https://shadowsocks.com，不限流量，速度还不错。购买后会提供多个可用的服务器地址，端口，密码和加密方式。
+欢迎使用我的推广链接：https://portal.shadowsocks.com/aff.php?aff=424
+下载 OS X 客户端：ShadowsocksX。安装后启动，选择 “打开服务器设定” ：
+添加服务器，输入服务商提供的域名，端口，密码：
+然后就可以科学上网了。客户端已经集成了 GFWList ，可以自动识别访问地址，墙内地址走国内路径，墙外地址走代理服务器。可以添加多个服务器，感觉日本的节点速度更快。
+Dropbox 已经完全被墙，修改 hosts 也无法连接，只能用代理。打开 “首选项” ，在“网络”标签中选择 “代理服务器设置”，手动设置服务器类型为 SOCK5 ，服务器地址 127.0.0.1 ，端口 1080：
+点击 “更新”，Dropbox 就复活了。</description></item><item><title>Today Scripts —— 通过脚本打造自己的通知栏部件</title><link>https://shaocheng.li/posts/2015-01-10/</link><pubDate>Sat, 10 Jan 2015 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2015-01-10/</guid><description>OS X Yosemite 新增了一个通知中心，可以在上面放一些小部件。而 Today Script 这个小部件可以让你写自己的脚本，在通知栏显示自己想要的东西。
+主页：https://github.com/SamRothCA/Today-Scripts 脚本列表：https://github.com/SamRothCA/Today-Scripts/wiki 在主页上点击下载链接，下载一个压缩包：Today-Scripts.tar.gz，解压得到 Today Scripts.app ，放到应用程序文件夹内，然后打开。在通知中心就会出现 Scripts :
+点击加号，把它添加到通知栏。按照提示，点击右上角的 Info 图标来添加一个脚本：
+添加一个显示当前月份的命令：
+cal | grep --before-context 6 --after-context 6 --color -e &amp;quot; $(date +%e)&amp;quot; -e &amp;quot;^$(date +%e)&amp;quot; 记得写上标题：
+效果如下：</description></item><item><title>Lua语言学习笔记</title><link>https://shaocheng.li/posts/2015-01-07/</link><pubDate>Wed, 07 Jan 2015 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2015-01-07/</guid><description>Lua （英语发音：/ˈluːə/）是一种轻量级的脚本语言，可以方便的嵌入到其他语言中，很易学习。它是用C语言编写的。广泛应用于游戏和 web 开发中。据说 Adobe Photoshop Lightroom 中 50% 的代码是有 Lua 写的。我学习这个语言是因为目前的项目要用到 LuCI 。
+Lua 的主页：http://www.lua.org 中国开发者论坛：http://www.luaer.cn Lua 程序设计：http://book.luaer.cn Lua 在线手册：http://manual.luaer.cn 酷壳的 Lua 简明教程：http://coolshell.cn/articles/10739.html 1.Hello World Mac 平台默认已经安装了 Lua , 直接执行 lua 就可以进入它的 shell , 首先输出一个 Hello World , 语法很像 C , 结尾有没有分号都可以：
+[18:54]~/ ❯ lua Lua 5.2.3 Copyright (C) 1994-2013 Lua.org, PUC-Rio &amp;gt; print(&amp;quot;Hello World&amp;quot;) Hello World &amp;gt; 也可以写一个脚本文件，直接执行：
+[18:57]Workspace/ ❯ cat test.lua #!/usr/local/bin/lua print(&amp;quot;Hello World&amp;quot;) [18:57]Workspace/ ❯ .</description></item><item><title>2014-12-31</title><link>https://shaocheng.li/posts/2014-12-31/</link><pubDate>Wed, 31 Dec 2014 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2014-12-31/</guid><description>2014年的最后一天了
+这一年，得到了一些，失去了很多，赚了一点钱，虚度了很多美好的时光。在某个突然醒来的黎明，就在想，应该把生命中最好的时光留给最爱的人，这比什么都重要。
+这一年的最后一个月，我在这个城市买了一套房子，人生中的第一套房。12月2日晚上11点，在合同上写下自己的名字，回来的路上下着小雨。
+这一年的日志写的太少，可能是因为我没学到什么东西，希望明年会好一点。</description></item><item><title>在 Linux 中使用 amixer 设置 Input source</title><link>https://shaocheng.li/posts/2014-10-26/</link><pubDate>Sun, 26 Oct 2014 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2014-10-26/</guid><description>电脑的音频输入通常有两个通道：Mic 和 Line in。Mic就是麦克风，Line in 用于连接未经放大的模拟音频信号，例如 Mp3 播放器的耳机插孔，可以将其连接到 PC 的 Line in 插孔。
+Linux 上只要用 alsa 管理声卡，它还提供很多工具，alsamixer用于配置音频的各个参数，基于文本下的图形界面。
+在命令行输入 alsamixer 就可以启动它的界面，然后按 F6 就可以看到当前系统的网卡，每个网卡都由一个独立的数字 ID ：
+这里的网卡是 HDA Intel，ID 是 0。
+amixer 是 alsamixer 的命令行模式。
+先看看 amixer 的语法：
+用 amixer -c 0 scontrols 就可以看到 ID 为 0 的网卡的所有可配置接口：
+用 scontents 可以查看这些接口的详细内容，包括可选的选项和当前的选项：
+用 sget 可以查看某个接口的详细信息，然后有 sset 就可以设置：
+如上图所示，Input source 有三个通道可选：Mic ，Front Mic，Line。Line 就表示 Line in 。用 sset 设置具体通道后，就可以用 arecord 对相应通道录音。</description></item><item><title>个性化定制地图 —— Mapbox</title><link>https://shaocheng.li/posts/2014-10-09/</link><pubDate>Thu, 09 Oct 2014 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2014-10-09/</guid><description>Mapbox 想要构建世界上最漂亮的地图。支持多种平台，可以免费创建并定制个性化的地图，实现非常绚丽的效果。
+主页：http://www.mapbox.com 这里有一个介绍：http://www.pingwest.com/demo/mapbox 定制自己的地图 首先要注册一个账号，然后在主页面上方点击 Project ，进入到如下界面，点击 Create project 就可以新建一个自己的地图。
+我新建了一个 My First Map 。点击它，就可以进入编辑界面，左上方是定制地图所需的工具：
+Style 这个标签用来设置地图的样式，包括：
+Color ：设置街道，绿地，建筑，水在地图上显示的颜色。 Baselayer ：设置地图的基本图层，有街道地图，地形图和卫星图。 Language ：设置地图的语言，Localized 表示本地语言。 Data 这个标签用来向地图添加自定义的数据，包括：
+Marker ：点状标记。 Line ：线，轨迹。 Poygon ：一块图形，或者区域。 另外，点击下方的 import ，可以导入 csv 、kml 、gpx 格式的数据文件。
+Project 这个标签中可以设置地图名称和描述，还可以在此下载和分享地图。
+Info ：Data 栏可以选择下载 GeoJSON 或 KML 格式的地图文件。Map ID 是这个地图的唯一标识符，用于开发。Share 栏是该地图的分享链接。Embed 是该地图嵌入 Web 页面的代码，下面可以选择页面中是否显示放大缩小，搜索和分享链接按钮。 Settings ：设置地图名称和描述。 Advanced ：这里有两个选项，选中 Save current map position 后，通过分享的地图会显示现在所选的位置和大小。选中 Hind Project frome public API ，通过分享的地图可以看到在 Data 中添加的数据。 修改地图后一定要点击上方的 Save 保存。</description></item><item><title>Mac OS X 常用软件和技巧</title><link>https://shaocheng.li/posts/2014-09-09/</link><pubDate>Tue, 09 Sep 2014 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2014-09-09/</guid><description>1.键盘操作 使用 Macbook ，没有合适的鼠标，用了外接键盘后，触摸板也离得远了，尽量是用键盘操作，熟练后效率很高。
+按 F1 键打开 Spotlight ,输入要打开的程序名称，同样适用于搜索并打开文件。
+Mac 键盘快捷键 ：https://support.apple.com/zh-cn/HT201236
+常用快捷键 command + shift + f ：全屏显示当前窗口 command + q ：退出当前程序 command + w ： 关闭当前窗口或标签页 command + t ： 新建窗口或标签页 command + n ： 新建窗口 command + shift + 4 ：截屏，如果再按一次空格，鼠标会变成相机图标，可以选择要解取的程序窗口 Safari 快捷键 command + option + f ：选择到地址栏 command + option + 2 ：打开历史记录 command + d ：收藏当前页面 2. 常用软件 Keka —— 免费开源的文件解压缩软件 http://www.</description></item><item><title>让 Mac 的 Photoshop CS6 支持 ICO 文件</title><link>https://shaocheng.li/posts/2014-07-12/</link><pubDate>Sat, 12 Jul 2014 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2014-07-12/</guid><description>在 http://www.telegraphics.com.au/sw/product/ICOFormat#icoformat页面下载 ico 格式插件。
+在如下界面选择 Mac CS5/CS6 ：
+然后打开下载的 DMG 文件 。将其中的 ICOFormat.plugin 文件复杂到 photoshop 的插件目录下 :
+/Applications/Adobe Photoshop C6/Plug-ins/ OK!
+这样就可以新建，保存 ICO 图片了。</description></item><item><title>用 google-code-prettify 实现代码语法高亮</title><link>https://shaocheng.li/posts/2014-07-11/</link><pubDate>Fri, 11 Jul 2014 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2014-07-11/</guid><description>google-code-prettify 可以通过 javascript 和 css 文件为 html 页面实现代码段的语法高亮。
+1. 下载 在 https://code.google.com/p/google-code-prettify/ 下载 prettify-small-4-Mar-2013.tar.bz2 ，解压后的文件夹放在博客模板的 include 目录下，改名为 prettify 。
+2. 导入 在模板的 base.html 文件的 &amp;lt;head&amp;gt; 段添加 ：
+&amp;lt;link href=&amp;quot;/template/include/prettify/prettify.css&amp;quot; type=&amp;quot;text/css&amp;quot; rel=&amp;quot;stylesheet&amp;quot; /&amp;gt; js 文件添加到 &amp;lt;body&amp;gt; 段的尾部，这样可以提升加载速度 ：
+&amp;lt;script type=&amp;quot;text/javascript&amp;quot; src=&amp;quot;/template/include/prettify/prettify.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt; 3. 实现代码高亮 在 base.html 文件的 &amp;lt;body&amp;gt; 段尾部添加如下代码，它会在页面的 &amp;lt;pre&amp;gt; 标签添加 class=&amp;quot;prettyprint linenums prettyprinted&amp;quot; style=&amp;quot;overflow: auto;&amp;quot; ，用于识别需要高亮的代码块 ：
+&amp;lt;script type=&amp;quot;text/javascript&amp;quot;&amp;gt; $(document).ready(function() { $(&#39;pre&#39;).addClass(&#39;prettyprint linenums&#39;).attr(&#39;style&#39;, &#39;overflow:auto&#39;); prettyPrint(); }); &amp;lt;/script&amp;gt; 这段 js 代码用到了 jQuery ，需要提前引入。</description></item><item><title>在博客添加返回顶部按钮</title><link>https://shaocheng.li/posts/2014-07-09/</link><pubDate>Wed, 09 Jul 2014 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2014-07-09/</guid><description>添加后的效果如右下角。
+1. 导入 jQuery 在 http://jquery.com/download/ 中下载压缩过的 jQuery ：jquery-1.11.1.min.js ,放入博客模板的相应目录下，比如 include/ 。
+在 base.html 的 中添加：
+&amp;lt;script type=&amp;quot;text/javascript&amp;quot; src=&amp;quot;/template/include/jquery-1.11.1.min.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt; 2. 添加 div 在 base.html 中添加:
+&amp;lt;div id=&amp;quot;back-top&amp;quot;&amp;gt; &amp;lt;a href=&amp;quot;#top&amp;quot; title=&amp;quot;回到顶部&amp;quot;&amp;gt;&amp;lt;/a&amp;gt; &amp;lt;/div&amp;gt; 3. 添加js代码 使用 js 响应窗口滚动事件和按钮的点击事件，其中 100 表示向下滚动 100 个像素时出现按md钮，800 表示使用 800ms 的时间滚动到顶部。
+&amp;lt;script type=&amp;quot;text/javascript&amp;quot;&amp;gt; $(&amp;quot;#back-top&amp;quot;).hide(); $(document).ready(function () { $(window).scroll(function () { if ($(this).scrollTop() &amp;gt; 100) { $(&#39;#back-top&#39;).fadeIn(); } else { $(&#39;#back-top&#39;).fadeOut(); } }); $(&#39;#back-top a&#39;).</description></item><item><title>About</title><link>https://shaocheng.li/about/</link><pubDate>Wed, 09 Apr 2014 00:00:00 +0000</pubDate><guid>https://shaocheng.li/about/</guid><description>Hugo is the world’s fastest framework for building websites. It is written in Go.
+It makes use of a variety of open source projects including:
+https://github.com/russross/blackfriday https://github.com/alecthomas/chroma https://github.com/muesli/smartcrop https://github.com/spf13/cobra https://github.com/spf13/viper Learn more and contribute on GitHub.</description></item><item><title>QNX 的 Telnet 和 FTP 服务</title><link>https://shaocheng.li/posts/2013-12-27/</link><pubDate>Fri, 27 Dec 2013 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2013-12-27/</guid><description>Telnet 在QNX中，telnet 服务必须用 inetd启动，所以，先确保 /etc/inetd.conf 文件中有一行 ：
+telnet stream tcp nowait root /usr/sbin/telnetd in.telnetd 且没有被注释。
+各自字段的含义：
+&amp;lt;service_name&amp;gt; &amp;lt;socket_type&amp;gt; &amp;lt;proto&amp;gt; &amp;lt;flags&amp;gt; &amp;lt;user&amp;gt; &amp;lt;server_pathname&amp;gt; &amp;lt;args&amp;gt; 其中 &amp;lt;user&amp;gt; 为启动服务的用户名，必须为系统中已经存在的用户。
+然后执行 inetd &amp;amp; 即可启动telnet服务。
+执行 netstat 命令，可以看到 telnet 已经打开：
+如果要开机启动，可以将 /usr/sbin/inetd &amp;amp; 命令添加到 /etc/rc.d/rc.local 文件中。
+FTP 在QNX中，FTP 服务必须用 inetd启动，所以，先确保 /etc/inetd.conf 文件中有一行 ：
+ftp stream tcp nowait root /usr/sbin/ftpd in.ftpd -l 且没有被注释。
+各自字段的含义：
+&amp;lt;service_name&amp;gt; &amp;lt;socket_type&amp;gt; &amp;lt;proto&amp;gt; &amp;lt;flags&amp;gt; &amp;lt;user&amp;gt; &amp;lt;server_pathname&amp;gt; &amp;lt;args&amp;gt; 其中 &amp;lt;user&amp;gt; 为启动服务器的用户名，必须为系统中已经存在的用户。</description></item><item><title>Google Fonts</title><link>https://shaocheng.li/posts/2013-10-16/</link><pubDate>Wed, 16 Oct 2013 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2013-10-16/</guid><description>Google Fonts 是一套高品质的 Web 字体，可以通过 Google Fonts API 添加到任意 Web 页面中，只需在 HTML 文件的头部添加一个 stylesheet 链接，然后就可以通过 CSS 使用字体。
+优势：
+高品质，开源 支持大多数浏览器 极其易用 劣势：
+墙内链接不稳定 Google Fonts API ：https://developers.google.com/fonts/
+Example 下面是一个简单的例子，将这份代码复制并保存为 html 文件。
+&amp;lt;html&amp;gt; &amp;lt;head&amp;gt; &amp;lt;link rel=&amp;quot;stylesheet&amp;quot; type=&amp;quot;text/css&amp;quot; href=&amp;quot;https://fonts.googleapis.com/css?family=Tangerine&amp;quot;&amp;gt; &amp;lt;style&amp;gt; body { font-family: &#39;Tangerine&#39;, serif; font-size: 48px; } &amp;lt;/style&amp;gt; &amp;lt;/head&amp;gt; &amp;lt;body&amp;gt; &amp;lt;div&amp;gt;Making the Web Beautiful!&amp;lt;/div&amp;gt; &amp;lt;/body&amp;gt; &amp;lt;/html&amp;gt; 然后在浏览器中打开这个 html 文件，就会看到如下效果：
+Making the Web Beautiful!
+这是普通文本，所以可以用 CSS 改变它的样式，试着添加阴影:</description></item><item><title>Font Awesome 矢量字体图标</title><link>https://shaocheng.li/posts/2013-10-15/</link><pubDate>Tue, 15 Oct 2013 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2013-10-15/</guid><description>项目主页：http://fortawesome.github.io/Font-Awesome/
+目前的 Version 3.2.1 版本支持如下特性：
+一个字体文件， 361 个图标 用 CSS 控制样式 无限缩放 免费 支持视网膜屏幕 为 Bootstrap 设计，也可集成到非 Bootstrap 项目 1.集成 复制 font 目录到项目根目录下 复制 css 目录到项目根目录下，主要使用 font-awesome.min.css 文件 修改 font-awesome.min.css 文件中的字体路径，默认是 ../font/ 在 html 文件中引用 css 文件：&amp;lt;link rel=&amp;quot;stylesheet&amp;quot; href=&amp;quot;./css/font-awesome.min.css&amp;quot; type=&amp;quot;text/css&amp;quot; /&amp;gt; 2.实例 使用图标 &amp;lt;i class=&amp;quot;icon-youtube&amp;quot;&amp;gt;&amp;lt;/i&amp;gt; icon-youtube icon-youtube
+其中的 icon-youtube 是图标的名称，所有支持的图标名称可以在 font-awesome.min.css 文件中查找，也可在 Font-Awesome icons 中预览。
+更大的图标 通过给图标设置 icon-large、icon-2x、 icon-3x 或 icon-4x 样式，可以让图标相对于它所在的容器变得更大：
+&amp;lt;p&amp;gt;&amp;lt;i class=&amp;quot;icon-camera-retro icon-large&amp;quot;&amp;gt;&amp;lt;/i&amp;gt; icon-camera-retro&amp;lt;/p&amp;gt; &amp;lt;p&amp;gt;&amp;lt;i class=&amp;quot;icon-camera-retro icon-2x&amp;quot;&amp;gt;&amp;lt;/i&amp;gt; icon-camera-retro&amp;lt;/p&amp;gt; &amp;lt;p&amp;gt;&amp;lt;i class=&amp;quot;icon-camera-retro icon-3x&amp;quot;&amp;gt;&amp;lt;/i&amp;gt; icon-camera-retro&amp;lt;/p&amp;gt; &amp;lt;p&amp;gt;&amp;lt;i class=&amp;quot;icon-camera-retro icon-4x&amp;quot;&amp;gt;&amp;lt;/i&amp;gt; icon-camera-retro&amp;lt;/p&amp;gt; icon-camera-retro</description></item><item><title>Hello Farbox</title><link>https://shaocheng.li/posts/2013-10-12/</link><pubDate>Sat, 12 Oct 2013 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2013-10-12/</guid><description>第一节 1.1 ####1.1.1
+正文
+无序列表1 无序列表2 无序列表子项 无序列表子项 无序列表3 第二节 正文
+有序列表1 有序列表2 代码段：
+include&amp;lt;stdio.h&amp;gt; int main() { printf(&amp;quot;hello farbox\n!&amp;quot;); return 0; } 注意事项
+插入图片：
+正文</description></item><item><title>QNX 对触摸屏的支持</title><link>https://shaocheng.li/posts/2013-09-15/</link><pubDate>Sun, 15 Sep 2013 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2013-09-15/</guid><description>QNX Neutrino 支持多种触摸屏，可以在官网上查找支持的型号和对应的驱动：
+http://www.qnx.com/developers/hardware_support/
+或者在 Utilities Reference 中查看 devi-* 驱动，然后确定所需的参数，启动驱动。例如，启动一个 Dynapro SC4 触摸屏：
+devi-dyna dyna -4 fd -d/dev/ser1 &amp;amp; 使用 devi-dyna 驱动，SC4 协议（-4），串口1（/dev/ser1）。
+第一次使用驱动时，会返回一个错误状态，无法获取校准文件。要校准触摸屏，需要在 Photon 下使用 calib 工具。
+calib 用于校准触摸屏。成功配置触摸屏后（已经创建了设备文件），必须校准。calib 工具的配置文件保存在 /etc/system/config/calib.$hostname 。关于该文件的格式，可以在 “Writing an Input Device Driver” 的 “Calibration file format” 查看.
+校准的步骤是：
+启动 Photon. 运行 calib. 触摸屏幕上的目标点. 点击 Press to Complete Calibration 按钮，完成校准. 语法 calib [options] 参数 -a alg ：指定校准算法。有效算法是 3 和 4 ，默认值是 3 。</description></item><item><title>QNX 编程</title><link>https://shaocheng.li/posts/2013-07-28/</link><pubDate>Sun, 28 Jul 2013 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2013-07-28/</guid><description>处理中断的线程应该先获得 I/O 权限，调用 ThreadCtl() 函数：
+#include &amp;lt;sys/neutrino.h&amp;gt; ThreadCtl( _NTO_TCTL_IO, 0 ); QNX 提供了两种捆绑中断服务程序和中断号的方式：InterruptAttach() 和 InterruptAttachEvent() 。两种方式调用中断服务程序的方式也不同。分离可以调用 InterruptDetach() 函数：
+#define IRQ3 3 /* A forward reference for the handler */ extern const sigevent *serint (void *, int); … /* * Associate the interrupt handler, serint, * with IRQ 3, the 2nd PC serial port */ ThreadCtl( _NTO_TCTL_IO, 0 ); id = InterruptAttach (IRQ3, serint, NULL, 0, 0); … /* Perform some processing.</description></item><item><title>QNX下的串口驱动——devc-ser8250</title><link>https://shaocheng.li/posts/2013-06-09/</link><pubDate>Sun, 09 Jun 2013 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2013-06-09/</guid><description>devc-ser8250 是 QNX 下的8250串口驱动，支持8250s, 14450s 和 16550s 。
+必须以 root 用户运行该程序。
+语法： devc-ser8250 [[options] [port[^shift][,intr]]]... &amp;amp; 选项： -b number：初始化波特率，默认是 57600。 -C size ：canonical buffer 的大小，单位是字节，默认是 256 。 -c clock[/divisor] ：自定义时钟频率，单位是 Hz ，divisor 是串口。 -E ：raw 模式（默认）。默认关闭软件流控制。 -e ：edited 模式。默认使能软件流控制。 -F ：关闭硬件流控制，默认使能硬件流控制。edited 模式不支持硬件流控制。 -f ：使能硬件流控制。 -I number ：中断输入 buffer 的大小，单位是字节，默认是2048 。 -O number ：中断输出 buffer 的大小，单位是字节，默认是2048 。 -o opt[,opt&amp;hellip;] ：额外选项，用逗号隔开，包括：
+nodaemon —— 不要调用 procmgr_daemon() 是驱动在后台运行。如果你需要知道设备终止的时间，可以使用这个选项。 priority=prio —— 设置内部脉冲的工作优先级。 -S|s ：关闭/使能软件流控制。默认：raw 模式时关闭，edited 模式时使能。</description></item><item><title>QNX 编程读写 I/O 端口</title><link>https://shaocheng.li/posts/2013-06-02/</link><pubDate>Sun, 02 Jun 2013 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2013-06-02/</guid><description>要读写 I/O 端口，必须获得 I/O 权限，这需要以 root 权限运行线程，并且调用 ThreadCtl() 函数：
+#include &amp;lt;sys/neutrino.h&amp;gt; ThreadCtl( _NTO_TCTL_IO, 0 ); 然后调用 mmap_device_io 函数映射 I/O 端口地址：
+#include &amp;lt;stdint.h&amp;gt; #include &amp;lt;sys/mman.h&amp;gt; uintptr_t mmap_device_io( size_t len, uint64_t io ); io 表示要访问的 I/O 端口地址（基地址），len 表示要访问的 I/O 端口的字节数。如果调用成功会返回映射后的起始地址，可以直接用 in8 和 out8 等函数访问；如果失败则返回 MAP_DEVICE_FAILED。
+调用读写 I/O 端口的函数要包括头文件：
+#include &amp;lt;hw/inout.h&amp;gt; 主要的函数有：
+uint8_t in8( uintptr_t port ); 从指定端口读取 8 位数据，port 表示端口地址，返回值是读到的数据。
+void out8( uintptr_t port, uint8_t val ); 向指定端口写一个 8 位数据。</description></item><item><title>搭建 QNX 开发环境</title><link>https://shaocheng.li/posts/2013-05-02/</link><pubDate>Thu, 02 May 2013 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2013-05-02/</guid><description>30天评估版页面：http://www.qnx.com/products/evaluation/ 在该页面下载所需软件，并申请 License 。
+系统环境为：Windows XP 和 VMware 7.0
+1. 安装 Windows 平台的 QNX 开发套件 下载 QNXSDP-6.5.0 和 QNXSDP-6.5.0-SP1 ，依次安装，安装过程中需要输入 License 。
+注意：安装目录不能有空格，否则以后使用过程中会出错。
+安装后在桌面会出现 QNX Momentics IDE 4.7 的图标:
+2. 在 VMWare 中运行 QNX 在该页面中选择 VMware (PC) target ，下载文件 650SP1-VM.tar 。下载后解压。
+然后用 VMware Workstation 7.0 或 VMware Player 3.0 打开其中的 650SP1-VM.vmx 文件。
+如果在启动过程中 VMWare 弹出对话框提示“虚拟机被移动”，选择 Create 并点击 OK 。
+启动后无需密码可直接用 root 用户登录。
+登录后打开终端，用 ifconfig 查看网卡配置，用 ping 命令查看网络连接。确保可以和宿主机联通。</description></item><item><title>xargs 命令</title><link>https://shaocheng.li/posts/2013-04-28/</link><pubDate>Sun, 28 Apr 2013 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2013-04-28/</guid><description>xagrs &amp;ndash; 从标准输入获得参数并执行命令
+xargs 有点类似反引号 ，但是功能更强大，它从标准输入获得参数列表，然后分割小块分段，再逐条传递给其他命令并执行。例如：
+find ./ -type f | xargs grep date 该命令相当于对当前目录下的每个文件执行一次 grep date ，也就是将列出当前目录下文件内容中包含 date 的文件 。如果没有 xargs，只会列出当前目录下文件名中包含 date 字段的文件。
+但是上面这个例子存在一个问题，如果文件名中包含有空格，会出错，这是因为 xargs 默认是按照空白字符来分割输入的。一个简单的解决办法就是告诉find使用NUL(\0)来分割结果（向find提供-print0选项），并且告诉xargs也使用Nul来分隔输入（-0）。例如删除当前目录下所有的 python 文件：
+find ./ -name &#39;*.py&#39; -type f -print0 | xargs -0 rm 如果要指定参数在命令中的文件，可以用 -i 选项和 {} 的组合，参数就会被放到 {} 所在的位置。例如，将当前目录下的文件移动到 back 目录下：
+find ./ -type f | xargs -i mv {} ./back/ 有的命令执行时需要不止一个参数，xargs 提供了 -n 选项指定参数数目。一个简单的例子，逐对比较当前目录下的文件的不同：
+find ./ -type f | xargs -n 2 diff 还用两个有用的选项：</description></item><item><title>在 ubuntu 中下载内核源码</title><link>https://shaocheng.li/posts/2013-04-27/</link><pubDate>Sat, 27 Apr 2013 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2013-04-27/</guid><description>下载源码前必须确保已经安装了 dpkg-dev 。使用 apt-get install dpkg-dev 命令安装。
+查找带ubuntu补丁的内核源码
+apt-cache search linux-source 该条命令会查找到很多版本的内核源码，选择所需要的，然后执行：
+apt-get source linux-source-[version] 开始将内核源码包下载到当前目录中。源码包中有三个文件：*.dsc 、*.diff.gz 和 *.orig.tar.gz 。
+下载完成后会自动调用 dpkg-source 命令，根据 dsc 文件中的信息，将源码包解压到同名目录中。然后就可以在源码目录下编译内核了。
+不只是内核源码，用 apt-get 下载其他源码也是这样的方式。
+在编译源码包前，还可以用下面命令安装具有依赖关系的相关软件包：
+apt-get build-dep 在源码目录下执行 dpkg-buildpackage 命令，会生成 Deb 软件包，并放置在上层目录中。</description></item><item><title>GRUB2常用配置</title><link>https://shaocheng.li/posts/2013-04-25/</link><pubDate>Thu, 25 Apr 2013 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2013-04-25/</guid><description> GRUB2 指南中文版
+修改 GRUB2 的配置文件后，都要执行 update_grub 命令生成 /boot/grub/grub.cfg 文件，这样才能使修改生效。任何情况下都不建议手动更改该文件。
+1.显示启动菜单 默认情况下，如果只安装了一个系统，GRUB2是不会显示启动菜单的。
+可以在启动时按住 Shift 键，强制显示启动菜单。
+2.修改默认启动项 在 /etc/default/grub 文件中，设置 GRUB_DEFAULT：
+GRUB_DEFAULT = 0 /boot/grub/grub.cfg 文件中的第一个菜单项为 0 ，第二个为 1 &amp;hellip;
+也可以设置为 saved ，表示默认启动项为上一次选择的项目。
+3.修改 Linux 内核参数 在 /etc/default/grub 文件中，有两个选项用于设置向 Linux 内核传递的参数：
+GRUB_CMDLINE_LINUX 若存在，无论在一般或是救援模式，此行将追加到所有的 &amp;lsquo;linux&amp;rsquo; 命令行后面（传统 GRUB 的「kernel」选项）。类似于 menu.lst 中的「altoptions 」选项。
+GRUB_CMDLINE_LINUX_DEFAULT 此行将追加在 &amp;lsquo;linux&amp;rsquo; 命令行后面（传统 GRUB 的「kernel」选项）。此选项只会追加在一般模式的最后方。类似于 menu.lst 中的「defoptions」选项。如果想显示黑色屏幕以及启动进程文字，请移除「quiet splash」。若想看到 grub 引导画面及简短的文字输出，使用「splash」。若有需要的话，也可以在此行输入选项「acpi=off」。</description></item><item><title>Linux 系统下编程控制蜂鸣器</title><link>https://shaocheng.li/posts/2013-01-24/</link><pubDate>Thu, 24 Jan 2013 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2013-01-24/</guid><description>&lt;h2 id=&#34;原理&#34;&gt;原理&lt;/h2&gt;
+&lt;p&gt;X86架构的蜂鸣器连接图如下：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://shaocheng.li/images/2013-01-24/2013-01-24_1.JPG&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;由图可见，蜂鸣器的声调是由定时器8254的计数器2的输出 OUT2 控制的，OUT2 输出一定频率的正弦波就可以驱动蜂鸣器发声。8254 的端口地址是 0x40~0x43 。&lt;/p&gt;</description></item><item><title>使用 udev 管理设备</title><link>https://shaocheng.li/posts/2013-01-05/</link><pubDate>Sat, 05 Jan 2013 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2013-01-05/</guid><description>udev 是 linux 2.6 内核提供的一种动态管理设备器，主要功能是管理 /dev 目录下的设备节点，同时也替换了 devfs 和 hotplug 的功能，这意味着它要在添加/删除硬件时处理 /dev 目录以及所有用户空间的行为，包括加载 firmware 时。
+udev 依赖于内核提供的 uevent 接口，每次添加或删除设备时，内核都会发送 uevent 向 udev 通知更改。udev 的守护进程是 udevd ，在系统启动时会读取并分析 udev 规则文件提供的所有规则，并保存在内存。 当 udev 接收到内核发出的设备更改事件后，会将设备信息与规则进行匹配，然后执行相应的操作。
+linux内核中的设备信息都是通过 sysfs 文件系统导出的，位于 /sys 目录下。
+1. udevadm udevadm 是一个 udev 管理工具。可用于监视和控制 udev 的运行时行为、请求内核事件、管理事件队列，以及提供简单的调试机制。
+1.1 监视正在运行的 udev 守护进程 程序 udevadm monitor 用于将驱动程序核心时间和 udev 事件处理的计时可视化。执行 udevadm monitor 后，会出现如下内容：
+monitor will print the received events for: UDEV - the event which udev sends out after rule processing KERNEL - the kernel uevent 之后发生的所有 udev 事件都会显示。例如下面是插入 U 盘后显示的前几行：</description></item><item><title>Linux 字符驱动的基本结构</title><link>https://shaocheng.li/posts/2013-01-04/</link><pubDate>Fri, 04 Jan 2013 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2013-01-04/</guid><description>假设字符设备名为 led ，源文件为led.c ，不涉及实际的硬件操作。基本的驱动代码结构如下：
+1. 包含必要的头文件 #include &amp;lt;linux/init.h&amp;gt; //module_init() 和 module_exit() #include &amp;lt;linux/sched.h&amp;gt; //包含大部分内核API的定义 #include &amp;lt;linux/module.h&amp;gt; //什么模块信息的宏，例如MODULE_AUTHOR(author) #include &amp;lt;linux/version.h&amp;gt; //包含内核版本信息的头文件 #include &amp;lt;linux/moduleparam.h&amp;gt; //创建模块参数的宏 #include &amp;lt;linux/kernel.h&amp;gt; //printk等函数 #include &amp;lt;linux/types.h&amp;gt; //内核模块的各种数据类型，例如dev_t #include &amp;lt;linux/fs.h&amp;gt; //文件系统 #include &amp;lt;linux/cdev.h&amp;gt; 还可以根据需要添加其他头文件。
+2. 定义一个设备私有数据结构 通常会将设备名，设备号，cdev等都放入这个数据结构。
+struct led_dev_t { char dev_name[10]; dev_t dev_num; struct cdev cdev; } struct led_dev_t *led_dev; 3. 实现 file_operations 结构 file_operations 结构首先要实现 .owner 然后再根据需要实现相关函数。
+struct file_operations led_fops = { .owner = THIS_MODULE, .</description></item><item><title>在 Linux 内核中新增模块代码</title><link>https://shaocheng.li/posts/2012-12-18/</link><pubDate>Tue, 18 Dec 2012 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2012-12-18/</guid><description>一个最简单的内核模块 编写一个最简单的内核模块 hellomod，源码 hellomod.c 如下：
+#include &amp;lt;linux/init.h&amp;gt; #include &amp;lt;linux/module.h&amp;gt; static int __init hellomod_init(void) { printk(&amp;quot;hellomod init\n&amp;quot;); return 0; } static void __exit hellomod_exit(void) { printk(&amp;quot;hellomod exit\n&amp;quot;); } module_init(hellomod_init); module_exit(hellomod_exit); MODULE_LICENSE(&amp;quot;GPL&amp;quot;); Makefile 文件如下：
+KERDIR=/lib/modules/$(shell uname -r)/build PWD=$(shell pwd) obj-m:=hellomod.o default: make -C ${KERDIR} M=${PWD} modules clean: make -C ${KERDIR} M=${PWD} clean 直接运行 make 即可将其编译为 hellomod.ko 。下面以该模块为例介绍添加到内核的步骤。
+添加到内核 将一个模块源码添加到内核需要如下三个步骤：
+1.将源码文件复制的相应的目录中 我们将 hellomod.c 复制到内核源码的 driver/char/ 目录下。
+2.修改 Makefile 文件 在 driver/char/Makefile 文件中添加新的模块：</description></item><item><title>Linux 驱动的异步通知</title><link>https://shaocheng.li/posts/2012-11-20/</link><pubDate>Tue, 20 Nov 2012 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2012-11-20/</guid><description>实现步骤 假设设备驱动名为 module ，设备的私有数据结构为 module_dev_t ，实现异步通知的步骤如下 ：
+1.定义一个 struct fasync_struct *类型的指针，通常是在设备的私有数据结构中定义。
+struct module_dev_t module_dev { ... strcut fasync_struct * fasync_queue; } 2.实现 fasync 方法,在 fasync 方法中调用 fasync_helper 函数。
+static int module_fasync(int fd,struct file *filp,int mode) { struct module_dev_t *dev = filp-&amp;gt;private_data; return fasync_helper(fd,filp,mode,&amp;amp;dev-&amp;gt;fasync_queue); } struct file_operations fops = { ... .fasync = module_fasync, } 3.在数据到达时调用 kill_fasync 函数产生信号。
+if(dev-&amp;gt;fasync_queue) kill_fasync(&amp;amp;dev-&amp;gt;fasync_queue,SIGIO,POLL_IN); 4.在关闭设备是调用 fasync 方法。
+module_fasync(-1,filp,0); 应用程序的编程方法 1.为信号注册一个处理函数</description></item><item><title>《Unix Shell 范例精解》第五章 sed 习题</title><link>https://shaocheng.li/posts/2012-11-04/</link><pubDate>Sun, 04 Nov 2012 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2012-11-04/</guid><description>数据文件 datefile
+Steve Blenheim:238-923-7366:95 Latham Lane, Easton, PA 83755:11/12/56:20300 Betty Boop:245-836-8357:635 Cutesy Lane, Hollywood, CA 91464:6/23/23:14500 Igor Chevsky:385-375-8395:3567 Populus Place, Caldwell, NJ 23875:6/18/68:23400 Norma Corder:397-857-2735:74 Pine Street, Dearborn, MI 23874:3/28/45:245700 Jennifer Cowan:548-834-2348:583 Laurel Ave., Kingsville, TX 83745:10/1/35:58900 Jon DeLoach:408-253-3122:123 Park St., San Jose, CA 04086:7/25/53:85100 Karen Evich:284-758-2857:23 Edgecliff Place, Lincoln, NB 92743:7/25/53:85100 Karen Evich:284-758-2867:23 Edgecliff Place, Lincoln, NB 92743:11/3/35:58200 Karen Evich:284-758-2867:23 Edgecliff Place, Lincoln, NB 92743:11/3/35:58200 Fred Fardbarkle:674-843-1385:20 Parak Lane, Duluth, MN 23850:4/12/23:780900 Fred Fardbarkle:674-843-1385:20 Parak Lane, Duluth, MN 23850:4/12/23:780900 Lori Gortz:327-832-5728:3465 Mirlo Street, Peabody, MA 34756:10/2/65:35200 Paco Gutierrez:835-365-1284:454 Easy Street, Decatur, IL 75732:2/28/53:123500 Ephram Hardy:293-259-5395:235 CarltonLane, Joliet, IL 73858:8/12/20:56700 James Ikeda:834-938-8376:23445 Aster Ave.</description></item><item><title>《Unix Shell 范例精解》第四章 grep 习题</title><link>https://shaocheng.li/posts/2012-11-03/</link><pubDate>Sat, 03 Nov 2012 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2012-11-03/</guid><description>数据文件：
+Steve Blenheim:238-923-7366:95 Latham Lane, Easton, PA 83755:11/12/56:20300 Betty Boop:245-836-8357:635 Cutesy Lane, Hollywood, CA 91464:6/23/23:14500 Igor Chevsky:385-375-8395:3567 Populus Place, Caldwell, NJ 23875:6/18/68:23400 Norma Corder:397-857-2735:74 Pine Street, Dearborn, MI 23874:3/28/45:245700 Jennifer Cowan:548-834-2348:583 Laurel Ave., Kingsville, TX 83745:10/1/35:58900 Jon DeLoach:408-253-3122:123 Park St., San Jose, CA 04086:7/25/53:85100 Karen Evich:284-758-2857:23 Edgecliff Place, Lincoln, NB 92743:7/25/53:85100 Karen Evich:284-758-2867:23 Edgecliff Place, Lincoln, NB 92743:11/3/35:58200 Karen Evich:284-758-2867:23 Edgecliff Place, Lincoln, NB 92743:11/3/35:58200 Fred Fardbarkle:674-843-1385:20 Parak Lane, Duluth, MN 23850:4/12/23:780900 Fred Fardbarkle:674-843-1385:20 Parak Lane, Duluth, MN 23850:4/12/23:780900 Lori Gortz:327-832-5728:3465 Mirlo Street, Peabody, MA 34756:10/2/65:35200 Paco Gutierrez:835-365-1284:454 Easy Street, Decatur, IL 75732:2/28/53:123500 Ephram Hardy:293-259-5395:235 CarltonLane, Joliet, IL 73858:8/12/20:56700 James Ikeda:834-938-8376:23445 Aster Ave.</description></item><item><title>sed 学习笔记</title><link>https://shaocheng.li/posts/2012-11-02/</link><pubDate>Fri, 02 Nov 2012 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2012-11-02/</guid><description>一些选项 -e script ：添加一套命令，可通过该选项添加多个处理命令 -n ：只打印通过 p 命令匹配到的行 -i ：将修改结果写入文件 -f scriptfile ：使用脚本文件 常用命令 ! ：对所选行以为的行进行操作 p ：打印 d ：删除 s ：替换 g ：行内全局替换 w ：将行写入文件 c\ ：用命令后面的文本替换当前的行 a\ ：在当前行后添加文本 GNU对正则表达式的扩展 \n : 产生或匹配一个换行符（ASCII 10） \r : 产生或匹配一个回车符（ASCII 13） \t : 产生或匹配一个制表符（ASCII 9） \v : 产生或匹配一个垂直制表符（ASCII 11） 指定地址范围 打印第一行到第十行：
+sed -n -e &#39;1,10p&#39; filename 打印最后一行：
+sed -n -e &#39;$p&#39; filename 用正则表达式匹配行， 打印从以 root 开头的行到以 mail 开头的行：</description></item><item><title>awk 实例练习</title><link>https://shaocheng.li/posts/2012-10-28/</link><pubDate>Sun, 28 Oct 2012 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2012-10-28/</guid><description>测试文件 file 的内容如下：
+Mike Harrington:(510) 548-1278:250:100:175 Christian Dobbins:(408) 538-2358:155:90:201 Susan Dalsass:(206) 654-6279:250:60:50 Archie McNichol:(206) 548-1348:250:100:175 Jody Savage:(206) 548-1278:15:188:150 Guy Quigley:(916) 343-6410:250:100:175 Dan Savage:(406) 298-7744:450:300:275 Nancy McNeil:(206) 548-1278:250:80:75 John Goldenrod:(916) 348-4278:250:100:175 Chet Main:(510) 548-5258:50:95:135 Tom Savage:(408) 926-3456:250:168:200 Elizabeth Stachelin:(916) 440-1763:175:75:300 该文件依次显示的是姓名，电话号码，过去三个月的捐款额。
+显示所有的电话号码
+awk -F &amp;quot;:&amp;quot; &#39;{print $2}&#39; file 显示 Dan 的电话号码
+awk -F &amp;quot;:&amp;quot; &#39;$1 ~ /^Dan / {print $2}&#39; file 显示所有以 D 开头的姓
+awk -F &amp;quot;[ :]&amp;quot; &#39;$2 ~ /^D/ {print $2}&#39; file 显示所有以 C 或 E 开头的名</description></item><item><title>Linux Wireless —— 无线操作模式</title><link>https://shaocheng.li/posts/2012-10-27/</link><pubDate>Sat, 27 Oct 2012 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2012-10-27/</guid><description>原文： Wireless Operating Modes
+Translated by Bob
+2012-10-27
+Email：gexbob@gmail.com
+Blog：http://shaocheng.li
+一个 WNIC （Wireless Network Interface Controller，无线网络接口控制器）总是运行在如下几种模式之一。这些模式设定了无线连接的主要功能。有时也可能同时运行在两种模式。
+Station (STA) 基本模式 任何无线驱动都能运行在这种模式。因此它被称作默认模式。两个 STA 模式的 WNIC 无法相互连接。它们需要第三个 AP 模式的 WNIC 来管理无线网络！STA 模式的 WNIC 通过发送管理数据帧来连接 AP 模式的 WNIC 。这个过程叫做认证（authentication）和关联（association）。当 AP 发送关联成功的回复后，这个 STA 就成为了无线网络的一部分。
+AccessPoint (AP) 基本模式 在一个已经被管理的无线网络中，Access Point 是作为主设备存在的。它通过管理和维护 STA 列表来聚合网络。它还管理安全策略。这个网络就以 AP 的 MAC 地址命名。同时还会为 AP 设置一个可读的名字 SSID 。
+Linux 下使用 AP 模式需要用到 hostapd ，当前至少是 0.6 版本，最好通过 git 获得。http://wireless.erley.org
+Monitor (MON) 模式 Monitor 模式是一个被动模式，不会传输数据帧。所有的输入包都交给主机处理，不会进行任何过滤。这个模式被用来监视网络。</description></item><item><title>Linux 系统的电源管理</title><link>https://shaocheng.li/posts/2012-10-23/</link><pubDate>Tue, 23 Oct 2012 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2012-10-23/</guid><description>现在的 linux 内核支持三种电源管理模式,可以在 /sys/power/state 文件中查看：
+cat /sys/power/state standby mem disk 向该文件写入模式的名称即可实现待机，休眠等，例如：
+echo standby &amp;gt; /sys/power/state 下面对各模式详细说明。
+1. standby ACPI state: S1
+该模式会关闭显示器和键盘等输入设备， CPU 依然在工作，所有的操作状态都不会丢失。
+在该模式下按一下计算机的开关键，系统会在1~2秒内恢复到之前的状态。
+2. mem ACPI state: S3
+该模式相当于 Windows 下的待机。计算机将进入一个低供电状态，只有内存保持供电，并处于自刷新模式，以便保存内容。
+此时，系统和设备的状态都存储在内存中。所有设备电源都进入 D3 状态，即全部断电。多数情况下，外围设备总线也全部断电。
+在该模式下按一下计算机的开关键，系统会在3~5秒内恢复到之前的状态。
+3. disk ACPI state: S4
+该模式类似 mem 模式，但是最后多了一个步骤：将内存的内容写入硬盘（通常是写入 swap 分区）。在恢复时，再将其读出，并重新写入暂停前的工作状态。这样做的好处是，即使在该模式下计算机断电，也不会丢失数据，依然可以恢复到以前的工作状态。
+从该模式恢复需要大约30秒。
+在 disk 模式中，将内存内容写入硬盘的 swap 分区使用的是 swsusp 机制。关于该机制的详情在内核源码的 Documentation/power/swsusp.txt 文件中。</description></item><item><title>Sublime Text</title><link>https://shaocheng.li/posts/2012-09-16/</link><pubDate>Sun, 16 Sep 2012 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2012-09-16/</guid><description>简介 官方 : http://www.sublimetext.com/
+参考了非官方文档 : http://docs.sublimetext.info/en/latest/index.html
+视频简介 : http://v.youku.com/v_show/id_XMzU5NzQ5ODgw.html
+1.基本编辑 1.1.操作文件 Ctrl+n :新建文件。 Ctrl+s :保存文件。 Ctrl+w :关闭当前文件，没有文件时会关闭窗口。 Ctrl+tab :在多个打开的文件之间切换 在 View-&amp;gt;Syntax 中可以选择当前文件的语法。 1.2.选择文本 Ctrl+l :选择当前行 Shift+鼠标右键 :按列选择文本。 反复按下 Ctrl+d 可以将全文中与光标所在处相同的单词逐一加入选择，直接按 Alt+F3 可以一次选择全部相同的单词。 1.3.跳转 用 Ctrl+P 可以快速跳转到当前项目中的任意文件，可进行关键词匹配。 用 Ctrl+P 后 @ (或是Ctrl+R)可以快速列出/跳转到某个函数（很爽的是在 markdown 当中是匹配到标题，而且还是带缩进的！）。 用 Ctrl+P 后 # 可以在当前文件中进行搜索。 用 Ctrl+P 后 : (或是Ctrl+G)加上数字可以跳转到相应的行。 而更酷的是你可以用 Ctrl+P 加上一些关键词跳转到某个文件同时加上 @ 来列出/跳转到目标文件中的某个函数，或是同时加上 # 来在目标文件中进行搜索，或是同时加上 : 和数字来跳转到目标文件中相应的行。 1.</description></item><item><title>Octopress 使用笔记</title><link>https://shaocheng.li/posts/2012-09-15/</link><pubDate>Sat, 15 Sep 2012 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2012-09-15/</guid><description>1.代码和语法高亮 除了 Markdown 语法的缩进方式，在 Octopress 中还多种方式可以在文章中嵌入代码并显示语法高亮：
+反引号代码块 语法
+``` [language] [title] [url] [link text] code snippet ``` 嵌入 Gist Gist 是 Github 提供的一个代码管理功能。在 Gist 中新建的代码文件会获得一个 gist_id ，用下面的语法就可以在文章中嵌入相应的代码：
+{ % gist gist_id [filename] % } filename 是可选的，如果一个 gist_id 下有多个文件，可以依次嵌入。
+include_code include_code 用于在文章中导入代码文件。可以在 _config.yml 的 code_dir 设置文件路径，默认是 source/downloads/code 。
+语法：
+{ % include_code [title] [lang:language] path/to/file % } 例如，导入 source/downloads/code/test.js ：</description></item><item><title>用 Octopress 在 github 上部署博客</title><link>https://shaocheng.li/posts/2012-09-09/</link><pubDate>Sun, 09 Sep 2012 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2012-09-09/</guid><description>1.准备 安装 git
+sudo yum install git 配置：
+git config --global user.name &amp;quot;your name&amp;quot; git config --global user.email &amp;quot;your email&amp;quot; 用 RVM 安装 Ruby 1.9.3：
+curl -L https://get.rvm.io | bash -s stable --ruby 根据提示执行：
+source ~/.rvm/scripts/rvm 再安装 ruby 1.9.3：
+rvm install 1.9.3 rvm use 1.9.3 rvm rubygems latest 安装结束后运行 ruby &amp;ndash;version 查看 ruby 版本。
+安装 Octopress
+git clone git://github.com/imathis/octopress.git octopress cd octopress # 首次进入该目录时会询问是否信任 .</description></item><item><title>在 Redhat9 文本系统上安装 Qt/E 4.4.0</title><link>https://shaocheng.li/posts/2012-06-01/</link><pubDate>Fri, 01 Jun 2012 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2012-06-01/</guid><description>Qt Embedded 直接依赖 Framebuffer，无需 X-Window。所以要开启 Linux 系统的 Framebuffer 。开启方法是通过 BootLoader 向内核传递参数：
+对于 grub，在 grub.conf 文件的kernel 命令后面添加 vga=0x311 fb:on 。 对于 lilo，在 lilo.conf 文件中添加 vga=0x311。0x311 表示分辨率为 640*480，16dpp。 编译安装 首先下载 Qt/E-4.4.0 的源码，然后解压在 root 目录：
+cd /root tar -xvjf qt-embedded-linux-opensource-src-4.4.0.tar.bz2 cd qt-embedded-linux-opensource-src-4.4.0 源码中包含了文档、例程。这些会占用很多空间和编译时间，如果不需要的话就修改 configure ，把它去掉：
+QT_DEFAULT_BUILD_PARTS=&amp;quot;libs tools examples demos doc&amp;quot; 改为 QT_DEFAULT_BUILD_PARTS=&amp;quot;libs tools&amp;quot; 通过 configure 的选项可以关闭很多不需要的模块，用 ./configure -help 查看详情。
+针对嵌入式版本，还可以用 -no-feature-&amp;lt;feature&amp;gt; 关闭相应的特性，默认情况下会编译全部的特性。可用的 feature 在 src/corelib/global/qfeatures.txt 文件中有完整描述。但是这个方法不方便，通常是通过 -qconfig 参数指定一个配置文件，在 src/corelib/global/ 目录下有几个典型的配置文件：</description></item><item><title>Vim/Cscope 教程</title><link>https://shaocheng.li/posts/2012-04-29/</link><pubDate>Sun, 29 Apr 2012 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2012-04-29/</guid><description>原文：
+The Vim/Cscope tutorial
+http://cscope.sourceforge.net/cscope_vim_tutorial.html
+Translated by Bob
+2012-4-27
+Email：gexbob@gmail.com
+Blog：http://shaocheng.li
+Cscope 是一个非常方便的工具, 它会为你的编辑器（即 Vim ）带来很好的舒适性. 幸运的是, Cscope 已经被 Vim 在内部集成.
+这个教程向你介绍了 Vim 内建的 Cscope 支持，以及一套让搜索更方便的方法.
+假设你知道使用 vi 风格编辑器的基本知识, 但是不需要任何关于Vim的特定知识 (会简单介绍一些用得到的 Vim 特有功能——如多窗口). 你也无需知道任何关于Cscope的知识: 我们会逐步介绍一些基本的东西.
+简而言之，Vim 的 Cscope 支持很像你用过的 Vim 的 ctags 功能。但是因为 Cscope 的搜索类型比 ctags 更多，所以会有些不同。
+这是一个实践教程, 所以要启动一个 shell , 然后跟着下面的步骤做:
+1.
+如果你的电脑还没有Cscope，先下载并安装。理想状态下, 你的 Vim 应该是 6.x 版本, 但是用 Vim 5 以上的版本都可以获得大部分功能 (无法使用垂直分割, 但是通过修改相关文件可以使用水平分割).
+注意: 如果你的 Vim 版本在编译时没有指定 &amp;lsquo;&amp;ndash;enable-cscope&amp;rsquo; 选项, 你需要重新编译和配置 Vim 。 大部分随 Linux 发行版安装的 Vim 二进制文件都使能了 Cscope 插件。</description></item><item><title>在大项目中使用 Cscope</title><link>https://shaocheng.li/posts/2012-04-28/</link><pubDate>Sat, 28 Apr 2012 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2012-04-28/</guid><description>原文：
+Using Cscope on large projects (example: the Linux kernel)
+http://cscope.sourceforge.net/large_projects.html
+Translated by Bob
+2012-4-28
+Email：gexbob@gmail.com
+Blog：http://shaocheng.li
+如果你要涉及一个大的代码库，Cscope 会是一个非常有用的工具. 它可以通过快速、有目的的搜索为你节省很多时间，而不是像 grep 那样随机的对源文件手动搜索(对于大的代码库，grep 需要一段时间才能启动).
+在这个教程中，你将学会如何针对一个大项目来设置 Cscope. 我们用到的例子是 Linux 内核源代码, 基本的步骤和其他大项目是一样的, 包括 C++ 和 JAVA 项目.
+1.获取源代码. 首先要获取源代码. 可以从 http://www.kernel.org 下载内核源代码. 本教程中假设你下载的是 Linux 2.4.18 并且安装在 /home/jru/linux-2.4.18.
+注意: 确保你有足够的磁盘空间: 内核压缩包只有 30 MB, 解压后会的源代码是 150 MB , 生成的 Cscope 数据库会占用额外的 20-100+ MB (这取决于你想要数据库包含多少内核代码). 有必要的话，可以把源代码和 Cscope 数据库放在两个不同的磁盘分区 .
+2.弄清楚你想要把 Cscope 数据库文件放在哪里. 我假设你会在 /home/jru/cscope 存放数据库和关联文件.
+3.生成一个带有浏览文件列表的 cscope.</description></item><item><title>建立一个定制内核</title><link>https://shaocheng.li/posts/2012-04-01/</link><pubDate>Sun, 01 Apr 2012 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2012-04-01/</guid><description>原文：
+Building a custom kernel
+https://fedoraproject.org/wiki/Building_a_custom_kernel
+Translated By Bob
+2012-3-31
+Email：gexbob@gmail.com
+Blog：http://shaocheng.li
+1. 从源码RPM包建立一个内核 注意：下面的说明只对 Fedora12 和之后版本有效
+这份文档为那些想要重新建立内核的高级用户提供说明。但是，重新建立的内核无法得到 Fedora 内核团队的支持。但是，您是高级用户，您可以自己处理，对吗？无论如何，高级用户建立定制内核的原因有如下几项：
+测试他们编写的或从其他地方得到的补丁。 重新配置已经存在的内核。 学习内核或内核开发。 这些说明也可以用于简单的准备内核源码树。
+开始之前，确认系统已经安装了必要的软件包：
+rpmdevtools yum-utils yum-utils 是一个默认的包。用如下命令安装：
+su -c &#39;yum install rpmdevtools yum-utils&#39; 如果您要用 make xconfig，安装如下软件是必要的：
+qt3-devle libXi-devel gcc-c++ 对于 Fedora 15，用如下命令：
+su -c &#39;yum install qt3-devel libXi-devel&#39; 1.1. 获得源码 不要用 root 建立软件包,用 root 建立软件包是很危险且没有必要的，即使对于内核。下面的指令允许任何普通用户从源码包开始建立和安装内核.
+1.</description></item><item><title>在 Linux 系统中部署 goagent</title><link>https://shaocheng.li/posts/2012-03-23/</link><pubDate>Fri, 23 Mar 2012 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2012-03-23/</guid><description>Goagent 的项目主页在 googlecode：http://code.google.com/p/goagent/
+首页有 Windows 系统中的部署教程，Linux 系统中的部署方法有些复杂，记录如下:
+申请一个Google Appengine：http://code.google.com/intl/zh-CN/appengine/，并且创建一个 appid。 下载 Python 版的 Google App Engine SDK，下载页面：http://code.google.com/intl/zh-CN/appengine/downloads.html#Google_App_Engine_SDK_for_Python，要选择 Linux 平台。下载后解压为一个 google_appengine 文件夹。 下载 goagent 稳定版，在项目主页的顶部就有下载链接，当前的版本是 goagent 1.7.10。下载后解压到 google_appengine/goagent 文件夹。 修改 local/proxy.ini 文件中的 [gae] 下的 appid=你的appid ，多个 appid 可以用 | 隔开。 上传。在 google_appengine 目录下执行：python appcfg.py update goagent/server/python。上传需要一些时间。 chrome 浏览器请安装 SwitchySharp 插件：https://chrome.google.com/webstore/detail/dpplabbmogkhghncfbfdeeokoefdjegm，安装后导入这个设置：http://goagent.googlecode.com/files/SwitchyOptions.bak。 使用时在 goagent/local 下执行 python proxy.py ，然后打开 chrome 即可。</description></item><item><title>牛逼的AA</title><link>https://shaocheng.li/posts/2012-03-05/</link><pubDate>Mon, 05 Mar 2012 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2012-03-05/</guid><description>也许你还不知道 AA 是什么，但只看那牛逼哄哄的名字，就该知道它绝非善类。
+没错。进入这个项目的主页：http://aa-project.sourceforge.net/，就能看到它的三个宏伟目标：
+将所有的重要软件移植到AA-lib 将AA-lib移植到所有的可用平台 迫使IBM重新制造MDA卡 注：MDA（Monochrome Display Adapter ），单色字符显示适配卡，与单色字符显示器配接，它只支持字符显示功能，无图形功能，是一种相当古老的显卡。
+如果你对技术不感兴趣，可用点击这里 http://v.youku.com/v_show/id_XMzYwNTIyODY4.html，观看利用 AA 制作的一段动画,制作方法和源代码在文档的最后一节。
+简单的说，它可用实现下面的效果，就是将图片转换为 ASCII 文本。
+这个略显粗糙，如果将字体调小，增大分辨率，可显示更加逼真的图片，例如：
+其实，这是一个由ASCII字符的狂热爱好者们开发的项目，最初的发起人叫 Jan Hubicka ，目的是将计算机上的一切都用 ASCII 字符来表现，包括图形和视频。
+该项目提供了一个库—— AA-lib ，这是一个低级图形库，与其他的库的区别是它不需要图形设备，完全用 ASCII 字符描绘图形，它的 API 被设计得与其他库类似。还提提供一个演示程序—— BB（这个名字更显另类），播放了一段完全由 ASCII 字符绘制的动画，其中有文字，图像，分形几何，还有一个 3D 效果。
+下面在 fedora12 中安装它们。
+1. 安装 AA-lib 下载 aalib-1.2：
+http://prdownloads.sourceforge.net/aa-project/aalib-1.2.tar.gz
+最新版本是 1.4，但是 BB 是基于 1.2 的，所有先安装1.2。
+解压、编译、安装：
+tar xvzf aalib-1.2.tar.gz cd aalib-1.2 ./configure make make install 默认安装在 /usr/local 下</description></item><item><title>X Window 架构概述</title><link>https://shaocheng.li/posts/2012-02-27/</link><pubDate>Mon, 27 Feb 2012 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2012-02-27/</guid><description>原文：
+X Window System Architecture Overview HOWTO
+http://www.linuxdoc.org/HOWTO/XWindow-Overview-HOWTO/index.html
+Daniel Manrique
+roadmr@entropia.com.mx
+Translated By Bob
+Email：gexbob@gmail.com
+Blog：http://shaocheng.li
+修订历史
+Revision 1.0.1 2001-05-22 Revised by: dm 一些语法修正，由Bill Staehle指出。
+Revision 1.0 2001-05-20 Revised by: dm 初始发行。
+本文档描述了X Window的架构，给出了对于X Window设计的更好理解, 包括X的组件，这些组件结合起来构成的可运行图形环境，这些组件作为窗口管理器该怎样选择，工具包和构件库，桌面环境。
+1. 序言 这个文档的目的是提供一个 X-Window 系统架构的概述，希望人们更好的理解它为什么要这样设计，X 的组件是怎样组合起来形成一个可工作的图形环境，怎样选择这些组件。
+我们探讨一些经常被提到的概念，如果没有相关的技术背景，这些概念可能被混淆，例如部件（widgets）和工具包（toolkits），窗口管理器（window managers）和桌面环境（desktop environments）。还提供了一些例子，展示了这些组件在日常使用的应用程序中如何相互作用。
+这个文档故意写得不太偏重技术，它基于作者的经验知识，以非技术方式引入，它可以从各种意见中吸取营养，包括更深入的例子和解释，以及技术上的更正。作者欢迎所有关于这个文档的问题和意见，Email：roadmr@entropia.com.mx 。
+2. 简介 回到UNIX还是新鲜事物的时代，大约是1970年，图形用户接口还是一个奇怪的东西，只被一个实验室（Xerox&amp;rsquo;s PARC）使用。可是今天，任何操作系统只要想拥有竞争力，就必须有一个GUI子系统。GUI界面提供了良好的易用性。这不是UNIX所关心的，UNIX 有它的传统，某种程度来讲，多功能比易用性更好。但是，有几个原因使得 UNIX 系统需要有一个GUI。例如，UNIX 的多任务特性，在给定的时间内要运行多个程序。GUI 提供了多种控制方式，可以在同一时间在屏幕上显示多个运行的程序。所以，某些类型的信息更适合在图形界面上显示（有些甚至只能在图形界面上显示，例如pr0n和其他图形数据）。
+历史上，UNIX有很多学术上的改进。一个好的例子是，70年代末加入了 BSD 网络代码，这是加州大学伯克利分校的工作成果。事实证明，X Window 系统也是一个学术项目的结果，即 MIT 的雅典娜项目，它成为了现代 UNIX（类UNIX系统）中大部分GUI子系统的基础，包括 Linux 和 BSD。
+从一开始，UNIX就是一个多用户、多任务的分时操作系统。随着网络技术的加入，它还允许用户远程连接和执行任务。以前，这是通过串行终端或网络连接（telnet）完成的。
+当开发UNIX下的GUI系统的时候，这些概念都被加入到了设计中。事实上，X是一个相当复杂的设计，这是经常被提到的一个缺点。可是，正因如此，它才是一个真正多功能的系统，当我们解释GUI的各个部分在UNIX下是怎样结合的时候，这些都会变的很清晰。</description></item><item><title>在Fedora7下安装USB无线网卡TL-WN321G</title><link>https://shaocheng.li/posts/2012-01-17/</link><pubDate>Tue, 17 Jan 2012 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2012-01-17/</guid><description>今天是年前最后一天上班，要在 Fedora7 下安装一款 USB 无线网卡—— TP-Link 的 WN321G+，该网卡使用的是 rt73 芯片，属于 Ralink 芯片组，安装过程中遇到了一下问题，最后总算成功了，记录一下。
+插上usb网卡，用 lsusb 命令就可以看到设备：
+Bus 004 Drvice 003： ID 148f:2573 Ralink Technology,Corp fedora7 已经带了 rt73 的驱动，用如下命令即可加载：
+modprobe rt73usb 可是加载了驱动后，网卡还是不能用，用 iwconfig 命令也没有看到无线网卡，用 dmesg 命令看到一条错误信息：
+Error-connt read firmware 无法读取固件，原因不明。
+无奈只能下载在一个新的驱动，编译安装，驱动名称是：
+rt73-k2wrlz-3.0.3-3 下载地址： http://homepages.tu-darmstadt.de/~p_larbig/wlan/rt73-k2wrlz-3.0.3.tar.bz2
+下载后解压，按照README文件的描述进行编译安装：
+tar -xvf rt73-k2wrlz-3.0.3-3.tar.bz2 cd rt73-k2wrlz-3.0.3-3/Module make make install modprobe rt73 ifname=wlan0 安装成功。
+用 iwconfig 可以看到 wlan0 的相关信息，
+在 /etc/sysconfig/network-scripts 目录下添加 ifcfg-wlan0 文件，添加如下内容：</description></item><item><title>怎样设置Framebuffer</title><link>https://shaocheng.li/posts/2011-12-14/</link><pubDate>Wed, 14 Dec 2011 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2011-12-14/</guid><description>环境：Redhat9.02
+启动级别：3
+1. 配置内核： 首先要再编译内核是选中如下几项：
+Code maturity level options ---&amp;gt;[*] Prompt for development and/or incomplete code/drivers Processor type and features ---&amp;gt;[*] MTRR (Memory Type Range Register) support Block Devices -&amp;gt;[*] Loopback device support [*] RAM disk support (4096) Default RAM disk size [*] Initial RAM disk (initrd) support Console Drivers -&amp;gt;[*] VGA text console [*] Videomode selection support Console Drivers -&amp;gt; Frame-buffer support -&amp;gt;[*] Support for frame buffer devices [*] VESA VGA graphics console [*] Use splash screen instead of boot logo 2.</description></item><item><title>使用GNU Autoconf/Automake创建Makefile</title><link>https://shaocheng.li/posts/2011-11-21/</link><pubDate>Mon, 21 Nov 2011 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2011-11-21/</guid><description>原文：
+How To Create a GNU Autoconf / Automake Based Configure Script for Your Application
+http://www3.fh-swf.de/fbin/roth/download/prg3.howto_autoconfmake.pdf
+by Prof.Dr. Walter Roth
+University of Applied Science Suedwestfalen, Germany
+Translated by Bob
+2011-11-18
+Email：gexbob@gmail.com
+Blog：http://shaocheng.li
+1. 本文档的基本信息 1.1. 印刷 有些字体比较难认，所以用下面这个表给出一些字符的图像，这对命令很重要。本文档用 Times New Roman 的 12 号字体写普通文本，用 Courier 的 11 号字体写命令行和源代码。注意：双线可能会画成一个比较长的单线
+1.2. 名词定义 应用（Application）是指你开发的程序。
+目标系统（target system）是用于安装你的程序的计算机。
+开发系统（development system）是指开发程序所用计算机
+2. 为什么使用GNU AutoXXX Tools？ 使用 Autoconf 和 Automake 是唯一的（合理的）为你的应用创建 Makefile 的方法，只要你的应用工作在任何有 GNU 工具的系统上。GNU 工具可用于所有的 Unix、Windows（Cywin）和 MacOS 系统</description></item><item><title>pkg-config指南</title><link>https://shaocheng.li/posts/2011-11-19/</link><pubDate>Sat, 19 Nov 2011 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2011-11-19/</guid><description>原文：
+Guide for pkg-config:http://people.freedesktop.org/~dbn/pkg-config-guide.html
+Dan Nicholson
+Translated By Bob
+2011-11-13
+Email:gexbob@gmail.com
+Blog:http://shaocheng.li
+概述 这个文档的目的是从用户和开发者的角度给一个 pkg-config 工具的使用概述。本文复习一些 pkg-config 背后的概念，怎样写 pkg-config 文件来支持你的项目，以及怎样用 pkg-config 集成第三方项目。
+关于 pkg-config 的更多信息可以在 web 站点和 pkg-config 的 man 手册中找到。
+本文档假的 pkg-config 在类UNIX操作系统中使用，例如 Linux。其他平台可能在一些细节上的存在差别。
+为什么？ 现代计算机系统使用了很多分层组件为用户提供应用。其中一个困难就是如何正确的整合这些组件。pkg-config 会收集系统中安装的库的数据，然后提供给用户。
+如果没有 pkg-config 这样的数据系统，定位计算机提供的服务和获取它们的细节会很困难。对于开发者，安装软件包的 pkg-config 文件极大的简化了对 API 的获取。
+一些概念 使用 pkg-config 的初级阶段是为编译和链接程序时提供必要的细节。数据存储在 pkg-config 文件中。这些文件有一个 .pc 的后缀，放在一个特定的、pkg-config 工具所知道的位置。我们会在后面描述更多的细节。
+这个文件的格式包括预定义的关键字和自由形式的变量。例如：
+prefix=/usr/local exec_prefix=${prefix} includedir=${prefix}/include libdir=${exec_prefix}/lib Name: foo Description: The foo library Version: 1.0.0 Cflags: -I${includedir}/foo Libs: -L${libdir} -lfoo 以预定义关键字 Name：为例，以关键字开头，后面跟一个冒号和一个值。变量是一个字符串和一个值，例如 prefix= ，用等号分开。关键字是由 pkg-config 定义和输出的。变量不是必须的，但可以被关键字用来定位和存储 pkg-config 没有覆盖的数据。</description></item><item><title>在Redhat9下构建TinyX&#43;GTK图形环境</title><link>https://shaocheng.li/posts/2011-11-15/</link><pubDate>Tue, 15 Nov 2011 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2011-11-15/</guid><description>&lt;h2 id=&#34;概述&#34;&gt;概述&lt;/h2&gt;
+&lt;p&gt;最近要将 Redhat9.02 移植到一块嵌入式 586 的主板上，空间有限，还要有图形环境，支持中文。所以，要建立一个精简的图像环境，先选择 TinyX+GTK 的方式进行研究。TinyX 是 XFree86 针对嵌入式的编译选项，体积小，启动速度快。
+本文使用虚拟机 vmware 安装 Redhat-9.02 文本系统，然后用 XFree86-4.3.0 编译 TinyX ，最后编译 GTK+-2.0。&lt;/p&gt;</description></item><item><title>从源码建立XFree86</title><link>https://shaocheng.li/posts/2011-11-08/</link><pubDate>Tue, 08 Nov 2011 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2011-11-08/</guid><description>原文：
+Building XFree86 from a Source Distribution
+http://www.xfree86.org/4.3.0/BUILD.html
+26 February 2003
+Translated By Bob
+Email：gexbob@gmail.com
+Blog：http://shaocheng.li
+这个文档描述了怎样从源代码发行版构建XFree86，要结合特定操作系统的README文件来使用它。
+注：构建XFree86之前，最好参考特定操作系统的README文件，这些文件包含了在你的操作系统下成功构建XFree86所需的详细信息。
+我们强烈推荐使用GCC构建XFree86，但是通常也可以使用各个平台的本地编译器。
+1. 怎样得到XFree86 4.3.0 的源码 推荐的方法是从 XFree86 的 CVS 库中获取 XFree86 4.3.0 的源码。有多种途径可以做到这一点，可以在我们的 CVS 页面找到 xf-4.3.0 发行版的标签。
+另一个途径是在 XFree86 的 FTP 站点下载 4.3.0 的 tar 格式源码包。步骤如下：
+XFree86 4.3.0的源码包含在 X430src-1.tgz, X430src-2.tgz, X430src-3.tgz, X430src-4.tgz,X430src-5.tgz, X430src-6.tgz 和 X430src-7.tgz 中。这些文件可以在 ftp://ftp.xfree86.org/pub/XFree86/4.3.0/source/ 或 XFree86 站点的类似地址中找到。X430src-4.tgz 和 X430src-5.tgz包含了字体，X430src-6.tgz 和 X430src-7.tgz 包含了文档。X430src-1.tgz, X430src-2.tgz 和 X430src-3.tgz 包含了其他所有的东西。如果你不需要字体和文档，可以只下载 X430src-1.</description></item><item><title>不用任何变量，实现strlen函数</title><link>https://shaocheng.li/posts/2011-10-18/</link><pubDate>Tue, 18 Oct 2011 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2011-10-18/</guid><description>使用递归：
+int strlen(char * str) { if(*str) return strlen(str+1)+1; else return 0; }</description></item><item><title>Linux系统文本模式下的截屏</title><link>https://shaocheng.li/posts/2011-07-29/</link><pubDate>Fri, 29 Jul 2011 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2011-07-29/</guid><description>Linux系统文本模式下截屏要用到/dev目录下的vcs设备：
+ls /dev/vcs* /dev/vcs /dev/vcs1 /dev/vcs2 /dev/vcs3 /dev/vcs4 /dev/vcs5 /dev/vcs6 其中，/dev/vcs 是当前的虚拟控制台的内容，/dev/vcs1 是tty1的内容。
+截取当前控制台的内容：
+cat /dev/vcs &amp;gt; filename 得到的文件 filename 是一个文本文件，直接用编辑器即可查看。
+如果要截取 tty1 的内容，就执行：
+cat /dev/vcs1 &amp;gt; filename</description></item><item><title>Linux下分割、合并文件——dd和cat</title><link>https://shaocheng.li/posts/2011-07-26/</link><pubDate>Tue, 26 Jul 2011 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2011-07-26/</guid><description>dd的作用是转换和拷贝文件，我们可以利用它来分割文件，相关的选项如下：
+if=filename：输入的文件名
+of=finename：输出的文件名
+bs=bytes：一次读写的字节数，默认是512bytes
+skip=blocks:拷贝前，跳过的输入文件的前blocks块，块的大小有bs决定
+count=blocks：只拷贝输入文件的前blocks块
+例如，现在有一个文件file，大小为116616字节：
+[root]# du -b file 116616 file 将其分割为两文件file1和file2，那我们就设置每块为1024字节，将file的前60块放入file1，余下的放入file2：
+[root]# dd if=file bs=1024 count=60 skip=0 of=file1 [root]# dd if=file bs=1024 count=60 skip=60 of=file2 然后用cat将两个文件合并为file.bak，要注意文件的顺序：
+[root]# cat file1 file2 &amp;gt; file.bak 可以用md5sum验证一下file和file.bak：
+[root]# md5sum file 3ff53f7c30421ace632eefff36148a70 file [root]# md5sum file.bak 3ff53f7c30421ace632eefff36148a70 file.bak 可以证明两个文件时完全相同的。
+为了方便分割、合并文件，我写了两个脚本：
+ddf.sh
+#ddf.sh：分割文件，分割后的文件以数字结尾，例如file分割为两个文件：file1和file2 #!/bin/sh #使用脚本是第一参数是要分割的文件名 Filename=$1 Filesize=0 Path=`pwd` #验证文件名是否正确，然后计算文件的大小 if [ -z $Filename ];then echo &amp;quot;Error:The file name can not be empty&amp;quot; exit fi if [ -e $Filename ];then Filesize=`du -b $Filename | awk &#39;{print $1}&#39;` if [ $Filesize == 0 ];then echo &amp;quot;Error:The File size is zero!</description></item><item><title>如何在Linux系统下制作RamDisk</title><link>https://shaocheng.li/posts/2011-07-25/</link><pubDate>Mon, 25 Jul 2011 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2011-07-25/</guid><description>原文：
+《Linux Ramdisk mini-HOWTO》
+By Van Emery
+http://www.vanemery.com/Linux/Ramdisk/ramdisk.html
+Translate By Bob
+Friday, July 25, 2011
+Email：gexbob@gmail.com
+Blog：http://shaocheng.li
+简介 什么是RamDisk？RamDisk就是将内存（Ram）的一部分当做硬盘（Disk）来使用。RamDisk有固定的大小，可以像正常硬盘分区那样去使用。 就操作时间来讲，RamDisk比真实的物理硬盘快很多，当系统关闭或断电时，保存在RamDisk中的数据会全部丢失。RamDisk可以成为一个存放临时数据的好地方。
+Linux的2.4内核已经内建支持RamDisk。RamDisk在很多情况下是很有用的，包括：
+使用加密文件中的未加密数据； 某些类型的网页内容服务； 挂载loopback文件系统（例如，从软盘或CD运行） 我为什么要写这个文档？因为我需要设置一个16M的RamDisk来查看、创建加密文件。我不想让未加密的文件写入我的工作平台的任何物理介质。我还发现一个有趣的地方，可以轻易的在Ram中创建一个比我的第一个物理硬盘（20M）还大的虚拟硬盘，当时，我根本无法想象怎样填满这个虚拟硬盘。
+这个文档将会带你一步步地经历创建和使用RamDisk的过程。
+平台 我使用Red Hat 9进行测试，但是这应该适用于其他的 2.4 内核的Linux系统，我还假设你的Linux系统已经将RamDisk支持编译到了内核。我的计算机使用 Pentium 4 处理器，256M内存，确切的内核版本是：2.4.20-20.9
+1. 查看你的系统已经创建了什么 RedHat默认创建16个RamDisk，虽然它们没有激活或使用任何Ram。系统列出的设备是ram0~ram19，但是只有ram0~ram15是默认可用的。使用下面的命令可用检出这些块设备：
+[root]# ls -l /dev/ram* lrwxrwxrwx 1 root root 4 Jun 12 00:31 /dev/ram -&amp;gt; ram1 brw-rw---- 1 root disk 1, 0 Jan 30 2003 /dev/ram0 brw-rw---- 1 root disk 1, 1 Jan 30 2003 /dev/ram1 brw-rw---- 1 root disk 1, 10 Jan 30 2003 /dev/ram10 brw-rw---- 1 root disk 1, 11 Jan 30 2003 /dev/ram11 brw-rw---- 1 root disk 1, 12 Jan 30 2003 /dev/ram12 brw-rw---- 1 root disk 1, 13 Jan 30 2003 /dev/ram13 brw-rw---- 1 root disk 1, 14 Jan 30 2003 /dev/ram14 brw-rw---- 1 root disk 1, 15 Jan 30 2003 /dev/ram15 brw-rw---- 1 root disk 1, 16 Jan 30 2003 /dev/ram16 brw-rw---- 1 root disk 1, 17 Jan 30 2003 /dev/ram17 brw-rw---- 1 root disk 1, 18 Jan 30 2003 /dev/ram18 brw-rw---- 1 root disk 1, 19 Jan 30 2003 /dev/ram19 brw-rw---- 1 root disk 1, 2 Jan 30 2003 /dev/ram2 brw-rw---- 1 root disk 1, 3 Jan 30 2003 /dev/ram3 brw-rw---- 1 root disk 1, 4 Jan 30 2003 /dev/ram4 brw-rw---- 1 root disk 1, 5 Jan 30 2003 /dev/ram5 brw-rw---- 1 root disk 1, 6 Jan 30 2003 /dev/ram6 brw-rw---- 1 root disk 1, 7 Jan 30 2003 /dev/ram7 brw-rw---- 1 root disk 1, 8 Jan 30 2003 /dev/ram8 brw-rw---- 1 root disk 1, 9 Jan 30 2003 /dev/ram9 lrwxrwxrwx 1 root root 4 Jun 12 00:31 /dev/ramdisk -&amp;gt; ram0 现在，用grep在dmesg的输出中找出RamDisk的大小</description></item><item><title>为Linux系统配置serial console</title><link>https://shaocheng.li/posts/2011-07-22/</link><pubDate>Fri, 22 Jul 2011 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2011-07-22/</guid><description>原文：
+《Remote Serial Console HOWTO》：http://www.linux.com/learn/docs/ldp/714-Remote-Serial-Console-HOWTO
+Translate By Bob
+Friday, July 15, 2011
+Email：gexbob@gmail.com
+Blog：http://shaocheng.li
+根据我的环境（Redhat 9，Grub 0.93），翻译了我需要的部分。原文还有针对Lilo和Syslinux的配置说明。
+1. 准备工作 1.1. 关于serial console Console是一个输出系统管理信息的文本输出设备，这些信息来自于内核，系统启动和系统用户，serial console就是串口作为输出终端设备，是这些信息可以通过串口在远程的终端上显示。
+配置一个serial console大致包括五项内容：
+配置BIOS使用serial console（可选）； 配置Bootloader使用serial console（可选）； 配置内核使用serial console 在系统启动时运行一个支持serial console登录的程序 一些其他系统配置，使这些功能支持serial console，或者防止它们扰乱serial console 1.2. 串口线 使用RS232方式的DB9串口线，信号连接如下：
+Signal ground ------------------ Signal ground Receive data ------------------ Transmit data Transmit data ------------------ Receive data Ready to send ------------------ Clear to send Clear to send ------------------ Ready to send ata terminal ready -------------+--- Data carrier detect | +--- Data set ready Data carrier detect ----+---------------- Data terminal ready | Data set ready ----+ 1.</description></item><item><title>补丁的制作和使用</title><link>https://shaocheng.li/posts/2011-07-15/</link><pubDate>Fri, 15 Jul 2011 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2011-07-15/</guid><description>原理 现在有一个文件file1，通过修改file1得到了文件file2，然后用diff工具比较file1和file2的差异，得到一个补丁文件file.patch，它记录了两个文件的不同之处，patch工具就可以根据这个补丁文件修改file1，从而得到file2。
+相关工具 diff diff [options] 源文件 目标文件 diff用于列出两个文件的不同之处，指示如何由源文件变为目标文件，可以用重定向生成补丁文件，注意：diff只能用于比较文本文件。常用选项：
+-c，输出一个基于上下文的diff，即提供每处修改的前后机会内容，这样patch命令可以在打补丁前验证上下文是否匹配，而补丁文件也更容易阅读。
+-b，忽略空格引起的变化
+-B，忽略插入/删除空行引起的变化
+-i，忽略大小写
+-N，在比较目录时，如果一个文件只在其中一个目录中找到，那它被视为在第二个目录中是一个空文件
+-r，在比较目录时，递归比较所有子目录
+-u，使用统一的输出格式
+patch patch [options] 源文件 补丁文件 patch用于根据补丁文件修改源文件，它会直接改动源文件，打补丁前请注意备份。常用选项：
+-R，反向补丁，将已经打了补丁的文件恢复到原来的样子
+-p[num]，忽略前几层目录，目录的层数由num指定
+例1：比较两个文件 file1:
+this is line1 this is line2 this is line3 this is line4 file2：
+this is line1 this is line2 hello this is line3 this is line4 this is line5 执行：
+diff file1 file2 &amp;gt; file.patch 生成补丁文件file.patch：
+2c2 &amp;lt; this is line2 --- &amp;gt; this is line2 hello 4a5 &amp;gt; this is line5 对file1打补丁：</description></item><item><title>关于C语言的位移操作</title><link>https://shaocheng.li/posts/2011-07-08/</link><pubDate>Fri, 08 Jul 2011 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2011-07-08/</guid><description>下面这段代码会输出什么结果？
+#include &amp;lt;stdio.h&amp;gt; int main() { printf(&amp;quot;%d\n&amp;quot;,( (i-sizeof(int)) &amp;gt;&amp;gt;32)); return 0; } 答案是 0
+将代码修改如下：
+#include &amp;lt;stdio.h&amp;gt; int main() { printf(&amp;quot;%d\n&amp;quot;,( (i-((int)sizeof(int))) &amp;gt;&amp;gt;32)); return 0; } 结果输出 -1
+解析：
+sizeof是一个操作符，它返回的结果是unsigned int。
+对于无符号数：右移后，高位补0；
+对于有符号数：正数，右移后高位补0；负数，右移后高位补1。
+建议只对无符号数做位运行，减少出错的可能。
+注意：移动的位数要小于做操作数的总位数，否则结果是undefined（虽然有时也会得到正确的结果）。</description></item><item><title>关于函数的指针参数</title><link>https://shaocheng.li/posts/2011-07-01/</link><pubDate>Fri, 01 Jul 2011 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2011-07-01/</guid><description>先做一道题目：
+#include &amp;lt;stdio.h&amp;gt; int f(int *p) { static int i = 5; p=&amp;amp;i; return 0; } int main(void) { int *p; f(p); printf(&amp;quot;p = %d/n&amp;quot;,*p); return 0; } 该程序的输出结果是多少？
+有人会认为输出的是“p = 5”，其实应该是一个不确定的数。
+为了弄清为什么，先看下一个例子：
+#include &amp;lt;stdio.h&amp;gt; int main(void) { int i=0x01; int *p=&amp;amp;i; printf(&amp;quot;&amp;amp;i = %x/n&amp;quot;,&amp;amp;i); //i的地址 printf(&amp;quot;p = %x/n&amp;quot;,p); printf(&amp;quot;*p = %x/n&amp;quot;,*p); printf(&amp;quot;&amp;amp;p = %x/n&amp;quot;,&amp;amp;p); return 0; } 执行结果：
+&amp;amp;i = bfffe924 p = bfffe924 *p = 1 &amp;amp;p = bfffe920 解析：</description></item><item><title>神级排序算法</title><link>https://shaocheng.li/posts/2011-06-28/</link><pubDate>Tue, 28 Jun 2011 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2011-06-28/</guid><description>下面是一个排序算法，用shell实现的：
+sleepsort.sh
+#!/bin/bash function f() { sleep &amp;quot;$1&amp;quot; echo &amp;quot;$1&amp;quot; } while [ -n &amp;quot;$1&amp;quot; ] do f &amp;quot;$1&amp;quot; &amp;amp; shift done wait 用法：
+./sleepsort.sh 5 3 6 3 6 3 1 4 7 这个算法太NB、太BT、太搞笑了！
+神马冒泡、插入、归并&amp;hellip; 全是浮云啊！
+膜拜吧！
+详情可见酷壳原文：http://coolshell.cn/articles/4883.html
+佩服之余，我在linux下用C语言实现了一把：
+sleepsort.c
+#include &amp;lt;stdio.h&amp;gt; #include &amp;lt;unistd.h&amp;gt; #include &amp;lt;pthread.h&amp;gt; void *f(void *opt) { sleep((*((int *)opt))); printf(&amp;quot;%d,&amp;quot;,(*((int *)opt))); pthread_exit(0); } int main() { const int len=5; pthread_t a_thread[5]; int array[5]={3,5,2,4,1}; int i=0; while(i&amp;lt;len) { pthread_create(&amp;amp;(a_thread[i]),NULL,f,&amp;amp;(array[i])); i++; } i=0; while(i&amp;lt;len) { pthread_join(a_thread[i],0); i++; } printf(&amp;quot;/n&amp;quot;); return 0; } 编译：</description></item><item><title>Unicode编码字符的点阵显示</title><link>https://shaocheng.li/posts/2011-06-13/</link><pubDate>Mon, 13 Jun 2011 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2011-06-13/</guid><description>对于unicode编码的字符，可以先将unicode编码转换为GBK编码，然后利用GBK点阵字库（gbk.bin)显示字符。一个比较好的编码转换方法是，制作一个按照unicode编码顺序排列的GBK编码表，直接根据unicode编码就可以查到对应的GBK编码，具体的制作方法如下：
+1.生成一个unicode字符文件 上以篇文章中已经制作了一个GBK编码的全字符文件gbk.txt，用记事本打开gbk.txt，然后以unicode编码另存为unicode.txt文件。
+这样的话，所有的GBK编码字符都用unicode编码保存在unicode.txt中了，可以用winhex打开unicode.txt，会发现前两个字节是FFFE，这是unicode编码的标识，要注意后面的unicode编码是小端存储。
+2.制作unicode转gbk的文件 这里要用程序制作一个unicode与gbk编码相对应的文件，该文件每四个字节为一组，其中前两个字节为unicode编码，后两个字节是对应的gbk编码，两种编码都以小端存储，数据结构如下：
+union code { unsigned int unigbk; unsigned short int uni_gbk[2]; unsigned char buffer[4]; }; 这个数据结构是以gbk编码的顺序存放在文件uni2gbk.txt中，文件大小为128764Byte。程序如下：
+//由unicode.txt和gbk.txt生成uni2gbk.txt #include &amp;lt;stdio.h&amp;gt; int main(void) { unsigned char buffer[2]; int count=0; FILE *fup=0; FILE *fgp=0; FILE *fwp=0; fup=fopen(&amp;quot;unicode.txt&amp;quot;,&amp;quot;rb&amp;quot;); fgp=fopen(&amp;quot;gbk.txt&amp;quot;,&amp;quot;rb&amp;quot;); fwp=fopen(&amp;quot;uni2gbk.txt&amp;quot;,&amp;quot;wb&amp;quot;); fgetc(fup); fgetc(fup); while(1) { //读取unicode编码，写入uni2gbk.txt buffer[0]=fgetc(fup); buffer[1]=fgetc(fup); fputc(buffer[0],fwp); fputc(buffer[1],fwp); //读取gbk编码，写入uni2gbk.txt buffer[0]=fgetc(fgp); buffer[1]=fgetc(fgp); fputc(buffer[1],fwp); fputc(buffer[0],fwp); count+=2; if(count==0xfb7c) printf(&amp;quot;xxxxxxxxx/n&amp;quot;); if(buffer[0]==0xfe &amp;amp;&amp;amp; buffer[1]==0xfe) { printf(&amp;quot;count = %x/n&amp;quot;,count); fclose(fup); fclose(fgp); fclose(fwp); return; } } return 0； } 3.</description></item><item><title>GBK点阵显示字库的制作和使用</title><link>https://shaocheng.li/posts/2011-06-12/</link><pubDate>Sun, 12 Jun 2011 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2011-06-12/</guid><description>GBK编码共收录汉字21003个、符号883个，并提供1894个造字码位，简、繁体字融于一库。以两个字节表示一个汉字，编码范围是0x8140~0xfefe，兼容GB2318，并覆盖了unicode中的所有汉字。Win7记事本默认以GBK保存汉字。
+关于GBK的详细信息：http://baike.baidu.com/view/25421.htm
+开发环境:
+Win7、Eclipse、MinGW
+1.生成GBK全字符文件 运行下面这段代码，生成GBK全字符文件gbk.txt,编码范围0x8140~0xfefe。
+#include &amp;lt;stdio.h&amp;gt; #include &amp;lt;stdlib.h&amp;gt; int main(void) { FILE *fp=0; char ch=0; unsigned short int start=0x8140; unsigned char part1=0; unsigned char part2=0; fp=fopen(&amp;quot;gbk.txt&amp;quot;,&amp;quot;wb&amp;quot;); if(fp==NULL) { perror(&amp;quot;Cann&#39;t open gbk.txt&amp;quot;); return -1; } else printf(&amp;quot;Creat file gbk.txt/n&amp;quot;); while(start &amp;lt; 0xfeff) { part1=start&amp;gt;&amp;gt;8; part2=start; fputc(part1,fp); fputc(part2,fp); start++; } fclose(fp); printf(&amp;quot;success!&amp;quot;); return 0; } 运行后，用记事本打开gbk.txt文件，可以看到其中的字符。
+2.生成字模二进制文件 用“牧码字模”软件打开gbk.txt文件，选择字体为宋体，字重为1，点阵大小16*16，对齐方式为左下，取模方式为“纵向取模、高位在下”。输出格式选择bin。然后点击输出，会生成一个temp.bin文件，改名为gbk.bin。
+gbk.bin文件就是GBK编码字符的点阵字库文件，每32个字节可以绘制一个字符，例如第一个字符‘丂’的显示如下：
+取模的数据为：
+0x02, 0x02, 0x02, 0xc2, 0xb2, 0x8e, 0x82, 0x82, 0x82, 0x82, 0x82, 0x82, 0x02, 0x02, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x80, 0x40, 0x3f, 0x00, 0x00, 0x00, 0x00,</description></item><item><title>ASCII字符点阵字库的制作和使用</title><link>https://shaocheng.li/posts/2011-06-08/</link><pubDate>Wed, 08 Jun 2011 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2011-06-08/</guid><description>开发环境：
+Win7，Eclipse，MinGW
+#1.生成ASCII字符文件
+ASCII编码的可打印字符是0x20~0x7E,先用运行下面这段代码，生成一个包含全部可打印字符的txt文件：
+#include &amp;lt;stdio.h&amp;gt; #include &amp;lt;stdlib.h&amp;gt; int main(int argc,char *argv[]) { FILE * fp; unsigned char i = 0; fp = fopen(&amp;quot;ascii.txt&amp;quot;,&amp;quot;w&amp;quot;); if(fp == 0) { perror(&amp;quot;open&amp;quot;); return -1; } for(i=0x20;i&amp;lt;0x7F;i++) { fputc(i,fp); } return 0; } 运行后，用记事本打开ascii.txt文件，会看到如下文本：
+#2.生成字模数据
+使用字模提取V2.1软件，设置字体为宋体、12，纵向取模，字节倒序（即高位在下）。这些设置可以根据实际情况设置。用C51格式生成字模，大小是8*16，每个字符用16个字节表示。如字符A的显示如下：
+取模数据为：
+0x00,0x00,0xC0,0x38,0xE0,0x00,0x00,0x00,0x20,0x3C,0x23,0x02,0x02,0x27,0x38,0x20,
+然后将所有的字模数据复制到一个文本文件，删除其中的空行，换行，注释等与字模数据无关的内容，并将文件最后的一个逗号改为ASCII字符的句号，得到一个纯字模数据文件ascii_zk.txt
+#3.将字模数据文件转换为二进制文件
+将ascii_zk.txt文件中的每个字模数据转换为占一个字节的数，将所有的数据填充为一个二进制文件ascii_zk.bin。这样，按照ASCII码的顺序，ascii_zk.bin中每16个字节就可以绘制一个字符。文件转换的程序如下：
+#include &amp;lt;stdio.h&amp;gt; #include &amp;lt;stdlib.h&amp;gt; /* *将一个ascii字符转换为数 */ unsigned char c2x(char ch) { unsigned char temp=0; if(ch&amp;gt;=0x30 &amp;amp;&amp;amp; ch&amp;lt;=0x39) temp = ch-0x30; else if(ch&amp;gt;=0x41 &amp;amp;&amp;amp; ch&amp;lt;=0x46) temp = 0x0a+(ch-0x41); else if(ch&amp;gt;=0x61 &amp;amp;&amp;amp; ch&amp;lt;=0x66) temp = 0x0a+(ch-0x61); else temp =0xff; return temp; } //将ascii_zk.</description></item><item><title>用getopt处理main函数的参数</title><link>https://shaocheng.li/posts/2011-05-28/</link><pubDate>Sat, 28 May 2011 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2011-05-28/</guid><description>环境：Fedora12 Gcc4.4.2
+在C语言中，main函数的声明如下：
+int main（int argc，char *argv[]); argc是指程序参数的个数，包括程序名本身，如果程序不带参数，argc为1；
+argv的每个数组元素存放一个程序参数，程序名存放在argv[0];
+例如：
+$ ls -l 此时，argc为2，argv[0]是ls，argv[1]是-l。
+程序的参数可以分为三种：选项，选项的关联值，非选项参数。例如：
+$gcc hello.c -o hello hello.c是非选项参数，-o是选项，hello是-o选项的关联值。
+根据Linux的惯例，程序的选项应该以一个短横线开头，后面包含单个字母或数字，选项分为两种：带关联值的和不带关联值的，例如：
+$gcc hello.c -o hello 选项-o必须带一个关联值。
+$ls -l 选项-l无需带参数。
+不带关联值的选项应该可以在一个短横线后合并使用，例如：
+$ls -la Linux系统提供了getopt函数，它用来按照上述规则处理程序的参数，相关定义如下：
+#include &amp;lt;unistd.h&amp;gt; int getopt(int argc,char *const argv[],const char *optstring); extern char *optarg; extern int optind,opterr,optopt; getopt 使用 main 函数的 argc 和 argv 作为前两个参数，optsting 是一个字符列表，每个字符代表一个单字符选项，如果一个字符后面紧跟以冒号（：），表示该字符有一个关联值作为下一个参数；
+getopt的返回值是argv数组中的下一个选项参数，由optind记录argv数组的下标,如果选项参数处理完毕，函数返回-1；
+如果遇到一个无法识别的选项，返回问号（？），并保存在optopt中；
+如果一个选项需要一个关联值，而程序执行时没有提供，返回一个问号（？）,如果将optstring的第一个字符设为冒号（:),这种情况下，函数会返回冒号而不是问号。
+选项参数处理完毕后，optind 会指向 argv 数组尾部的其他非选项参数。实际上，getopt 在执行过程中会重排 argv 数组，将非选项参数移到数组的尾部。</description></item><item><title>C语言的参数可变函数</title><link>https://shaocheng.li/posts/2011-05-17/</link><pubDate>Tue, 17 May 2011 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2011-05-17/</guid><description>环境：fedora12，gcc4.4.4
+C语言参数个数可变的函数，叫做VA函数（variable argument function），例如printf()函数。要实现VA函数需要包含stdarg.h:
+#include &amp;lt;stdarg.h&amp;gt; 主要使用下面三个宏定义：
+va_start(ap, A) va_arg(ap, T) va_end(ap) ap 是类型是 va_list ，va_list 的定义如下：
+typedef char *va_list; 它用来指向函数的参数。
+A是函数的最后一个固定参数，一个VA函数必须有至少一个固定参数。
+T是参数的类型，例如int，char&amp;hellip;,等等。
+va_start(ap,A)：初始化函数参数指针ap，使ap指向A的右边的第一个参数，即函数可变参数中的第一个； va_arg(ap,T）：返回ap指向的参数的值，参数的类型用T确定，然后将ap指向下一个参数； va_end（ap）：释放ap。 下面的例子定义了一个va函数，作用是依次打印传递给函数的int型参数。
+#include &amp;lt;stdio.h&amp;gt; #include &amp;lt;stdarg.h&amp;gt; int va_function(const char *start,...) { int n=1; va_list arg; va_start(arg,start); printf(&amp;quot;%s/n&amp;quot;,start); while(n != 0) { n=va_arg(arg,int); printf(&amp;quot;%d/n&amp;quot;,n); } va_end(arg); return 0; } int main(void) { va_function(&amp;quot;start&amp;quot;,1,2,3,-1,-2,0); return 0; } 注意：
+VA函数的可变参数类型必须在函数中自行确定，编译器无法自动识别。 必须在VA函数中定义可变参数的结束标志，如果没有结束标志，va_arg会依次返回内存中的值，直到访问到非法内存而出错退出。 这几个宏在不同的编译器中有不同的定义，但是功能是一样的，在linux的内核源码中也用定义，可以参考。在内核源码的 /include/acpi/platform/acenv.</description></item><item><title>键盘上各个按键的英文名</title><link>https://shaocheng.li/posts/2011-04-10/</link><pubDate>Sun, 10 Apr 2011 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2011-04-10/</guid><description>**Esc **：escape
+**Tab **：table
+**Caps Lock **：Capital Lock
+**Shift **：shift
+**Ctrl **：control
+**Alt **：alternative
+**Enter **： enter
+**F1~12 **：functions
+**~ **：tilde
+**! **：exclamation
+**@ **：at
+**# **：pound ，hash
+**$ **：dollar
+**% **：percent
+**^ **：caret
+**&amp;amp; **：ampersand
+*** **：star
+**( **：opening parenthesis
+**) **：closing parenthesis
+**_ **：underscore
+**+ **：plus
+**- **：Minus
+**= **：equals
+**` **：backquote
+**{ **：opening brace
+**} **：closing brace
+**[ **：opening bracket
+**] **：closing bracket
+**| **：pipe
+**\ **：backslash</description></item><item><title>判断进程是否存在的脚本</title><link>https://shaocheng.li/posts/2011-03-04/</link><pubDate>Fri, 04 Mar 2011 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2011-03-04/</guid><description>test.sh :
+#!/bin/bash pid=`ps -ef | grep -v grep | grep -v &amp;quot;test.sh&amp;quot; | grep $1 | sed -n &#39;1P&#39; | awk &#39;{print $2}&#39;` if [ -z $pid ] ; then echo &amp;quot;no this process&amp;quot; else echo $pid fi 例：
+查询是否存在hello进程
+#./test.sh hello 如果存在 hello 进程，会输出 PID ; 不存在会输出 no this process</description></item></channel></rss>
