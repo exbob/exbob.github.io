@@ -1,0 +1,78 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=author content="Shaocheng.Li"><meta name=description content="也许你还不知道 AA 是什么，但只看那牛逼哄哄的名字，就该知道它绝非善类。
+没错。进入这个项目的主页：http://aa-project.sourceforge.net/，就能看到它的三个宏伟目标：
+ 将所有的重要软件移植到AA-lib 将AA-lib移植到所有的可用平台 迫使IBM重新制造MDA卡   注：MDA（Monochrome Display Adapter ），单色字符显示适配卡，与单色字符显示器配接，它只支持字符显示功能，无图形功能，是一种相当古老的显卡。
+ 如果你对技术不感兴趣，可用点击这里 http://v.youku.com/v_show/id_XMzYwNTIyODY4.html，观看利用 AA 制作的一段动画,制作方法和源代码在文档的最后一节。
+简单的说，它可用实现下面的效果，就是将图片转换为 ASCII 文本。
+这个略显粗糙，如果将字体调小，增大分辨率，可显示更加逼真的图片，例如：
+其实，这是一个由ASCII字符的狂热爱好者们开发的项目，最初的发起人叫 Jan Hubicka ，目的是将计算机上的一切都用 ASCII 字符来表现，包括图形和视频。
+该项目提供了一个库—— AA-lib ，这是一个低级图形库，与其他的库的区别是它不需要图形设备，完全用 ASCII 字符描绘图形，它的 API 被设计得与其他库类似。还提提供一个演示程序—— BB（这个名字更显另类），播放了一段完全由 ASCII 字符绘制的动画，其中有文字，图像，分形几何，还有一个 3D 效果。
+下面在 fedora12 中安装它们。
+1. 安装 AA-lib 下载 aalib-1.2：
+http://prdownloads.sourceforge.net/aa-project/aalib-1.2.tar.gz
+最新版本是 1.4，但是 BB 是基于 1.2 的，所有先安装1.2。
+解压、编译、安装：
+tar xvzf aalib-1.2.tar.gz cd aalib-1.2 ./configure make make install  默认安装在 /usr/local 下"><meta name=keywords content><meta name=robots content="noodp"><meta name=theme-color content="#252627"><link rel=canonical href=https://shaocheng.li/posts/2012/03/05/><title>牛逼的AA :: Shaocheng.Li — Hello Friends</title><link href=https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css rel=stylesheet type=text/css><link rel=stylesheet href=https://shaocheng.li/main.min.73f55a8d452be4a71b2960620b80252cf69abd84d63fe7501abf0a39b1a70a78.css><link rel=stylesheet type=text/css href=https://shaocheng.li/css/custom.css><link rel=apple-touch-icon sizes=180x180 href=https://shaocheng.li/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=https://shaocheng.li/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=https://shaocheng.li/favicon-16x16.png><link rel=manifest href=https://shaocheng.li/site.webmanifest><link rel=mask-icon href=https://shaocheng.li/safari-pinned-tab.svg color=#252627><link rel="shortcut icon" href=https://shaocheng.li/favicon.ico><meta name=msapplication-TileColor content="#252627"><meta name=theme-color content="#252627"><meta itemprop=name content="牛逼的AA"><meta itemprop=description content="也许你还不知道 AA 是什么，但只看那牛逼哄哄的名字，就该知道它绝非善类。
+没错。进入这个项目的主页：http://aa-project.sourceforge.net/，就能看到它的三个宏伟目标：
+ 将所有的重要软件移植到AA-lib 将AA-lib移植到所有的可用平台 迫使IBM重新制造MDA卡   注：MDA（Monochrome Display Adapter ），单色字符显示适配卡，与单色字符显示器配接，它只支持字符显示功能，无图形功能，是一种相当古老的显卡。
+ 如果你对技术不感兴趣，可用点击这里 http://v.youku.com/v_show/id_XMzYwNTIyODY4.html，观看利用 AA 制作的一段动画,制作方法和源代码在文档的最后一节。
+简单的说，它可用实现下面的效果，就是将图片转换为 ASCII 文本。
+这个略显粗糙，如果将字体调小，增大分辨率，可显示更加逼真的图片，例如：
+其实，这是一个由ASCII字符的狂热爱好者们开发的项目，最初的发起人叫 Jan Hubicka ，目的是将计算机上的一切都用 ASCII 字符来表现，包括图形和视频。
+该项目提供了一个库—— AA-lib ，这是一个低级图形库，与其他的库的区别是它不需要图形设备，完全用 ASCII 字符描绘图形，它的 API 被设计得与其他库类似。还提提供一个演示程序—— BB（这个名字更显另类），播放了一段完全由 ASCII 字符绘制的动画，其中有文字，图像，分形几何，还有一个 3D 效果。
+下面在 fedora12 中安装它们。
+1. 安装 AA-lib 下载 aalib-1.2：
+http://prdownloads.sourceforge.net/aa-project/aalib-1.2.tar.gz
+最新版本是 1.4，但是 BB 是基于 1.2 的，所有先安装1.2。
+解压、编译、安装：
+tar xvzf aalib-1.2.tar.gz cd aalib-1.2 ./configure make make install  默认安装在 /usr/local 下"><meta itemprop=datePublished content="2012-03-05T08:00:00&#43;08:00"><meta itemprop=dateModified content="2012-03-05T08:00:00&#43;08:00"><meta itemprop=wordCount content="249"><meta itemprop=keywords content><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://shaocheng.li"><meta name=twitter:title content="牛逼的AA"><meta name=twitter:description content="也许你还不知道 AA 是什么，但只看那牛逼哄哄的名字，就该知道它绝非善类。
+没错。进入这个项目的主页：http://aa-project.sourceforge.net/，就能看到它的三个宏伟目标：
+ 将所有的重要软件移植到AA-lib 将AA-lib移植到所有的可用平台 迫使IBM重新制造MDA卡   注：MDA（Monochrome Display Adapter ），单色字符显示适配卡，与单色字符显示器配接，它只支持字符显示功能，无图形功能，是一种相当古老的显卡。
+ 如果你对技术不感兴趣，可用点击这里 http://v.youku.com/v_show/id_XMzYwNTIyODY4.html，观看利用 AA 制作的一段动画,制作方法和源代码在文档的最后一节。
+简单的说，它可用实现下面的效果，就是将图片转换为 ASCII 文本。
+这个略显粗糙，如果将字体调小，增大分辨率，可显示更加逼真的图片，例如：
+其实，这是一个由ASCII字符的狂热爱好者们开发的项目，最初的发起人叫 Jan Hubicka ，目的是将计算机上的一切都用 ASCII 字符来表现，包括图形和视频。
+该项目提供了一个库—— AA-lib ，这是一个低级图形库，与其他的库的区别是它不需要图形设备，完全用 ASCII 字符描绘图形，它的 API 被设计得与其他库类似。还提提供一个演示程序—— BB（这个名字更显另类），播放了一段完全由 ASCII 字符绘制的动画，其中有文字，图像，分形几何，还有一个 3D 效果。
+下面在 fedora12 中安装它们。
+1. 安装 AA-lib 下载 aalib-1.2：
+http://prdownloads.sourceforge.net/aa-project/aalib-1.2.tar.gz
+最新版本是 1.4，但是 BB 是基于 1.2 的，所有先安装1.2。
+解压、编译、安装：
+tar xvzf aalib-1.2.tar.gz cd aalib-1.2 ./configure make make install  默认安装在 /usr/local 下"><meta property="article:published_time" content="2012-03-05 08:00:00 &#43;0800 &#43;0800"></head><body><div class=container><header class=header><span class=header__inner><a href=https://shaocheng.li/ style=text-decoration:none><div class=logo><span class=logo__mark>></span>
+<span class=logo__text>$ cd /home/</span>
+<span class=logo__cursor></span></div></a><span class=header__right><nav class=menu><ul class=menu__inner><li><a href=https://shaocheng.li/about/>About</a></li><li><a href=https://shaocheng.li/posts/>Posts</a></li></ul></nav><span class=menu-trigger><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></span><span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 41C32.4934 41 41 32.4934 41 22 41 11.5066 32.4934 3 22 3 11.5066 3 3 11.5066 3 22s8.5066 19 19 19zM7 22C7 13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22z"/></svg></span></span></span></header><div class=content><main class=post><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>2 minutes</p></div><article><h1 class=post-title><a href=https://shaocheng.li/posts/2012/03/05/>牛逼的AA</a></h1><div class=post-content><p>也许你还不知道 AA 是什么，但只看那牛逼哄哄的名字，就该知道它绝非善类。</p><p>没错。进入这个项目的主页：<a href=http://aa-project.sourceforge.net/ target=_blank>http://aa-project.sourceforge.net/</a>，就能看到它的三个宏伟目标：</p><ul><li>将所有的重要软件移植到AA-lib</li><li>将AA-lib移植到所有的可用平台</li><li>迫使IBM重新制造MDA卡</li></ul><blockquote><p>注：MDA（Monochrome Display Adapter ），单色字符显示适配卡，与单色字符显示器配接，它只支持字符显示功能，无图形功能，是一种相当古老的显卡。</p></blockquote><p>如果你对技术不感兴趣，可用点击这里 <a href=http://v.youku.com/v_show/id_XMzYwNTIyODY4.html target=_blank>http://v.youku.com/v_show/id_XMzYwNTIyODY4.html</a>，观看利用 AA 制作的一段动画,制作方法和源代码在文档的最后一节。</p><p>简单的说，它可用实现下面的效果，就是将图片转换为 ASCII 文本。</p><p><img src=https://shaocheng.li/images/2012-03-05/2012-03-05_1.JPG alt></p><p>这个略显粗糙，如果将字体调小，增大分辨率，可显示更加逼真的图片，例如：</p><p><img src=https://shaocheng.li/images/2012-03-05/2012-03-05_2.JPG alt></p><p>其实，这是一个由ASCII字符的狂热爱好者们开发的项目，最初的发起人叫 Jan Hubicka ，目的是将计算机上的一切都用 ASCII 字符来表现，包括图形和视频。</p><p>该项目提供了一个库—— AA-lib ，这是一个低级图形库，与其他的库的区别是它不需要图形设备，完全用 ASCII 字符描绘图形，它的 API 被设计得与其他库类似。还提提供一个演示程序—— BB（这个名字更显另类），播放了一段完全由 ASCII 字符绘制的动画，其中有文字，图像，分形几何，还有一个 3D 效果。</p><p>下面在 fedora12 中安装它们。</p><h3 id=1-安装-aa-lib>1. 安装 AA-lib</h3><p>下载 aalib-1.2：</p><p><a href=http://prdownloads.sourceforge.net/aa-project/aalib-1.2.tar.gz target=_blank>http://prdownloads.sourceforge.net/aa-project/aalib-1.2.tar.gz</a></p><p>最新版本是 1.4，但是 BB 是基于 1.2 的，所有先安装1.2。</p><p>解压、编译、安装：</p><pre><code>tar  xvzf aalib-1.2.tar.gz  
+cd  aalib-1.2  
+./configure  
+make  
+make install  
+</code></pre><p>默认安装在 /usr/local 下</p><h3 id=2-安装-bb>2. 安装 bb</h3><p>下载 bb-1.2：</p><p><a href=http://prdownloads.sourceforge.net/aa-project/bb-1.2.tar.gz target=_blank>http://prdownloads.sourceforge.net/aa-project/bb-1.2.tar.gz</a></p><p>编译前需要设置一个环境变量，否则会找不到 aa-lib：</p><pre><code>export CFLAGS=-I/usr/local/include  
+</code></pre><p>解压：</p><pre><code>tar xvzf bb-1.2.tar.gz  
+cd aalib-1.2  
+</code></pre><p>编译时会报 textform.c 文件的错误，是因为该文件内定义的某些字符串太长，换行时没有用反斜杠，可以在后面加上反斜杠 ，或直接注释掉。然后编译：</p><pre><code>./configure  
+make  
+</code></pre><p>编译生成了可执行文件 bb，直接执行即可看到一段演示。最好在文本模式下执行，否则可能会报错。</p><p>这段演示还可以添加音乐，在源码的 mikunix 目录下有音频的程序，直接 make ，然后执行 strip ../bb_snd_ server。但是我一直没有弄出声音，也许是虚拟机的问题。</p><h3 id=3-安装-aview>3. 安装 aview</h3><p>aview 的作用是将 pnm 格式的图片转换为 ASCII 文本，并显示。aview只支持 pnm、pgm、pbm 和 ppm 格式的图片，所以需要将其他格式的图片转换，它提供了一个 asciiview 的脚本，利用 convert 转换图片格式，然后再传递给 aview。</p><p>aview 依赖于 aalib-1.4，所有要先用 1.4 替换之前安装的 1.2，安装方法与 1.2 相同。安装后下载 aview：<a href=http://prdownloads.sourceforge.net/aa-project/aview-1.3.0rc1.tar.gz target=_blank>http://prdownloads.sourceforge.net/aa-project/aview-1.3.0rc1.tar.gz</a></p><p>解压、编译、安装：</p><pre><code>tar xvzf aview-1.3.0rc1.tar.gz  
+cd  aview-1.3.0  
+./configure  
+make  
+make install  
+</code></pre><p>编译生成的 aview 程序可以将 pbm、pgm 或 pnm 图片用 ASCII 字符显示。但是不支持 JPEG 图片，所以它提供了一个 shell 脚本 ascii view，先调用 convert 将 JPEG 图片转换为 pgm 图片，然后再用 aview 显示。</p><p>fedora12 中没有 convert 命令，先用下面的命令安装：</p><pre><code>yum  install  ImageMagick  
+</code></pre><p>准备一张图片，例如 1.jpg，用下面的命令就可以把它转换为 ASCII文本：</p><pre><code>asciiview  1.jpg  
+</code></pre><h3 id=4-bad-apple>4. Bad Apple</h3><p>下面参考 aview 的源码，编写了一个程序，在 Linux 的终端下播放一段由 ASCII 字符绘制的动画：Bad Apple。原理比较 简单，就是将视频逐帧截图，然后用程序按一定的时间间隔将图片依次转换为ASCII文本在终端上显示。动画视频在这里：<a href=http://v.youku.com/v_show/id_XMzYwNTIyODY4.html target=_blank>http://v.youku.com/v_show/id_XMzYwNTIyODY4.html</a>，动画中的卡顿是屏幕录像软件的问题，AA-lib本身是很流畅的。</p><p>制作步骤：</p><p>准备 apple.flv，用 kmplayer 做每 50 毫秒截图，截图为 jpeg 格式，把它们都复制到 /root/aa/img 目录下。</p><p>用下面 shell 脚本将 jpeg 图片转化为 pgm 格式，共 3202 张，文件名为 1.pgm 到 3202.pgm ，全部放在 pgm 文件夹下。</p><pre><code>#!/bin/sh  
+ls -l *.jpg &gt; sort  
+i=1  
+while [ $i -le 3202 ]  
+do  
+    filename=`sed -n ''$i'p' sort | awk '{print $8}'`  
+    echo $filename  
+    convert $filename ./pgm/$i.pgm  
+    i=`expr $i + 1`  
+done  
+</code></pre><p>在 pgm 文件夹下执行程序：</p><pre><code>./aviewdemo -contrast 20 -extended 1.pgm  
+</code></pre><p>程序源码在这里：<a href=http://download.csdn.net/detail/exbob/4112093 target=_blank>http://download.csdn.net/detail/exbob/4112093</a></p><p>动画视频在这里：<a href=http://v.youku.com/v_show/id_XMzYwNTIyODY4.html target=_blank>http://v.youku.com/v_show/id_XMzYwNTIyODY4.html</a></p></div></article><hr><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>249 Words</p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>2012-03-05 00:00 &#43;0000</p></div><div class=pagination><div class=pagination__title><span class=pagination__title-h></span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://shaocheng.li/posts/2012/03/23/><span class=button__icon>←</span>
+<span class=button__text>在 Linux 系统中部署 goagent</span></a></span>
+<span class="button next"><a href=https://shaocheng.li/posts/2012/02/27/><span class=button__text>X Window 架构概述</span>
+<span class=button__icon>→</span></a></span></div></div><div id=comments class=thin><div id=disqus_thread></div><script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return;}
+var d=document,s=d.createElement('script');s.async=true;s.src='//'+"shaocheng-li"+'.disqus.com/embed.js';s.setAttribute('data-timestamp',+new Date());(d.head||d.body).appendChild(s);})();</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></div></main></div><footer class=footer><div class=footer__inner><div class=footer__content><span>&copy; 2020</span>
+<span><a href=https://shaocheng.li>Shaocheng.Li</a></span>
+<span><a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>CC BY-NC 4.0</a></span>
+<span><a href=https://shaocheng.li/posts/index.xml target=_blank title=rss><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg></a></span></div></div><div class=footer__inner><div class=footer__content><span>Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>Made with &#10084; by <a href=https://github.com/rhazdon>rhazdon</a></span></div></div></footer></div><script type=text/javascript src=https://shaocheng.li/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script></body></html>

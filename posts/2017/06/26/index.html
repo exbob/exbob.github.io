@@ -1,0 +1,273 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=author content="Shaocheng.Li"><meta name=description content="用 LeetCode 练习 Python ，难度都是选择 Easy 。
+ 1. Two Sum Given an array of integers, return indices of the two numbers such that they add up to a specific target.
+You may assume that each input would have exactly one solution, and you may not use the same element twice.
+Example:
+Given nums = [2, 7, 11, 15], target = 9, Because nums[0] &#43; nums[1] = 2 &#43; 7 = 9, return [0, 1]."><meta name=keywords content><meta name=robots content="noodp"><meta name=theme-color content="#252627"><link rel=canonical href=https://shaocheng.li/posts/2017/06/26/><title>LeetCode 刷题 :: Shaocheng.Li — Hello Friends</title><link href=https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css rel=stylesheet type=text/css><link rel=stylesheet href=https://shaocheng.li/main.min.73f55a8d452be4a71b2960620b80252cf69abd84d63fe7501abf0a39b1a70a78.css><link rel=stylesheet type=text/css href=https://shaocheng.li/css/custom.css><link rel=apple-touch-icon sizes=180x180 href=https://shaocheng.li/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=https://shaocheng.li/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=https://shaocheng.li/favicon-16x16.png><link rel=manifest href=https://shaocheng.li/site.webmanifest><link rel=mask-icon href=https://shaocheng.li/safari-pinned-tab.svg color=#252627><link rel="shortcut icon" href=https://shaocheng.li/favicon.ico><meta name=msapplication-TileColor content="#252627"><meta name=theme-color content="#252627"><meta itemprop=name content="LeetCode 刷题"><meta itemprop=description content="用 LeetCode 练习 Python ，难度都是选择 Easy 。
+ 1. Two Sum Given an array of integers, return indices of the two numbers such that they add up to a specific target.
+You may assume that each input would have exactly one solution, and you may not use the same element twice.
+Example:
+Given nums = [2, 7, 11, 15], target = 9, Because nums[0] &#43; nums[1] = 2 &#43; 7 = 9, return [0, 1]."><meta itemprop=datePublished content="2017-06-26T08:00:00&#43;08:00"><meta itemprop=dateModified content="2017-06-26T08:00:00&#43;08:00"><meta itemprop=wordCount content="1059"><meta itemprop=keywords content><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://shaocheng.li"><meta name=twitter:title content="LeetCode 刷题"><meta name=twitter:description content="用 LeetCode 练习 Python ，难度都是选择 Easy 。
+ 1. Two Sum Given an array of integers, return indices of the two numbers such that they add up to a specific target.
+You may assume that each input would have exactly one solution, and you may not use the same element twice.
+Example:
+Given nums = [2, 7, 11, 15], target = 9, Because nums[0] &#43; nums[1] = 2 &#43; 7 = 9, return [0, 1]."><meta property="article:published_time" content="2017-06-26 08:00:00 &#43;0800 &#43;0800"></head><body><div class=container><header class=header><span class=header__inner><a href=https://shaocheng.li/ style=text-decoration:none><div class=logo><span class=logo__mark>></span>
+<span class=logo__text>$ cd /home/</span>
+<span class=logo__cursor></span></div></a><span class=header__right><nav class=menu><ul class=menu__inner><li><a href=https://shaocheng.li/about/>About</a></li><li><a href=https://shaocheng.li/posts/>Posts</a></li></ul></nav><span class=menu-trigger><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></span><span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 41C32.4934 41 41 32.4934 41 22 41 11.5066 32.4934 3 22 3 11.5066 3 3 11.5066 3 22s8.5066 19 19 19zM7 22C7 13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22z"/></svg></span></span></span></header><div class=content><main class=post><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>5 minutes</p></div><article><h1 class=post-title><a href=https://shaocheng.li/posts/2017/06/26/>LeetCode 刷题</a></h1><div class=post-content><blockquote><p>用 <a href=https://leetcode.com target=_blank>LeetCode</a> 练习 Python ，难度都是选择 Easy 。</p></blockquote><h2 id=1-two-sum>1. Two Sum</h2><p>Given an array of integers, return indices of the two numbers such that they add up to a specific target.</p><p>You may assume that each input would have exactly one solution, and you may not use the same element twice.</p><p>Example:</p><pre><code>Given nums = [2, 7, 11, 15], target = 9,
+
+Because nums[0] + nums[1] = 2 + 7 = 9,
+return [0, 1].
+</code></pre><p>Answer：</p><pre><code>class Solution(object):
+def twoSum(self, nums, target):
+    &quot;&quot;&quot;
+    :type nums: List[int]
+    :type target: int
+    :rtype: List[int]
+    &quot;&quot;&quot;
+    for i in range(len(nums)):
+        for j in range(i+1,len(nums)):
+            if nums[i]+nums[j]==target:
+                return [i,j]
+</code></pre><h2 id=2-reverse-integer>2. Reverse Integer</h2><p>Reverse digits of an integer.</p><p>Example1: x = 123, return 321
+Example2: x = -123, return -321</p><p>Note:The input is assumed to be a 32-bit signed integer. Your function should return 0 when the reversed integer overflows.</p><p>Answer:</p><pre><code>class Solution(object):
+    def reverse(self, x):
+        &quot;&quot;&quot;
+        :type x: int
+        :rtype: int
+        &quot;&quot;&quot;
+        temp=abs(x)
+        res=0
+        while temp&gt;0:
+            res=res*10+temp%10
+            temp=temp//10
+        if x&lt;0:
+            res=-res
+        if res&gt;2147483647 or res&lt;-2147483648 :
+            res=0
+        return res
+</code></pre><h2 id=3-palindrome-number>3. Palindrome Number</h2><p>Determine whether an integer is a palindrome. Do this without extra space.</p><p>判断一个整数是否是回文数，尽可能的少用额外的内存空间。一个思路是将数字折半，对比两半是否相等。</p><p>Answer:</p><pre><code>class Solution(object):
+    def isPalindrome(self, x):
+        &quot;&quot;&quot;
+        :type x: int
+        :rtype: bool
+        &quot;&quot;&quot;
+        if x&lt;0 :
+            return False
+        if x//10==0 :
+            return True
+        if x%10==0 :
+            return False
+
+        s=0
+        while x&gt;s :
+            s=s*10+x%10
+            x=x//10
+
+        if x==s or x==s//10 :
+            return True
+        else :
+            return False
+</code></pre><p>还有一种方法是转换为字符串，然后从头尾开始对比字符:</p><pre><code>class Solution(object):
+    def isPalindrome(self, x):
+        &quot;&quot;&quot;
+        :type x: int
+        :rtype: bool
+        &quot;&quot;&quot;
+        x=str(x)
+        l=len(x)
+        for i in range(l):
+            if x[i] != x[-1-i]:
+                return False
+        return True
+</code></pre><p>还可以在数组中利用 Python 的冒号语法，将数字前后颠倒，然后判断是否相同：</p><pre><code>class Solution(object):
+    def isPalindrome(self, x):
+        &quot;&quot;&quot;
+        :type x: int
+        :rtype: bool
+        &quot;&quot;&quot;
+        x = str(x)
+        if x == x[::-1]:
+            return True
+        else:
+            return False            
+</code></pre><h2 id=4-roman-to-integer>4. Roman to Integer</h2><p>Given a roman numeral, convert it to an integer.</p><p>Input is guaranteed to be within the range from 1 to 3999.</p><p>Answer:</p><pre><code>class Solution(object):
+    def romanToInt(self, s):
+        &quot;&quot;&quot;
+        :type s: str
+        :rtype: int
+        &quot;&quot;&quot;
+        rtoi={'I':1,'V':5,'X':10,'L':50,'C':100,'D':500,'M':1000}
+        buf=0
+        for i in range(len(s)-1):
+            if rtoi[s[i]] &lt; rtoi[s[i+1]]:
+                buf=buf-rtoi[s[i]]
+            else:
+                buf=buf+rtoi[s[i]]
+        buf=buf+rtoi[s[-1]]
+        return buf
+</code></pre><h2 id=5-longest-common-prefix>5. Longest Common Prefix</h2><p>Write a function to find the longest common prefix string amongst an array of strings.</p><p>找出字符串数组中的最长公共前缀，比如 array=[&lsquo;abc&rsquo;,&lsquo;abcd&rsquo;,&lsquo;abe&rsquo;]，最长公共前缀就是 &lsquo;ab&rsquo; 。这道题的思路是先找出数组中最短的字符串，长度为 max ，最长公共前缀不可能超过 max ，然后遍历 max 次字符串数组，依次对比前 max 个字符。</p><p>Answer:</p><pre><code>class Solution(object):
+    def longestCommonPrefix(self, strs):
+        &quot;&quot;&quot;
+        :type strs: List[str]
+        :rtype: str
+        &quot;&quot;&quot;
+        res=''
+        strs_len=len(strs)
+        if strs_len&lt;1:
+            return res
+        if strs_len==1:
+            return strs[0]
+
+        max=len(strs[0])
+        for i in range(strs_len):
+            if len(strs[i])&lt;max:
+                max=len(strs[i])
+        if max&lt;1:
+            return res
+
+        flag=0
+        for i in range(max):
+            for j in range(1,strs_len):
+                print i,j
+                print strs[j][i]
+                if strs[0][i]!=strs[j][i]:
+                    flag=1
+                    break
+            if flag==0:
+               res+=strs[0][i]
+            else:
+               break
+        return res
+</code></pre><h2 id=6-valid-parentheses>6. Valid Parentheses</h2><p>Given a string containing just the characters &lsquo;(&rsquo;, &lsquo;)&rsquo;, &lsquo;{&rsquo;, &lsquo;}&rsquo;, &lsquo;[&rsquo; and &lsquo;]&rsquo;, determine if the input string is valid.</p><p>The brackets must close in the correct order, &ldquo;()&rdquo; and &ldquo;()[]{}&rdquo; are all valid but &ldquo;(]&rdquo; and &ldquo;([)]&rdquo; are not.</p><p>验证括号是否完全匹配。思路是遍历整个字符串，遇到左括号就压栈，遇到右括号就与栈内括号对比，空栈或者不匹配就说明这个字符串无效。</p><p>Answer:</p><pre><code>class Solution(object):
+    def isValid(self, s):
+        &quot;&quot;&quot;
+        :type s: str
+        :rtype: bool
+        &quot;&quot;&quot;
+        if len(s)&lt;2 or len(s)%2!=0 :
+            return False
+
+        a=[['{','[','('],['}',']',')']]
+        b={'}':'{',']':'[',')':'('}
+
+        t=[]
+        for i in range(len(s)):
+            if s[i] in a[0] :
+                t.append(s[i])
+            else:
+                if len(t)==0 :
+                    return False
+                l=t.pop()
+                if l!=b[s[i]] :
+                    return False
+        if len(t)==0 :
+            return True
+        else :
+            return False
+</code></pre><h2 id=7-remove-duplicates-from-sorted-array>7. Remove Duplicates from Sorted Array</h2><p>Given a sorted array, remove the duplicates in place such that each element appear only once and return the new length.</p><p>Do not allocate extra space for another array, you must do this in place with constant memory.</p><p>For example,
+Given input array nums = [1,1,2],</p><p>Your function should return length = 2, with the first two elements of nums being 1 and 2 respectively. It doesn&rsquo;t matter what you leave beyond the new length.</p><p>Answer:</p><pre><code>class Solution(object):
+    def removeDuplicates(self, nums):
+        &quot;&quot;&quot;
+        :type nums: List[int]
+        :rtype: int
+        &quot;&quot;&quot;
+        i=0
+        while True :
+            if i&lt;len(nums)-1 :
+                if nums[i]==nums[i+1] :
+                    nums.pop(i+1)
+                else :
+                    i+=1
+            else :
+                break
+
+        return len(nums)
+</code></pre><h2 id=8-remove-element>8. Remove Element</h2><p>Given an array and a value, remove all instances of that value in place and return the new length.</p><p>Do not allocate extra space for another array, you must do this in place with constant memory.</p><p>The order of elements can be changed. It doesn&rsquo;t matter what you leave beyond the new length.</p><p>Example:</p><p>Given input array nums = [3,2,2,3], val = 3</p><p>Your function should return length = 2, with the first two elements of nums being 2.</p><p>Answer:</p><pre><code>class Solution(object):
+    def removeElement(self, nums, val):
+        &quot;&quot;&quot;
+        :type nums: List[int]
+        :type val: int
+        :rtype: int
+        &quot;&quot;&quot;
+        i=0
+        while i&lt;len(nums):
+            if nums[i]==val :
+                nums.pop(i)
+            else:
+                i+=1
+        return len(nums)
+</code></pre><h2 id=9-implement-strstr>9. Implement strStr()</h2><p>Returns the index of the first occurrence of needle in haystack, or -1 if needle is not part of haystack.</p><p>Answer:</p><pre><code>class Solution(object):
+    def strStr(self, haystack, needle):
+        &quot;&quot;&quot;
+        :type haystack: str
+        :type needle: str
+        :rtype: int
+        &quot;&quot;&quot;
+        needle_len=len(needle)
+        haystack_len=len(haystack)
+        if needle_len==0 :
+            return 0
+        i=0
+        while i+needle_len&lt;=haystack_len :
+            if needle==haystack[i:i+needle_len] :
+                return i
+            else :
+                i+=1
+        return -1
+</code></pre><p>其实 Python 为字符串提供了一个 <code>find()</code> 方法:</p><pre><code> string.find(str,beg=0,end=len(string))
+</code></pre><p>用于查找字符串 string 内是否包含另一个字符串 str ，如果是返回开始的索引值，否则返回 -1 。</p><h2 id=10-search-insert-position>10. Search Insert Position</h2><p>Given a sorted array and a target value, return the index if the target is found. If not, return the index where it would be if it were inserted in order.</p><p>You may assume no duplicates in the array.</p><p>Here are few examples.</p><pre><code>[1,3,5,6], 5 → 2
+[1,3,5,6], 2 → 1
+[1,3,5,6], 7 → 4
+[1,3,5,6], 0 → 0
+</code></pre><p>Answer:</p><pre><code>class Solution(object):
+    def searchInsert(self, nums, target):
+        &quot;&quot;&quot;
+        :type nums: List[int]
+        :type target: int
+        :rtype: int
+        &quot;&quot;&quot;
+        for i in range(len(nums)) :
+            if target&lt;=nums[i] :
+                return i
+        return len(nums)
+</code></pre><h2 id=11-count-and-say>11. Count and Say</h2><p>The count-and-say sequence is the sequence of integers with the first five terms as following:</p><pre><code>1.     1
+2.     11
+3.     21
+4.     1211
+5.     111221
+</code></pre><p><code>1</code> is read off as <code>one 1</code> or <code>11</code>.</p><p><code>11</code> is read off as <code>two 1s</code> or <code>21</code>.</p><p><code>21</code> is read off as <code>one 2, then one 1</code> or <code>1211</code>.</p><p>Given an integer n, generate the nth term of the count-and-say sequence.</p><p>Note: Each term of the sequence of integers will be represented as a string.</p><p>Example 1:</p><pre><code>Input: 1
+Output: &quot;1&quot;
+</code></pre><p>Example 2:</p><pre><code>Input: 4
+Output: &quot;1211&quot;
+</code></pre><p>Answer:</p><pre><code>class Solution(object):
+    def countAndSay(self, n):
+        &quot;&quot;&quot;
+        :type n: int
+        :rtype: str
+        &quot;&quot;&quot;
+        s='1'
+        for i in range(n-1) :
+            pre=s[0]
+            t=''
+            count=0
+            for a in s :
+                if pre==a :
+                    count+=1
+                else :
+                    t+=str(count)
+                    t+=pre
+                    count=1
+                    pre=a
+
+            t+=str(count)
+            t+=pre
+            s=t
+        return s    
+</code></pre></div></article><hr><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>1059 Words</p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>2017-06-26 00:00 &#43;0000</p></div><div class=pagination><div class=pagination__title><span class=pagination__title-h></span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://shaocheng.li/posts/2017/07/31/><span class=button__icon>←</span>
+<span class=button__text>netcat 基本用法</span></a></span>
+<span class="button next"><a href=https://shaocheng.li/posts/2017/06/25/><span class=button__text>Python 对 list 的处理</span>
+<span class=button__icon>→</span></a></span></div></div><div id=comments class=thin><div id=disqus_thread></div><script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return;}
+var d=document,s=d.createElement('script');s.async=true;s.src='//'+"shaocheng-li"+'.disqus.com/embed.js';s.setAttribute('data-timestamp',+new Date());(d.head||d.body).appendChild(s);})();</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></div></main></div><footer class=footer><div class=footer__inner><div class=footer__content><span>&copy; 2020</span>
+<span><a href=https://shaocheng.li>Shaocheng.Li</a></span>
+<span><a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>CC BY-NC 4.0</a></span>
+<span><a href=https://shaocheng.li/posts/index.xml target=_blank title=rss><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg></a></span></div></div><div class=footer__inner><div class=footer__content><span>Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>Made with &#10084; by <a href=https://github.com/rhazdon>rhazdon</a></span></div></div></footer></div><script type=text/javascript src=https://shaocheng.li/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script></body></html>

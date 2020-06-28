@@ -1,0 +1,84 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=author content="Shaocheng.Li"><meta name=description content="1. 购买 VPS 推荐 https://www.vultr.com ，注册成功后先充值，Vultr 支持信用卡、比特币和支付宝等，支付宝比较方便：
+充值完毕后，点击右上角的蓝色加号购买服务器，然后选择服务器位置、系统和配置，国内推荐东京：
+选择 Ubuntu 16.04 系统，$5/月的套餐，可以先购买一个月试用：
+使能私有 IP ：
+点击左下角的 Deploy Now 完成购买，稍等片刻，安装完成后：
+点击服务器名称，进入详情页，记下 IP Address、Username 和 Password ：
+现在就可以用 SSH 客户端连接服务器，也可以点击右上第一个图标 View Console ，打开一个 Console 对话框，输入用户名和密码登录：
+2. 安装 SSR 有一个一键安装的脚本，项目主页在 https://github.com/teddysun/shadowsocks_install，在服务器上运行如下命令：
+wget --no-check-certificate https://raw.githubusercontent.com/teddysun/shadowsocks_install/master/shadowsocksR.sh chmod &#43;x shadowsocksR.sh ./shadowsocksR.sh 2&amp;gt;&amp;amp;1 | tee shadowsocksR.log  根据提示配置：
+ 服务器端口：自己设定（如不设定，默认为 8989） 密码：自己设定（如不设定，默认为 teddysun.com） 加密方式：自己设定（如不设定，默认为 aes-256-cfb） 协议（Protocol）：自己设定（如不设定，默认为 origin） 混淆（obfs）：自己设定（如不设定，默认为 plain）  安装完成后，脚本会提示如下,，记住自己的配置：
+Congratulations, ShadowsocksR server install completed! Your Server IP :your_server_ip Your Server Port :your_server_port Your Password :your_password Your Protocol :your_protocol Your obfs :your_obfs Your Encryption Method:your_encryption_method Welcome to visit:https://shadowsocks."><meta name=keywords content><meta name=robots content="noodp"><meta name=theme-color content="#252627"><link rel=canonical href=https://shaocheng.li/posts/2017/10/17/><title>用 VPS 自建科学上网 :: Shaocheng.Li — Hello Friends</title><link href=https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css rel=stylesheet type=text/css><link rel=stylesheet href=https://shaocheng.li/main.min.73f55a8d452be4a71b2960620b80252cf69abd84d63fe7501abf0a39b1a70a78.css><link rel=stylesheet type=text/css href=https://shaocheng.li/css/custom.css><link rel=apple-touch-icon sizes=180x180 href=https://shaocheng.li/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=https://shaocheng.li/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=https://shaocheng.li/favicon-16x16.png><link rel=manifest href=https://shaocheng.li/site.webmanifest><link rel=mask-icon href=https://shaocheng.li/safari-pinned-tab.svg color=#252627><link rel="shortcut icon" href=https://shaocheng.li/favicon.ico><meta name=msapplication-TileColor content="#252627"><meta name=theme-color content="#252627"><meta itemprop=name content="用 VPS 自建科学上网"><meta itemprop=description content="1. 购买 VPS 推荐 https://www.vultr.com ，注册成功后先充值，Vultr 支持信用卡、比特币和支付宝等，支付宝比较方便：
+充值完毕后，点击右上角的蓝色加号购买服务器，然后选择服务器位置、系统和配置，国内推荐东京：
+选择 Ubuntu 16.04 系统，$5/月的套餐，可以先购买一个月试用：
+使能私有 IP ：
+点击左下角的 Deploy Now 完成购买，稍等片刻，安装完成后：
+点击服务器名称，进入详情页，记下 IP Address、Username 和 Password ：
+现在就可以用 SSH 客户端连接服务器，也可以点击右上第一个图标 View Console ，打开一个 Console 对话框，输入用户名和密码登录：
+2. 安装 SSR 有一个一键安装的脚本，项目主页在 https://github.com/teddysun/shadowsocks_install，在服务器上运行如下命令：
+wget --no-check-certificate https://raw.githubusercontent.com/teddysun/shadowsocks_install/master/shadowsocksR.sh chmod &#43;x shadowsocksR.sh ./shadowsocksR.sh 2&gt;&amp;1 | tee shadowsocksR.log  根据提示配置：
+ 服务器端口：自己设定（如不设定，默认为 8989） 密码：自己设定（如不设定，默认为 teddysun.com） 加密方式：自己设定（如不设定，默认为 aes-256-cfb） 协议（Protocol）：自己设定（如不设定，默认为 origin） 混淆（obfs）：自己设定（如不设定，默认为 plain）  安装完成后，脚本会提示如下,，记住自己的配置：
+Congratulations, ShadowsocksR server install completed! Your Server IP :your_server_ip Your Server Port :your_server_port Your Password :your_password Your Protocol :your_protocol Your obfs :your_obfs Your Encryption Method:your_encryption_method Welcome to visit:https://shadowsocks."><meta itemprop=datePublished content="2017-10-17T08:00:00&#43;08:00"><meta itemprop=dateModified content="2017-10-17T08:00:00&#43;08:00"><meta itemprop=wordCount content="216"><meta itemprop=keywords content><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://shaocheng.li"><meta name=twitter:title content="用 VPS 自建科学上网"><meta name=twitter:description content="1. 购买 VPS 推荐 https://www.vultr.com ，注册成功后先充值，Vultr 支持信用卡、比特币和支付宝等，支付宝比较方便：
+充值完毕后，点击右上角的蓝色加号购买服务器，然后选择服务器位置、系统和配置，国内推荐东京：
+选择 Ubuntu 16.04 系统，$5/月的套餐，可以先购买一个月试用：
+使能私有 IP ：
+点击左下角的 Deploy Now 完成购买，稍等片刻，安装完成后：
+点击服务器名称，进入详情页，记下 IP Address、Username 和 Password ：
+现在就可以用 SSH 客户端连接服务器，也可以点击右上第一个图标 View Console ，打开一个 Console 对话框，输入用户名和密码登录：
+2. 安装 SSR 有一个一键安装的脚本，项目主页在 https://github.com/teddysun/shadowsocks_install，在服务器上运行如下命令：
+wget --no-check-certificate https://raw.githubusercontent.com/teddysun/shadowsocks_install/master/shadowsocksR.sh chmod &#43;x shadowsocksR.sh ./shadowsocksR.sh 2&gt;&amp;1 | tee shadowsocksR.log  根据提示配置：
+ 服务器端口：自己设定（如不设定，默认为 8989） 密码：自己设定（如不设定，默认为 teddysun.com） 加密方式：自己设定（如不设定，默认为 aes-256-cfb） 协议（Protocol）：自己设定（如不设定，默认为 origin） 混淆（obfs）：自己设定（如不设定，默认为 plain）  安装完成后，脚本会提示如下,，记住自己的配置：
+Congratulations, ShadowsocksR server install completed! Your Server IP :your_server_ip Your Server Port :your_server_port Your Password :your_password Your Protocol :your_protocol Your obfs :your_obfs Your Encryption Method:your_encryption_method Welcome to visit:https://shadowsocks."><meta property="article:published_time" content="2017-10-17 08:00:00 &#43;0800 &#43;0800"></head><body><div class=container><header class=header><span class=header__inner><a href=https://shaocheng.li/ style=text-decoration:none><div class=logo><span class=logo__mark>></span>
+<span class=logo__text>$ cd /home/</span>
+<span class=logo__cursor></span></div></a><span class=header__right><nav class=menu><ul class=menu__inner><li><a href=https://shaocheng.li/about/>About</a></li><li><a href=https://shaocheng.li/posts/>Posts</a></li></ul></nav><span class=menu-trigger><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></span><span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 41C32.4934 41 41 32.4934 41 22 41 11.5066 32.4934 3 22 3 11.5066 3 3 11.5066 3 22s8.5066 19 19 19zM7 22C7 13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22z"/></svg></span></span></span></header><div class=content><main class=post><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>2 minutes</p></div><article><h1 class=post-title><a href=https://shaocheng.li/posts/2017/10/17/>用 VPS 自建科学上网</a></h1><div class=post-content><h2 id=1-购买-vps>1. 购买 VPS</h2><p>推荐 <a href=https://www.vultr.com target=_blank>https://www.vultr.com</a> ，注册成功后先充值，Vultr 支持信用卡、比特币和支付宝等，支付宝比较方便：</p><p><img src=https://shaocheng.li/images/2017-10-17/2017-10-17_1.png alt>
+充值完毕后，点击右上角的蓝色加号购买服务器，然后选择服务器位置、系统和配置，国内推荐东京：</p><p><img src=https://shaocheng.li/images/2017-10-17/2017-10-17_2.png alt></p><p>选择 Ubuntu 16.04 系统，$5/月的套餐，可以先购买一个月试用：</p><p><img src=https://shaocheng.li/images/2017-10-17/2017-10-17_3.png alt>
+使能私有 IP ：</p><p><img src=https://shaocheng.li/images/2017-10-17/2017-10-17_4.png alt>
+点击左下角的 Deploy Now 完成购买，稍等片刻，安装完成后：</p><p><img src=https://shaocheng.li/images/2017-10-17/2017-10-17_5.png alt>
+点击服务器名称，进入详情页，记下 IP Address、Username 和 Password ：</p><p><img src=https://shaocheng.li/images/2017-10-17/2017-10-17_6.png alt>
+现在就可以用 SSH 客户端连接服务器，也可以点击右上第一个图标 View Console ，打开一个 Console 对话框，输入用户名和密码登录：</p><p><img src=https://shaocheng.li/images/2017-10-17/2017-10-17_7.png alt></p><h2 id=2-安装-ssr>2. 安装 SSR</h2><p>有一个一键安装的脚本，项目主页在 <a href=https://github.com/teddysun/shadowsocks_install target=_blank>https://github.com/teddysun/shadowsocks_install</a>，在服务器上运行如下命令：</p><pre><code>wget --no-check-certificate https://raw.githubusercontent.com/teddysun/shadowsocks_install/master/shadowsocksR.sh
+chmod +x shadowsocksR.sh
+./shadowsocksR.sh 2&gt;&amp;1 | tee shadowsocksR.log
+</code></pre><p>根据提示配置：</p><ul><li>服务器端口：自己设定（如不设定，默认为 8989）</li><li>密码：自己设定（如不设定，默认为 teddysun.com）</li><li>加密方式：自己设定（如不设定，默认为 aes-256-cfb）</li><li>协议（Protocol）：自己设定（如不设定，默认为 origin）</li><li>混淆（obfs）：自己设定（如不设定，默认为 plain）</li></ul><p>安装完成后，脚本会提示如下,，记住自己的配置：</p><pre><code>Congratulations, ShadowsocksR server install completed!
+Your Server IP        :your_server_ip
+Your Server Port      :your_server_port
+Your Password         :your_password
+Your Protocol         :your_protocol
+Your obfs             :your_obfs
+Your Encryption Method:your_encryption_method
+
+Welcome to visit:https://shadowsocks.be/9.html
+Enjoy it!
+</code></pre><p>ShadowsocksR 已经加入开机自启动，查看运行状态：</p><pre><code>~# /etc/init.d/shadowsocks status
+ShadowsocksR (pid 28287) is running...
+</code></pre><p>如果想要卸载，执行：</p><pre><code>./shadowsocksR.sh uninstall
+</code></pre><h2 id=3-客户端>3. 客户端</h2><ul><li>Windows 客户端：<a href=https://github.com/shadowsocksr-backup/shadowsocksr-csharp/releases target=_blank>https://github.com/shadowsocksr-backup/shadowsocksr-csharp/releases</a></li><li>Mac 客户端：<a href=https://github.com/shadowsocksr-backup/ShadowsocksX-NG/releases target=_blank>https://github.com/shadowsocksr-backup/ShadowsocksX-NG/releases</a></li></ul><h2 id=4-测试>4. 测试</h2><p>查看本地 IP 和所在线路 <a href=http://www.ipip.net/ip.html target=_blank>http://www.ipip.net/ip.html</a> ：</p><p><img src=https://shaocheng.li/images/2017-10-17/2017-10-17_8.png alt>
+测试各线路 ping 延时 <a href=http://www.ipip.net/ping.php target=_blank>http://www.ipip.net/ping.php</a> :</p><p><img src=https://shaocheng.li/images/2017-10-17/2017-10-17_9.png alt>
+路由追踪 <a href=http://www.ipip.net/traceroute.php target=_blank>http://www.ipip.net/traceroute.php</a> :</p><p><img src=https://shaocheng.li/images/2017-10-17/2017-10-17_10.png alt></p><p><img src=https://shaocheng.li/images/2017-10-17/2017-10-17_11.png alt></p><p>另外有一个测试脚本 bench.sh ，<a href=https://teddysun.com/ target=_blank>秋水逸冰</a>大神写的，bench.sh 既是脚本名，同时又是域名，下载执行同步，感觉很屌：</p><pre><code>wget -qO- bench.sh | bash
+</code></pre><p>参考：<a href=https://teddysun.com/444.html target=_blank>https://teddysun.com/444.html</a></p><h2 id=5-加速>5. 加速</h2><p>直接访问境外 VPS 的延时普遍很高，有些还不稳定，丢包率飙升。这时需要通过测试，找出连接比较快的大陆节点，然后租一台该节点上的服务器，作为中继加速，最终的线路是：</p><pre><code>本地PC  &lt;==&gt; 中继服务器 &lt;==&gt; SSR 代理 &lt;==&gt; FreeInternet
+</code></pre><p>现在中继服务器上安装 HAProxy ，这是一款 HTTP/TCP 负载均衡器，核心功能就是将前端的大流量请求，分流到后端的各个服务器中。原理与我们要实现的代理中继非常类似。Haproxy 监听特定端口的请求，然后将这个请求转发到后台的某一台服务器的端口上。这里使用它将我们发给它的请求转发给 SSR 服务器。以 Ubuntu 为例：</p><pre><code>sudo apt-get install haproxy 
+</code></pre><p>安装成功后，编辑配置文件 /etc/haproxy/haproxy.cfg ，用如下内容替换 ：</p><pre><code>global
+    ulimit-n  51200
+
+defaults
+    log    global
+    mode    tcp
+    option    dontlognull
+        timeout connect 5000
+        timeout client  50000
+        timeout server  50000
+
+frontend ss-in
+    bind *:relay_server_port
+    default_backend ss-out
+
+backend ss-out
+    server server1 proxy_server_ip:proxy_server_port maxconn 20480
+</code></pre><p>relay_server_port 是用于本地与中继服务器B的连接的端口。proxy_server_ip 是 SSR 代理服务器的 IP 地址，proxy_server_port 是 SSR 代理服务器的监听端口。</p><p>然后将本地客户端上配置的服务器 IP 和端口改成中继服务器的 IP 和端口即可。</p><h2 id=6-参考>6. 参考</h2><p><a href=https://ayase.moe/2017/02/01/haproxy-in-proxy-relay/ target=_blank>利用Haproxy进行SS代理中继</a></p></div></article><hr><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>216 Words</p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>2017-10-17 00:00 &#43;0000</p></div><div class=pagination><div class=pagination__title><span class=pagination__title-h></span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://shaocheng.li/posts/2017/10/27/><span class=button__icon>←</span>
+<span class=button__text>用 pyvenv 创建虚拟环境</span></a></span>
+<span class="button next"><a href=https://shaocheng.li/posts/2017/09/23/><span class=button__text>Numbers 使用技巧</span>
+<span class=button__icon>→</span></a></span></div></div><div id=comments class=thin><div id=disqus_thread></div><script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return;}
+var d=document,s=d.createElement('script');s.async=true;s.src='//'+"shaocheng-li"+'.disqus.com/embed.js';s.setAttribute('data-timestamp',+new Date());(d.head||d.body).appendChild(s);})();</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></div></main></div><footer class=footer><div class=footer__inner><div class=footer__content><span>&copy; 2020</span>
+<span><a href=https://shaocheng.li>Shaocheng.Li</a></span>
+<span><a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>CC BY-NC 4.0</a></span>
+<span><a href=https://shaocheng.li/posts/index.xml target=_blank title=rss><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg></a></span></div></div><div class=footer__inner><div class=footer__content><span>Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>Made with &#10084; by <a href=https://github.com/rhazdon>rhazdon</a></span></div></div></footer></div><script type=text/javascript src=https://shaocheng.li/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script></body></html>
