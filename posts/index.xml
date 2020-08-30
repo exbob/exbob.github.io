@@ -1,4 +1,205 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Shaocheng.Li</title><link>https://shaocheng.li/posts/</link><description>Recent content in Posts on Shaocheng.Li</description><generator>Hugo -- gohugo.io</generator><copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright><lastBuildDate>Thu, 16 Jul 2020 21:23:11 +0800</lastBuildDate><atom:link href="https://shaocheng.li/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>libubox 学习笔记</title><link>https://shaocheng.li/posts/2020/07/16/</link><pubDate>Thu, 16 Jul 2020 21:23:11 +0800</pubDate><guid>https://shaocheng.li/posts/2020/07/16/</guid><description>编译安装 首先要安装一些依赖的软件：
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Shaocheng.Li</title><link>https://shaocheng.li/posts/</link><description>Recent content in Posts on Shaocheng.Li</description><generator>Hugo -- gohugo.io</generator><copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright><lastBuildDate>Sun, 30 Aug 2020 11:53:11 +0800</lastBuildDate><atom:link href="https://shaocheng.li/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>epoll 学习笔记</title><link>https://shaocheng.li/posts/2020/08/30/</link><pubDate>Sun, 30 Aug 2020 11:53:11 +0800</pubDate><guid>https://shaocheng.li/posts/2020/08/30/</guid><description>1. 工作原理 epoll 是 Linux 独有的 I/O 多路复用机制，核心概念就是 epoll 实例，它是一个内核里的数据结构，从用户角度来看它可以简单的看做包含了两个队列：
+interest list（或者叫epoll set），用户注册的感兴趣的描述符集合。 ready list，就绪的描述符集合，当有 I/O 就绪时，内核会自动将就绪的描述符加到 ready list 中。 在用户端的工作流程就是：
+向 interest list 注册感兴趣的文件描述符的 I/O 事件。 等待已注册的文件描述符就绪。 处理所有已经就绪的文件描述符。 2. 使用方法 使用 epoll 时，需要包括头文件：
+#include &amp;lt;sys/epoll.h&amp;gt; 2.1 新建一个 epoll 实例 int epoll_create(int size); epoll_create() 函数会新建一个 epoll 实例，然后返回一个文件描述符，作为 epoll 操作的句柄。从 Linux 2.6.8 开始， 参数 size 可以忽略，但是必须大于 0 。当不在需要这个描述符时，应该调用 close() 函数将其关闭。
+调用失败时，会返回一个负数。
+2.2 操作 epoll 实例 int epoll_ctl(int epfd, int op, int fd, struct epoll_event *event); 这是操作 epoll 实例的接口函数，用于添加、删除和修改 interest list 中监控的文件描述符。如果调用成功，会返回 0 ，如果失败，会返回一个负数，并设置 errno 。参数的含义：</description><content type="html"><![CDATA[
+
+<h2 id="1-工作原理">1. 工作原理</h2>
+
+<p>epoll 是 Linux 独有的 I/O 多路复用机制，核心概念就是 epoll 实例，它是一个内核里的数据结构，从用户角度来看它可以简单的看做包含了两个队列：</p>
+
+<ul>
+<li>interest list（或者叫epoll set），用户注册的感兴趣的描述符集合。</li>
+<li>ready list，就绪的描述符集合，当有 I/O 就绪时，内核会自动将就绪的描述符加到 ready list 中。</li>
+</ul>
+
+<p>在用户端的工作流程就是：</p>
+
+<ol>
+<li>向 interest list 注册感兴趣的文件描述符的 I/O 事件。</li>
+<li>等待已注册的文件描述符就绪。</li>
+<li>处理所有已经就绪的文件描述符。</li>
+</ol>
+
+<h2 id="2-使用方法">2. 使用方法</h2>
+
+<p>使用 epoll 时，需要包括头文件：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;sys/epoll.h&gt;</span></code></pre></div>
+<h3 id="2-1-新建一个-epoll-实例">2.1 新建一个 epoll 实例</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">epoll_create</span>(<span style="color:#66d9ef">int</span> size);</code></pre></div>
+<p><code>epoll_create()</code> 函数会新建一个 epoll 实例，然后返回一个文件描述符，作为 epoll 操作的句柄。从 Linux 2.6.8 开始， 参数 size 可以忽略，但是必须大于 0 。当不在需要这个描述符时，应该调用 <code>close()</code> 函数将其关闭。</p>
+
+<p>调用失败时，会返回一个负数。</p>
+
+<h3 id="2-2-操作-epoll-实例">2.2 操作 epoll 实例</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">epoll_ctl</span>(<span style="color:#66d9ef">int</span> epfd, <span style="color:#66d9ef">int</span> op, <span style="color:#66d9ef">int</span> fd, <span style="color:#66d9ef">struct</span> epoll_event <span style="color:#f92672">*</span>event);</code></pre></div>
+<p>这是操作 epoll 实例的接口函数，用于添加、删除和修改 interest list 中监控的文件描述符。如果调用成功，会返回 0 ，如果失败，会返回一个负数，并设置 errno 。参数的含义：</p>
+
+<ul>
+<li>第一个参数 epfd 就是 <code>epoll_create()</code> 函数返回的文件描述符。</li>
+<li>第二个参数表示操作类型，可选：
+
+<ul>
+<li>EPOLL_CTL_ADD，将 fd 添加到 epfd 的 interest list 中。</li>
+<li>EPOLL_CTL_MOD，从 interest list 中删除 fd 。</li>
+<li>EPOLL_CTL_DEL，修改 fd 的监视事件。</li>
+</ul></li>
+<li>第三个参数是需要监听的文件描述符。</li>
+<li>第四个参数是需要监听的事件。</li>
+</ul>
+
+<p>监视的事件通过 <code>struct epoll_event</code> 结构体设置：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">typedef</span> <span style="color:#66d9ef">union</span> epoll_data {
+<span style="color:#66d9ef">void</span>        <span style="color:#f92672">*</span>ptr;
+<span style="color:#66d9ef">int</span>          fd;
+uint32_t     u32;
+uint64_t     u64;
+} epoll_data_t;
+
+<span style="color:#66d9ef">struct</span> epoll_event {
+uint32_t     events;      <span style="color:#75715e">/* Epoll events */</span>
+epoll_data_t data;        <span style="color:#75715e">/* User data variable */</span>
+};</code></pre></div>
+<p>结构成员 data 由内核负责修改，当监视的文件描述符准备就绪时返回。结构成员 event 用于设置监视的事件类型，是一个枚举的集合，可以用 <code>|</code> 来增加多种事件类型，枚举如下：</p>
+
+<ul>
+<li>EPOLLIN 表示关联的 fd 可以进行读操作了。</li>
+<li>EPOLLOUT 表示关联的 fd 可以进行写操作了。</li>
+<li>EPOLLRDHUP(since Linux 2.6.17) 表示套接字关闭了连接，或者关闭了正写一半的连接。</li>
+<li>EPOLLPRI 表示关联的 fd 有紧急优先事件可以进行读操作了。</li>
+<li>EPOLLERR 表示关联的fd发生了错误，<code>epoll_wait()</code> 会一直等待这个事件，所以一般没必要设置这个属性。</li>
+<li>EPOLLHUP 表示关联的fd挂起了，<code>epoll_wait()</code> 会一直等待这个事件，所以一般没必要设置这个属性。</li>
+<li>EPOLLET 设置关联的fd为ET的工作方式，epoll 的默认工作方式是LT。</li>
+<li>EPOLLONESHOT (since Linux 2.6.2) 设置关联的 fd 为 one-shot 的工作方式。表示只监听一次事件，如果要再次监听，需要把 socket 放入到 epoll 队列中。</li>
+</ul>
+
+<h3 id="2-3-等待-i-o-事件">2.3 等待 I/O 事件</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">epoll_wait</span>(<span style="color:#66d9ef">int</span> epfd, <span style="color:#66d9ef">struct</span> epoll_event <span style="color:#f92672">*</span>events, <span style="color:#66d9ef">int</span> maxevents, <span style="color:#66d9ef">int</span> timeout);</code></pre></div>
+<p><code>epoll_wait()</code> 用于等待监视的 I/O 事件就绪，也就是返回 ready list 中的文件描述符 。调用后，函数开始阻塞，直到：</p>
+
+<ul>
+<li>一个文件描述符触发了一个监视的事件。</li>
+<li>被信号中断。</li>
+<li>超时时间到。</li>
+</ul>
+
+<p>已经就绪的文件描述符会写入 <code>events</code> 指向的缓存，这是一个数组，每个元素记录了一个就绪的文件描述符的信息。<code>maxevents</code> 用于告诉内核一次最多返回多少个已经就绪的文件描述符，这个值必须大于 0 ，但不要大于已经注册的文件描述符的个数。<code>timeout</code> 设置了等待超时，单位是毫秒，0 表示立即返回，如果设为 -1 ，表示永久等待。</p>
+
+<p>如果调用成功，返回值就是已经就绪的文件描述符的数量，如果返回值是 1，那 <code>events</code> 数字的长度也只有 。失败会返回一个负数。</p>
+
+<h2 id="3-例程">3. 例程</h2>
+
+<h2 id="参考">参考</h2>
+
+<ul>
+<li><a href="https://juejin.im/post/6844904200141438984" target="_blank">彻底理解 I/O 多路复用</a></li>
+<li><a href="http://www.skybluues.com/epoll%E7%9A%84%E8%BF%90%E8%A1%8C%E6%9C%BA%E5%88%B6/](http://www.skybluues.com/epoll的运行机制/)" target="_blank">epoll 的运行机制</a></li>
+<li><a href="https://man7.org/linux/man-pages/man2/epoll_create.2.html" target="_blank">epoll_create</a></li>
+<li><a href="https://man7.org/linux/man-pages/man2/epoll_ctl.2.html" target="_blank">epoll_ctl</a></li>
+</ul>
+]]></content></item><item><title>uthash 学习笔记</title><link>https://shaocheng.li/posts/2020/08/29/</link><pubDate>Sat, 29 Aug 2020 11:23:11 +0800</pubDate><guid>https://shaocheng.li/posts/2020/08/29/</guid><description>uthash 是一个 C 语言的哈希表函数库，支持哈希表的各种操作，包括添加，删除，查找，排序等。你可以在 github 上下载到它的源码：
+源码：https://github.com/troydhanson/uthash 文档：https://troydhanson.github.io/uthash/userguide.html 这个函数库在使用时只需要包含 uthash.h 头文件即可，没有二进制的库文件。
+1. 数据结构 uthash 的哈希表是由多个结构体组成的双向链表实现的，一个结构体就是一个键值对，例如：
+#include &amp;#34;uthash.h&amp;#34; struct my_struct { int id; /* key */ char name[10]; UT_hash_handle hh; /* makes this structure hashable */ }; id 就是键（key），名称和数据类型没有限制； name 就是值（value），也可以是任何数据类型； hh 是内部使用的 hash 处理句柄，UT_hash_handle 字段必须存在于你的结构中。它用于内部记录，使哈希表正常工作，它不需要初始化。可以被命名为任何标识符； 哈希句柄在 32 位系统中每个元素消耗约 32 个字节，在 64 位系统中每个元素消耗 56 个字节。其他的开销成本&amp;ndash;桶和表&amp;ndash;相比之下可以忽略不计。你可以使用 HASH_OVERHEAD 来获取哈希表的开销大小，单位是字节。
+2. 基本操作 完整的例子可以在源码下的 tests/exapmle.c 文件中找到，可以执行 make example 进行编译。
+2.1 声明 定义一个结构体类型的空指针，即声明了一个哈希表：</description><content type="html"><![CDATA[
+
+<p>uthash 是一个 C 语言的哈希表函数库，支持哈希表的各种操作，包括添加，删除，查找，排序等。你可以在 github 上下载到它的源码：</p>
+
+<ul>
+<li>源码：<a href="https://github.com/troydhanson/uthash" target="_blank">https://github.com/troydhanson/uthash</a></li>
+<li>文档：<a href="https://troydhanson.github.io/uthash/userguide.html" target="_blank">https://troydhanson.github.io/uthash/userguide.html</a></li>
+</ul>
+
+<p>这个函数库在使用时只需要包含 <code>uthash.h</code> 头文件即可，没有二进制的库文件。</p>
+
+<h2 id="1-数据结构">1. 数据结构</h2>
+
+<p>uthash 的哈希表是由多个结构体组成的双向链表实现的，一个结构体就是一个键值对，例如：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#include</span> <span style="color:#75715e">&#34;uthash.h&#34;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">struct</span> my_struct {
+    <span style="color:#66d9ef">int</span> id;                    <span style="color:#75715e">/* key */</span>
+    <span style="color:#66d9ef">char</span> name[<span style="color:#ae81ff">10</span>];
+    UT_hash_handle hh;         <span style="color:#75715e">/* makes this structure hashable */</span>
+};</code></pre></div>
+<ul>
+<li>id 就是键（key），名称和数据类型没有限制；</li>
+<li>name 就是值（value），也可以是任何数据类型；</li>
+<li>hh 是内部使用的 hash 处理句柄，UT_hash_handle 字段必须存在于你的结构中。它用于内部记录，使哈希表正常工作，它不需要初始化。可以被命名为任何标识符；</li>
+</ul>
+
+<p>哈希句柄在 32 位系统中每个元素消耗约 32 个字节，在 64 位系统中每个元素消耗 56 个字节。其他的开销成本&ndash;桶和表&ndash;相比之下可以忽略不计。你可以使用 <code>HASH_OVERHEAD</code> 来获取哈希表的开销大小，单位是字节。</p>
+
+<h2 id="2-基本操作">2. 基本操作</h2>
+
+<p>完整的例子可以在源码下的 <code>tests/exapmle.c</code> 文件中找到，可以执行 <code>make example</code> 进行编译。</p>
+
+<h3 id="2-1-声明">2.1 声明</h3>
+
+<p>定义一个结构体类型的空指针，即声明了一个哈希表：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">struct</span> my_struct <span style="color:#f92672">*</span>users <span style="color:#f92672">=</span> NULL; </code></pre></div>
+<p>此时的哈希表示空的，我们需要先表中添加数据元素，在整个生命周期中，这个指针都指向链表的头结点。</p>
+
+<h3 id="2-2-添加">2.2 添加</h3>
+
+<p>首先需要初始化一个数据元素，也就是定义一个 <code>struct my_struct</code> 变量，并分配空间，然后调用 <code>HASH_ADD</code> （这里我们使用方便的宏 <code>HASH_ADD_INT</code>，它为 int 类型的 key 提供了简化的用法）方法，将其添加到哈希表中：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">add_user</span>(<span style="color:#66d9ef">int</span> user_id, <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>name) {
+    <span style="color:#66d9ef">struct</span> my_struct <span style="color:#f92672">*</span>s;
+
+    s <span style="color:#f92672">=</span> malloc(<span style="color:#66d9ef">sizeof</span>(<span style="color:#66d9ef">struct</span> my_struct));
+    s<span style="color:#f92672">-&gt;</span>id <span style="color:#f92672">=</span> user_id;
+    strcpy(s<span style="color:#f92672">-&gt;</span>name, name);
+    HASH_ADD_INT( users, id, s );  <span style="color:#75715e">/* id: name of key field */</span>
+}</code></pre></div>
+<p><code>HASH_ADD_INT</code> 的第一个参数是哈希表的指针，第二个参数是结构体中 key 的变量名，最后一个参数是需要加入哈希表的元素。一个元素添加到哈希表后，就不能修改它的 key 的值，必须从哈希表中删除后，才能修改。</p>
+
+<h3 id="2-3-查询">2.3 查询</h3>
+
+<p>可以调用 <code>HASH_FIND</code> （这里我们使用方便的宏 <code>HASH_ADD_INT</code>，它为 int 类型的 key 提供了简化的用法）查询某个 key 的 value ：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">struct</span> my_struct <span style="color:#f92672">*</span><span style="color:#a6e22e">find_user</span>(<span style="color:#66d9ef">int</span> user_id) {
+    <span style="color:#66d9ef">struct</span> my_struct <span style="color:#f92672">*</span>s;
+
+    HASH_FIND_INT( users, <span style="color:#f92672">&amp;</span>user_id, s );  <span style="color:#75715e">/* s: output pointer */</span>
+    <span style="color:#66d9ef">return</span> s;
+}</code></pre></div>
+<p>第一个参数是哈希表的指针，第二个参数是 key 的值，第三参数是返回的结果，就是给定 key 的结构体指针，如果没找到，就返回 NULL 。</p>
+
+<p>通常在添加之前要查询一下 key 是否已经存在，避免发生冲突。</p>
+
+<h3 id="2-4-删除">2.4 删除</h3>
+
+<p>要从哈希表中删除一个元素，必须先获取这个元素的指针（可以用 <code>HASH_FIND</code>），然后调用 <code>HASH_DEL</code> ：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">delete_user</span>(<span style="color:#66d9ef">struct</span> my_struct <span style="color:#f92672">*</span>user) {
+    HASH_DEL(users, user);  <span style="color:#75715e">/* user: pointer to deletee */</span>
+    free(user);             <span style="color:#75715e">/* optional; it&#39;s up to you! */</span>
+}</code></pre></div>
+<p>users 就是哈希表的指针，user 就是要删除的元素，删除后，uthash 不会自动释放 user 指向的内存，可以调用 <code>free()</code> 手动释放，可以继续其他工作，比如修改这个键值对。</p>
+
+<p>当删除的是哈希表的第一个元素时，users 的值是会改变的，它会继续指向新的头结点。</p>
+
+<p>如果要删除所有元素，可以调用 <code>HASH_ITER</code> 方法，这个宏可以扩展为一个简单的循环：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">delete_all</span>() {
+  <span style="color:#66d9ef">struct</span> my_struct <span style="color:#f92672">*</span>current_user, <span style="color:#f92672">*</span>tmp;
+
+  HASH_ITER(hh, users, current_user, tmp) { 
+    HASH_DEL(users,current_user);  <span style="color:#75715e">/* delete; users advances to next */</span>
+    free(current_user);            <span style="color:#75715e">/* optional- if you want to free  */</span>
+  }
+}</code></pre></div>
+<p>如果清空哈希表时，并不想释放所有元素的空间，可以直接调用：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">HASH_CLEAR(hh, users);</code></pre></div>
+<p>之后，users 就会变为空指针。</p>
+
+<h3 id="2-5-统计">2.5 统计</h3>
+
+<p>获取哈希表中元素总数时，可以调用 <code>HASH_COUNT</code> ：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> num_users;
+num_users <span style="color:#f92672">=</span> HASH_COUNT(users);
+printf(<span style="color:#e6db74">&#34;there are %u users</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, num_users);</code></pre></div>
+<p>如果哈希表是空的，会返回 0 。</p>
+]]></content></item><item><title>libubox 学习笔记</title><link>https://shaocheng.li/posts/2020/07/16/</link><pubDate>Thu, 16 Jul 2020 21:23:11 +0800</pubDate><guid>https://shaocheng.li/posts/2020/07/16/</guid><description>编译安装 首先要安装一些依赖的软件：
 apt-get install pkg-config apt-get install lua5.1 apt-get install liblua5.1-dev apt-get install cmake apt-get install libjson-c-dev 然后要编译安装 libubox ：
 git clone https://git.openwrt.org/project/libubox.git cd libubox cmake . make make install ulog 头文件 ulog.h 提供了打印日志的方法。使用时，先调用 ulog_open() 函数初始化一些 ulog 需要的变量：
 void ulog_open(int channels, int facility, const char *ident); channels 用于设置日志消息的输出目标，取值：
