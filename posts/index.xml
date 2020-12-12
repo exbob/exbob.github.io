@@ -339,7 +339,7 @@ imx6ull14x14evk login:
 
 <h2 id="5-2-目录结构">5.2. 目录结构</h2>
 
-<p>通常情况下，我们会使用一个硬件原厂发布的 BPS 源码编译系统镜像，BSP 源码包含了 Yocto 项目主仓库的 poky 包，还有原厂加入的扩展包，当完成了第一次系统构建后，工程目录下的文件结构大致如下：</p>
+<p>通常情况下，我们会使用一个硬件原厂发布的 BPS 源码编译系统镜像，BSP 源码包含了 Yocto 项目的参考发行版 poky 包，还有原厂加入的扩展包，当完成了第一次系统构建后，工程目录下的文件结构大致如下：</p>
 
 <pre><code>imx-yocto-bsp-5.4.47
 ├── downloads # bitbake 下载的软件包都放在这里
@@ -364,6 +364,10 @@ imx6ull14x14evk login:
 </code></pre>
 
 <p>下载的软件包都放在 downloads 目录下，并生成一个后缀为 .done 的空文件，表示指定的包已经下载完毕。如果使用 bitbake 下载某个包失败，也可以手动下载，然后放到 downloads 路径下，并新建一个 .done 文件，这样 bitbake 工作时就会任务 fetch 任务已经完成。</p>
+
+<p>poky 是 yocto 项目的参考发行版，官方文档都是基于这个包讲解的，单独使用这个包可以构建一个运行在 QEMU 虚拟机上的系统。它包含了构建系统所需的核心包，比如 Linux 内核的 recipe 。</p>
+
+<p>meta-openembedded 提供很多扩展包。meta-imx 和 meta-freescale* 都是 NXP 官方提供的，针对硬件的扩展。</p>
 
 <p>我们需要在此基础上添加或者修改一些包，完成自己的特定需求。这时，建议在工作目录下新建一个 layer ，在 layer 中包含自己的 append (.bbappend) 文件和 recipe(.bb)文件，来完成相应的工作，尽量不要修改 sources 目录下的文件。</p>
 
