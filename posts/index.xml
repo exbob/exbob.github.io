@@ -426,6 +426,8 @@ linux-imx-mfgtool                 :4.14.98-r0</code></pre></div>
 <p>很明显，linux-imx 就是当前项目的 Linux 内核，然后先定位 recipe 文件的位置：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">~/imx-yocto-bsp-5.4.47/imx6ullevk-fb$ bitbake -e linux-imx | grep ^FILE<span style="color:#f92672">=</span>
 FILE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/home/sbs/imx-yocto-bsp-5.4.47/sources/meta-imx/meta-bsp/recipes-kernel/linux/linux-imx_5.4.bb&#34;</span></code></pre></div>
+<p>有时候，我们还需要知道这个 recipe 依赖的 conf、bbclass 、bbappend 等文件，可以通过 <code>BBINCLUDED</code> 变量获得：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">~/imx-yocto-bsp-5.4.47/imx6ullevk-fb$ bitbake -e linux-imx | grep ^BBINCLOUD<span style="color:#f92672">=</span></code></pre></div>
 <p>然后我们可以定位构建这个包时的工作目录：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">~/imx-yocto-bsp-5.4.47/imx6ullevk-fb$ bitbake -e linux-imx | grep ^WORKDIR<span style="color:#f92672">=</span>
 WORKDIR<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/home/sbs/imx-yocto-bsp-5.4.47/imx6ullevk-fb/tmp/work/imx6ull14x14evk-poky-linux-gnueabi/linux-imx/5.4-r0&#34;</span></code></pre></div>
@@ -503,53 +505,93 @@ LAYERSERIES_COMPAT_mylayer <span style="color:#f92672">=</span> <span style="col
 
 <h2 id="5-5-自定义系统镜像">5.5. 自定义系统镜像</h2>
 
-<p>系统镜像也是通过 recipe 文件编译出来的，我们可以在源码目录下执行如下命令查找：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ls meta*/recipes*/images/*.bb</code></pre></div>
-<p>比如，我们编译的 imx-image-multimedia 位于：</p>
+<p>自定义系统镜像主要是修改构建系统的源码，定制输出到目标镜像的文件，有很多种方式，比如修改 con/local.conf 文件，这里的修改是全局性的，会所有的镜像生效，不利于项目的工程化管理，最好的方式依然是在自定义的 layer 中添加对源码的修改。例如，要定制 fsl-image-machine-test 生成的镜像，就可以新建一个 image-machine-test.bbappend 文件进行修改。</p>
 
-<pre><code>meta-freescale-distro/recipes-fsl/images/fsl-image-multimedia.bb
+<h3 id="5-5-1-添加或删除包">5.5.1. 添加或删除包</h3>
+
+<p>定制系统时,经常要添加一个包到目标镜像中，或者从目标镜像里删除一个已有的包。Yocto 构建系统镜像时，主要是通过 IMAGE_INSTALL 和 IMAGE_IMAGE_FEATURES 两个变量来确定目标镜像要安装那些包，以构建 fsl-image-machine-test 系统镜像为例：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ bitbake -e fsl-image-machine-test | grep ^IMAGE_INSTALL<span style="color:#f92672">=</span>
+IMAGE_INSTALL<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;    packagegroup-core-boot     packagegroup-base-extended               packagegroup-fsl-gstreamer1.0     packagegroup-fsl-gstreamer1.0-full     packagegroup-fsl-tools-gpu     packagegroup-fsl-tools-gpu-external     packagegroup-fsl-tools-testapps     packagegroup-fsl-tools-benchmark                           packagegroup-fsl-optee-imx&#34;</span>
+$ bitbake -e fsl-image-machine-test | grep ^IMAGE_FEATURES
+IMAGE_FEATURES<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;debug-tweaks package-management tools-profile tools-testapps&#34;</span>
+IMAGE_FEATURES_REPLACES_ssh-server-openssh<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;ssh-server-dropbear&#34;</span></code></pre></div>
+<p>IMAGE_INSTALL 设置了安装到目标镜像的包和包组，包组就是一些相关的包的集合，它们都是通过 .bb 文件定义的。如果要向目标镜像添加包，可以用 _append 语法（参考 <a href="https://www.yoctoproject.org/docs/3.1.2/bitbake-user-manual/bitbake-user-manual.html#appending-and-prepending-override-style-syntax" target="_blank">Bitbake user manual</a>）向 IMAGE_INSTALL 变量中追加内容，例如：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">IMAGE_INSTALL_append <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34; vim&#34;</span></code></pre></div>
+<p>也可以用 _remove 语法从 IMAGE_INSTALL 变量中删除已有的内容，例如：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">IMAGE_INSTALL_remove <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;packagegroup-fsl-tools-testapps&#34;</span></code></pre></div>
+<p>IMAGE_FEATURES 设置了目标镜像的特性，不止是包和包组，这些特性来自于 IMAGE_FEATURES 的定义，假设 :</p>
+
+<pre><code>FEATURE_PACKAGES_widget = &quot;package1 package2&quot;
 </code></pre>
 
-<p>您可以自定义系统镜像以满足特定的要求，比如向系统镜像添加、删除一些指定的包。本节将介绍几种方法，并为每种方法提供指导。</p>
+<p>那么，如果 IMAGE_FEATURES 中包含了 widget ，就包含了 package1  和 package2 。例如：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ bitbake -e fsl-image-machine-test | grep ^FEATURE_PACKAGES
+FEATURE_PACKAGES_eclipse-debug<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;packagegroup-core-eclipse-debug&#34;</span>
+FEATURE_PACKAGES_hwcodecs<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;&#34;</span>
+FEATURE_PACKAGES_nfs-client<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;packagegroup-core-nfs-client&#34;</span>
+FEATURE_PACKAGES_nfs-server<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;packagegroup-core-nfs-server&#34;</span>
+FEATURE_PACKAGES_package-management<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;dpkg apt&#34;</span>
+FEATURE_PACKAGES_splash<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;psplash&#34;</span>
+FEATURE_PACKAGES_ssh-server-dropbear<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;packagegroup-core-ssh-dropbear&#34;</span>
+FEATURE_PACKAGES_ssh-server-openssh<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;packagegroup-core-ssh-openssh&#34;</span>
+FEATURE_PACKAGES_tools-debug<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;packagegroup-core-tools-debug&#34;</span>
+FEATURE_PACKAGES_tools-profile<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;packagegroup-core-tools-profile&#34;</span>
+FEATURE_PACKAGES_tools-sdk<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;packagegroup-core-sdk packagegroup-core-standalone-sdk-target&#34;</span>
+FEATURE_PACKAGES_tools-testapps<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;packagegroup-core-tools-testapps&#34;</span>
+FEATURE_PACKAGES_x11<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;packagegroup-core-x11&#34;</span>
+FEATURE_PACKAGES_x11-base<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;packagegroup-core-x11-base&#34;</span>
+FEATURE_PACKAGES_x11-sato<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;packagegroup-core-x11-sato&#34;</span></code></pre></div>
+<p>IMAGE_FEATURES 中定义的 tools-testapps 就表示 packagegroup-core-tools-testapps ，可以在源码目录中直接搜索这个包组的 .bb 文件：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ find ./ -name <span style="color:#e6db74">&#34;packagegroup-core-tools-testapps*&#34;</span>
+./poky/meta/recipes-core/packagegroups/packagegroup-core-tools-testapps.bb
+./meta-imx/meta-sdk/recipes-fsl/packagegroup/packagegroup-core-tools-testapps.bbappend</code></pre></div>
+<p>我们也可以用 _append 和 _remove 语法修改 IMAGE_FEATURES 变量的内容，Yocto 提供的可选项可以参考 <a href="https://www.yoctoproject.org/docs/3.0.4/ref-manual/ref-manual.html#ref-features-image" target="_blank">Feature Image</a> 。</p>
 
-<h3 id="5-5-1-使用-local-conf">5.5.1. 使用 local.conf</h3>
+<p>如果我们想删除的包没有显示在 IMAGE_INSTALL 和 IMAGE_IMAGE_FEATURES 的定义里，通常是被封装到了包组里面，这时，可以用 PACKAGE_EXCLUDE 变量设置：</p>
 
-<p>可能最简单的自定义映像的方法是通过 local.conf 配置文件来添加一个包。添加的方法是在 local.conf 文件中新增带 _append 操作符的 IMAGE_INSTALL 变量：</p>
-
-<pre><code>IMAGE_INSTALL_append = &quot; strace&quot;
+<pre><code>PACKAGE_EXCLUDE = &quot;package_name package_name package_name ...&quot;
 </code></pre>
 
-<p>注意语法，引号和 strace 前面的空格都是必须的，因为 _append 操作符不会添加空格。此外，如果你想避免排序问题，你必须使用 _append 代替 += 操作符。原因是，这样做是无条件地追加到变量上，避免了由于变量在图像配方和 .bbclass 文件中被设置为像?=这样的运算符而引起的排序问题。 使用 _append 可以确保操作生效。</p>
+<p>这些列出的包都不会被安装到目标镜像中。这里可能会出现一个问题，如果其他一些包依赖于这里列出的包（即在 RDEPENDS 变量中列出），构建时会报错，必须接触相应的依赖关系。以删除 connman 为例：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">PACKAGE_EXCLUDE <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;connman&#34;</span></code></pre></div>
+<p>构建时会出现如下错误：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ bitbake fsl-image-machine-test
+...
+Some packages could not be installed. This may mean that you have requested an impossible situation or <span style="color:#66d9ef">if</span> you are using the unstable distribution that some required packages have not yet been created or been moved out of Incoming.
+The following information may help to resolve the situation:
 
-<p>由于仅限于本地使用，这种方法一般只允许你添加包，而不像创建自己的自定义映像那样灵活。当你用这种方式使用本地变量添加包时，你需要意识到这些变量的变化对每次构建都是有效的，因此会影响所有的镜像，这可能不是你所需要的。也可以扩展语法 _append_pn，使变量只适用于一个特定的镜像。下面是一个例子。</p>
+The following packages have unmet dependencies:
+ packagegroup-core-tools-testapps : Depends: connman-client but it is not going to be installed
+                                    Depends: connman-tools but it is not going to be installed
+E: Unable to correct problems, you have held broken packages.
+...</code></pre></div>
+<p>packagegroup-core-tools-testapps 包组里的 connman-client 和 connman-tools 都依赖于 connman ，在 packagegroup-core-tools-testapps.bb 文件中可以看到：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">RDEPENDS_<span style="color:#e6db74">${</span>PN<span style="color:#e6db74">}</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;\
+</span><span style="color:#e6db74">    blktool \
+</span><span style="color:#e6db74">    </span><span style="color:#e6db74">${</span>KEXECTOOLS<span style="color:#e6db74">}</span><span style="color:#e6db74"> \
+</span><span style="color:#e6db74">    alsa-utils-amixer \
+</span><span style="color:#e6db74">    alsa-utils-aplay \
+</span><span style="color:#e6db74">    ltp \
+</span><span style="color:#e6db74">    connman-tools \
+</span><span style="color:#e6db74">    connman-tests \
+</span><span style="color:#e6db74">    connman-client \
+</span><span style="color:#e6db74">    </span><span style="color:#e6db74">${</span>@bb.utils.contains(<span style="color:#e6db74">&#39;DISTRO_FEATURES&#39;</span>, <span style="color:#e6db74">&#39;x11&#39;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>X11TOOLS<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>, d)<span style="color:#e6db74">}</span><span style="color:#e6db74"> \
+</span><span style="color:#e6db74">    </span><span style="color:#e6db74">${</span>@bb.utils.contains(<span style="color:#e6db74">&#39;DISTRO_FEATURES&#39;</span>, <span style="color:#e6db74">&#39;x11 opengl&#39;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>X11GLTOOLS<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>, d)<span style="color:#e6db74">}</span><span style="color:#e6db74"> \
+</span><span style="color:#e6db74">    </span><span style="color:#e6db74">${</span>@bb.utils.contains(<span style="color:#e6db74">&#39;DISTRO_FEATURES&#39;</span>, <span style="color:#e6db74">&#39;3g&#39;</span>, <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>3GTOOLS<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>, <span style="color:#e6db74">&#34;&#34;</span>, d)<span style="color:#e6db74">}</span><span style="color:#e6db74"> \
+</span><span style="color:#e6db74">    &#34;</span></code></pre></div>
+<p>可以新建一个 packagegroup-core-tools-testapps.bbappend 文件，使用 _remove 语法将其删除：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">RDEPENDS_<span style="color:#e6db74">${</span>PN<span style="color:#e6db74">}</span>_remove <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;connman-tools connman-tests connman-client&#34;</span></code></pre></div>
+<p>修改完毕后，可以使用 bitbake 的 -g 选项生成目标的依赖关系：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">bitbake -g fsl-image-machine-test</code></pre></div>
+<p>它会在当前目录下生成两个文件，pn-buildlist 列出了生成目标所依赖的所有包，我们可以在这里快速的检查删减和增加的操作是否成功，task-depends.dot 记录了所有任务的依赖关系，可以用 Graphviz 打开，进行图形化的阅览。</p>
 
-<pre><code>IMAGE_INSTALL_append_pn-core-image-minimal = &quot; strace&quot;
-</code></pre>
-
-<p>这样添加的 strace 包只对 core-image-minimal 镜像生效。</p>
-
-<h3 id="5-5-2-使用-mage-features-和-extra-image-features">5.5.2. 使用 MAGE_FEATURES 和 EXTRA_IMAGE_FEATURES</h3>
-
-<p>另一种自定义方法是使用 IMAGE_FEATURES 和 EXTRA_IMAGE_FEATURES 变量来启用或禁用高级特征。虽然这两个变量的功能几乎是相同的，但最好的做法是在 recipe 中使用IMAGE_FEATURES，而在您的 local.conf 文件中使用 EXTRA_IMAGE_FEATURES。比如，我们要向最终镜像添加 ssh-server-openssh 包，可以在 local.conf 中添加</p>
-
-<pre><code>EXTRA_IMAGE_FEATURES += “ssh-server-openssh”
-</code></pre>
-
-<p>也可以在 fsl-image-multimedia.bb 文件中添加：</p>
-
-<pre><code>IMAGE_FEATURES += “ssh-server-openssh”
-</code></pre>
-
-<h3 id="5-5-3-自定义-recipe">5.5.3. 自定义 recipe</h3>
+<h3 id="5-5-2-自定义-recipe">5.5.2. 自定义 recipe</h3>
 
 <p>我们也可以新建一个系统镜像的 recipe ，添加自己需要的特性。例如，在 meta-freescale-distro/recipes-fsl/images 目录下新建一个 fsl-image-custom.bb 文件，然后添加如下内容：</p>
-
-<pre><code>LICENSE = &quot;MIT&quot; # 声明许可证
-inherit core-image # 继承 core-image 类
-IMAGE_INSTALL_append = &quot; package-name&quot; # 添加的包
-</code></pre>
-
-<h3 id="5-5-4-使用包组">5.5.4. 使用包组</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">LICENSE <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;MIT&#34;</span> <span style="color:#75715e"># 声明许可证</span>
+inherit core-image <span style="color:#75715e"># 继承 core-image 类</span>
+IMAGE_INSTALL_append <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34; package-name&#34;</span> <span style="color:#75715e"># 添加的包</span></code></pre></div>
+<h3 id="5-5-3-自定义包组">5.5.3. 自定义包组</h3>
 
 <p>包组（packagegroup）就是按特定需求把几个包组合成一个变量，以 packagegroup- 为前缀，在类似 meta<em>/recipes</em>/packagegroups/packagegroup*.bb的文件中定义。以 poky/meta/recipes-core/packagegroups/packagegroup-base.bb 文件为例，文件内通过 PACKAGES 变量列出了要产生的包组，然后再用 RDEPENDS 和 RRECOMMENDS 项设置每个包组所包含的软件包。</p>
 
@@ -575,11 +617,11 @@ RDEPENDS_<span style="color:#e6db74">${</span>PN<span style="color:#e6db74">}</s
 
 RRECOMMENDS_<span style="color:#e6db74">${</span>PN<span style="color:#e6db74">}</span>-tools <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;\
 </span><span style="color:#e6db74">    kernel-module-oprofile&#34;</span></code></pre></div>
-<p>${PN} 是替代文件名（packagegroup-custom）的变量，所以，这里是定义了两个包组：packagegroup-custom-apps 和 packagegroup-custom-tools ，然后用 RDEPENDS<em>${PN}-* 设置了每个包组依赖的软件包。如果只想定义一般包组，可以不用 PACKAGES 变量，${PN} 即是包组的名称，用 RDEPENDS</em>${PN} 设置包组依赖的软件包。</p>
+<p><code>${PN}</code> 是替代文件名（packagegroup-custom）的变量，所以，这里是定义了两个包组：packagegroup-custom-apps 和 packagegroup-custom-tools ，然后用 <code>RDEPENDS_${PN}-*</code> 设置了每个包组依赖的软件包。如果只想定义一般包组，可以不用 PACKAGES 变量，​<code>${PN}</code> 即是包组的名称，用 <code>RDEPENDS_${PN}</code> 设置包组依赖的软件包。</p>
 
-<h3 id="5-5-5-自定义-hostname">5.5.5. 自定义 hostname</h3>
+<h3 id="5-5-4-自定义-hostname">5.5.4. 自定义 hostname</h3>
 
-<p>Linux 系统在 /etc/hostname 文件中定义了 hostname ，默认情况下，Yocto 在 local.conf 文件中通过 MACHINE 变量设置这个名字。你可以使用 Append 文件或 Configuration文件改变 base-files 配方中 &ldquo;hostname&rdquo;变量的值来定制这个名字。在 Append 文件中可以添加：</p>
+<p>Linux 系统在 /etc/hostname 文件中定义了 hostname ，默认情况下，Yocto 在 local.conf 文件中通过 MACHINE 变量设置这个名字。你可以使用 Append 文件或 Configuration文件改变 base-files 配方中 &ldquo;hostname&rdquo; 变量的值来定制这个名字。在 Append 文件中可以添加：</p>
 
 <pre><code>hostname=&quot;myhostname&quot;
 </code></pre>
@@ -589,7 +631,7 @@ RRECOMMENDS_<span style="color:#e6db74">${</span>PN<span style="color:#e6db74">}
 <pre><code>hostname_pn-base-files = &quot;myhostname&quot;
 </code></pre>
 
-<h2 id="5-6-修改-rootfs-分区的大小">5.6. 修改 rootfs 分区的大小</h2>
+<h3 id="5-5-5-修改-rootfs-分区的大小">5.5.5. 修改 rootfs 分区的大小</h3>
 
 <p>我们的系统镜像文件使用 .wic 格式定义 SD/MMC 存储介质上的分区， .wic 是用 OpenEmbedded Kickstart(.wks) 生成的，支持 RAW 和 FileSystem两种分区方式，关于 .wks 的详细信息可以查看 <a href="#ref-kickstart">kickstart-docs</a> 。</p>
 
@@ -697,13 +739,13 @@ IMAGE_ROOTFS_EXTRA_SPACE=&quot;0&quot;
 <li>直接设置 IMAGE_ROOTFS_SIZE ，使它足够大，可以占满存储介质的空间。</li>
 </ol>
 
-<h2 id="5-7-添加新的-recipe">5.7. 添加新的 recipe</h2>
+<h2 id="5-6-添加新的-recipe">5.6. 添加新的 recipe</h2>
 
 <p>recipe（.bb文件）是 Yocto 项目环境中的基本组件。由 OpenEmbedded 构建系统构建的每个软件包都需要一个 recipe 来定义。我们可以从头开始手写 recipe ，或者参考别的 recipe 进行修改，例如在 <a href="http://layers.openembedded.org/layerindex/branch/master/layers/" target="_blank">http://layers.openembedded.org/layerindex/branch/master/layers/</a> 中有很多社区维护的recipe ，可以查找符合需求的拿来用。此外，OpenEmbedded 和 Yocto 分别提供了了 devtool 和 recipetool 两种工具来新建 recipe 。Recipe 文件的语法也可以参考 <a href="https://www.yoctoproject.org/docs/1.8/bitbake-user-manual/bitbake-user-manual.html" target="_blank">https://www.yoctoproject.org/docs/1.8/bitbake-user-manual/bitbake-user-manual.html</a> 。下面是手写一个 recipe 的基本流程：</p>
 
 <p><img src="/images/2020-12-12/wpsXEGnru.jpg" alt="img" /></p>
 
-<h3 id="5-7-1-新建文件">5.7.1. 新建文件</h3>
+<h3 id="5-6-1-新建文件">5.6.1. 新建文件</h3>
 
 <p>以移植 <a href="https://git.openwrt.org/?p=project/uci.git;a=summary" target="_blank">UCI</a> 为例，因为 bitbake 是通过 conf/layer.conf 文件中定义的 BBFILES 变量来搜索 recipe 的，这个变量定义了搜索路径：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">BBFILES <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>LAYERDIR<span style="color:#e6db74">}</span><span style="color:#e6db74">/recipes-*/*/*.bb \
@@ -733,7 +775,7 @@ PR<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;r0&#34;</
 PV<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;git&#34;</span></code></pre></div>
 <p>下面开始编辑这个文件。</p>
 
-<h3 id="5-7-2-获取源码">5.7.2. 获取源码</h3>
+<h3 id="5-6-2-获取源码">5.6.2. 获取源码</h3>
 
 <p>获取源码的过程是由 do_fetch 任务来完成，主要是通过 SRC_URI 变量控制，它可以指定源码的位置，获取源码的协议，源码的版本等。源码通常来源于三种途径：</p>
 
@@ -793,7 +835,7 @@ S <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><
 
 <p>源码会释放到 tmp/work/cortexa7t2hf-neon-poky-linux-gnueabi/uci/1.0.0+gitAUTOINC+52bbc99f69-r0/git 路径下。</p>
 
-<h3 id="5-7-3-打补丁">5.7.3. 打补丁</h3>
+<h3 id="5-6-3-打补丁">5.6.3. 打补丁</h3>
 
 <p>有时需要在获取源码后对其打补丁。SRC_URI 中提到的任何文件，如果其名称以 .patc 或 .diff结尾，或者是这些后缀的压缩版本(例如：diff.gz)，都会被视为补丁。do_patch 任务会自动应用这些补丁。</p>
 
@@ -801,16 +843,17 @@ S <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><
 
 <p>如同在 SRC_URI 中使用 file:// 引用的本地文件一样，应该把补丁文件放在 recipe 文件旁边名为 ${BP}、${BPN} 或者 files 的文件夹中。</p>
 
-<h3 id="5-7-4-设置-license">5.7.4. 设置 License</h3>
+<h3 id="5-6-4-设置-license">5.6.4. 设置 License</h3>
 
 <p>应该在 recipe 中用  <a href="#var-LICENSE">LICENSE</a> 和 <a href="#var-LIC_FILES_CHKSUM">LIC_FILES_CHKSUM</a> 设置版权许可证和许可证文件的校验和。</p>
 
-<p>软件通常会在源码包的某个文件中声明自己的许可证类型，比如 COPYING, LICENSE 和 README 等，查到许可证类型就可以设置 LICENSE ，对于标准许可证，使用 poky/meta/files/common-licenses/ 中的文件名，或者 meta/conf/licenses.conf 中定义的 SPDXLICENSEMAP 标志名即可，也可以使用自定义的许可证名称。然后用许可证文件的 md5 校验值设置 <a href="#var-LIC_FILES_CHKSUM">LIC_FILES_CHKSUM</a> 。如果源码包里没有许可证文件，也可以用任意文件替代。</p>
-
+<p>软件通常会在源码包的某个文件中声明自己的许可证类型，比如 COPYING, LICENSE 和 README 等，查到许可证类型就可以设置 LICENSE ，对于标准许可证，使用 poky/meta/files/common-licenses/ 中的文件名，或者 meta/conf/licenses.conf 中定义的 SPDXLICENSEMAP 标志名即可，也可以使用自定义的许可证名称。然后用许可证文件的 md5 校验值设置 <a href="#var-LIC_FILES_CHKSUM">LIC_FILES_CHKSUM</a> 。如果源码包里没有许可证文件，也可以用任意文件替代。或者用系统内的 License ，例如:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">LICENSE <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;MIT&#34;</span>
+LIC_FILES_CHKSUM <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;file://</span><span style="color:#e6db74">${</span>COMMON_LICENSE_DIR<span style="color:#e6db74">}</span><span style="color:#e6db74">/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302&#34;</span></code></pre></div>
 <p>我们需要在 uci_git.bb 中添加：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">LICENSE <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;GPLv2&#34;</span>
 LIC_FILES_CHKSUM <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;file://CMakeLists.txt;md5=5c39cc16168ed9d0e1603468508a6e2b&#34;</span></code></pre></div>
-<h3 id="5-7-5-确定依赖关系">5.7.5.确定依赖关系</h3>
+<h3 id="5-6-5-确定依赖关系">5.6.5. 确定依赖关系</h3>
 
 <p>大多数软件包都有一个它们所需要的其他软件包的简短列表，这就是所谓的依赖关系。这些依赖关系可分为两大类：构建时依赖关系，这是软件构建时需要的；运行时依赖关系，这是软件运行时需要安装在目标机上的。</p>
 
@@ -831,7 +874,7 @@ LIC_FILES_CHKSUM <span style="color:#f92672">=</span> <span style="color:#e6db74
 <pre><code>DEPENDS = &quot;libubox&quot;
 </code></pre>
 
-<h3 id="5-7-6-配置">5.7.6. 配置</h3>
+<h3 id="5-6-6-配置">5.6.6. 配置</h3>
 
 <p>大部分软件在编译之前都需要进行配置，通常有如下三种情况：</p>
 
@@ -846,7 +889,7 @@ LIC_FILES_CHKSUM <span style="color:#f92672">=</span> <span style="color:#e6db74
 EXTRA_OECMAKE <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;-DBUILD_LUA=OFF&#34;</span></code></pre></div>
 <p>一旦配置成功，最好检查一下 log.do_configure 文件，以确保适当的选项已经启用。</p>
 
-<h3 id="5-7-7-编译">5.7.7. 编译</h3>
+<h3 id="5-6-7-编译">5.6.7. 编译</h3>
 
 <p>配置成功后，系统会自动调用 do_compile 任务进行编译，如果没有报错，就不用做任何事情。如果编译步骤失败，需要分析失败原因，可能的原因有：</p>
 
@@ -856,7 +899,7 @@ EXTRA_OECMAKE <span style="color:#f92672">=</span> <span style="color:#e6db74">&
 <li>错误的头文件和库文件。如果因为没有在 DEPENDS 中声明而缺少构建时的依赖关系，或者因为依赖关系存在，但构建过程用来查找文件的路径不正确，配置步骤没有检测到它，编译过程可能会失败。对于这两种失败的情况，编译过程都会报告无法找到文件。在这些情况下，需要回过头来向配置过程添加额外的选项。</li>
 </ul>
 
-<h3 id="5-7-8-安装">5.7.8. 安装</h3>
+<h3 id="5-6-8-安装">5.6.8. 安装</h3>
 
 <p>安装过程中，系统调用 do_install 任务生成的文件和目录结构复制到目标设备上的镜像位置。会将 ${S}、${B} 和 ${WORKDIR} 目录中的文件复制到 ${D} 目录中，以创建目标系统中的结构。对于使用 autotools 和 cmake 构建的软件包，系统会调用它们的 instal 指令执行安装任务，如果能够满足要求，就不用修改。其他情况则需要修改或者手写 do_install 任务。我们可以在 recipe 文件中定义一个 do_install 函数，然后添加安装指令。</p>
 
@@ -883,7 +926,7 @@ EXTRA_OECMAKE <span style="color:#f92672">=</span> <span style="color:#e6db74">&
 </span><span style="color:#ae81ff"></span>        -e <span style="color:#e6db74">&#39;s,@SYSCONFDIR@,${sysconfdir},g&#39;</span> <span style="color:#ae81ff">\
 </span><span style="color:#ae81ff"></span>        <span style="color:#e6db74">${</span>D<span style="color:#e6db74">}${</span>sysconfdir<span style="color:#e6db74">}</span>/init.d/mosquitto
 <span style="color:#f92672">}</span></code></pre></div>
-<h3 id="5-7-9-使能系统服务">5.7.9. 使能系统服务</h3>
+<h3 id="5-6-9-使能系统服务">5.6.9. 使能系统服务</h3>
 
 <p>如果希望软件安装后随系统开机启动，通常需要使能 SysVinit 或 Systemd  。</p>
 
@@ -891,9 +934,37 @@ EXTRA_OECMAKE <span style="color:#f92672">=</span> <span style="color:#e6db74">&
 
 <p>对于 Systemd 服务，首先要确保  DISTRO_FEATURES 中已经加入了 &ldquo;systemd&rdquo;，然后 recipe 需要继承 systemd 类。详情参考 <a href="https://www.yoctoproject.org/docs/3.0.4/ref-manual/ref-manual.html#ref-classes-systemd" target="_blank">https://www.yoctoproject.org/docs/3.0.4/ref-manual/ref-manual.html#ref-classes-systemd</a> 。</p>
 
-<h3 id="5-7-10-打包">5.7.10. 打包</h3>
+<h3 id="5-6-10-打包">5.6.10. 打包</h3>
 
-<h2 id="5-8-使用-bbappend-文件">5.8. 使用 .bbappend 文件</h2>
+<p>如果使用了 cmake ，这一步也是自动的，否则需要写一个 do_package 函数。</p>
+
+<h3 id="5-6-11-实例">5.6.11 实例</h3>
+
+<p>下面是一个简单实例，目录结构如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">test-app
+|---files
+    |---helloworld.c
+    |---CMakeLists.txt
+|---test-app_0.1.bb</code></pre></div>
+<p>源码编译使用了 cmake ，CMakeLists.txt 的内容：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cmake_minimum_required<span style="color:#f92672">(</span>VERSION <span style="color:#ae81ff">3</span>.1<span style="color:#f92672">)</span>
+project<span style="color:#f92672">(</span>test-app<span style="color:#f92672">)</span>
+add_executable<span style="color:#f92672">(</span>helloworld helloworld.c<span style="color:#f92672">)</span>
+
+install<span style="color:#f92672">(</span>TARGETS helloworld DESTINATION bin<span style="color:#f92672">)</span></code></pre></div>
+<p>所以 recipe 文件非常简单：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">SUMMARY <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;test app&#34;</span>
+DESCRIPTION <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;interface test application&#34;</span>
+LICENSE <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;MIT&#34;</span>
+LIC_FILES_CHKSUM <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;file://</span><span style="color:#e6db74">${</span>COMMON_LICENSE_DIR<span style="color:#e6db74">}</span><span style="color:#e6db74">/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302&#34;</span>
+
+inherit cmake
+
+S <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>WORKDIR<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+
+SRC_URI <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;file://helloworld.c \
+</span><span style="color:#e6db74">	file://CMakeLists.txt &#34;</span></code></pre></div>
+<h2 id="5-7-使用-bbappend-文件">5.7. 使用 .bbappend 文件</h2>
 
 <p>将元数据追加到另一个 recipe 的 recipe 称为 BitBake append 文件。一个 BitBake append文件使用 .bbappend 后缀，而相应的配方中的 Metadata 被附加到的配方使用 .bb 文件类型后缀。</p>
 
@@ -901,7 +972,7 @@ EXTRA_OECMAKE <span style="color:#f92672">=</span> <span style="color:#e6db74">&
 
 <p>能够将信息追加到现有的配方中，不仅避免了重复，而且还能自动将不同层的配方更改应用到您的层中。如果你是复制配方，你将不得不在发生变化时手动合并。</p>
 
-<p>当你创建一个追加文件时，你必须使用与对应的配方文件相同的根名。例如，追加文件someapp_3.1.2.bbappend 必须应用到 someapp_3.1.2.bb。这意味着原始配方和追加文件的名称是针对版本号的。如果重命名相应的配方以更新到较新的版本，你也必须重命名并可能更新相应的.bbappend。在构建过程中，如果 BitBake 检测到一个 .bbappend 文件，而该文件没有对应的配方与名称相匹配，则会在启动时显示一个错误。请参阅 BB_DANGLINGAPPENDS_WARNONLY 变量，了解如何处理这个错误。</p>
+<p>当你创建一个追加文件时，你必须使用与对应的配方文件相同的根名。例如，追加文件 someapp_3.1.2.bbappend 必须应用到 someapp_3.1.2.bb。这意味着原始配方和追加文件的名称是针对版本号的。如果重命名相应的配方以更新到较新的版本，你也必须重命名并可能更新相应的.bbappend。在构建过程中，如果 BitBake 检测到一个 .bbappend 文件，而该文件没有对应的配方与名称相匹配，则会在启动时显示一个错误。请参阅 BB_DANGLINGAPPENDS_WARNONLY 变量，了解如何处理这个错误。</p>
 
 <p>以 formfactor_0.0.bb 为例，位于meta/recipes-bsp/formfactor ：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">     SUMMARY <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Device formfactor information&#34;</span>
@@ -924,18 +995,18 @@ EXTRA_OECMAKE <span style="color:#f92672">=</span> <span style="color:#e6db74">&
 	             install -m <span style="color:#ae81ff">0644</span> <span style="color:#e6db74">${</span>S<span style="color:#e6db74">}</span>/machconfig <span style="color:#e6db74">${</span>D<span style="color:#e6db74">}${</span>sysconfdir<span style="color:#e6db74">}</span>/formfactor/
 	     <span style="color:#66d9ef">fi</span>
      <span style="color:#f92672">}</span></code></pre></div>
-<p>在 recipe 中，注意SRC_URI变量，它告诉 OpenEmbedded 构建系统在构建过程中在哪里找到文件。下面是 append 文件，名为 formfactor_0.0.bbappend ，来自meta-raspberrypi/recipes-bsp/formfactor :</p>
+<p>在 recipe 中，注意 SRC_URI 变量，它告诉 OpenEmbedded 构建系统在构建过程中在哪里找到文件。下面是 append 文件，名为 formfactor_0.0.bbappend ，来自meta-raspberrypi/recipes-bsp/formfactor :</p>
 
 <pre><code>FILESEXTRAPATHS_prepend := &quot;${THISDIR}/${PN}:&quot;
 </code></pre>
 
-<p>默认情况下，构建系统使用FILESPATH变量来定位文件。这个 append 文件通过设置 FILESEXTRAPATHS 变量来扩展这些位置。在 .bbappend 文件中设置这个变量是将目录添加到构建系统用来查找文件的搜索路径中的最可靠和最推荐的方法。</p>
+<p>默认情况下，构建系统使用 FILESPATH 变量来定位文件。这个 append 文件通过设置 FILESEXTRAPATHS 变量来扩展这些位置。在 .bbappend 文件中设置这个变量是将目录添加到构建系统用来查找文件的搜索路径中的最可靠和最推荐的方法。</p>
 
-<p>本例中的语句将目录扩展为包括 ${THISDIR}/${PN}，它的解析结果是在append文件所在的同一目录下的一个名为 formfactor 的目录（即meta-raspberrypi/recipes-bsp/formfactor。这意味着你必须设置好支持的目录结构，它将包含你将从层中包含的任何文件或补丁。</p>
+<p>本例中的语句将目录扩展为包括 <code>${THISDIR}/${PN}</code>，它的解析结果是在 append 文件所在的同一目录下的一个名为 formfactor 的目录（即 meta-raspberrypi/recipes-bsp/formfactor ）。这意味着你必须设置好支持的目录结构，它将包含你将从层中包含的任何文件或补丁。</p>
 
-<p>使用立即扩展赋值运算符 := 是很重要的，因为它引用了thisdir。尾部的冒号字符很重要，因为它确保列表中的项目保持冒号分隔。</p>
+<p>使用立即扩展赋值运算符  :=  是很重要的，因为它引用了 thisdir 。尾部的冒号字符很重要，因为它确保列表中的项目保持冒号分隔。</p>
 
-<p>注意，BitBake 会自动定义 THISDIR 变量，你不应该自己设置这个变量。使用&rdquo;_prepend &ldquo;作为FILESEXTRAPATHS的一部分，可以确保你的路径会在最终列表中的其他路径之前被搜索到。另外，并不是所有的追加文件都会添加额外的文件。很多 append 文件只是为了添加构建选项而存在（例如systemd）。对于这些情况，你的 append 文件甚至不会使用 FILESEXTRAPATHS 语句。</p>
+<p>注意，BitBake 会自动定义 THISDIR 变量，你不应该自己设置这个变量。使用&rdquo;_prepend &ldquo;作为 FILESEXTRAPATHS 的一部分，可以确保你的路径会在最终列表中的其他路径之前被搜索到。另外，并不是所有的追加文件都会添加额外的文件。很多 append 文件只是为了添加构建选项而存在（例如systemd）。对于这些情况，你的 append 文件甚至不会使用 FILESEXTRAPATHS 语句。</p>
 
 <h1 id="6-yocto-内核开发">6. Yocto 内核开发</h1>
 
