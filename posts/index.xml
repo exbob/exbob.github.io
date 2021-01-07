@@ -621,59 +621,97 @@ RRECOMMENDS_<span style="color:#e6db74">${</span>PN<span style="color:#e6db74">}
 
 <h3 id="5-5-4-自定义-hostname">5.5.4. 自定义 hostname</h3>
 
-<p>Linux 系统在 /etc/hostname 文件中定义了 hostname ，默认情况下，Yocto 在 local.conf 文件中通过 MACHINE 变量设置这个名字。你可以使用 Append 文件或 Configuration文件改变 base-files 配方中 &ldquo;hostname&rdquo; 变量的值来定制这个名字。在 Append 文件中可以添加：</p>
+<p>Linux 系统在 /etc/hostname 文件中定义了 hostname ，默认情况下，Yocto 是在 base-files_*.bb 文件中定义 hostname  的：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># By default the hostname is the machine name. If the hostname is unset then a</span>
+<span style="color:#75715e"># /etc/hostname file isn&#39;t written, suitable for environments with dynamic</span>
+<span style="color:#75715e"># hostnames.</span>
+#
+<span style="color:#75715e"># The hostname can be changed outside of this recipe by using</span>
+<span style="color:#75715e"># hostname_pn-base-files = &#34;my-host-name&#34;.</span>
+hostname <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>MACHINE<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span></code></pre></div>
+<p>默认值是 ${MACHINE} 定义在 conf/local.conf 文件中。有两种方法重写定义 hostname 的值。你可以新增一个 base-files_*.bbappend 文件，在其中添加：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">hostname<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;myhostname&#34;</span></code></pre></div>
+<p>或者在 conf/local.conf 中添加：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">hostname_pn-base-files <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;myhostname&#34;</span></code></pre></div>
+<h3 id="5-5-5-自定义-etc-issue-和-etc-issue-net">5.5.5. 自定义 /etc/issue 和 /etc/issue.net</h3>
 
-<pre><code>hostname=&quot;myhostname&quot;
+<p>Linux 系统在用户登录时会显示欢迎信息，通常是一些关于系统版本的说明，这些信息定义在 /etc/issue 和 /etc/issue.net 两个文件中。在 Yocto 中，这两个文件的内容也是在  base-files_*.bb 文件中定义的：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">​<span style="color:#e6db74">```</span>
+BASEFILESISSUEINSTALL ?<span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;do_install_basefilesissue&#34;</span>
+
+......
+
+DISTRO_VERSION<span style="color:#f92672">[</span>vardepsexclude<span style="color:#f92672">]</span> +<span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;DATE&#34;</span>
+do_install_basefilesissue <span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        install -m <span style="color:#ae81ff">644</span> <span style="color:#e6db74">${</span>WORKDIR<span style="color:#e6db74">}</span>/issue*  <span style="color:#e6db74">${</span>D<span style="color:#e6db74">}${</span>sysconfdir<span style="color:#e6db74">}</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> -n <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>DISTRO_NAME<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+                printf <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>DISTRO_NAME<span style="color:#e6db74">}</span><span style="color:#e6db74"> &#34;</span> &gt;&gt; <span style="color:#e6db74">${</span>D<span style="color:#e6db74">}${</span>sysconfdir<span style="color:#e6db74">}</span>/issue
+                printf <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>DISTRO_NAME<span style="color:#e6db74">}</span><span style="color:#e6db74"> &#34;</span> &gt;&gt; <span style="color:#e6db74">${</span>D<span style="color:#e6db74">}${</span>sysconfdir<span style="color:#e6db74">}</span>/issue.net
+                <span style="color:#66d9ef">if</span> <span style="color:#f92672">[</span> -n <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>DISTRO_VERSION<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">]</span>; <span style="color:#66d9ef">then</span>
+                        distro_version_nodate<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>@d.getVar(<span style="color:#e6db74">&#39;DISTRO_VERSION&#39;</span>).replace(<span style="color:#e6db74">&#39;snapshot-${DATE}&#39;</span>,<span style="color:#e6db74">&#39;snapshot&#39;</span>).replace(<span style="color:#e6db74">&#39;${DATE}&#39;</span>,<span style="color:#e6db74">&#39;&#39;</span>)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+                        printf <span style="color:#e6db74">&#34;%s &#34;</span> $distro_version_nodate &gt;&gt; <span style="color:#e6db74">${</span>D<span style="color:#e6db74">}${</span>sysconfdir<span style="color:#e6db74">}</span>/issue
+                        printf <span style="color:#e6db74">&#34;%s &#34;</span> $distro_version_nodate &gt;&gt; <span style="color:#e6db74">${</span>D<span style="color:#e6db74">}${</span>sysconfdir<span style="color:#e6db74">}</span>/issue.net
+                <span style="color:#66d9ef">fi</span>
+                printf <span style="color:#e6db74">&#34;\\\n \\\l\n&#34;</span> &gt;&gt; <span style="color:#e6db74">${</span>D<span style="color:#e6db74">}${</span>sysconfdir<span style="color:#e6db74">}</span>/issue
+                echo &gt;&gt; <span style="color:#e6db74">${</span>D<span style="color:#e6db74">}${</span>sysconfdir<span style="color:#e6db74">}</span>/issue
+                echo <span style="color:#e6db74">&#34;%h&#34;</span>    &gt;&gt; <span style="color:#e6db74">${</span>D<span style="color:#e6db74">}${</span>sysconfdir<span style="color:#e6db74">}</span>/issue.net
+                echo &gt;&gt; <span style="color:#e6db74">${</span>D<span style="color:#e6db74">}${</span>sysconfdir<span style="color:#e6db74">}</span>/issue.net
+        <span style="color:#66d9ef">fi</span>
+<span style="color:#f92672">}</span>
+do_install_basefilesissue<span style="color:#f92672">[</span>vardepsexclude<span style="color:#f92672">]</span> +<span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;DATE&#34;</span></code></pre></div>
+<p>欢迎信息是通过 <code>do_install_basefilesissue()</code> 函数添加到文件的，主要是记录了发行版的名称 ${DISTRO_NAME} 和版本号 ${DISTRO_VERSION} ，这两个变量的值可以直接查询：</p>
+
+<pre><code>$ bitbake -e base-files | grep -E &quot;^DISTRO_NAME=|^DISTRO_VERSION=&quot;
+DISTRO_NAME=&quot;NXP i.MX Release Distro&quot;
+DISTRO_VERSION=&quot;5.4-zeus&quot;
 </code></pre>
 
-<p>在 Configuration 文件中可以添加：</p>
+<p>我们可以新增一个 base-files_*.bbappend 文件，禁用 <code>do_install_basefilesissue()</code> 函数，然后添加自己的函数，例如：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">FILESEXTRAPATHS_prepend :<span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>THISDIR<span style="color:#e6db74">}</span><span style="color:#e6db74">/</span><span style="color:#e6db74">${</span>PN<span style="color:#e6db74">}</span><span style="color:#e6db74">:&#34;</span>
+SRC_URI_prepend <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34; file://issue \
+</span><span style="color:#e6db74">                    file://issue.net &#34;</span>
+BASEFILESISSUEINSTALL <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;do_install_basefilesissuecustom&#34;</span>
 
-<pre><code>hostname_pn-base-files = &quot;myhostname&quot;
-</code></pre>
-
-<h3 id="5-5-5-修改-rootfs-分区的大小">5.5.5. 修改 rootfs 分区的大小</h3>
+do_install_basefilesissuecustom <span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    install -m <span style="color:#ae81ff">644</span> <span style="color:#e6db74">${</span>WORKDIR<span style="color:#e6db74">}</span>/issue*  <span style="color:#e6db74">${</span>D<span style="color:#e6db74">}${</span>sysconfdir<span style="color:#e6db74">}</span>
+<span style="color:#f92672">}</span></code></pre></div>
+<h3 id="5-5-6-修改-rootfs-分区的大小">5.5.6. 修改 rootfs 分区的大小</h3>
 
 <p>我们的系统镜像文件使用 .wic 格式定义 SD/MMC 存储介质上的分区， .wic 是用 OpenEmbedded Kickstart(.wks) 生成的，支持 RAW 和 FileSystem两种分区方式，关于 .wks 的详细信息可以查看 <a href="#ref-kickstart">kickstart-docs</a> 。</p>
 
 <p>可以执行 <code>bitbake -e core-image-base</code> 导出当前镜像的所有元数据，在 _WKS_TEMPLATE 字段可以看到启动镜像在存储介质上的布局：</p>
-
-<pre><code># $_WKS_TEMPLATE
-#   set image_types_wic.bbclass:112 [__anon_115__home_sbs_imx_yocto_bsp_5_4_47_sources_poky_meta_classes_image_types_wic_bbclass]
-#     &quot;# short-description: Create SD card image with a boot partition
-#     # long-description:
-#     # Create an image that can be written onto a SD card using dd for use
-#     # with i.MX SoC family
-#     # It uses u-boot
-#     #
-#     # The disk layout used is:
-#     #  - --------- -------------- --------------
-#     # | | u-boot  |     boot     |    rootfs   |
-#     #  - --------- -------------- --------------
-#     # ^ ^         ^              ^
-#     # | |         |              |
-#     # 0 1kiB    4MiB          16MiB + rootfs + IMAGE_EXTRA_SPACE (default 10MiB)
-#     #
-#     part u-boot --source rawcopy --sourceparams=&quot;file=${UBOOT_BINARY}&quot; --ondisk mmcblk --no-table --align 1
-#     part /boot --source bootimg-partition --ondisk mmcblk --fstype=vfat --label boot --active --align 4096 --size 16
-#     part / --source rootfs --ondisk mmcblk --fstype=ext4 --label root --align 4096
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># $_WKS_TEMPLATE</span>
+<span style="color:#75715e">#   set image_types_wic.bbclass:112 [__anon_115__home_sbs_imx_yocto_bsp_5_4_47_sources_poky_meta_classes_image_types_wic_bbclass]</span>
+<span style="color:#75715e">#     &#34;# short-description: Create SD card image with a boot partition</span>
+<span style="color:#75715e">#     # long-description:</span>
+<span style="color:#75715e">#     # Create an image that can be written onto a SD card using dd for use</span>
+<span style="color:#75715e">#     # with i.MX SoC family</span>
+<span style="color:#75715e">#     # It uses u-boot</span>
+<span style="color:#75715e">#     #</span>
+<span style="color:#75715e">#     # The disk layout used is:</span>
+<span style="color:#75715e">#     #  - --------- -------------- --------------</span>
+<span style="color:#75715e">#     # | | u-boot  |     boot     |    rootfs   |</span>
+<span style="color:#75715e">#     #  - --------- -------------- --------------</span>
+<span style="color:#75715e">#     # ^ ^         ^              ^</span>
+<span style="color:#75715e">#     # | |         |              |</span>
+<span style="color:#75715e">#     # 0 1kiB    4MiB          16MiB + rootfs + IMAGE_EXTRA_SPACE (default 10MiB)</span>
+<span style="color:#75715e">#     #</span>
+<span style="color:#75715e">#     part u-boot --source rawcopy --sourceparams=&#34;file=${UBOOT_BINARY}&#34; --ondisk mmcblk --no-table --align 1</span>
+<span style="color:#75715e">#     part /boot --source bootimg-partition --ondisk mmcblk --fstype=vfat --label boot --active --align 4096 --size 16</span>
+<span style="color:#75715e">#     part / --source rootfs --ondisk mmcblk --fstype=ext4 --label root --align 4096</span>
 #
-#     bootloader --ptable msdos
-#     &quot;
-_WKS_TEMPLATE=&quot;# short-description: Create SD card image with a boot partition \
-</code></pre>
-
+<span style="color:#75715e">#     bootloader --ptable msdos</span>
+<span style="color:#75715e">#     &#34;</span>
+_WKS_TEMPLATE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;# short-description: Create SD card image with a boot partition </span><span style="color:#960050;background-color:#1e0010">\</span></code></pre></div>
 <p>可见，U-boot 占了前面的 4MB ，boot 是一个 FAT 格式的分区，存放了设备树和内核文件，rootfs 是 ext4 分区，在宿主机的编译环境下也会保留一份根文件系统的拷贝，位于 IMAGE_ROOTFS 变量指定的路径：</p>
-
-<pre><code># $IMAGE_ROOTFS [2 operations]
-#   set /home/sbs/imx-yocto-bsp-5.4.47/sources/poky/meta/conf/bitbake.conf:451
-#     &quot;${WORKDIR}/rootfs&quot;
-#   set /home/sbs/imx-yocto-bsp-5.4.47/sources/poky/meta/conf/documentation.conf:219
-#     [doc] &quot;The location of the root filesystem while it is under construction (i.e. during do_rootfs).&quot;
-# pre-expansion value:
-#   &quot;${WORKDIR}/rootfs&quot;
-IMAGE_ROOTFS=&quot;/home/sbs/imx-yocto-bsp-5.4.47/imx6ullevk-fb/tmp/work/imx6ull14x14evk-poky-linux-gnueabi/core-image-base/1.0-r0/rootfs&quot;
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># $IMAGE_ROOTFS [2 operations]</span>
+<span style="color:#75715e">#   set /home/sbs/imx-yocto-bsp-5.4.47/sources/poky/meta/conf/bitbake.conf:451</span>
+<span style="color:#75715e">#     &#34;${WORKDIR}/rootfs&#34;</span>
+<span style="color:#75715e">#   set /home/sbs/imx-yocto-bsp-5.4.47/sources/poky/meta/conf/documentation.conf:219</span>
+<span style="color:#75715e">#     [doc] &#34;The location of the root filesystem while it is under construction (i.e. during do_rootfs).&#34;</span>
+<span style="color:#75715e"># pre-expansion value:</span>
+<span style="color:#75715e">#   &#34;${WORKDIR}/rootfs&#34;</span>
+IMAGE_ROOTFS<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/home/sbs/imx-yocto-bsp-5.4.47/imx6ullevk-fb/tmp/work/imx6ull14x14evk-poky-linux-gnueabi/core-image-base/1.0-r0/rootfs&#34;</span></code></pre></div>
 <p>rootfs 之后的存储空间都可能成为未使用的空间而被浪费，我们可以修改 rootfs 分区的大小，使其占满整个 SD/MMC 的存储空间。</p>
 
 <p>rootfs 分区的大小是由一套算法决定的,可以表示如下：</p>
@@ -699,38 +737,32 @@ xspace <span style="color:#f92672">=</span> IMAGE_ROOTFS_EXTRA_SPACE
 <p>构建系统首先运行 du 命令来确定 rootfs 目录树的磁盘使用量（image-du）。如果 IMAGE_ROOTFS_SIZE 当前值大于磁盘使用量（image-du）乘以开销系数（IMAGE_OVERHEAD_FACTOR），则只增加额外的空间（IMAGE_ROOTFS_EXTRA_SPACE）。如果 IMAGE_ROOTFS_SIZE 小于磁盘使用量乘以开销系数，则在添加额外空间之前，先将磁盘使用量乘以开销系数。</p>
 
 <p>IMAGE_ROOTFS_SIZE 变量必须设置一个默认值，单位是 KBytes ，这个默认值通常很低，因为它只是初始化，并在每次生成镜像时根据实际大小需求进行更新。以 core-image-base 镜像为例，默认值是 65536 KBytes ：</p>
-
-<pre><code># $IMAGE_ROOTFS_SIZE [2 operations]
-#   set /home/sbs/imx-yocto-bsp-5.4.47/sources/poky/meta/conf/documentation.conf:221
-#     [doc] &quot;Defines the size in Kbytes for the generated image.&quot;
-#   set /home/sbs/imx-yocto-bsp-5.4.47/sources/poky/meta/conf/bitbake.conf:783
-#     [_defaultval] &quot;65536&quot;
-# pre-expansion value:
-#   &quot;65536&quot;
-IMAGE_ROOTFS_SIZE=&quot;65536&quot;
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># $IMAGE_ROOTFS_SIZE [2 operations]</span>
+<span style="color:#75715e">#   set /home/sbs/imx-yocto-bsp-5.4.47/sources/poky/meta/conf/documentation.conf:221</span>
+<span style="color:#75715e">#     [doc] &#34;Defines the size in Kbytes for the generated image.&#34;</span>
+<span style="color:#75715e">#   set /home/sbs/imx-yocto-bsp-5.4.47/sources/poky/meta/conf/bitbake.conf:783</span>
+<span style="color:#75715e">#     [_defaultval] &#34;65536&#34;</span>
+<span style="color:#75715e"># pre-expansion value:</span>
+<span style="color:#75715e">#   &#34;65536&#34;</span>
+IMAGE_ROOTFS_SIZE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;65536&#34;</span></code></pre></div>
 <p>开销系数的默认值是 1.3 ，也就是在 rootfs 中预留 30% 的空间给用户安装软件，额外空间默认为 0 ：</p>
-
-<pre><code># $IMAGE_OVERHEAD_FACTOR [2 operations]
-#   set? /home/sbs/imx-yocto-bsp-5.4.47/sources/poky/meta/conf/bitbake.conf:460
-#     &quot;1.3&quot;
-#   set /home/sbs/imx-yocto-bsp-5.4.47/sources/poky/meta/conf/documentation.conf:216
-#     [doc] &quot;Defines a multiplier that the build system applies to the initial image size for cases when the multiplier times the returned disk usage value for the image is greater than the sum of IMAGE_ROOTFS_SIZE and IMAGE_ROOTFS_EXTRA_SPACE.&quot;
-# pre-expansion value:
-#   &quot;1.3&quot;
-IMAGE_OVERHEAD_FACTOR=&quot;1.3&quot;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># $IMAGE_OVERHEAD_FACTOR [2 operations]</span>
+<span style="color:#75715e">#   set? /home/sbs/imx-yocto-bsp-5.4.47/sources/poky/meta/conf/bitbake.conf:460</span>
+<span style="color:#75715e">#     &#34;1.3&#34;</span>
+<span style="color:#75715e">#   set /home/sbs/imx-yocto-bsp-5.4.47/sources/poky/meta/conf/documentation.conf:216</span>
+<span style="color:#75715e">#     [doc] &#34;Defines a multiplier that the build system applies to the initial image size for cases when the multiplier times the returned disk usage value for the image is greater than the sum of IMAGE_ROOTFS_SIZE and IMAGE_ROOTFS_EXTRA_SPACE.&#34;</span>
+<span style="color:#75715e"># pre-expansion value:</span>
+<span style="color:#75715e">#   &#34;1.3&#34;</span>
+IMAGE_OVERHEAD_FACTOR<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;1.3&#34;</span>
 #
-# $IMAGE_ROOTFS_EXTRA_SPACE [2 operations]
-#   set? /home/sbs/imx-yocto-bsp-5.4.47/sources/poky/meta/conf/bitbake.conf:465
-#     &quot;0&quot;
-#   set /home/sbs/imx-yocto-bsp-5.4.47/sources/poky/meta/conf/documentation.conf:220
-#     [doc] &quot;Defines additional free disk space created in the image in Kbytes. By default, this variable is set to '0'.&quot;
-# pre-expansion value:
-#   &quot;0&quot;
-IMAGE_ROOTFS_EXTRA_SPACE=&quot;0&quot;
-</code></pre>
-
+<span style="color:#75715e"># $IMAGE_ROOTFS_EXTRA_SPACE [2 operations]</span>
+<span style="color:#75715e">#   set? /home/sbs/imx-yocto-bsp-5.4.47/sources/poky/meta/conf/bitbake.conf:465</span>
+<span style="color:#75715e">#     &#34;0&#34;</span>
+<span style="color:#75715e">#   set /home/sbs/imx-yocto-bsp-5.4.47/sources/poky/meta/conf/documentation.conf:220</span>
+<span style="color:#75715e">#     [doc] &#34;Defines additional free disk space created in the image in Kbytes. By default, this variable is set to &#39;0&#39;.&#34;</span>
+<span style="color:#75715e"># pre-expansion value:</span>
+<span style="color:#75715e">#   &#34;0&#34;</span>
+IMAGE_ROOTFS_EXTRA_SPACE<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;0&#34;</span></code></pre></div>
 <p>所以，扩大 rootfs 分区大小有多种方法。</p>
 
 <ol>
@@ -964,6 +996,10 @@ S <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;</span><
 
 SRC_URI <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;file://helloworld.c \
 </span><span style="color:#e6db74">	file://CMakeLists.txt &#34;</span></code></pre></div>
+<p>这里源码文件只有两个，比较简单，如果源码很多，一个个的添加到 SRC_URI 非常麻烦，可以选择将源码打包成一个压缩包，例如 helloworld.tar.gz ，还是放在 files 目录下，然后直接添加：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">SRC_URI <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;file://helloworld.tar.gz;md5=0374ade698e0bcf8509ecda2f7b4f404&#34;</span></code></pre></div>
+<p>这样虽然方便，但是压缩包无法用 git 进行版本控制，所以，最好是在服务器上建立 git 仓库，然后通过 git 协议添加到 SRC_URI 。</p>
+
 <h2 id="5-7-使用-bbappend-文件">5.7. 使用 .bbappend 文件</h2>
 
 <p>将元数据追加到另一个 recipe 的 recipe 称为 BitBake append 文件。一个 BitBake append文件使用 .bbappend 后缀，而相应的配方中的 Metadata 被附加到的配方使用 .bb 文件类型后缀。</p>
@@ -1039,7 +1075,7 @@ meta-mylayer/recipes-kernel/linux/linux-imx_5.4.bbappend
 <pre><code>FILESEXTRAPATHS_prepend := &quot;${THISDIR}/${PN}:&quot; 
 </code></pre>
 
-<p>构建时，${<a href="#var-THISDIR">THISDIR</a>}/${<a href="#var-PN">PN</a>} 会被替换为 meta-mylayer/recipes-kernel/linux/linux-imx ，构建系统会到该路径下搜索补丁文件。</p>
+<p>构建时，<code>${THISDIR}/${PN}</code> 会被替换为 meta-mylayer/recipes-kernel/linux/linux-imx ，构建系统会到该路径下搜索补丁文件。</p>
 
 <p>然后需要获取或者制作补丁。以修改 calibrate.c 文件添加内核打印信息为例，先进入内核源码目录 /tmp/work/imx6ull14x14evk-poky-linux-gnueabi/linux-imx/5.4-r0/git ，编辑 init/calibrate.c 文件的 calibrate_delay() 函数，添加如下 printk 函数：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">calibrate_delay</span>(<span style="color:#66d9ef">void</span>)
@@ -1088,22 +1124,13 @@ $ bitbake linux-imx -c patch
 <p>这里的配置来自于编译目录下的 .config 文件，如果是第一次编译，这个文件就是内核源码的 arch/arm/conifg 目录的某个 defconfig 文件的拷贝，具体是哪个文件，通常是在 recipe 文件的 do_config 任务中有说明。</p>
 
 <p>在 menuconfig 中修改完毕后，保存并推出。在编译目录 tmp/work/imx6ull14x14evk-poky-linux-gnueabi/linux-imx/5.4-r0/build/ 下面会生成更新后的 .config 文件，原有的 .config 被重命名为 .config.old 。然后调用 diffconfig 选项生成一个配置片段：</p>
-
-<pre><code>bitbake linux-imx -c diffconfig
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">bitbake linux-imx -c diffconfig</code></pre></div>
 <p>这一步就是对比 .config 和 .config.old 的区别，确定修改的内容，生成一个补丁文件，称之为配置片段，生成的文件位于内核构建目录下的 fragment.cfg 。我们可以把这个文件复制到 meta-mylayer/recipes-kernel/linux/linux-imx/ 目录下，然后在 linux-imx_5.4.bbappend 文件中添加：</p>
-
-<pre><code>SRC_URI += &quot;file://fragment.cfg&quot;
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">SRC_URI <span style="color:#f92672">+=</span> <span style="color:#e6db74">&#34;file://fragment.cfg&#34;</span></code></pre></div>
 <p>最好为 fragment.cfg 更改一个有意义的文件名，因为通常会使用多个配置片段来添加不同类型的修改内容。</p>
 
 <p>在编译前，可以调用 kernel_configcheck 选项检查内核配置是否正确：</p>
-
-<pre><code>bitbake linux-imx -c kernel_configcheck
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">bitbake linux-imx -c kernel_configcheck</code></pre></div>
 <h2 id="6-3-编译外部驱动">6.3. 编译外部驱动</h2>
 
 <p>对于来自内核源码树之外的驱动，可以通过新建 recipe 的方式进行编译。以 sources/poky/meta-skeleton/recipes-kernel/hello-mod/hello-mod_0.1.bb 为例：</p>
@@ -1125,7 +1152,7 @@ RPROVIDES_<span style="color:#e6db74">${</span>PN<span style="color:#e6db74">}</
 
 <h1 id="7-yocto-应用开发">7. Yocto 应用开发</h1>
 
-<p>Yocto 的应用开发有两种方式，一种是在 yocto 项目内新建recipe ，另一种是导出 SDK ，然后使用 SDK 独立开发应用软件，第二种更方便一点。</p>
+<p>Yocto 的应用开发有两种方式，一种是在 yocto 项目内新建 recipe ，另一种是导出 SDK ，然后使用 SDK 独立开发应用软件，第二种更方便一点。</p>
 
 <h2 id="7-1-安装-sdk">7.1. 安装 SDK</h2>
 
