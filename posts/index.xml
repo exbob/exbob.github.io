@@ -1,4 +1,176 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Shaocheng.Li</title><link>https://shaocheng.li/posts/</link><description>Recent content in Posts on Shaocheng.Li</description><generator>Hugo -- gohugo.io</generator><copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright><lastBuildDate>Sat, 12 Dec 2020 18:40:11 +0800</lastBuildDate><atom:link href="https://shaocheng.li/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>在 i.MX 6ULL 上学习 Yocto</title><link>https://shaocheng.li/posts/2020/12/12/</link><pubDate>Sat, 12 Dec 2020 18:40:11 +0800</pubDate><guid>https://shaocheng.li/posts/2020/12/12/</guid><description>1. 概述 NXP 为官方评估板 i.MX6ULL EVK 提供了完整的 Yocto 项目源码和文档 ，板卡的外观和接口如图：
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Shaocheng.Li</title><link>https://shaocheng.li/posts/</link><description>Recent content in Posts on Shaocheng.Li</description><generator>Hugo -- gohugo.io</generator><copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright><lastBuildDate>Sat, 06 Mar 2021 21:19:11 +0800</lastBuildDate><atom:link href="https://shaocheng.li/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Systemd 中实现自动登录和程序自启动</title><link>https://shaocheng.li/posts/2021/03/06/</link><pubDate>Sat, 06 Mar 2021 21:19:11 +0800</pubDate><guid>https://shaocheng.li/posts/2021/03/06/</guid><description>以 NXP 的 Yocto Linux 4.9.88 为例。
+Systemd 管理系统资源的基本单元是 Unit ，分为 12 种：
+Service unit：系统服务 Target unit：多个 Unit 构成的一个组 Device Unit：硬件设备 Mount Unit：文件系统的挂载点 Automount Unit：自动挂载点 Path Unit：文件或路径 Scope Unit：不是由 Systemd 启动的外部进程 Slice Unit：进程组 Snapshot Unit：Systemd 快照，可以切回某个快照 Socket Unit：进程间通信的 socket Swap Unit：swap 文件 Timer Unit：定时器 我们可以使用 systemd-analyze 命令来分析系统启动的过程：
+# 查看启动耗时 $ systemd-analyze # 查看每个服务的启动耗时 $ systemd-analyze blame # 显示瀑布状的启动过程流 $ systemd-analyze critical-chain # 显示指定服务的启动流 $ systemd-analyze critical-chain atd.service # 将系统启动流程输出为 svg 格式，可以通过浏览器查看 systemd-analyze plot &amp;gt; .</description><content type="html"><![CDATA[
+
+<p>以 NXP 的 Yocto Linux 4.9.88 为例。</p>
+
+<p>Systemd 管理系统资源的基本单元是 Unit ，分为 12 种：</p>
+
+<pre><code>Service unit：系统服务
+Target unit：多个 Unit 构成的一个组
+Device Unit：硬件设备
+Mount Unit：文件系统的挂载点
+Automount Unit：自动挂载点
+Path Unit：文件或路径
+Scope Unit：不是由 Systemd 启动的外部进程
+Slice Unit：进程组
+Snapshot Unit：Systemd 快照，可以切回某个快照
+Socket Unit：进程间通信的 socket
+Swap Unit：swap 文件
+Timer Unit：定时器
+</code></pre>
+
+<p>我们可以使用 systemd-analyze 命令来分析系统启动的过程：</p>
+
+<pre><code># 查看启动耗时
+$ systemd-analyze
+
+# 查看每个服务的启动耗时
+$ systemd-analyze blame
+
+# 显示瀑布状的启动过程流
+$ systemd-analyze critical-chain
+
+# 显示指定服务的启动流
+$ systemd-analyze critical-chain atd.service
+
+# 将系统启动流程输出为 svg 格式，可以通过浏览器查看
+systemd-analyze plot &gt; ./systemd.svg
+</code></pre>
+
+<p>Systemd 使用 Target 替换了 init 启动模式的 runlevel 概念。常用的分析命令：</p>
+
+<pre><code># 查看当前系统的所有 Target
+$ systemctl list-unit-files --type=target
+
+# 查看一个 Target 包含的所有 Unit
+$ systemctl list-dependencies multi-user.target
+
+# 查看启动时的默认 Target
+$ systemctl get-default
+
+# 设置启动时的默认 Target
+$ systemctl set-default multi-user.target
+
+# 切换 Target 时，默认不关闭前一个 Target 启动的进程，systemctl isolate 命令可以改变这种行为，它会关闭前一个 Target 里面所有不属于后一个 Target 的进程
+$ systemctl isolate multi-user.target
+</code></pre>
+
+<p>常用的两个 Target 是：</p>
+
+<ul>
+<li>multi-user.target , 多用户文本界面</li>
+<li>graphical.target , 图形界面，在 multi-user.target 的基础上，增加了图形界面的相关单元。</li>
+</ul>
+
+<h2 id="系统登录">系统登录</h2>
+
+<p>虚拟控制台（tty1&hellip;）的登录是 <code>getty@.service</code> 服务维护的，最终调用的是 agetty ：</p>
+
+<pre><code>ExecStart=-/sbin/agetty -o '-p -- \\u' --noclear %I $TERM
+</code></pre>
+
+<p>启动服务时通过 <code>@</code> 符号向 agetty 传递一个参数，例如执行 <code>getty@tty1.service</code> ，启动的进程就是：</p>
+
+<pre><code>/sbin/agetty -o -p -- \u --noclear tty1 linux
+</code></pre>
+
+<p>串口控制台的登录是 <code>serial-getty@.service</code> 服务维护的，最终调用的也是 agetty ：</p>
+
+<pre><code>ExecStart=-/sbin/agetty -8 -L %I 115200 $TERM
+</code></pre>
+
+<p>这里传递的参数应该是串口设备文件，例如 <code>serial-getty@ttymxc0.service</code> 。</p>
+
+<p><a href="https://man7.org/linux/man-pages/man8/agetty.8.html" target="_blank">agetty</a> 有很多参数，&ndash;noclear 表示清除控制台显示的启动信息：</p>
+
+<pre><code>-J, --noclear
+              Do not clear the screen before prompting for the login
+              name.  By default the screen is cleared.
+</code></pre>
+
+<p>-a 用于自动登录：</p>
+
+<pre><code>-a, --autologin username
+              Automatically log in the specified user without asking for
+              a username or password.  Using this option causes an -f
+              username option and argument to be added to the /bin/login
+              command line.  See --login-options, which can be used to
+              modify this option's behavior.
+
+              Note that --autologin may affect the way in which getty
+              initializes the serial line, because on auto-login agetty
+              does not read from the line and it has no opportunity
+              optimize the line setting.
+</code></pre>
+
+<p>要系统启动时在串口控制台自动登录 root 用户，可以做如下操作：</p>
+
+<ol>
+<li>新建 <code>/etc/systemd/system/serial-getty@ttymxc0.service.d/</code> 目录。</li>
+<li>在上面新建的目录中添加 autologing.conf 文件。</li>
+
+<li><p>在 autologing.conf 文件中添加如下内容：</p>
+
+<pre><code>[Service]
+ExecStart=
+ExecStart=-/sbin/agetty -a root -8 -L %I 115200 $TERM
+</code></pre></li>
+</ol>
+
+<p>这里利用的是 systemd 的附加配置片段功能，这个功能可以修改、重置或者追加配置选项。先创建名为 <code>/etc/systemd/system/&lt;Unit&gt;.d/</code>  的目录，然后放入 <code>*.conf</code> 文件，其中可以添加或重置选项参数，这里设置的参数优先级高于原来的 Unit 配置文件。用 systemctl 命令会更简单：</p>
+
+<pre><code>$ systemctl edit unit
+</code></pre>
+
+<p>这将会在编辑器中打开文件 <code>/etc/systemd/system/[unit].d/override.conf</code>，编辑完成之后自动加载。</p>
+
+<h2 id="基于-x11-的-qt-应用自启动">基于 X11 的 Qt 应用自启动</h2>
+
+<p>系统中启动 Qt 的服务是 xserver-nodm ，是通过 Yocto 的 <code>xserver-nodm-init_3.0.bb</code> 安装的。启动后调用了如下脚本：</p>
+
+<pre><code>xserver-nodm.service
+	/etc/xserver-nodm/Xserver - /etc/default/xserver-nodm 初始化一些环境变量
+		exec xinit /etc/X11/Xsession -- $XSERVER $DISPLAY $ARGS $*
+		xinit /etc/X11/Xsession -- /usr/bin/Xorg :0 -br -pn
+</code></pre>
+
+<p>最终干活的是 xinit ，这是 X Window 系统的启动器，它的功能是启动一个 X Server ，同时启动一个 X Client ，基本语法是：</p>
+
+<pre><code>xinit [ [ client ] options ] [ -- [ server ] [ display ] options ]
+</code></pre>
+
+<p>在这里它执行了 <code>/etc/X11/Xsession</code> 脚本，Xsession 会按字母顺序执行 <code>/etc/X11/Xsession.d</code> 下面的脚本，在脚本内启动 Qt 应用，默认安装时会有很多：</p>
+
+<pre><code>$ ls /etc/X11/Xsession.d/
+13xdgbasedirs.sh  30xinput_calibrate.sh  70settings-daemon.sh  80matchboxkeyboard.sh  89xdgautostart.sh  90XWindowManager.sh
+</code></pre>
+
+<p>我们可以修改这里的脚本，来启动自己的 Qt 应用。例如，我们只想启动 /home/root/ 下的 basiclayouts ，可以将 <code>/etc/X11/Xsession.d/</code> 下的文件全部删掉，然后新建一个 10qtapp.sh ，内容如下：</p>
+
+<pre><code>exec /home/root/basiclayouts
+</code></pre>
+
+<p>重启系统，basiclayouts 就会自动启动。</p>
+
+<h2 id="文本界面的程序自启动">文本界面的程序自启动</h2>
+
+<p>默认情况下，系统启动的是图形目标：</p>
+
+<pre><code>$ systemctl get-default
+graphical.target
+</code></pre>
+
+<p>如不不需要图形界面，可以切换到多用户文本目标：</p>
+
+<pre><code>$ systemctl set-default multi-user.target
+Removed /etc/systemd/system/default.target.
+Created symlink /etc/systemd/system/default.target → /lib/systemd/system/multi-user.target.
+</code></pre>
+
+<p>systemd 通过 rc-local.service 调用 /etc/rc.local 。需要开机时实现的程序，可以添加到 rc.local 文件中。</p>
+]]></content></item><item><title>在 i.MX 6ULL 上学习 Yocto</title><link>https://shaocheng.li/posts/2020/12/12/</link><pubDate>Sat, 12 Dec 2020 18:40:11 +0800</pubDate><guid>https://shaocheng.li/posts/2020/12/12/</guid><description>1. 概述 NXP 为官方评估板 i.MX6ULL EVK 提供了完整的 Yocto 项目源码和文档 ，板卡的外观和接口如图：
 特性：
 参考板是 iMX6ULL EVK ：https://www.nxp.com/design/development-boards/i-mx-evaluation-and-development-boards/evaluation-kit-for-the-i-mx-6ull-and-6ulz-applications-processor:MCIMX6ULL-EVK 芯片是 NXP 的 iMX6ULL : https://www.nxp.com/products/processors-and-microcontrollers/arm-processors/i-mx-applications-processors/i-mx-6-processors:IMX6X_SERIES 软件使用最新的 Linux 5.4.47_2.2.0 : https://www.nxp.com/design/software/embedded-software/i-mx-software/embedded-linux-for-i-mx-applications-processors:IMXLINUX 2. 构建系统 我们先为这个板卡编译一个可以运行的系统。
 2.1. 准备宿主机 使用 Ubuntu 20.04 （至少要用 18.04 ，低版本系统会遇到很多问题），安装必要的开发包：
@@ -411,6 +583,8 @@ imx6ull14x14evk login:
 <li>cleanall ，删除所有文件，包括下载的源码包，编译过程的缓存文件和最终的输出文件。</li>
 </ul>
 
+<p>此外，执行 listtasks 选项可以查看所有可用的任务，例如查看 linux-imx 的任务列表和描述：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">bitbake linux-imx -c listtasks</code></pre></div>
 <p>执行 <code>bitbake -e &lt;package&gt;</code> 可以解析特定包的配置选项。例如查找 Linux 内核的包名称和版本可以执行：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">~/imx-yocto-bsp-5.4.47/imx6ullevk-fb$ bitbake -s | grep linux
 binutils-crosssdk-x86_64-pokysdk-linux         :2.32.0-r0
@@ -444,6 +618,8 @@ B<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/home/sbs/
 <li>deploy ，存放 rpm ，deb 等格式的安装包</li>
 <li>tmp ，存放了构建过程中执行的所有任务指令，已经执行过程的日志。</li>
 </ol>
+
+<p>BitBake 执行任务的顺序由其任务调度器控制。<code>${WORKDIR}/tmp/</code> 目录下，以 <code>run_</code> 开头的文件记录了每个任务解析后的详细内容，以 <code>log_</code> 开头的文件记录任务执行时的日志，<code>log.task_order</code> 文件按顺序记录了当前目标执行了哪些任务。</p>
 
 <p>关于 recipe 文件中其他选项的含义可以查看 <a href="https://www.yoctoproject.org/docs/3.0.4/ref-manual/ref-manual.html#ref-varlocality-recipes" target="_blank">https://www.yoctoproject.org/docs/3.0.4/ref-manual/ref-manual.html#ref-varlocality-recipes</a> 。</p>
 
@@ -1131,6 +1307,32 @@ $ bitbake linux-imx -c patch
 
 <p>在编译前，可以调用 kernel_configcheck 选项检查内核配置是否正确：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">bitbake linux-imx -c kernel_configcheck</code></pre></div>
+<blockquote>
+<p>在某些旧版本里，内核的 recipe 存在 bug，无法合并配置片段，可以参考如下方法解决。</p>
+</blockquote>
+
+<p>Linux 内核源码的 <code>/scripts/kconfig/merge_config.sh</code> 脚本提供了合并配置片段的功能，语法：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ./merge_config.sh -h
+Usage: ./merge_config.sh <span style="color:#f92672">[</span>OPTIONS<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>CONFIG <span style="color:#f92672">[</span>...<span style="color:#f92672">]]</span>
+  -h    display this help text
+  -m    only merge the fragments, <span style="color:#66d9ef">do</span> not execute the make command
+  -n    use allnoconfig instead of alldefconfig
+  -r    list redundant entries when merging fragments
+  -y    make builtin have precedence over modules
+  -O    dir to put generated output files.  Consider setting $KCONFIG_CONFIG instead.
+
+Used prefix: <span style="color:#e6db74">&#39;CONFIG_&#39;</span>. You can redefine it with $CONFIG_ environment variable.</code></pre></div>
+<p>我们可以在 linux-imx 的 <code>.bbappend</code> 文件中添加一个任务，让它在编译前利用 merge_config.sh 脚本合并配置片段：</p>
+
+<pre><code>do_merge_fragment() {
+	if [ -f ${WORKDIR}/fragment.cfg ]; then
+        ${S}/scripts/kconfig/merge_config.sh -m ${B}/.config ${WORKDIR}/fragment.cfg
+        mv .config ${B}/.config
+    fi
+}
+addtask merge_fragment before do_compile after do_configure
+</code></pre>
+
 <h2 id="6-3-编译外部驱动">6.3. 编译外部驱动</h2>
 
 <p>对于来自内核源码树之外的驱动，可以通过新建 recipe 的方式进行编译。以 sources/poky/meta-skeleton/recipes-kernel/hello-mod/hello-mod_0.1.bb 为例：</p>
