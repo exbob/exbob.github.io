@@ -1,0 +1,327 @@
+<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=author content="Shaocheng.Li"><meta name=description content="SPI 通信协议 SPI 的全称是 Serial Peripheral Interface，是一个带时钟同步的全双工串行链接，使用主/从结构，用于连接微控制器和传感器、存储器和外设。常见的连接结构如下：
+通信时需要四个信号：
+ SCLK，Serial Clock，时钟信号，SPI 的时钟频率通常可以达到 10MHz，实际情况还依赖从机能够支持的时钟频率。 MISO，Master In Slave Out，从机向主机发出的数据。 MOSI，Master Out Slave In，主机向从机发出的数据。 SS，Slave Select，从机选择，也叫做片选信号。一条 SPI 总线可以连接多个从设备，SCLK、MISO 和 MOSI 是共用的，每个从机需要一个独立的片选信号，当从机的 SS 信号拉低时，表示从机被选中，才开始接收总线上的信号。  在一个SPI时钟周期内，收发是同时进行的：
+ 主机通过 MOSI 线发送 1bit 数据，从机通过该线读取这 1bit 数据； 从机通过 MISO 线发送 1bit 数据，主机通过该线读取这 1bit 数据。  这个过程是 SPI 设备内的移位寄存器实现的，当寄存器中的内容全部移出时，相当于完成了两个寄存器内容的交换，如下图所示。
+下面是一个典型的主机模型的通信时序，描述了主机的 0xD2 的数据被移出，从 MISO 信号移入了 0x66 ：
+SCLK 、MOSI 和 SS 信号由主机产生，MISO 是从机发出的信号，主机从这个信号读取从机的数据。通信开始前，SCLK 为低电平，当 SS 拉低后，从机被选中，通信开始，MOSI 和 MISO 信号在 SCLK 的上升沿发生变化，MISO 信号在 SCLK 的下降沿被采样锁存，通信结束后，SS 信号拉高，SCLK 信号重回低电平，一次通信发出的 bit 数为一个 word ，也叫字长。这只是一种情况，在 SCLK 下降沿和上升沿所做的事情由 CPOL 和 CPHA 的值决定，可以在 SPI 设备内的寄存器配置："><meta name=keywords content><meta name=robots content="noodp"><meta name=theme-color content="#252627"><link rel=canonical href=https://shaocheng.li/posts/2021/04/10/><title>Linux 系统的 SPI 设备编程 :: Shaocheng.Li — Hello Friends</title><link href=https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css rel=stylesheet type=text/css><link rel=stylesheet href=https://shaocheng.li/main.min.e9b3dfcc5ffe9d55eb281ecaf47cf6179d26eec497e087299934d581c987aa0b.css><link rel=stylesheet type=text/css href=https://shaocheng.li/css/custom.css><link rel=apple-touch-icon sizes=180x180 href=https://shaocheng.li/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=https://shaocheng.li/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=https://shaocheng.li/favicon-16x16.png><link rel=manifest href=https://shaocheng.li/site.webmanifest><link rel=mask-icon href=https://shaocheng.li/safari-pinned-tab.svg color=#252627><link rel="shortcut icon" href=https://shaocheng.li/favicon.ico><meta name=msapplication-TileColor content="#252627"><meta name=theme-color content="#252627"><meta itemprop=name content="Linux 系统的 SPI 设备编程"><meta itemprop=description content="SPI 通信协议 SPI 的全称是 Serial Peripheral Interface，是一个带时钟同步的全双工串行链接，使用主/从结构，用于连接微控制器和传感器、存储器和外设。常见的连接结构如下：
+通信时需要四个信号：
+ SCLK，Serial Clock，时钟信号，SPI 的时钟频率通常可以达到 10MHz，实际情况还依赖从机能够支持的时钟频率。 MISO，Master In Slave Out，从机向主机发出的数据。 MOSI，Master Out Slave In，主机向从机发出的数据。 SS，Slave Select，从机选择，也叫做片选信号。一条 SPI 总线可以连接多个从设备，SCLK、MISO 和 MOSI 是共用的，每个从机需要一个独立的片选信号，当从机的 SS 信号拉低时，表示从机被选中，才开始接收总线上的信号。  在一个SPI时钟周期内，收发是同时进行的：
+ 主机通过 MOSI 线发送 1bit 数据，从机通过该线读取这 1bit 数据； 从机通过 MISO 线发送 1bit 数据，主机通过该线读取这 1bit 数据。  这个过程是 SPI 设备内的移位寄存器实现的，当寄存器中的内容全部移出时，相当于完成了两个寄存器内容的交换，如下图所示。
+下面是一个典型的主机模型的通信时序，描述了主机的 0xD2 的数据被移出，从 MISO 信号移入了 0x66 ：
+SCLK 、MOSI 和 SS 信号由主机产生，MISO 是从机发出的信号，主机从这个信号读取从机的数据。通信开始前，SCLK 为低电平，当 SS 拉低后，从机被选中，通信开始，MOSI 和 MISO 信号在 SCLK 的上升沿发生变化，MISO 信号在 SCLK 的下降沿被采样锁存，通信结束后，SS 信号拉高，SCLK 信号重回低电平，一次通信发出的 bit 数为一个 word ，也叫字长。这只是一种情况，在 SCLK 下降沿和上升沿所做的事情由 CPOL 和 CPHA 的值决定，可以在 SPI 设备内的寄存器配置："><meta itemprop=datePublished content="2021-04-10T21:19:11&#43;08:00"><meta itemprop=dateModified content="2021-04-10T21:19:11&#43;08:00"><meta itemprop=wordCount content="1037"><meta itemprop=keywords content="untagged,"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://shaocheng.li"><meta name=twitter:title content="Linux 系统的 SPI 设备编程"><meta name=twitter:description content="SPI 通信协议 SPI 的全称是 Serial Peripheral Interface，是一个带时钟同步的全双工串行链接，使用主/从结构，用于连接微控制器和传感器、存储器和外设。常见的连接结构如下：
+通信时需要四个信号：
+ SCLK，Serial Clock，时钟信号，SPI 的时钟频率通常可以达到 10MHz，实际情况还依赖从机能够支持的时钟频率。 MISO，Master In Slave Out，从机向主机发出的数据。 MOSI，Master Out Slave In，主机向从机发出的数据。 SS，Slave Select，从机选择，也叫做片选信号。一条 SPI 总线可以连接多个从设备，SCLK、MISO 和 MOSI 是共用的，每个从机需要一个独立的片选信号，当从机的 SS 信号拉低时，表示从机被选中，才开始接收总线上的信号。  在一个SPI时钟周期内，收发是同时进行的：
+ 主机通过 MOSI 线发送 1bit 数据，从机通过该线读取这 1bit 数据； 从机通过 MISO 线发送 1bit 数据，主机通过该线读取这 1bit 数据。  这个过程是 SPI 设备内的移位寄存器实现的，当寄存器中的内容全部移出时，相当于完成了两个寄存器内容的交换，如下图所示。
+下面是一个典型的主机模型的通信时序，描述了主机的 0xD2 的数据被移出，从 MISO 信号移入了 0x66 ：
+SCLK 、MOSI 和 SS 信号由主机产生，MISO 是从机发出的信号，主机从这个信号读取从机的数据。通信开始前，SCLK 为低电平，当 SS 拉低后，从机被选中，通信开始，MOSI 和 MISO 信号在 SCLK 的上升沿发生变化，MISO 信号在 SCLK 的下降沿被采样锁存，通信结束后，SS 信号拉高，SCLK 信号重回低电平，一次通信发出的 bit 数为一个 word ，也叫字长。这只是一种情况，在 SCLK 下降沿和上升沿所做的事情由 CPOL 和 CPHA 的值决定，可以在 SPI 设备内的寄存器配置："><meta property="article:published_time" content="2021-04-10 21:19:11 &#43;0800 &#43;0800"></head><body><div class=container><header class=header><span class=header__inner><a href=https://shaocheng.li/ style=text-decoration:none><div class=logo><span class=logo__mark>></span>
+<span class=logo__text>$ cd /home/</span>
+<span class=logo__cursor></span></div></a><span class=header__right><nav class=menu><ul class=menu__inner><li><a href=https://shaocheng.li/about/>About</a></li><li><a href=https://shaocheng.li/posts/>Posts</a></li></ul></nav><span class=menu-trigger><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></span><span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 41C32.4934 41 41 32.4934 41 22 41 11.5066 32.4934 3 22 3 11.5066 3 3 11.5066 3 22s8.5066 19 19 19zM7 22C7 13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22z"/></svg></span></span></span></header><div class=content><main class=post><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>5 minutes</p></div><article><h1 class=post-title><a href=https://shaocheng.li/posts/2021/04/10/>Linux 系统的 SPI 设备编程</a></h1><hr><aside id=toc><div class=toc-title>Table of Contents</div><nav id=TableOfContents><ul><li><ul><li><a href=#spi-通信协议>SPI 通信协议</a></li><li><a href=#spi-userspace-api>SPI userspace api</a></li></ul></li></ul></nav></aside><hr><div class=post-content><h2 id=spi-通信协议>SPI 通信协议</h2><p>SPI 的全称是 Serial Peripheral Interface，是一个带时钟同步的全双工串行链接，使用主/从结构，用于连接微控制器和传感器、存储器和外设。常见的连接结构如下：</p><p><img src=https://shaocheng.li/images/2021-04-10/image-20210620163635215.png alt=image-20210620163635215></p><p>通信时需要四个信号：</p><ol><li>SCLK，Serial Clock，时钟信号，SPI 的时钟频率通常可以达到 10MHz，实际情况还依赖从机能够支持的时钟频率。</li><li>MISO，Master In Slave Out，从机向主机发出的数据。</li><li>MOSI，Master Out Slave In，主机向从机发出的数据。</li><li>SS，Slave Select，从机选择，也叫做片选信号。一条 SPI 总线可以连接多个从设备，SCLK、MISO 和 MOSI 是共用的，每个从机需要一个独立的片选信号，当从机的 SS 信号拉低时，表示从机被选中，才开始接收总线上的信号。</li></ol><p>在一个SPI时钟周期内，收发是同时进行的：</p><ol><li>主机通过 MOSI 线发送 1bit 数据，从机通过该线读取这 1bit 数据；</li><li>从机通过 MISO 线发送 1bit 数据，主机通过该线读取这 1bit 数据。</li></ol><p>这个过程是 SPI 设备内的移位寄存器实现的，当寄存器中的内容全部移出时，相当于完成了两个寄存器内容的交换，如下图所示。</p><p><img src=https://shaocheng.li/images/2021-04-10/image-20210620163732768.png alt=image-20210620163732768></p><p>下面是一个典型的主机模型的通信时序，描述了主机的 0xD2 的数据被移出，从 MISO 信号移入了 0x66 ：</p><p><img src=https://shaocheng.li/images/2021-04-10/image-20210620161638577.png alt=image-20210620161638577></p><p>SCLK 、MOSI 和 SS 信号由主机产生，MISO 是从机发出的信号，主机从这个信号读取从机的数据。通信开始前，SCLK 为低电平，当 SS 拉低后，从机被选中，通信开始，MOSI 和 MISO 信号在 SCLK 的上升沿发生变化，MISO 信号在 SCLK 的下降沿被采样锁存，通信结束后，SS 信号拉高，SCLK 信号重回低电平，一次通信发出的 bit 数为一个 word ，也叫字长。这只是一种情况，在 SCLK 下降沿和上升沿所做的事情由 CPOL 和 CPHA 的值决定，可以在 SPI 设备内的寄存器配置：</p><ul><li>CPOL，时钟极性，是指 SS 处于高电平，通信空闲时，SCLK 的电平。CPOL=0 时， SCLK 在空闲状态时为低电平，CPOL=1 时，则相反。</li><li>CPHA，时钟相位，是指通信过程中，数据被采样锁存的时刻。当 CPHA=0 时，MOSI 或 MISO 信号会在 SCLK 的“奇数边沿”被采样，当 CPHA=1 时，信号在 SCLK 的“偶数边沿”采样。</li></ul><p>两个配置选项，就会组成四种模式，时序如下图所示：</p><p><img src=https://shaocheng.li/images/2021-04-10/image-20210620161439377.png alt=image-20210620161439377></p><p>我们需要注意的是，主机和从机必须在相同的模式下才能正常通信。</p><h2 id=spi-userspace-api>SPI userspace api</h2><p>Linux 的 SPI 驱动生成的 spi 设备文件格式 <code>/dev/spidevB.C</code> ，并提供了功能有限的 API ，可以用 <code>open()</code> 和 <code>close()</code> 函数打开和关闭设备，用 <code>read()</code> 和 <code>write()</code> 函数读写数据，用 <code>ioctl()</code> 发送请求。需要的头文件：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;fcntl.h&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;unistd.h&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;sys/ioctl.h&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;linux/types.h&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;linux/spi/spidev.h&gt;</span></code></pre></div><p>首先需要打开设备文件，调用 <code>open()</code> 和 <code>close()</code> 是标准操作，没有特殊之处，例如 <code>open(&quot;/dev/spidev0.0&quot;, O_RDWR)</code> 。然后调用 <code>ioctl()</code> 进行设置，常用的请求有：</p><ul><li>SPI_IOC_RD_MODE 和 SPI_IOC_WR_MODE 。用于查询（RD）和设置（WR）单字节 SPI 通信的工作模式，包括时钟极性和时钟相位等特性，需要传递一个字符指针，每个位表示一种特性，可用的宏定义在内核源码的 <code>include/uapi/linux/spi/spi.h</code> 文件中，常用的有：<ul><li><code>SPI_MODE_0</code> , 表示 CPOL=0，CPHA=0 。</li><li><code>SPI_MODE_1</code> , 表示 CPOL=0，CPHA=1 。</li><li><code>SPI_MODE_2</code> , 表示 CPOL=1，CPHA=0 。</li><li><code>SPI_MODE_3</code> , 表示 CPOL=1，CPHA=1 。</li><li><code>SPI_CS_HIGH</code> , 表示片选信号高电平有效。</li><li><code>SPI_LSB_FIRST</code>, 表示按照 LSB 发送，默认是 MSB 发送。</li></ul></li><li>SPI_IOC_RD_MODE32 和 SPI_IOC_WR_MODE32 。用于查询（RD）和设置（WR）完整的 SPI 通信的工作模式，不再局限于单字节传输。需要传递一个 <code>uint32</code> 指针，可用的选项与 <code>SPI_IOC_WR_MODE</code> 相同。</li><li>SPI_IOC_RD_LSB_FIRST 和 SPI_IOC_WR_LSB_FIRST 。用于查询（RD）和设置（WR）SPI 的发送顺序，需要传递一个字符指针，0 表示 MSB ，其他值表示 LSB 。</li><li>SPI_IOC_RD_BITS_PER_WORD 和 SPI_IOC_WR_BITS_PER_WORD 。用于查询（RD）和设置（WR）SPI 通信的字长，即一次通信发送的 bit 数，需要传递一个字符指针， 0 表示 8bits 。</li><li>SPI_IOC_RD_MAX_SPEED_HZ 和 SPI_IOC_WR_MAX_SPEED_HZ 。用于查询（RD）和设置（WR）SPI 的最大传输速率（比特率），单位是 Hz，需要传递一个 <code>uint32</code> 型的指针。</li></ul><p>配置完毕后就是可以读写，标准的 <code>read()</code> 和 <code>write()</code> 函数显然只能实现半双工，在这些函数调用之间，片选会被停用，要实现全双工需要调用 <code>ioctl()</code> 函数的 <code>SPI_IOC_MESSAGE(n)</code> 请求，n 用于指定传输的次数，读写的数据需要用 <code>struct spi_ioc_transfer</code> 型的指针传递：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;linux/spi/spidev.h&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e></span>
+<span style=color:#66d9ef>struct</span> spi_ioc_transfer {
+	__u64		tx_buf;  <span style=color:#75715e>// 发送缓冲区的指针，里面的数据会发出去，如果为空，会发出 0 
+</span><span style=color:#75715e></span>	__u64		rx_buf;  <span style=color:#75715e>// 接收缓冲区的指针，接收的数据会放在这里，可以为空
+</span><span style=color:#75715e></span>
+	__u32		len; <span style=color:#75715e>// 一次传输的数据长度，单位是字节
+</span><span style=color:#75715e></span>	__u32		speed_hz;  <span style=color:#75715e>// 临时改变 SPI 的速率
+</span><span style=color:#75715e></span>
+	__u16		delay_usecs; <span style=color:#75715e>// 如果非零，表示两次传输直接的间隔，单位是微秒
+</span><span style=color:#75715e></span>	__u8		bits_per_word; <span style=color:#75715e>// 临时改变字长
+</span><span style=color:#75715e></span>	__u8		cs_change; <span style=color:#75715e>// 如果非零，下次传输前会取消片选
+</span><span style=color:#75715e></span>	__u8		tx_nbits;
+	__u8		rx_nbits;
+	__u8		word_delay_usecs;
+	__u8		pad;
+}</code></pre></div><p>下面是一个例程，它的作用是向指定的 SPI 设备发送数据，并读回从设备发来的数据。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#75715e>/*
+</span><span style=color:#75715e>Copyright (C), SBS Science &amp; Technology Co., Ltd. 
+</span><span style=color:#75715e>Author: LiShaocheng
+</span><span style=color:#75715e>*/</span>
+
+<span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;sys/types.h&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;sys/stat.h&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;fcntl.h&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;sys/ioctl.h&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;unistd.h&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;stdio.h&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;stdlib.h&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;string.h&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;errno.h&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;linux/types.h&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;linux/spi/spidev.h&gt;</span><span style=color:#75715e>
+</span><span style=color:#75715e></span>
+<span style=color:#75715e>#define BUF_MAX_SIZE	0x100
+</span><span style=color:#75715e></span><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>char</span> mode;
+<span style=color:#66d9ef>static</span> <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>char</span> bits_per_word <span style=color:#f92672>=</span> <span style=color:#ae81ff>8</span>;
+<span style=color:#66d9ef>static</span> <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>int</span> speed <span style=color:#f92672>=</span> <span style=color:#ae81ff>100000</span>;
+
+<span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>buffer;
+
+<span style=color:#66d9ef>void</span> <span style=color:#a6e22e>help_info</span>(<span style=color:#66d9ef>const</span> <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>appname)
+{
+    printf(<span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>
+           <span style=color:#e6db74>&#34;*******************************************************</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>
+           <span style=color:#e6db74>&#34;***********    Read/Write SPI device test    **********</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>
+           <span style=color:#e6db74>&#34;*******************************************************</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>
+           <span style=color:#e6db74>&#34;*                                                     *</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>
+           <span style=color:#e6db74>&#34;    Options : %s                                       </span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>
+           <span style=color:#e6db74>&#34;                  [-D spi_dev]  [-s speed]             </span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>
+           <span style=color:#e6db74>&#34;                  [-b bits_per_word]                   </span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>
+           <span style=color:#e6db74>&#34;                  [-H] [-O] [-C] &lt;value&gt;               </span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>
+           <span style=color:#e6db74>&#34;*                                                     *</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>
+           <span style=color:#e6db74>&#34;*    &lt;spi_dev&gt; - SPI device name , /dev/spidev0.0     *</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>
+           <span style=color:#e6db74>&#34;*    &lt;speed&gt; - Max transfer speed，Hz                 *</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>
+           <span style=color:#e6db74>&#34;*    &lt;bits_per_word&gt; - bits per word                  *</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>
+           <span style=color:#e6db74>&#34;*    -H - Phase 1 operation of clock                  *</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>
+           <span style=color:#e6db74>&#34;*    -O - Active low polarity of clock                *</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>
+           <span style=color:#e6db74>&#34;*    -C - Active high for chip select                 *</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>
+           <span style=color:#e6db74>&#34;*    &lt;value&gt; - Actual values to be sent               *</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>
+           <span style=color:#e6db74>&#34;*******************************************************</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>
+           <span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, appname);
+}
+
+<span style=color:#66d9ef>void</span> <span style=color:#a6e22e>numToHexStr</span>(<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>char</span> _hexNum, <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>char</span><span style=color:#f92672>*</span> _hexStr)
+{
+    <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>char</span> tmp;
+
+    <span style=color:#66d9ef>if</span>(NULL <span style=color:#f92672>==</span> _hexStr)
+        <span style=color:#66d9ef>return</span>;
+
+    <span style=color:#75715e>//低4bit
+</span><span style=color:#75715e></span>    tmp <span style=color:#f92672>=</span> (_hexNum <span style=color:#f92672>&gt;&gt;</span> <span style=color:#ae81ff>4</span>) <span style=color:#f92672>&amp;</span> <span style=color:#ae81ff>0x0f</span>;
+    <span style=color:#66d9ef>if</span>(tmp <span style=color:#f92672>&lt;=</span> <span style=color:#ae81ff>9</span>)
+        <span style=color:#f92672>*</span>_hexStr <span style=color:#f92672>=</span> tmp<span style=color:#f92672>+</span><span style=color:#e6db74>&#39;0&#39;</span>;
+    <span style=color:#66d9ef>else</span>
+        <span style=color:#f92672>*</span>_hexStr <span style=color:#f92672>=</span> tmp<span style=color:#f92672>-</span><span style=color:#ae81ff>0x0a</span> <span style=color:#f92672>+</span> <span style=color:#e6db74>&#39;A&#39;</span>;
+
+    _hexStr<span style=color:#f92672>++</span>;
+
+    <span style=color:#75715e>//高4bit
+</span><span style=color:#75715e></span>    tmp <span style=color:#f92672>=</span> _hexNum <span style=color:#f92672>&amp;</span> <span style=color:#ae81ff>0x0f</span>;
+    <span style=color:#66d9ef>if</span>(tmp <span style=color:#f92672>&lt;=</span> <span style=color:#ae81ff>9</span>)
+        <span style=color:#f92672>*</span>_hexStr <span style=color:#f92672>=</span> tmp<span style=color:#f92672>+</span><span style=color:#e6db74>&#39;0&#39;</span>;
+    <span style=color:#66d9ef>else</span>
+        <span style=color:#f92672>*</span>_hexStr <span style=color:#f92672>=</span> tmp<span style=color:#f92672>-</span><span style=color:#ae81ff>0x0a</span> <span style=color:#f92672>+</span> <span style=color:#e6db74>&#39;A&#39;</span>;
+}
+
+<span style=color:#75715e>//将字符串转为16进制形式，以查看不可见字符 &#34;01&#34; ==&gt; &#34;3031&#34;
+</span><span style=color:#75715e></span><span style=color:#66d9ef>int</span> <span style=color:#a6e22e>toHexStr</span>(<span style=color:#66d9ef>const</span> <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span> _str, <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>_hexStr)
+{
+    <span style=color:#66d9ef>int</span> i;
+    <span style=color:#66d9ef>int</span> len;
+    <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>char</span><span style=color:#f92672>*</span> resultPtr;
+    <span style=color:#66d9ef>if</span>(NULL <span style=color:#f92672>==</span> _str <span style=color:#f92672>||</span> NULL <span style=color:#f92672>==</span> _hexStr)
+        <span style=color:#66d9ef>return</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>;
+    
+    len <span style=color:#f92672>=</span> strlen(_str);
+    resultPtr <span style=color:#f92672>=</span> _hexStr;
+    <span style=color:#66d9ef>for</span>(i<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>; i<span style=color:#f92672>&lt;</span>len; i<span style=color:#f92672>++</span>)
+    {
+        numToHexStr(_str[i], resultPtr);
+        resultPtr <span style=color:#f92672>+=</span> <span style=color:#ae81ff>2</span>;
+    }
+    <span style=color:#66d9ef>return</span> strlen(_hexStr);
+}
+<span style=color:#75715e>//判断是否是十六进制的基数
+</span><span style=color:#75715e></span><span style=color:#66d9ef>int</span> <span style=color:#a6e22e>isHexNum</span>(<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>char</span> _hexNum)
+{
+    <span style=color:#66d9ef>if</span>(<span style=color:#e6db74>&#39;0&#39;</span><span style=color:#f92672>&lt;=</span>_hexNum <span style=color:#f92672>&amp;&amp;</span> _hexNum<span style=color:#f92672>&lt;=</span><span style=color:#e6db74>&#39;9&#39;</span>)
+        <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>1</span>;
+    <span style=color:#66d9ef>else</span> <span style=color:#66d9ef>if</span>(<span style=color:#e6db74>&#39;A&#39;</span><span style=color:#f92672>&lt;=</span>_hexNum <span style=color:#f92672>&amp;&amp;</span> _hexNum<span style=color:#f92672>&lt;=</span><span style=color:#e6db74>&#39;F&#39;</span>)
+        <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>2</span>;
+    <span style=color:#66d9ef>else</span> <span style=color:#66d9ef>if</span>(<span style=color:#e6db74>&#39;a&#39;</span><span style=color:#f92672>&lt;=</span>_hexNum <span style=color:#f92672>&amp;&amp;</span> _hexNum<span style=color:#f92672>&lt;=</span><span style=color:#e6db74>&#39;f&#39;</span>)
+        <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>3</span>;
+    
+    <span style=color:#66d9ef>return</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>;
+}
+
+<span style=color:#75715e>//十六进制的字符转数字
+</span><span style=color:#75715e></span><span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>char</span> <span style=color:#a6e22e>charToHexNum</span>(<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>char</span> hexChar)
+{
+    <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>char</span> tmp;
+    <span style=color:#66d9ef>if</span>(<span style=color:#ae81ff>1</span><span style=color:#f92672>&gt;</span>isHexNum(hexChar))
+        <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0xFF</span>;
+    
+    <span style=color:#66d9ef>if</span>(hexChar<span style=color:#f92672>&lt;=</span><span style=color:#e6db74>&#39;9&#39;</span>)
+        tmp <span style=color:#f92672>=</span> hexChar<span style=color:#f92672>-</span><span style=color:#e6db74>&#39;0&#39;</span>;
+    <span style=color:#66d9ef>else</span> <span style=color:#66d9ef>if</span>(hexChar<span style=color:#f92672>&lt;=</span><span style=color:#e6db74>&#39;F&#39;</span>)
+        tmp <span style=color:#f92672>=</span> hexChar<span style=color:#f92672>-</span><span style=color:#e6db74>&#39;7&#39;</span>;
+    <span style=color:#66d9ef>else</span>
+        tmp <span style=color:#f92672>=</span> hexChar<span style=color:#f92672>-</span><span style=color:#e6db74>&#39;W&#39;</span>;
+
+    <span style=color:#66d9ef>return</span> tmp;
+}
+
+<span style=color:#66d9ef>static</span> <span style=color:#66d9ef>int</span> <span style=color:#a6e22e>transfer</span>(<span style=color:#66d9ef>int</span> fd, <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>tbuf, <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>rbuf, <span style=color:#66d9ef>int</span> bytes)
+{
+    <span style=color:#66d9ef>int</span> ret;
+
+    <span style=color:#66d9ef>struct</span> spi_ioc_transfer tr <span style=color:#f92672>=</span> {
+        .tx_buf <span style=color:#f92672>=</span> (<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span>)tbuf,
+        .rx_buf <span style=color:#f92672>=</span> (<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span>)rbuf,
+        .len <span style=color:#f92672>=</span> bytes,
+    };
+
+    ret <span style=color:#f92672>=</span> ioctl(fd, SPI_IOC_MESSAGE(<span style=color:#ae81ff>1</span>), <span style=color:#f92672>&amp;</span>tr);
+    <span style=color:#66d9ef>if</span> (ret <span style=color:#f92672>==</span> <span style=color:#ae81ff>1</span>)
+        printf(<span style=color:#e6db74>&#34;can&#39;t send spi message&#34;</span>);
+    <span style=color:#66d9ef>return</span> ret;
+}
+
+<span style=color:#66d9ef>int</span> <span style=color:#a6e22e>spidev_data_rw</span>(<span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>dev, <span style=color:#66d9ef>int</span> len, <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>buffer)
+{
+    <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>rbuf;
+    <span style=color:#66d9ef>int</span> res <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+    <span style=color:#66d9ef>int</span> fd <span style=color:#f92672>=</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>;
+    <span style=color:#66d9ef>int</span> i <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+
+    fd <span style=color:#f92672>=</span> open(dev, O_RDWR);
+
+    <span style=color:#66d9ef>if</span> (fd <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>0</span>) {
+        printf(<span style=color:#e6db74>&#34;Error:cannot open device &#34;</span>
+               <span style=color:#e6db74>&#34;(Maybe not present in your board?)</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
+        <span style=color:#66d9ef>return</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>;
+    }
+
+    res <span style=color:#f92672>=</span> ioctl(fd, SPI_IOC_WR_MODE, <span style=color:#f92672>&amp;</span>mode);
+    <span style=color:#66d9ef>if</span> (res <span style=color:#f92672>==</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>) {
+        printf(<span style=color:#e6db74>&#34;can&#39;t set spi mode&#34;</span>);
+        <span style=color:#66d9ef>goto</span> exit;
+    }
+
+    res <span style=color:#f92672>=</span> ioctl(fd, SPI_IOC_RD_MODE, <span style=color:#f92672>&amp;</span>mode);
+    <span style=color:#66d9ef>if</span> (res <span style=color:#f92672>==</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>) {
+        printf(<span style=color:#e6db74>&#34;can&#39;t set spi mode&#34;</span>);
+        <span style=color:#66d9ef>goto</span> exit;
+    }
+    <span style=color:#75715e>/*
+</span><span style=color:#75715e>     * bits per word
+</span><span style=color:#75715e>     */</span>
+    res <span style=color:#f92672>=</span> ioctl(fd, SPI_IOC_WR_BITS_PER_WORD, <span style=color:#f92672>&amp;</span>bits_per_word);
+    <span style=color:#66d9ef>if</span> (res <span style=color:#f92672>==</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>) {
+        printf(<span style=color:#e6db74>&#34;can&#39;t set bits per word&#34;</span>);
+        <span style=color:#66d9ef>goto</span> exit;
+    }
+
+    res <span style=color:#f92672>=</span> ioctl(fd, SPI_IOC_RD_BITS_PER_WORD, <span style=color:#f92672>&amp;</span>bits_per_word);
+    <span style=color:#66d9ef>if</span> (res <span style=color:#f92672>==</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>) {
+        printf(<span style=color:#e6db74>&#34;can&#39;t get bits per word&#34;</span>);
+        <span style=color:#66d9ef>goto</span> exit;
+    }
+
+    <span style=color:#75715e>/*
+</span><span style=color:#75715e>     * max speed hz
+</span><span style=color:#75715e>     */</span>
+    res <span style=color:#f92672>=</span> ioctl(fd, SPI_IOC_WR_MAX_SPEED_HZ, <span style=color:#f92672>&amp;</span>speed);
+    <span style=color:#66d9ef>if</span> (res <span style=color:#f92672>==</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>) {
+        printf(<span style=color:#e6db74>&#34;can&#39;t set max speed hz&#34;</span>);
+        <span style=color:#66d9ef>goto</span> exit;
+    }
+
+    res <span style=color:#f92672>=</span> ioctl(fd, SPI_IOC_RD_MAX_SPEED_HZ, <span style=color:#f92672>&amp;</span>speed);
+    <span style=color:#66d9ef>if</span> (res <span style=color:#f92672>==</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>) {
+        printf(<span style=color:#e6db74>&#34;can&#39;t get max speed hz&#34;</span>);
+        <span style=color:#66d9ef>goto</span> exit;
+    }
+
+    printf(<span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
+    printf(<span style=color:#e6db74>&#34;spi mode: %d</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, mode);
+    printf(<span style=color:#e6db74>&#34;bits per word: %d</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, bits_per_word);
+    printf(<span style=color:#e6db74>&#34;max speed: %d Hz (%d KHz)</span><span style=color:#ae81ff>\n\n</span><span style=color:#e6db74>&#34;</span>, speed, speed<span style=color:#f92672>/</span><span style=color:#ae81ff>1000</span>);
+
+    rbuf <span style=color:#f92672>=</span> malloc(len);
+    memset(rbuf, <span style=color:#ae81ff>0</span>, len);
+
+    res <span style=color:#f92672>=</span> transfer(fd, buffer, rbuf, len);
+    <span style=color:#66d9ef>if</span> (res <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>0</span>) {
+        printf(<span style=color:#e6db74>&#34;Failed transferring data: %d</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, errno);
+        free(rbuf);
+        close(fd);
+        <span style=color:#66d9ef>return</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>;
+    }
+
+    <span style=color:#66d9ef>for</span>(i<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>; i<span style=color:#f92672>&lt;</span>len; i<span style=color:#f92672>++</span>)
+    {
+        printf(<span style=color:#e6db74>&#34;Data send buffer[%d] =  0x%02x</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, i, buffer[i]);
+    }
+
+    free(rbuf);
+exit:
+    close(fd);
+
+    <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
+}
+
+<span style=color:#66d9ef>int</span> <span style=color:#a6e22e>main</span>(<span style=color:#66d9ef>int</span> argc, <span style=color:#66d9ef>char</span> <span style=color:#f92672>**</span>argv)
+{
+    <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>spi_dev;
+    <span style=color:#66d9ef>int</span> bytes, len;
+    <span style=color:#66d9ef>int</span> res;
+    <span style=color:#66d9ef>int</span> i;
+    <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>char</span> tmp[<span style=color:#ae81ff>4</span>];
+
+    <span style=color:#66d9ef>if</span> (argc <span style=color:#f92672>&lt;=</span> <span style=color:#ae81ff>1</span>) {
+        help_info(argv[<span style=color:#ae81ff>0</span>]);
+        <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>1</span>;
+    }
+
+    mode <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+    <span style=color:#66d9ef>for</span>(i <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>; i <span style=color:#f92672>&lt;</span> argc; i<span style=color:#f92672>++</span>) {
+        <span style=color:#66d9ef>if</span>(<span style=color:#f92672>!</span>strcmp(argv[i], <span style=color:#e6db74>&#34;-D&#34;</span>)) {
+            i<span style=color:#f92672>++</span>;
+            spi_dev <span style=color:#f92672>=</span> argv[i];
+        } <span style=color:#66d9ef>else</span> <span style=color:#66d9ef>if</span>(<span style=color:#f92672>!</span>strcmp(argv[i], <span style=color:#e6db74>&#34;-s&#34;</span>)) {
+            i<span style=color:#f92672>++</span>;
+            speed <span style=color:#f92672>=</span> atoi(argv[i]);
+        } <span style=color:#66d9ef>else</span> <span style=color:#66d9ef>if</span>(<span style=color:#f92672>!</span>strcmp(argv[i], <span style=color:#e6db74>&#34;-b&#34;</span>)) {
+            i<span style=color:#f92672>++</span>;
+            bits_per_word <span style=color:#f92672>=</span> atoi(argv[i]);
+        } <span style=color:#66d9ef>else</span> <span style=color:#66d9ef>if</span>(<span style=color:#f92672>!</span>strcmp(argv[i], <span style=color:#e6db74>&#34;-H&#34;</span>))
+            mode <span style=color:#f92672>|=</span> SPI_CPHA;
+        <span style=color:#66d9ef>else</span> <span style=color:#66d9ef>if</span>(<span style=color:#f92672>!</span>strcmp(argv[i], <span style=color:#e6db74>&#34;-O&#34;</span>))
+            mode <span style=color:#f92672>|=</span> SPI_CPOL;
+        <span style=color:#66d9ef>else</span> <span style=color:#66d9ef>if</span>(<span style=color:#f92672>!</span>strcmp(argv[i], <span style=color:#e6db74>&#34;-C&#34;</span>))
+            mode <span style=color:#f92672>|=</span> SPI_CS_HIGH;
+        <span style=color:#66d9ef>else</span> <span style=color:#66d9ef>if</span>((i <span style=color:#f92672>!=</span> (argc <span style=color:#f92672>-</span> <span style=color:#ae81ff>1</span>))) {
+            printf(<span style=color:#e6db74>&#34;invalid parameter</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
+            help_info(argv[<span style=color:#ae81ff>0</span>]);
+            <span style=color:#66d9ef>return</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>;
+        }
+    }
+
+    <span style=color:#75715e>// 获得最后一个参数的长度，单位是 byte ，并将数据全部放入 buffer
+</span><span style=color:#75715e></span>    bytes <span style=color:#f92672>=</span> strlen((<span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>)argv[argc <span style=color:#f92672>-</span> <span style=color:#ae81ff>1</span>]);
+    <span style=color:#66d9ef>if</span> (bytes <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>1</span>) {
+        printf(<span style=color:#e6db74>&#34;invalid parameter for buffer size</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
+        help_info(argv[<span style=color:#ae81ff>0</span>]);
+        <span style=color:#66d9ef>return</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>;
+    }
+    buffer <span style=color:#f92672>=</span> malloc(BUF_MAX_SIZE);
+    memset(buffer, <span style=color:#ae81ff>0</span>, BUF_MAX_SIZE);
+    strcpy(buffer, (<span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>)argv[argc<span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>]); 
+
+    <span style=color:#75715e>// 将字符转换为十六进制数字
+</span><span style=color:#75715e></span>    <span style=color:#66d9ef>for</span>(i<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>; i<span style=color:#f92672>&lt;</span>bytes<span style=color:#f92672>/</span><span style=color:#ae81ff>2</span>; i<span style=color:#f92672>++</span>)
+    {
+        tmp[<span style=color:#ae81ff>0</span>] <span style=color:#f92672>=</span> charToHexNum(buffer[i<span style=color:#f92672>*</span><span style=color:#ae81ff>2</span>]);
+        tmp[<span style=color:#ae81ff>0</span>] <span style=color:#f92672>=</span> tmp[<span style=color:#ae81ff>0</span>]<span style=color:#f92672>&lt;&lt;</span><span style=color:#ae81ff>4</span>;
+        tmp[<span style=color:#ae81ff>1</span>] <span style=color:#f92672>=</span> charToHexNum(buffer[i<span style=color:#f92672>*</span><span style=color:#ae81ff>2</span><span style=color:#f92672>+</span><span style=color:#ae81ff>1</span>]);
+        buffer[i] <span style=color:#f92672>=</span> tmp[<span style=color:#ae81ff>0</span>] <span style=color:#f92672>+</span> tmp[<span style=color:#ae81ff>1</span>];
+        printf(<span style=color:#e6db74>&#34;Data send buffer[%d] =  0x%02x</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, i, buffer[i]);
+    }
+    len <span style=color:#f92672>=</span> i;
+    printf(<span style=color:#e6db74>&#34;Data send buffer len = 0x%x</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, len);
+
+    res <span style=color:#f92672>=</span> spidev_data_rw(spi_dev, len, buffer);
+
+    free(buffer);
+    <span style=color:#66d9ef>return</span> res;
+}</code></pre></div></div></article><hr><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83.0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7" y2="7"/></svg><span class=tag><a href=https://shaocheng.li/tags/untagged>untagged</a></span></p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>1037 Words</p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>2021-04-10 13:19 &#43;0000</p></div><div class=pagination><div class=pagination__title><span class=pagination__title-h></span><hr></div><div class=pagination__buttons><span class="button next"><a href=https://shaocheng.li/posts/2021/03/06/><span class=button__text>Systemd 中实现自动登录和程序自启动</span>
+<span class=button__icon>→</span></a></span></div></div><div id=comments class=thin><div id=disqus_thread></div><script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return;}
+var d=document,s=d.createElement('script');s.async=true;s.src='//'+"shaocheng-li"+'.disqus.com/embed.js';s.setAttribute('data-timestamp',+new Date());(d.head||d.body).appendChild(s);})();</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></div></main></div><footer class=footer><div class=footer__inner><div class=footer__content><span>&copy; 2021</span>
+<span><a href=https://shaocheng.li>Shaocheng.Li</a></span>
+<span><a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>CC BY-NC 4.0</a></span>
+<span><a href=https://shaocheng.li/posts/index.xml target=_blank title=rss><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg></a></span></div></div><div class=footer__inner><div class=footer__content><span>Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>Made with &#10084; by <a href=https://github.com/rhazdon>rhazdon</a></span></div></div></footer></div><script type=text/javascript src=https://shaocheng.li/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script></body></html>
