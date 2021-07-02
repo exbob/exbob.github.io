@@ -262,6 +262,32 @@ edit: run findfdt;run findtee;mmc dev <span style="color:#e6db74">${</span>mmcde
 <p>保存后重启，可以看到加载 ppmlogo.bin 时，u-boot 打印的如下信息：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">reading ppmlogo.bin
 <span style="color:#ae81ff">472688</span> bytes read in <span style="color:#ae81ff">28</span> ms <span style="color:#f92672">(</span><span style="color:#ae81ff">16</span>.1 MiB/s<span style="color:#f92672">)</span></code></pre></div>
+<p>手动修改 u-boot 没有问题后，可以在 u-boot 源码中修改 <code>bootcmd</code> 的值，使 u-boot 启动时自动加载 logo 图片。例如修改 imx6q 的配置文件 `include/configs/mx6sabre_common.h：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-diff" data-lang="diff">#define CONFIG_EXTRA_ENV_SETTINGS \
+        CONFIG_MFG_ENV_SETTINGS \
+        TEE_ENV \
+        &#34;epdc_waveform=epdc_splash.bin\0&#34; \
+        &#34;script=boot.scr\0&#34; \
+        &#34;image=zImage\0&#34; \
+<span style="color:#a6e22e">+       &#34;load_logo=load mmc 2:1 4f000000 ppmlogo.bin&#34;
+</span><span style="color:#a6e22e"></span>... ...
+#define CONFIG_BOOTCOMMAND \
+        &#34;run findfdt;&#34; \
+        &#34;run findtee;&#34; \
+        &#34;mmc dev ${mmcdev};&#34; \
+<span style="color:#a6e22e">+       &#34;run load_logo&#34; \
+</span><span style="color:#a6e22e"></span>        &#34;if mmc rescan; then &#34; \
+                &#34;if run loadbootscript; then &#34; \
+                &#34;run bootscript; &#34; \
+                &#34;else &#34; \
+                        &#34;if run loadimage; then &#34; \
+                                &#34;run mmcboot; &#34; \
+                        &#34;else run netboot; &#34; \
+                        &#34;fi; &#34; \
+                &#34;fi; &#34; \
+        &#34;else run netboot; fi&#34;
+#endif
+</code></pre></div>
 <p>最后就是修改内核。我们需要在设备树的 <code>/reserved-memory</code> 中添加一个字节点，申请一段保留内存，将地址 <code>0x4f000000</code> 开始的 3MB 内存留給 u-boot 存放的 ppmlogo.bin ，避免内核启动后将这段内存覆盖：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">reserved<span style="color:#f92672">-</span>memory {
     linux<span style="color:#f92672">-</span>logo {
