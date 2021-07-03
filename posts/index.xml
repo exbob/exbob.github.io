@@ -96,7 +96,7 @@ signal 是必须的关键词，它用一个数组表示一幅时序图。 数组
 }</code></pre></div>
 <p><img src="/images/2021-07-03/image-20210703210006237.png" alt="image-20210703210006237" /></p>
 
-<p><code>period</code> 和 <code>phase</code> 变量用调整时序：</p>
+<p><code>period</code> 和 <code>phase</code> 变量用于调整时序：</p>
 
 <ul>
 <li><code>period</code> 的值应该是一个数字 n ，表示横向等比例放大或缩小。</li>
@@ -141,6 +141,26 @@ signal 是必须的关键词，它用一个数组表示一幅时序图。 数组
     ]
 }</code></pre></div>
 <p><img src="/images/2021-07-03/image-20210703210911356.png" alt="image-20210703210911356" /></p>
+
+<p>时序绘制完毕后，还可以对图片进行修饰。 <code>&quot;config&quot;: { &quot;hscale&quot;: n }</code> 表示将图片横向等比例放大 n 倍。<code>&quot;head&quot;:{  }</code> 和 <code>&quot;foot&quot;:{ }</code> 分别表示在时序图的上方和下方添加一些内容：</p>
+
+<ul>
+<li><code>text</code> 变量应该设置一个字符串，表示添加一行文本。</li>
+<li><code>tick</code> 变量应该设置一个整数，表示在时钟周期的起点显示序号，从 n 开始。</li>
+<li><code>tock</code> 变量应该设置一个整数，表示在时钟周期的中点显示序号，从 n 开始。</li>
+</ul>
+
+<p>例如：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+    <span style="color:#f92672">&#34;signal&#34;</span>: [
+        { <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;pclk&#34;</span>, <span style="color:#f92672">&#34;wave&#34;</span>: <span style="color:#e6db74">&#34;p.......&#34;</span> },
+        { <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;data&#34;</span>, <span style="color:#f92672">&#34;wave&#34;</span>: <span style="color:#e6db74">&#34;23232323&#34;</span> }
+    ],
+    <span style="color:#f92672">&#34;config&#34;</span>: { <span style="color:#f92672">&#34;hscale&#34;</span>: <span style="color:#ae81ff">2</span> },
+    <span style="color:#f92672">&#34;head&#34;</span>: { <span style="color:#f92672">&#34;text&#34;</span>: <span style="color:#e6db74">&#34;WaveDrom example&#34;</span>, <span style="color:#f92672">&#34;tick&#34;</span>: <span style="color:#ae81ff">0</span> },
+    <span style="color:#f92672">&#34;foot&#34;</span>: { <span style="color:#f92672">&#34;text&#34;</span>: <span style="color:#e6db74">&#34;TIME&#34;</span>, <span style="color:#f92672">&#34;tock&#34;</span>: <span style="color:#ae81ff">0</span> }
+}</code></pre></div>
+<p><img src="/images/2021-07-03/image-20210703220428500.png" alt="image-20210703220428500" /></p>
 ]]></content></item><item><title>如何修改 ARM Linux 系统的启动画面</title><link>https://shaocheng.li/posts/2021/05/07/</link><pubDate>Fri, 07 May 2021 20:49:11 +0800</pubDate><guid>https://shaocheng.li/posts/2021/05/07/</guid><description>以 NXP 的 iMX Yocto 4.9.88 系统版本为例，启动分为三个阶段：U-Boot ，内核，根文件系统，每个阶段都可以设置自己的显示画面。
 U-Boot 的启动画面 u-boot 阶段的运行时很短，一般不用修改。待补充。
 内核的启动画面 PPM 图片格式 如果开启了 FrameBuffer ，Linux 内核启动时会在屏幕左上角显示企鹅图标，图标的数量等于 CPU 的核心数量。这个图标来自于内核源码的 driver/video/logo/ 目录下的 ppm 格式图片：
