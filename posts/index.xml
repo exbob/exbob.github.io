@@ -1,4 +1,147 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Shaocheng.Li</title><link>https://shaocheng.li/posts/</link><description>Recent content in Posts on Shaocheng.Li</description><generator>Hugo -- gohugo.io</generator><copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright><lastBuildDate>Fri, 07 May 2021 20:49:11 +0800</lastBuildDate><atom:link href="https://shaocheng.li/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>如何修改 ARM Linux 系统的启动画面</title><link>https://shaocheng.li/posts/2021/05/07/</link><pubDate>Fri, 07 May 2021 20:49:11 +0800</pubDate><guid>https://shaocheng.li/posts/2021/05/07/</guid><description>以 NXP 的 iMX Yocto 4.9.88 系统版本为例，启动分为三个阶段：U-Boot ，内核，根文件系统，每个阶段都可以设置自己的显示画面。
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Shaocheng.Li</title><link>https://shaocheng.li/posts/</link><description>Recent content in Posts on Shaocheng.Li</description><generator>Hugo -- gohugo.io</generator><copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright><lastBuildDate>Sat, 03 Jul 2021 18:32:49 +0800</lastBuildDate><atom:link href="https://shaocheng.li/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>使用 VSCode 绘制数字电路时序图</title><link>https://shaocheng.li/posts/2021/07/03/</link><pubDate>Sat, 03 Jul 2021 18:32:49 +0800</pubDate><guid>https://shaocheng.li/posts/2021/07/03/</guid><description>在 VSCode 中安装 Waveform Render 插件：
+它可以解析 WaveJSON 语法的 json 文件，绘制一幅数字电路时序图。官网提供了一个完整教程：https://wavedrom.com/tutorial.html ，还有一个在线的编辑器：https://wavedrom.com/editor.html 。
+开始 在 vscode 中新建一个名为 demo.json 的文件，内容如下：
+{ &amp;#34;signal&amp;#34;: [ { &amp;#34;name&amp;#34;: &amp;#34;clk&amp;#34;, &amp;#34;wave&amp;#34;: &amp;#34;p.......&amp;#34; }, { &amp;#34;name&amp;#34;: &amp;#34;data&amp;#34;, &amp;#34;wave&amp;#34;: &amp;#34;01010101&amp;#34; } ] } 保存后用 Command+Shift+P 组合键打开命令面板，选择执行 Waveform Render:Draw ，就可以看到渲染后的时序图，也可以选择执行 Waveform Render:Toggle Live Preview ，实时查看渲染结果：
+这个例子展示了基本的 WaveJSON 语法：
+signal 是必须的关键词，它用一个数组表示一幅时序图。 数组内每个元素描述一个信号。 每个元素至少要包含 name 和 wave 两个变量： name 定义了信号的名称。 wave 用来描述信号的样子。 wave 定义的字符串中，每个字符代表一个时钟周期（1bit），通过不同的字符来描述信号的样子：
+0 表示低电平，1 表示高电平。 p 表示上升沿开始的一个时钟周期。 .</description><content type="html"><![CDATA[
+
+<p>在 VSCode 中安装 Waveform Render 插件：</p>
+
+<p><img src="/images/2021-07-03/image-20210703195443626.png" alt="image-20210703195443626" /></p>
+
+<p>它可以解析 WaveJSON 语法的 json 文件，绘制一幅数字电路时序图。官网提供了一个完整教程：<a href="https://wavedrom.com/tutorial.html" target="_blank">https://wavedrom.com/tutorial.html</a> ，还有一个在线的编辑器：<a href="https://wavedrom.com/editor.html" target="_blank">https://wavedrom.com/editor.html</a> 。</p>
+
+<h2 id="开始">开始</h2>
+
+<p>在 vscode 中新建一个名为 demo.json 的文件，内容如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+    <span style="color:#f92672">&#34;signal&#34;</span>: [
+        { <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;clk&#34;</span>, <span style="color:#f92672">&#34;wave&#34;</span>: <span style="color:#e6db74">&#34;p.......&#34;</span> },
+        { <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;data&#34;</span>, <span style="color:#f92672">&#34;wave&#34;</span>: <span style="color:#e6db74">&#34;01010101&#34;</span> }
+    ]
+}</code></pre></div>
+<p>保存后用 Command+Shift+P 组合键打开命令面板，选择执行 <code>Waveform Render:Draw</code> ，就可以看到渲染后的时序图，也可以选择执行 <code>Waveform Render:Toggle Live Preview</code> ，实时查看渲染结果：</p>
+
+<p><img src="/images/2021-07-03/image-20210703200629972.png" alt="image-20210703200629972" /></p>
+
+<p>这个例子展示了基本的 WaveJSON 语法：</p>
+
+<ul>
+<li>signal 是必须的关键词，它用一个数组表示一幅时序图。</li>
+<li>数组内每个元素描述一个信号。</li>
+<li>每个元素至少要包含 name 和 wave 两个变量：
+
+<ul>
+<li>name 定义了信号的名称。</li>
+<li>wave 用来描述信号的样子。</li>
+</ul></li>
+</ul>
+
+<p>wave 定义的字符串中，每个字符代表一个时钟周期（1bit），通过不同的字符来描述信号的样子：</p>
+
+<ul>
+<li><code>0</code> 表示低电平，<code>1</code> 表示高电平。</li>
+<li><code>p</code> 表示上升沿开始的一个时钟周期。</li>
+<li><code>.</code> 表示与上一个时钟周期相同。</li>
+</ul>
+
+<h2 id="语法">语法</h2>
+
+<p>对于时钟信号，  WaveJSON 支持的语法有：</p>
+
+<ul>
+<li><code>p</code> 表示上升沿开始的方波。</li>
+<li><code>n</code> 表示下降沿开始的方波。</li>
+<li><code>l</code> 表示低电平。</li>
+<li><code>h</code> 表示高电平。</li>
+<li>如果用大写字母，会在起始边沿绘制一个箭头。</li>
+</ul>
+
+<p>例如：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+    <span style="color:#f92672">&#34;signal&#34;</span>: [
+        { <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;pclk&#34;</span>, <span style="color:#f92672">&#34;wave&#34;</span>: <span style="color:#e6db74">&#34;p.......&#34;</span> },
+        { <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;nclk&#34;</span>, <span style="color:#f92672">&#34;wave&#34;</span>: <span style="color:#e6db74">&#34;n.......&#34;</span> },
+        { <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;clk0&#34;</span>, <span style="color:#f92672">&#34;wave&#34;</span>: <span style="color:#e6db74">&#34;lhlhlhlh&#34;</span> },
+        { <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;clk1&#34;</span>, <span style="color:#f92672">&#34;wave&#34;</span>: <span style="color:#e6db74">&#34;LHLHLHLH&#34;</span> }
+    ]
+}</code></pre></div>
+<p><img src="/images/2021-07-03/image-20210703203001390.png" alt="image-20210703203001390" /></p>
+
+<p>对于数据信号，除了 <code>0</code> 和 <code>1</code> ，还支持其他语法：</p>
+
+<ul>
+<li><code>x</code> 表示未知的无效状态。</li>
+<li><code>=</code> 表示有效数据，也可以写成  <code>2</code>~<code>9</code> ，会用不同的颜色显示。</li>
+<li>对于有效数据，可以用 data 变量加上文本标签。</li>
+</ul>
+
+<p>例如：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+    <span style="color:#f92672">&#34;signal&#34;</span>: [
+        { <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;pclk&#34;</span>, <span style="color:#f92672">&#34;wave&#34;</span>: <span style="color:#e6db74">&#34;p.......&#34;</span> },
+        { <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;data&#34;</span>, <span style="color:#f92672">&#34;wave&#34;</span>: <span style="color:#e6db74">&#34;01010101&#34;</span> },
+        { <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;data&#34;</span>, <span style="color:#f92672">&#34;wave&#34;</span>: <span style="color:#e6db74">&#34;x234789x&#34;</span>, <span style="color:#f92672">&#34;data&#34;</span>: [<span style="color:#e6db74">&#34;head&#34;</span>,<span style="color:#e6db74">&#34;2&#34;</span>,<span style="color:#e6db74">&#34;&#34;</span>,<span style="color:#e6db74">&#34;3&#34;</span>] }
+    ]
+}</code></pre></div>
+<p><img src="/images/2021-07-03/image-20210703204914946.png" alt="image-20210703204914946" /></p>
+
+<p>还可以用 <code>|</code> 符号表示一段空白，例如：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+    <span style="color:#f92672">&#34;signal&#34;</span>: [
+        { <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;pclk&#34;</span>, <span style="color:#f92672">&#34;wave&#34;</span>: <span style="color:#e6db74">&#34;p...|...&#34;</span> },
+        { <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;data&#34;</span>, <span style="color:#f92672">&#34;wave&#34;</span>: <span style="color:#e6db74">&#34;1222|.==&#34;</span> }
+    ]
+}</code></pre></div>
+<p><img src="/images/2021-07-03/image-20210703210006237.png" alt="image-20210703210006237" /></p>
+
+<p><code>period</code> 和 <code>phase</code> 变量用调整时序：</p>
+
+<ul>
+<li><code>period</code> 的值应该是一个数字 n ，表示横向等比例放大或缩小。</li>
+<li><code>phase</code> 的值应该是一个数字 n ，表示横向的位置调整，单位是一个时钟周期：
+
+<ul>
+<li>如果是正数，表示向左移动 n 个时钟周期。</li>
+<li>如果是负数，表示向右移动 n 个时钟周期。</li>
+</ul></li>
+</ul>
+
+<p>例如：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+    <span style="color:#f92672">&#34;signal&#34;</span>: [
+        { <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;pclk&#34;</span>, <span style="color:#f92672">&#34;wave&#34;</span>: <span style="color:#e6db74">&#34;p.......&#34;</span> },
+        { <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;pclk&#34;</span>, <span style="color:#f92672">&#34;wave&#34;</span>: <span style="color:#e6db74">&#34;p...&#34;</span>, <span style="color:#f92672">&#34;period&#34;</span>: <span style="color:#ae81ff">2</span>},
+        { <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;data&#34;</span>, <span style="color:#f92672">&#34;wave&#34;</span>: <span style="color:#e6db74">&#34;01010101&#34;</span> },
+        { <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;data&#34;</span>, <span style="color:#f92672">&#34;wave&#34;</span>: <span style="color:#e6db74">&#34;01010101&#34;</span>, <span style="color:#f92672">&#34;phase&#34;</span>: <span style="color:#ae81ff">0.5</span>},
+        { <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;data&#34;</span>, <span style="color:#f92672">&#34;wave&#34;</span>: <span style="color:#e6db74">&#34;01010101&#34;</span>, <span style="color:#f92672">&#34;phase&#34;</span>: <span style="color:#ae81ff">-1</span>}
+    ]
+}</code></pre></div>
+<p><img src="/images/2021-07-03/image-20210703212358596.png" alt="image-20210703212358596" /></p>
+
+<p>多个信号可以用 <code>['group name', {...}, {...}, ...]</code> 语法编成一组，而且支持嵌套，例如：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+    <span style="color:#f92672">&#34;signal&#34;</span>: [
+        { <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;clk&#34;</span>, <span style="color:#f92672">&#34;wave&#34;</span>: <span style="color:#e6db74">&#34;p..Pp..P&#34;</span> },
+        [ <span style="color:#e6db74">&#34;Master&#34;</span>,
+            [ <span style="color:#e6db74">&#34;ctrl&#34;</span>,
+                { <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;write&#34;</span>, <span style="color:#f92672">&#34;wave&#34;</span>: <span style="color:#e6db74">&#34;01.0....&#34;</span> },
+                { <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;read&#34;</span>,  <span style="color:#f92672">&#34;wave&#34;</span>: <span style="color:#e6db74">&#34;0...1..0&#34;</span> }
+            ],
+            {  <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;addr&#34;</span>,  <span style="color:#f92672">&#34;wave&#34;</span>: <span style="color:#e6db74">&#34;x3.x4..x&#34;</span>, <span style="color:#f92672">&#34;data&#34;</span>: <span style="color:#e6db74">&#34;A1 A2&#34;</span> }
+        ],
+        {},
+        [<span style="color:#e6db74">&#34;Slave&#34;</span>,
+            [<span style="color:#e6db74">&#34;ctrl&#34;</span>,
+                {<span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;ack&#34;</span>,   <span style="color:#f92672">&#34;wave&#34;</span>: <span style="color:#e6db74">&#34;x01x0.1x&#34;</span> }
+            ],
+            { <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;rdata&#34;</span>, <span style="color:#f92672">&#34;wave&#34;</span>: <span style="color:#e6db74">&#34;x.....4x&#34;</span>, <span style="color:#f92672">&#34;data&#34;</span>: <span style="color:#e6db74">&#34;Q2&#34;</span> }
+        ]
+    ]
+}</code></pre></div>
+<p><img src="/images/2021-07-03/image-20210703210911356.png" alt="image-20210703210911356" /></p>
+]]></content></item><item><title>如何修改 ARM Linux 系统的启动画面</title><link>https://shaocheng.li/posts/2021/05/07/</link><pubDate>Fri, 07 May 2021 20:49:11 +0800</pubDate><guid>https://shaocheng.li/posts/2021/05/07/</guid><description>以 NXP 的 iMX Yocto 4.9.88 系统版本为例，启动分为三个阶段：U-Boot ，内核，根文件系统，每个阶段都可以设置自己的显示画面。
 U-Boot 的启动画面 u-boot 阶段的运行时很短，一般不用修改。待补充。
 内核的启动画面 PPM 图片格式 如果开启了 FrameBuffer ，Linux 内核启动时会在屏幕左上角显示企鹅图标，图标的数量等于 CPU 的核心数量。这个图标来自于内核源码的 driver/video/logo/ 目录下的 ppm 格式图片：
 $ ls drivers/video/logo/ clut_vga16.ppm logo_linux_mono.pbm logo_sun_clut224.ppm Kconfig logo_linux_vga16.ppm logo_superh_clut224.ppm logo_blackfin_clut224.ppm logo_m32r_clut224.ppm logo_superh_mono.pbm logo_blackfin_vga16.ppm logo_mac_clut224.ppm logo_superh_vga16.ppm logo.c logo_parisc_clut224.ppm Makefile logo_dec_clut224.ppm logo_sgi_clut224.ppm logo_linux_clut224.ppm logo_spe_clut224.ppm 这里的 ppm 格式是一种 ASCII 编码的图片文件格式，可以用文本编辑器打开，以 logo_linux_clut224.ppm 为例 ：
