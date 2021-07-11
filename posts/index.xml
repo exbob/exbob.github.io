@@ -345,6 +345,8 @@ quiet_cmd_logo <span style="color:#f92672">=</span> LOGO    $@
 </span><span style="color:#f92672"></span><span style="color:#a6e22e">+image.dx = (info-&gt;var.xres / 2) - (image.width / 2);
 </span><span style="color:#a6e22e">+image.dy = (info-&gt;var.yres / 2) - (image.height / 2);
 </span></code></pre></div>
+<p>查看内核的 git log 发现，在 5.0 之后的版本，通过 <a href="https://github.com/torvalds/linux/commit/3d8b1933eb1c3c94ef8667996dbff6994d5d552f" target="_blank">commit:3d8b19</a> 添加了让 logo 居中显示的配置选项，但是很快又通过 <a href="https://github.com/torvalds/linux/commit/890d14d2d4b57ff5a149309da3ed36c8a529987f" target="_blank">commit/890d14</a> 将这个功能转移到了命令行的选项 <code>fbcon=logo-pos:&lt;location&gt;</code> 中。</p>
+
 <h3 id="动态修改启动画面">动态修改启动画面</h3>
 
 <p>上面的方法中，启动画面的数据必须编译到内核中，每次修改启动画面都要重新编译内核，不太方便。eMMC 中有一个用于放置内核和设备树文件的 FAT 分区，我们可以利用这个分区和 u-boot 的 load 命令，实现动态修改启动画面的功能，大致原理是：</p>
