@@ -1,4 +1,536 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Shaocheng.Li</title><link>https://shaocheng.li/posts/</link><description>Recent content in Posts on Shaocheng.Li</description><generator>Hugo -- gohugo.io</generator><copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright><lastBuildDate>Sat, 03 Jul 2021 18:32:49 +0800</lastBuildDate><atom:link href="https://shaocheng.li/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>使用 VSCode 绘制数字电路时序图</title><link>https://shaocheng.li/posts/2021/07/03/</link><pubDate>Sat, 03 Jul 2021 18:32:49 +0800</pubDate><guid>https://shaocheng.li/posts/2021/07/03/</guid><description>在 VSCode 中安装 Waveform Render 插件：
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Shaocheng.Li</title><link>https://shaocheng.li/posts/</link><description>Recent content in Posts on Shaocheng.Li</description><generator>Hugo -- gohugo.io</generator><copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright><lastBuildDate>Thu, 15 Jul 2021 22:32:49 +0800</lastBuildDate><atom:link href="https://shaocheng.li/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>iMX8MM 从 eMMC 启动系统和烧写的笔记</title><link>https://shaocheng.li/posts/2021/07/15/</link><pubDate>Thu, 15 Jul 2021 22:32:49 +0800</pubDate><guid>https://shaocheng.li/posts/2021/07/15/</guid><description>1. iMX8MM 的启动流程 iMX8MM 系统启动的详细流程可以参考 IMX8MMRM.pdf
+上电复位后，硬件复位逻辑迫使 SoC 从片上的 Boot ROM 开始执行，Boot ROM 使用 BOOT_MODE 和 eFUSEs 的状态来决定启动设备。在 POR_B 信号的上升沿采集两个外部输入引脚 BOOT_MODE0 和 BOOT_MODE1 的电平，用于设置启动模式：
+BOOT_MODE 的值可以在 SRC_SBMR2 寄存器的 IPP_BOOT_MODE[1:0] 中读到。在 Boot From Fuses 模式下，启动流程完全由 Fuse 控制，GPIO boot overrides 引脚的状态会被忽略。在 internal Boot 模式下，使用 Fuse 中的启动配置，但是为了开发方便，用于确定启动设备的 Fuse 可以通过 GPIO boot overrides 引脚的输入被覆盖，这时启动流程由 Fuse 或者 GPIO 控制的 BOOT_CFG 寄存器决定。首先会读取 BOOT_CFG[14:12] ，决定启动设备的类型：
+如果是从 eMMC/SD 启动，它们都使用 USDHC 接口与 SoC 连接，Boot ROM 会读取 BOOT_CFG[11:10] 的值，确定从哪个接口上的设备启动：</description><content type="html"><![CDATA[
+
+<h2 id="1-imx8mm-的启动流程">1. iMX8MM 的启动流程</h2>
+
+<blockquote>
+<p>iMX8MM 系统启动的详细流程可以参考 IMX8MMRM.pdf</p>
+</blockquote>
+
+<p>上电复位后，硬件复位逻辑迫使 SoC 从片上的 Boot ROM 开始执行，Boot ROM 使用 BOOT_MODE 和 eFUSEs 的状态来决定启动设备。在 POR_B 信号的上升沿采集两个外部输入引脚 BOOT_MODE0 和 BOOT_MODE1 的电平，用于设置启动模式：</p>
+
+<p><img src="/images/2021-07-15/image-20210715110329469.png" alt="image-20210715110329469" /></p>
+
+<p>BOOT_MODE 的值可以在 SRC_SBMR2 寄存器的 IPP_BOOT_MODE[1:0] 中读到。在 Boot From Fuses 模式下，启动流程完全由 Fuse 控制，GPIO boot overrides 引脚的状态会被忽略。在 internal Boot 模式下，使用 Fuse 中的启动配置，但是为了开发方便，用于确定启动设备的 Fuse 可以通过 GPIO boot overrides 引脚的输入被覆盖，这时启动流程由 Fuse 或者 GPIO 控制的 BOOT_CFG 寄存器决定。首先会读取  BOOT_CFG[14:12] ，决定启动设备的类型：</p>
+
+<p><img src="/images/2021-07-15/image-20210714113345371.png" alt="image-20210714113345371" /></p>
+
+<p>如果是从  eMMC/SD 启动，它们都使用 USDHC 接口与 SoC 连接，Boot ROM 会读取 BOOT_CFG[11:10]  的值，确定从哪个接口上的设备启动：</p>
+
+<p><img src="/images/2021-07-15/image-20210714091051553.png" alt="image-20210714091051553" /></p>
+
+<p>对于 eMMC 设备，Boot ROM 会读取 ECSD[179]:PARTITION_CONFIG 寄存器的 BOOT_PARTITION_ENABLE 字段来确定从 eMMC 的哪个位置获得用户程序，例如 BootLoader 代码，然后将用户程序从 eMMC 读到内存，由用户程序引导系统启动。</p>
+
+<h2 id="2-emmc">2. eMMC</h2>
+
+<p>eMMC 是一种可以管理的存储设备，与 SD 卡类似，它还支持单独的启动分区来存储 BootLoader 程序。以 eMMC5.0 为例，参考标准文件 JESD84-B50(eMMC-Spec-V5.0).pdf ，eMMC 的整体架构如下：</p>
+
+<p><img src="/images/2021-07-15/image-20210712220836376.png" alt="image-20210712220836376" /></p>
+
+<p>SoC 作为主设备，通过 eMMC 控制模块向 eMMC 的设备管理接口发送指令和数据，各个信号的作用如下：</p>
+
+<ul>
+<li>CLK，用于同步的时钟信号。</li>
+<li>Data Strobe，从 Device 端输出的时钟信号，频率必须和 CLK 相同，用于同步从 Device 端输出的数据。 eMMC 5.0 中引入。</li>
+<li>CMD，此信号用于发送 Host 的 command 和 Device 的 response。</li>
+<li>DATA0-7，用于传输数据的 8bit 总线。</li>
+</ul>
+
+<p>eMMC 的设备管理器定义了六种寄存器：OCR、CID、CSD、ECSD、RCA 和 DSR，只能通过相应的命令访问，OCR、CID 和 CSD 寄存器携带有设备/内容的具体信息，而 RCA 和 DSR 寄存器是存储实际配置参数的配置寄存器，EXT_CSD 寄存器同时携带设备特定信息和实际配置参数，设备控制器还集成了 Flash 读写，坏块管理，ECC 校验等功能，下面是 Micron 8GB eMMC  <a href="https://media-www.micron.com/-/media/client/global/documents/products/data-sheet/emmc/broadmarket_embedded/emmc_4gb_8gb_ps8225_v50_wt.pdf?rev=200a5218843a461a880e8aee0fa9fb23" target="_blank">MTFC8GAKAJCN-1M WT</a> 数据手册中的描述：</p>
+
+<p><img src="/images/2021-07-15/image-20210713092032969.png" alt="image-20210713092032969" /></p>
+
+<p>Flash Memory 的最小读写单位是块（block），1 block = 512 Bytes 。eMMC 内部对 Flash Memory 划分了几个硬件分区：</p>
+
+<p><img src="/images/2021-07-15/image-20210713093641659.png" alt="image-20210713093641659" /></p>
+
+<p>u-boot 和 Linux 都提供了相应的 mmc 命令来读写 eMMC 。在 u-boot 阶段，可以查看 eMMC 的信息：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">u-boot<span style="color:#f92672">=</span>&gt; mmc list <span style="color:#75715e"># 列出当前系统的 MMC 设备</span>
+FSL_SDHC: <span style="color:#ae81ff">1</span>
+FSL_SDHC: <span style="color:#ae81ff">2</span> <span style="color:#f92672">(</span>eMMC<span style="color:#f92672">)</span>
+u-boot<span style="color:#f92672">=</span>&gt; mmc dev <span style="color:#ae81ff">2</span>  <span style="color:#75715e"># 切换到 2 号 eMMC 设备</span>
+u-boot<span style="color:#f92672">=</span>&gt; mmc info <span style="color:#75715e"># 打印当前 MMC 设备的信息</span>
+Device: FSL_SDHC
+Manufacturer ID: <span style="color:#ae81ff">13</span> <span style="color:#75715e"># 厂商 ID</span>
+OEM: 14e
+Name: Q2J55
+Bus Speed: <span style="color:#ae81ff">200000000</span> <span style="color:#75715e"># 总线速率</span>
+Mode: HS400 <span style="color:#f92672">(</span>200MHz<span style="color:#f92672">)</span> <span style="color:#75715e"># 速率模式</span>
+Rd Block Len: <span style="color:#ae81ff">512</span> <span style="color:#75715e"># block 的大小，单位是字节</span>
+MMC version <span style="color:#ae81ff">5</span>.0 <span style="color:#75715e"># eMMC 版本</span>
+High Capacity: Yes
+Capacity: <span style="color:#ae81ff">7</span>.1 GiB <span style="color:#75715e"># 容量</span>
+Bus Width: <span style="color:#ae81ff">8</span>-bit DDR <span style="color:#75715e"># 总线宽度</span>
+Erase Group Size: <span style="color:#ae81ff">512</span> KiB
+HC WP Group Size: <span style="color:#ae81ff">8</span> MiB
+User Capacity: <span style="color:#ae81ff">7</span>.1 GiB WRREL <span style="color:#75715e"># User Data Area</span> 
+Boot Capacity: <span style="color:#ae81ff">2</span> MiB ENH <span style="color:#75715e"># Boot Area Partition</span>
+RPMB Capacity: <span style="color:#ae81ff">4</span> MiB ENH <span style="color:#75715e"># RPMB Partition</span></code></pre></div>
+<p>Linux 系统启动后，可以看到：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">root@imx8mmevk:~# ls -l /dev/mmcblk2*
+brw-rw---- <span style="color:#ae81ff">1</span> root disk <span style="color:#ae81ff">179</span>,  <span style="color:#ae81ff">0</span> Jul  <span style="color:#ae81ff">6</span> <span style="color:#ae81ff">03</span>:33 /dev/mmcblk2       <span style="color:#75715e"># User Data Area ，用户可以此基础上新建逻辑分区</span>
+brw-rw---- <span style="color:#ae81ff">1</span> root disk <span style="color:#ae81ff">179</span>, <span style="color:#ae81ff">32</span> Jul  <span style="color:#ae81ff">6</span> <span style="color:#ae81ff">03</span>:33 /dev/mmcblk2boot0  <span style="color:#75715e"># Boot Area Partition 1</span>
+brw-rw---- <span style="color:#ae81ff">1</span> root disk <span style="color:#ae81ff">179</span>, <span style="color:#ae81ff">64</span> Jul  <span style="color:#ae81ff">6</span> <span style="color:#ae81ff">03</span>:33 /dev/mmcblk2boot1  <span style="color:#75715e"># Boot Area Partition 2</span>
+brw-rw---- <span style="color:#ae81ff">1</span> root disk <span style="color:#ae81ff">179</span>,  <span style="color:#ae81ff">1</span> Jul  <span style="color:#ae81ff">6</span> <span style="color:#ae81ff">03</span>:33 /dev/mmcblk2p1     <span style="color:#75715e"># UDA 区域的逻辑分区，用于存放内核镜像和设备树</span>
+brw-rw---- <span style="color:#ae81ff">1</span> root disk <span style="color:#ae81ff">179</span>,  <span style="color:#ae81ff">2</span> Jul  <span style="color:#ae81ff">6</span> <span style="color:#ae81ff">03</span>:33 /dev/mmcblk2p2     <span style="color:#75715e"># UDA 区域的逻辑分区，用于存放根文件系统</span>
+crw------- <span style="color:#ae81ff">1</span> root root <span style="color:#ae81ff">237</span>,  <span style="color:#ae81ff">0</span> Jul  <span style="color:#ae81ff">6</span> <span style="color:#ae81ff">03</span>:33 /dev/mmcblk2rpmb   <span style="color:#75715e"># RPMB Partition</span></code></pre></div>
+<p>内核启动信息中也会打印各分区的大小：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">root@imx8mmevk:~# dmesg | grep mmcblk2
+<span style="color:#f92672">[</span>    <span style="color:#ae81ff">0</span>.000000<span style="color:#f92672">]</span> Kernel command line: console<span style="color:#f92672">=</span>ttymxc1,115200 root<span style="color:#f92672">=</span>/dev/mmcblk2p2 rootwait rw
+<span style="color:#f92672">[</span>    <span style="color:#ae81ff">1</span>.986681<span style="color:#f92672">]</span> mmcblk2: mmc2:0001 Q2J55L <span style="color:#ae81ff">7</span>.13 GiB
+<span style="color:#f92672">[</span>    <span style="color:#ae81ff">1</span>.992485<span style="color:#f92672">]</span> mmcblk2boot0: mmc2:0001 Q2J55L partition <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">2</span>.00 MiB
+<span style="color:#f92672">[</span>    <span style="color:#ae81ff">2</span>.002296<span style="color:#f92672">]</span> mmcblk2boot1: mmc2:0001 Q2J55L partition <span style="color:#ae81ff">2</span> <span style="color:#ae81ff">2</span>.00 MiB
+<span style="color:#f92672">[</span>    <span style="color:#ae81ff">2</span>.011031<span style="color:#f92672">]</span> mmcblk2rpmb: mmc2:0001 Q2J55L partition <span style="color:#ae81ff">3</span> <span style="color:#ae81ff">4</span>.00 MiB, chardev <span style="color:#f92672">(</span><span style="color:#ae81ff">237</span>:0<span style="color:#f92672">)</span></code></pre></div>
+<p>一般情况下，Boot Area Partitions 的大小都为 2MB 或者 4MB，部分芯片厂家也会提供配置的机会。RPMB 通常也是 4M ，用于保存安全相关的数据。General Purpose Partitions (GPP) 则在出厂时默认不被支持，即不存在这些分区，需要用户主动使能，并配置其所要使用的 GPP 的容量大小，GPP 的数量可以为 1 - 4 个，各个 GPP 的容量大小可以不一样。User Data Area (UDA) 的容量大小则为总容量大小减去其他分区所占用的容量。每一个硬件分区的存储空间都是独立编址的，即访问地址为 0 - partition size。具体的数据读写操作实际访问哪一个硬件分区，是由 ECSD[179] 的 PARTITION_CONFIG[2:0]:PARTITION_ACCESS 决定的，也就是说，用户在访问特定的分区前，需要先发送命令，配置 PARTITION_ACCESS，然后再发送相关的数据访问请求。PARTITION_CONFIG 寄存器的定义如下：</p>
+
+<p><img src="/images/2021-07-15/image-20210713163922154.png" alt="image-20210713163922154" /></p>
+
+<ul>
+<li>Bit 7: Reserved</li>
+<li>Bit 6: BOOT_ACK (R/W/E)
+
+<ul>
+<li>0x0 : No boot acknowledge sent (default)</li>
+<li>0x1 : Boot acknowledge sent during boot operation</li>
+</ul></li>
+<li>Bit[5:3] : BOOT_PARTITION_ENABLE (R/W/E), User selects boot data that will be sent to master
+
+<ul>
+<li>0x0 : Device not boot enabled (default)</li>
+<li>0x1 : Boot partition 1 enabled for boot</li>
+<li>0x2 : Boot partition 2 enabled for boot</li>
+<li>0x3–0x6 : Reserved</li>
+<li>0x7 : User area enabled for boot</li>
+</ul></li>
+<li>Bit[2:0] : PARTITION_ACCESS (before BOOT_PARTITION_ACCESS, R/W/E_P), User selects partitions to access
+
+<ul>
+<li>0x0 : No access to boot partition (default)</li>
+<li>0x1 : R/W boot partition 1</li>
+<li>0x2 : R/W boot partition 2</li>
+<li>0x3 : R/W Replay Protected Memory Block (RPMB)</li>
+<li>0x4 : Access to General Purpose partition 1</li>
+<li>0x5 : Access to General Purpose partition 2</li>
+<li>0x6 : Access to General Purpose partition 3</li>
+<li>0x7 : Access to General Purpose partition 4<br /></li>
+</ul></li>
+</ul>
+
+<p>如果要擦除 Boot Area Partition 1 可以执行如下命令</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">u-boot<span style="color:#f92672">=</span>&gt; mmc partconf <span style="color:#ae81ff">2</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1</span>  <span style="color:#75715e"># 设置访问 boot partition 1</span>
+u-boot<span style="color:#f92672">=</span>&gt; mmc erase <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">10</span> <span style="color:#75715e"># 擦除 boot 分区的前十个 block</span>
+u-boot<span style="color:#f92672">=</span>&gt; mmc partconf <span style="color:#ae81ff">2</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#75715e"># 设置会默认值</span></code></pre></div>
+<p>这个寄存器的值也可以在 Linux 系统中读取：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">root@imx8mmevk:~#  mmc extcsd read /dev/mmcblk2 | grep PARTITION_CONFIG
+Boot configuration bytes <span style="color:#f92672">[</span>PARTITION_CONFIG: 0x08<span style="color:#f92672">]</span></code></pre></div>
+<h2 id="3-启动和烧写">3. 启动和烧写</h2>
+
+<p>BOOT Area Partition 主要是为了支持从 eMMC 启动系统而设计的。该分区的数据，在 eMMC 上电后，可以通过很简单的协议就可以读取出来。同时，大部分的 SoC 都可以通过 GPIO 或者 Fuse 的配置，让 Boot ROM 代码在上电后，将 BOOT Area Partition 分区的内容加载到 SoC 的内存中执行。Boot Area Partition 有两个，大小是完全一致的，大小由 ECSD 的 BOOT_SIZE_MULT 决定：</p>
+
+<p><img src="/images/2021-07-15/image-20210713134835447.png" alt="image-20210713134835447" /></p>
+
+<p>大小的计算公式如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">Size <span style="color:#f92672">=</span> 128Kbytes x BOOT_SIZE_MULT</code></pre></div>
+<p>可以在 Linux 下读取这个寄存器的值：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">root@imx8mmevk:~# mmc extcsd read /dev/mmcblk2 | grep BOOT_SIZE
+Boot partition size <span style="color:#f92672">[</span>BOOT_SIZE_MULTI: 0x10<span style="color:#f92672">]</span>  <span style="color:#75715e"># 0x10 表示 2MB</span></code></pre></div>
+<p>使用 NXP 提供的 uuu 工具，执行 <code>uuu -b emmc imx-boot</code> 向 eMMC 烧写 BootLoader 时，就是将 imx-boot 写入 BOOT Area Partition 1 ，并将 BOOT_PARTITION_ENABLE 设为 1 ，这样上电复位后，Boot ROM 代码就会把 BOOT Area Partition 1 中的代码加载的内存执行。</p>
+
+<p>这里需要注意，如果 BootLoader 文件的大小超出了 BOOT Area Partition 的大小，烧写时调试串口输出的信息信息：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">MMC write: dev <span style="color:#75715e"># 2, block # 66, count 6550 ... MMC: block number 0x19d8 exceeds max(0x1000)</span>
+
+<span style="color:#ae81ff">0</span> blocks written: ERROR
+
+Writing <span style="color:#e6db74">&#39;bootloader&#39;</span> FAILED!</code></pre></div>
+<p>要解决这个问题，有两种方法：</p>
+
+<ol>
+<li>更换 Boot Area Partition 更大的 eMMC</li>
+<li>将 BootLoader 文件写入 User Data Area 分区，设置从 User Data Area 分区启动。</li>
+</ol>
+
+<p>从使用的角度，如果 eMMC 不使用 Boot Area Partition ，那么它就和 SD 卡基本一样，SD 卡没有独立的启动分区，需要在 SoC 规定的地址放入用户程序，SoC 从这个地址去加载启动。根据 iMX8MM 的要求，用户程序的第一个部分必须是一个镜像向量表 (IVT，位于 BootLoader 文件的头部) 数据结构，IVT 包含了执行成功启动所需的数据成分，包括程序镜像的入口点，设备配置数据（DCD）的指针以及启动过程中使用的其他指针。下面是对于不同存储介质的地址要求：</p>
+
+<p><img src="/images/2021-07-15/image-20210715220244089.png" alt="image-20210715220244089" /></p>
+
+<p>对于 eMMC  ，必须放 UDA 分区在 0x8400 地址，然后将 IVT 从 eMMC 读到内存，根据 IVT 中设置执行 BootLoader 的其他代码。IVT 的存储地址是用户程序中唯一要求固定地址的部分，用户程序的其余部分可以灵活布局，由 IVT 的内容决定。推荐如下布局，BootLoader 文件放置在  0x8400 地址，从 0xa00000 开始新建 FAT 和 Ext3 分区，放置内核、设备树和根文件系统：</p>
+
+<p><img src="/images/2021-07-15/image-20210713161911722.png" alt="image-20210713161911722" /></p>
+
+<p>可以从 SD 卡启动一个 Linux 系统，然后对 eMMC 进行烧写。用 dd 命令烧写 BootLoader ：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">root@imx8mmevk:~# dd <span style="color:#66d9ef">if</span><span style="color:#f92672">=</span>./imx-boot of<span style="color:#f92672">=</span>/dev/mmcblk2 bs<span style="color:#f92672">=</span>1k seek<span style="color:#f92672">=</span><span style="color:#ae81ff">33</span> conv<span style="color:#f92672">=</span>fsync
+<span style="color:#75715e"># dd 命令只会从 UDA 分区开始寻址，不会烧写到其他分区</span></code></pre></div>
+<p>FAT 和 Ext3 分区可以用 fdisk 命令新建，然后将相关文件夹拷贝到分区中，最后将 BOOT_PARTITION_ENABLE 设为 0 或者 7 ，Boot ROM 就会从 UDA 分区启动：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">root@imx8mmevk:~# mmc bootpart enable <span style="color:#ae81ff">7</span> <span style="color:#ae81ff">0</span> /dev/mmcblk2</code></pre></div>
+<p>也可以在 u-boot 中设置：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">u-boot<span style="color:#f92672">=</span>&gt; mmc partconf <span style="color:#ae81ff">2</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">7</span> <span style="color:#ae81ff">0</span></code></pre></div>
+<p>写入后可以读出来确认一下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">root@imx8mmevk:~#  mmc extcsd read /dev/mmcblk2 | grep PARTITION_CONFIG
+Boot configuration bytes <span style="color:#f92672">[</span>PARTITION_CONFIG: 0x38<span style="color:#f92672">]</span></code></pre></div>
+<p>上面是手动写入系统镜像的步骤，NXP 提供的 UUU 工具可以使用串行下载模式，通过 USB OTG 接口从上位机执行自定义脚本对 eMMC 进行烧写，执行语法是 <code>uuu &lt;script file name&gt;</code> ，基本的原理和步骤是：</p>
+
+<ol>
+<li>使用 SDP 协议把一个 BootLoader 文件写入内存并启动。</li>
+<li>内存中的 BootLoader 使用 FB 协议把一个临时 Linux 系统（包括内核、设备树和根文件系统）写入内存并启动。</li>
+<li>内存中的临时系统通过 FBK 协议执行指令，烧写 BootLoader ，对 eMMC 格式化，然后把最终要运行的系统文件（包括内核、设备树和根文件系统等）复制到相应的分区 。</li>
+<li>设置 BOOT_PARTITION_ENABLE 的值。</li>
+</ol>
+
+<p>UUU 的使用方法可以在 <a href="https://github.com/NXPmicro/mfgtools/wiki" target="_blank">https://github.com/NXPmicro/mfgtools/wiki</a> 查看，下面是一个脚本实例：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">uuu_version <span style="color:#ae81ff">1</span>.4.72
+<span style="color:#75715e"># 用于烧写 iMX8MM 的 eMMC ，从 User data area 启动</span>
+<span style="color:#75715e"># tools 下的文件是临时系统</span>
+<span style="color:#75715e">#    imx-boot		         | BootLoader</span>
+<span style="color:#75715e">#    Image-imx8mmevk.bin    | kernel image, arm64 is Image, arm32 it is zImage</span>
+<span style="color:#75715e">#    imx8mm-evk.dtb         | board dtb file</span>
+<span style="color:#75715e">#    fsl-image-mfgtool-initramfs-imx_mfgtools.cpio.gz.u-boot	| mfgtool init ramfs</span>
+<span style="color:#75715e"># image 下的文件用于烧写到 eMMC</span> 
+<span style="color:#75715e">#    imx-boot		    | BootLoader</span>
+<span style="color:#75715e">#    Image			    | kernel image, arm64 is Image, arm32 it is zImage</span>
+<span style="color:#75715e">#    imx8mm-evk.dtb	| board dtb file</span>
+<span style="color:#75715e">#    rootfs.tar.bz2	| rootfs</span>
+<span style="color:#75715e">#    tee.bin			| optee image, put dummy _uTee.tar file here if platform is not MX6/MX7*</span>
+
+<span style="color:#75715e"># 将 BootLoader 加载到内存并启动</span>
+<span style="color:#75715e"># This command will be run when i.MX6/7 i.MX8MM, i.MX8MQ</span>
+SDP: boot -f tools/imx-boot
+
+<span style="color:#75715e"># This command will be run when ROM support stream mode</span>
+<span style="color:#75715e"># i.MX8QXP, i.MX8QM</span>
+SDPS: boot -f tools/imx-boot
+
+<span style="color:#75715e"># These commands will be run when use SPL and will be skipped if no spl</span>
+<span style="color:#75715e"># SDPU will be deprecated. please use SDPV instead of SDPU</span>
+<span style="color:#75715e"># {</span>
+SDPU: delay <span style="color:#ae81ff">1000</span>
+SDPU: write -f tools/imx-boot -offset 0x57c00
+SDPU: jump
+<span style="color:#75715e"># }</span>
+
+<span style="color:#75715e"># These commands will be run when use SPL and will be skipped if no spl</span>
+<span style="color:#75715e"># if (SPL support SDPV)</span>
+<span style="color:#75715e"># {</span>
+SDPV: delay <span style="color:#ae81ff">1000</span>
+SDPV: write -f tools/imx-boot -skipspl
+SDPV: jump
+SDPV: delay <span style="color:#ae81ff">1000</span>
+<span style="color:#75715e"># }</span>
+
+<span style="color:#75715e"># 切换到 eMMC 设备</span>
+FB: ucmd setenv fastboot_dev mmc
+FB: ucmd setenv mmcdev <span style="color:#e6db74">${</span>emmc_dev<span style="color:#e6db74">}</span>
+FB: ucmd mmc dev <span style="color:#e6db74">${</span>emmc_dev<span style="color:#e6db74">}</span>
+
+<span style="color:#75715e"># 配置在 eMMC 从用户分区启动</span>
+FB: ucmd <span style="color:#66d9ef">if</span> env exists emmc_ack; <span style="color:#66d9ef">then</span> ; <span style="color:#66d9ef">else</span> setenv emmc_ack <span style="color:#ae81ff">0</span>; <span style="color:#66d9ef">fi</span>;
+FB: ucmd setenv emmc_cmd mmc partconf <span style="color:#e6db74">${</span>emmc_dev<span style="color:#e6db74">}</span> <span style="color:#e6db74">${</span>emmc_ack<span style="color:#e6db74">}</span> <span style="color:#ae81ff">7</span> <span style="color:#ae81ff">0</span>
+FB: ucmd <span style="color:#66d9ef">if</span> test <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>emmc_skip_fb<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span> !<span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;yes&#34;</span>; <span style="color:#66d9ef">then</span> run emmc_cmd; <span style="color:#66d9ef">fi</span>
+
+<span style="color:#75715e"># 加载内核、设备树、rootfs 到内存上，并启动</span>
+FB: ucmd setenv fastboot_buffer <span style="color:#e6db74">${</span>loadaddr<span style="color:#e6db74">}</span>
+FB: download -f tools/Image
+FB: ucmd setenv fastboot_buffer <span style="color:#e6db74">${</span>fdt_addr<span style="color:#e6db74">}</span>
+FB: download -f tools/imx8mm-evk.dtb
+FB: ucmd setenv fastboot_buffer <span style="color:#e6db74">${</span>initrd_addr<span style="color:#e6db74">}</span>
+FB: download -f tools/fsl-image-mfgtool-initramfs-imx_mfgtools.cpio.gz.u-boot
+<span style="color:#75715e"># FB: ucmd setenv bootargs console=${console},${baudrate} earlycon=${earlycon},${baudrate}</span>
+FB: acmd <span style="color:#e6db74">${</span>kboot<span style="color:#e6db74">}</span> <span style="color:#e6db74">${</span>loadaddr<span style="color:#e6db74">}</span> <span style="color:#e6db74">${</span>initrd_addr<span style="color:#e6db74">}</span> <span style="color:#e6db74">${</span>fdt_addr<span style="color:#e6db74">}</span>
+
+<span style="color:#75715e"># get mmc dev number from kernel command line</span>
+<span style="color:#75715e"># 等待启动完毕</span>
+FBK: ucmd <span style="color:#66d9ef">while</span> <span style="color:#f92672">[</span> ! -e /dev/mmcblk*boot0 <span style="color:#f92672">]</span>; <span style="color:#66d9ef">do</span> sleep <span style="color:#ae81ff">1</span>; echo <span style="color:#e6db74">&#34;wait for /dev/mmcblk*boot* appear&#34;</span>; <span style="color:#66d9ef">done</span>;
+
+<span style="color:#75715e"># serach emmc device number, if your platform have more than two emmc chip, please echo dev number &gt;/tmp/mmcdev</span> 
+FBK: ucmd dev<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>ls /dev/mmcblk*boot*<span style="color:#e6db74">`</span>; dev<span style="color:#f92672">=(</span>$dev<span style="color:#f92672">)</span>; dev<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>dev[0]<span style="color:#e6db74">}</span>; dev<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>dev#/dev/mmcblk<span style="color:#e6db74">}</span>; dev<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>dev%boot*<span style="color:#e6db74">}</span>; echo $dev &gt; /tmp/mmcdev;
+
+<span style="color:#75715e"># dd to clear the possible MBR</span>
+FBK: ucmd mmc<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>cat /tmp/mmcdev<span style="color:#e6db74">`</span>; dd <span style="color:#66d9ef">if</span><span style="color:#f92672">=</span>/dev/zero of<span style="color:#f92672">=</span>/dev/mmcblk<span style="color:#e6db74">${</span>mmc<span style="color:#e6db74">}</span> bs<span style="color:#f92672">=</span><span style="color:#ae81ff">512</span> count<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+
+<span style="color:#75715e"># 新建分区</span>
+<span style="color:#75715e"># 前面 10M 留给 BootLoader ，从 0xa00000Bytes 开始新建一个 500M 的 FAT 分区，从 600M 开始新建一个 ext3 分区</span>
+FBK: ucmd mmc<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>cat /tmp/mmcdev<span style="color:#e6db74">`</span>; PARTSTR<span style="color:#f92672">=</span><span style="color:#e6db74">$&#39;10M,500M,0c\n600M,,83\n&#39;</span>; echo <span style="color:#e6db74">&#34;</span>$PARTSTR<span style="color:#e6db74">&#34;</span> | sfdisk --force /dev/mmcblk<span style="color:#e6db74">${</span>mmc<span style="color:#e6db74">}</span>
+
+<span style="color:#75715e"># 格式化 fat 分区并挂载</span>
+FBK: ucmd mmc<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>cat /tmp/mmcdev<span style="color:#e6db74">`</span>; <span style="color:#66d9ef">while</span> <span style="color:#f92672">[</span> ! -e /dev/mmcblk<span style="color:#e6db74">${</span>mmc<span style="color:#e6db74">}</span>p1 <span style="color:#f92672">]</span>; <span style="color:#66d9ef">do</span> sleep <span style="color:#ae81ff">1</span>; <span style="color:#66d9ef">done</span>
+FBK: ucmd mmc<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>cat /tmp/mmcdev<span style="color:#e6db74">`</span>; mkfs.vfat /dev/mmcblk<span style="color:#e6db74">${</span>mmc<span style="color:#e6db74">}</span>p1
+FBK: ucmd mmc<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>cat /tmp/mmcdev<span style="color:#e6db74">`</span>; mkdir -p /mnt/fat
+FBK: ucmd mmc<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>cat /tmp/mmcdev<span style="color:#e6db74">`</span>; mount -t vfat /dev/mmcblk<span style="color:#e6db74">${</span>mmc<span style="color:#e6db74">}</span>p1 /mnt/fat
+
+<span style="color:#75715e"># 将 BootLoader 复制到 fat 分区，并写入 eMMC</span>
+FBK: ucp  image/imx-boot t:/mnt/fat
+FBK: ucmd mmc<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>cat /tmp/mmcdev<span style="color:#e6db74">`</span>; dd <span style="color:#66d9ef">if</span><span style="color:#f92672">=</span>/mnt/fat/imx-boot of<span style="color:#f92672">=</span>/dev/mmcblk<span style="color:#e6db74">${</span>mmc<span style="color:#e6db74">}</span> bs<span style="color:#f92672">=</span>1k seek<span style="color:#f92672">=</span><span style="color:#ae81ff">33</span> conv<span style="color:#f92672">=</span>fsync
+
+<span style="color:#75715e"># 将内核、设备树复制到 fat 分区</span>
+FBK: ucp  image/fat/Image t:/mnt/fat
+FBK: ucp  image/fat/imx8mm-evk.dtb t:/mnt/fat
+FBK: ucp  image/fat/tee.bin t:/tmp/fat
+FBK: ucmd umount /mnt/fat
+
+<span style="color:#75715e"># 格式化 ext3 分区</span>
+FBK: ucmd mmc<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>cat /tmp/mmcdev<span style="color:#e6db74">`</span>; mkfs.ext3 -F -E nodiscard /dev/mmcblk<span style="color:#e6db74">${</span>mmc<span style="color:#e6db74">}</span>p2
+FBK: ucmd mkdir -p /mnt/ext3
+FBK: ucmd mmc<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>cat /tmp/mmcdev<span style="color:#e6db74">`</span>; mount /dev/mmcblk<span style="color:#e6db74">${</span>mmc<span style="color:#e6db74">}</span>p2 /mnt/ext3
+FBK: acmd export EXTRACT_UNSAFE_SYMLINKS<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>; tar -jx -C /mnt/ext3
+FBK: ucp  image/rootfs.tar.bz2 t:-
+FBK: Sync
+FBK: ucmd umount /mnt/ext3
+FBK: DONE</code></pre></div>
+<p>如果要从 boot partitions 1 启动，可以用下面的脚本：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">uuu_version <span style="color:#ae81ff">1</span>.4.72
+<span style="color:#75715e"># 用于烧写 iMX8MM 的 eMMC ，从 boot 分区启动</span>
+<span style="color:#75715e"># tools 下的文件是临时系统</span>
+<span style="color:#75715e">#    imx-boot		         | BootLoader</span>
+<span style="color:#75715e">#    Image-imx8mmevk.bin    | kernel image, arm64 is Image, arm32 it is zImage</span>
+<span style="color:#75715e">#    imx8mm-evk.dtb         | board dtb file</span>
+<span style="color:#75715e">#    fsl-image-mfgtool-initramfs-imx_mfgtools.cpio.gz.u-boot	| mfgtool init ramfs</span>
+<span style="color:#75715e"># image 下的文件用于烧写到 eMMC</span> 
+<span style="color:#75715e">#    imx-boot		    | BootLoader</span>
+<span style="color:#75715e">#    Image			    | kernel image, arm64 is Image, arm32 it is zImage</span>
+<span style="color:#75715e">#    imx8mm-evk.dtb	| board dtb file</span>
+<span style="color:#75715e">#    rootfs.tar.bz2	| rootfs</span>
+<span style="color:#75715e">#    tee.bin			| optee image, put dummy _uTee.tar file here if platform is not MX6/MX7*</span>
+
+<span style="color:#75715e"># 将 BootLoader 加载到内存并启动</span>
+<span style="color:#75715e"># This command will be run when i.MX6/7 i.MX8MM, i.MX8MQ</span>
+SDP: boot -f tools/imx-boot
+
+<span style="color:#75715e"># This command will be run when ROM support stream mode</span>
+<span style="color:#75715e"># i.MX8QXP, i.MX8QM</span>
+SDPS: boot -f tools/imx-boot
+
+<span style="color:#75715e"># These commands will be run when use SPL and will be skipped if no spl</span>
+<span style="color:#75715e"># SDPU will be deprecated. please use SDPV instead of SDPU</span>
+<span style="color:#75715e"># {</span>
+SDPU: delay <span style="color:#ae81ff">1000</span>
+SDPU: write -f tools/imx-boot -offset 0x57c00
+SDPU: jump
+<span style="color:#75715e"># }</span>
+
+<span style="color:#75715e"># These commands will be run when use SPL and will be skipped if no spl</span>
+<span style="color:#75715e"># if (SPL support SDPV)</span>
+<span style="color:#75715e"># {</span>
+SDPV: delay <span style="color:#ae81ff">1000</span>
+SDPV: write -f tools/imx-boot -skipspl
+SDPV: jump
+SDPV: delay <span style="color:#ae81ff">1000</span>
+<span style="color:#75715e"># }</span>
+
+<span style="color:#75715e"># 将 BootLoader 烧入到 eMMC</span>
+FB: ucmd setenv fastboot_dev mmc
+FB: ucmd setenv mmcdev <span style="color:#e6db74">${</span>emmc_dev<span style="color:#e6db74">}</span>
+FB: flash bootloader image/imx-boot
+
+<span style="color:#75715e"># 配置在 eMMC 引导分区 1 启动</span>
+FB: ucmd <span style="color:#66d9ef">if</span> env exists emmc_ack; <span style="color:#66d9ef">then</span> ; <span style="color:#66d9ef">else</span> setenv emmc_ack <span style="color:#ae81ff">0</span>; <span style="color:#66d9ef">fi</span>;
+FB: ucmd setenv emmc_cmd mmc partconf <span style="color:#e6db74">${</span>emmc_dev<span style="color:#e6db74">}</span> <span style="color:#e6db74">${</span>emmc_ack<span style="color:#e6db74">}</span> <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">0</span>
+FB: ucmd <span style="color:#66d9ef">if</span> test <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>emmc_skip_fb<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span> !<span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;yes&#34;</span>; <span style="color:#66d9ef">then</span> run emmc_cmd; <span style="color:#66d9ef">fi</span>
+
+<span style="color:#75715e"># 加载内核、设备树、rootfs 到内存上</span>
+FB: ucmd setenv fastboot_buffer <span style="color:#e6db74">${</span>loadaddr<span style="color:#e6db74">}</span>
+FB: download -f tools/Image
+FB: ucmd setenv fastboot_buffer <span style="color:#e6db74">${</span>fdt_addr<span style="color:#e6db74">}</span>
+FB: download -f tools/imx8mm-evk.dtb
+FB: ucmd setenv fastboot_buffer <span style="color:#e6db74">${</span>initrd_addr<span style="color:#e6db74">}</span>
+FB: download -f tools/fsl-image-mfgtool-initramfs-imx_mfgtools.cpio.gz.u-boot
+<span style="color:#75715e">#FB: ucmd setenv bootargs console=${console},${baudrate} earlycon=${earlycon},${baudrate}</span>
+FB: acmd <span style="color:#e6db74">${</span>kboot<span style="color:#e6db74">}</span> <span style="color:#e6db74">${</span>loadaddr<span style="color:#e6db74">}</span> <span style="color:#e6db74">${</span>initrd_addr<span style="color:#e6db74">}</span> <span style="color:#e6db74">${</span>fdt_addr<span style="color:#e6db74">}</span>
+
+<span style="color:#75715e"># get mmc dev number from kernel command line</span>
+<span style="color:#75715e"># Wait for emmc</span>
+FBK: ucmd <span style="color:#66d9ef">while</span> <span style="color:#f92672">[</span> ! -e /dev/mmcblk*boot0 <span style="color:#f92672">]</span>; <span style="color:#66d9ef">do</span> sleep <span style="color:#ae81ff">1</span>; echo <span style="color:#e6db74">&#34;wait for /dev/mmcblk*boot* appear&#34;</span>; <span style="color:#66d9ef">done</span>;
+
+<span style="color:#75715e"># serach emmc device number, if your platform have more than two emmc chip, please echo dev number &gt;/tmp/mmcdev</span> 
+FBK: ucmd dev<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>ls /dev/mmcblk*boot*<span style="color:#e6db74">`</span>; dev<span style="color:#f92672">=(</span>$dev<span style="color:#f92672">)</span>; dev<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>dev[0]<span style="color:#e6db74">}</span>; dev<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>dev#/dev/mmcblk<span style="color:#e6db74">}</span>; dev<span style="color:#f92672">=</span><span style="color:#e6db74">${</span>dev%boot*<span style="color:#e6db74">}</span>; echo $dev &gt; /tmp/mmcdev;
+
+<span style="color:#75715e"># dd to clear the possible MBR</span>
+FBK: ucmd mmc<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>cat /tmp/mmcdev<span style="color:#e6db74">`</span>; dd <span style="color:#66d9ef">if</span><span style="color:#f92672">=</span>/dev/zero of<span style="color:#f92672">=</span>/dev/mmcblk<span style="color:#e6db74">${</span>mmc<span style="color:#e6db74">}</span> bs<span style="color:#f92672">=</span><span style="color:#ae81ff">512</span> count<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+
+<span style="color:#75715e"># 新建分区</span>
+<span style="color:#75715e"># 前面 10M 留给 BootLoader ，从 0xa00000Bytes 开始新建一个 500M 的 FAT 分区，从 600M 开始新建一个 ext3 分区</span>
+FBK: ucmd mmc<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>cat /tmp/mmcdev<span style="color:#e6db74">`</span>; PARTSTR<span style="color:#f92672">=</span><span style="color:#e6db74">$&#39;10M,500M,0c\n600M,,83\n&#39;</span>; echo <span style="color:#e6db74">&#34;</span>$PARTSTR<span style="color:#e6db74">&#34;</span> | sfdisk --force /dev/mmcblk<span style="color:#e6db74">${</span>mmc<span style="color:#e6db74">}</span>
+
+<span style="color:#75715e"># 格式化 fat 分区并挂载</span>
+FBK: ucmd mmc<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>cat /tmp/mmcdev<span style="color:#e6db74">`</span>; <span style="color:#66d9ef">while</span> <span style="color:#f92672">[</span> ! -e /dev/mmcblk<span style="color:#e6db74">${</span>mmc<span style="color:#e6db74">}</span>p1 <span style="color:#f92672">]</span>; <span style="color:#66d9ef">do</span> sleep <span style="color:#ae81ff">1</span>; <span style="color:#66d9ef">done</span>
+FBK: ucmd mmc<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>cat /tmp/mmcdev<span style="color:#e6db74">`</span>; mkfs.vfat /dev/mmcblk<span style="color:#e6db74">${</span>mmc<span style="color:#e6db74">}</span>p1
+FBK: ucmd mmc<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>cat /tmp/mmcdev<span style="color:#e6db74">`</span>; mkdir -p /mnt/fat
+FBK: ucmd mmc<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>cat /tmp/mmcdev<span style="color:#e6db74">`</span>; mount -t vfat /dev/mmcblk<span style="color:#e6db74">${</span>mmc<span style="color:#e6db74">}</span>p1 /mnt/fat
+
+<span style="color:#75715e"># 将内核、设备树复制到 fat 分区</span>
+FBK: ucp  image/fat/Image t:/mnt/fat
+FBK: ucp  image/fat/imx8mm-evk.dtb t:/mnt/fat
+FBK: ucp  image/fat/tee.bin t:/tmp/fat
+FBK: ucmd umount /mnt/fat
+
+<span style="color:#75715e"># 格式化 ext3 分区</span>
+FBK: ucmd mmc<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>cat /tmp/mmcdev<span style="color:#e6db74">`</span>; mkfs.ext3 -F -E nodiscard /dev/mmcblk<span style="color:#e6db74">${</span>mmc<span style="color:#e6db74">}</span>p2
+FBK: ucmd mkdir -p /mnt/ext3
+FBK: ucmd mmc<span style="color:#f92672">=</span><span style="color:#e6db74">`</span>cat /tmp/mmcdev<span style="color:#e6db74">`</span>; mount /dev/mmcblk<span style="color:#e6db74">${</span>mmc<span style="color:#e6db74">}</span>p2 /mnt/ext3
+FBK: acmd export EXTRACT_UNSAFE_SYMLINKS<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>; tar -jx -C /mnt/ext3
+FBK: ucp  image/rootfs.tar.bz2 t:-
+FBK: Sync
+FBK: ucmd umount /mnt/ext3
+FBK: DONE</code></pre></div>
+<h2 id="4-u-boot-mmc">4. u-boot mmc</h2>
+
+<p>u-boot 提供了读写 eMMC 的命令 mmc ，语法如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">u-boot<span style="color:#f92672">=</span>&gt; mmc
+mmc - MMC sub system
+
+Usage:
+mmc info - display info of the current MMC device
+mmc read addr blk# cnt
+mmc write addr blk# cnt
+mmc erase blk# cnt
+mmc rescan
+mmc part - lists available partition on current mmc device
+mmc dev <span style="color:#f92672">[</span>dev<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>part<span style="color:#f92672">]</span> - show or set current mmc device <span style="color:#f92672">[</span>partition<span style="color:#f92672">]</span>
+mmc list - lists available devices
+mmc hwpartition <span style="color:#f92672">[</span>args...<span style="color:#f92672">]</span> - does hardware partitioning
+  arguments <span style="color:#f92672">(</span>sizes in <span style="color:#ae81ff">512</span>-byte blocks<span style="color:#f92672">)</span>:
+    <span style="color:#f92672">[</span>user <span style="color:#f92672">[</span>enh start cnt<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>wrrel <span style="color:#f92672">{</span>on|off<span style="color:#f92672">}]]</span> - sets user data area attributes
+    <span style="color:#f92672">[</span>gp1|gp2|gp3|gp4 cnt <span style="color:#f92672">[</span>enh<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>wrrel <span style="color:#f92672">{</span>on|off<span style="color:#f92672">}]]</span> - general purpose partition
+    <span style="color:#f92672">[</span>check|set|complete<span style="color:#f92672">]</span> - mode, complete set partitioning completed
+  WARNING: Partitioning is a write-once setting once it is set to complete.
+  Power cycling is required to initialize partitions after set to complete.
+mmc bootbus dev boot_bus_width reset_boot_bus_width boot_mode
+ - Set the BOOT_BUS_WIDTH field of the specified device
+mmc bootpart-resize &lt;dev&gt; &lt;boot part size MB&gt; &lt;RPMB part size MB&gt;
+ - Change sizes of boot and RPMB partitions of specified device
+mmc partconf dev <span style="color:#f92672">[</span>boot_ack boot_partition partition_access<span style="color:#f92672">]</span>
+ - Show or change the bits of the PARTITION_CONFIG field of the specified device
+mmc rst-function dev value
+ - Change the RST_n_FUNCTION field of the specified device
+   WARNING: This is a write-once field and <span style="color:#ae81ff">0</span> / <span style="color:#ae81ff">1</span> / <span style="color:#ae81ff">2</span> are the only valid values.
+mmc setdsr &lt;value&gt; - set DSR register value</code></pre></div>
+<h2 id="5-linux-mmc">5. Linux mmc</h2>
+
+<p>Linux 提供看开源的 eMMC 读写工具 <a href="https://git.kernel.org/pub/scm/linux/kernel/git/cjb/mmc-utils.git/tree/" target="_blank">mmc-utils</a> 。语法如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">root@imx8mmevk:~# mmc
+Usage:
+        mmc extcsd read &lt;device&gt;
+                Print extcsd data from &lt;device&gt;.
+        mmc writeprotect boot get &lt;device&gt;
+                Print the boot partitions write protect status <span style="color:#66d9ef">for</span> &lt;device&gt;.
+        mmc writeprotect boot set &lt;device&gt;
+                Set the boot partitions write protect status <span style="color:#66d9ef">for</span> &lt;device&gt;.
+                This sets the eMMC boot partitions to be write-protected <span style="color:#66d9ef">until</span>
+                the next boot.
+        mmc writeprotect user set &lt;type&gt;&lt;start block&gt;&lt;blocks&gt;&lt;device&gt;
+                Set the write protect configuration <span style="color:#66d9ef">for</span> the specified region
+                of the user area <span style="color:#66d9ef">for</span> &lt;device&gt;.
+                &lt;type&gt; must be <span style="color:#e6db74">&#34;none|temp|pwron&#34;</span>.
+                    <span style="color:#e6db74">&#34;none&#34;</span>  - Clear temporary write protection.
+                    <span style="color:#e6db74">&#34;temp&#34;</span>  - Set temporary write protection.
+                    <span style="color:#e6db74">&#34;pwron&#34;</span> - Set write protection <span style="color:#66d9ef">until</span> the next poweron.
+                &lt;start block&gt; specifies the first block of the protected area.
+                &lt;blocks&gt; specifies the size of the protected area in blocks.
+                NOTE! The area must start and end on Write Protect Group
+                boundries, Use the <span style="color:#e6db74">&#34;writeprotect user get&#34;</span> command to get the
+                Write Protect Group size.
+        mmc writeprotect user get &lt;device&gt;
+                Print the user areas write protect configuration <span style="color:#66d9ef">for</span> &lt;device&gt;.
+        mmc disable 512B emulation &lt;device&gt;
+                Set the eMMC data sector size to 4KB by disabling emulation on
+                &lt;device&gt;.
+        mmc gp create &lt;-y|-n|-c&gt; &lt;length KiB&gt; &lt;partition&gt; &lt;enh_attr&gt; &lt;ext_attr&gt; &lt;device&gt;
+                Create general purpose partition <span style="color:#66d9ef">for</span> the &lt;device&gt;.
+                Dry-run only unless -y or -c is passed.
+                Use -c <span style="color:#66d9ef">if</span> more partitioning settings are still to come.
+                NOTE!  This is a one-time programmable <span style="color:#f92672">(</span>unreversible<span style="color:#f92672">)</span> change.
+                To set enhanced attribute to general partition being created set
+                 &lt;enh_attr&gt; to <span style="color:#ae81ff">1</span> <span style="color:#66d9ef">else</span> set it to <span style="color:#ae81ff">0</span>.
+                To set extended attribute to general partition
+                 set &lt;ext_attr&gt; to <span style="color:#ae81ff">1</span>,2 <span style="color:#66d9ef">else</span> set it to <span style="color:#ae81ff">0</span>
+        mmc enh_area set &lt;-y|-n|-c&gt; &lt;start KiB&gt; &lt;length KiB&gt; &lt;device&gt;
+                Enable the enhanced user area <span style="color:#66d9ef">for</span> the &lt;device&gt;.
+                Dry-run only unless -y or -c is passed.
+                Use -c <span style="color:#66d9ef">if</span> more partitioning settings are still to come.
+                NOTE!  This is a one-time programmable <span style="color:#f92672">(</span>unreversible<span style="color:#f92672">)</span> change.
+        mmc write_reliability set &lt;-y|-n|-c&gt; &lt;partition&gt; &lt;device&gt;
+                Enable write reliability per partition <span style="color:#66d9ef">for</span> the &lt;device&gt;.
+                Dry-run only unless -y or -c is passed.
+                Use -c <span style="color:#66d9ef">if</span> more partitioning settings are still to come.
+                NOTE!  This is a one-time programmable <span style="color:#f92672">(</span>unreversible<span style="color:#f92672">)</span> change.
+        mmc status get &lt;device&gt;
+                Print the response to STATUS_SEND <span style="color:#f92672">(</span>CMD13<span style="color:#f92672">)</span>.
+        mmc bootpart enable &lt;boot_partition&gt; &lt;send_ack&gt; &lt;device&gt;
+                Enable the boot partition <span style="color:#66d9ef">for</span> the &lt;device&gt;.
+                Disable the boot partition <span style="color:#66d9ef">for</span> the &lt;device&gt; <span style="color:#66d9ef">if</span> &lt;boot_partition&gt; is set to <span style="color:#ae81ff">0</span>.
+                To receive acknowledgment of boot from the card set &lt;send_ack&gt;
+                to <span style="color:#ae81ff">1</span>, <span style="color:#66d9ef">else</span> set it to <span style="color:#ae81ff">0</span>.
+        mmc bootbus set &lt;boot_mode&gt; &lt;reset_boot_bus_conditions&gt; &lt;boot_bus_width&gt; &lt;device&gt;
+                Set Boot Bus Conditions.
+                &lt;boot_mode&gt; must be <span style="color:#e6db74">&#34;single_backward|single_hs|dual&#34;</span>
+                &lt;reset_boot_bus_conditions&gt; must be <span style="color:#e6db74">&#34;x1|retain&#34;</span>
+                &lt;boot_bus_width&gt; must be <span style="color:#e6db74">&#34;x1|x4|x8&#34;</span>
+        mmc bkops enable &lt;device&gt;
+                Enable the eMMC BKOPS feature on &lt;device&gt;.
+                NOTE!  This is a one-time programmable <span style="color:#f92672">(</span>unreversible<span style="color:#f92672">)</span> change.
+        mmc hwreset enable &lt;device&gt;
+                Permanently enable the eMMC H/W Reset feature on &lt;device&gt;.
+                NOTE!  This is a one-time programmable <span style="color:#f92672">(</span>unreversible<span style="color:#f92672">)</span> change.
+        mmc hwreset disable &lt;device&gt;
+                Permanently disable the eMMC H/W Reset feature on &lt;device&gt;.
+                NOTE!  This is a one-time programmable <span style="color:#f92672">(</span>unreversible<span style="color:#f92672">)</span> change.
+        mmc sanitize &lt;device&gt;
+                Send Sanitize command to the &lt;device&gt;.
+                This will delete the unmapped memory region of the device.
+        mmc rpmb write-key &lt;rpmb device&gt; &lt;key file&gt;
+                Program authentication key which is <span style="color:#ae81ff">32</span> bytes length and stored
+                in the specified file. Also you can specify <span style="color:#e6db74">&#39;-&#39;</span> instead of
+                key file path to read the key from stdin.
+                NOTE!  This is a one-time programmable <span style="color:#f92672">(</span>unreversible<span style="color:#f92672">)</span> change.
+                Example:
+                  $ echo -n AAAABBBBCCCCDDDDEEEEFFFFGGGGHHHH | <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>                    mmc rpmb write-key /dev/mmcblk0rpmb -
+        mmc rpmb read-counter &lt;rpmb device&gt;
+                Counter value <span style="color:#66d9ef">for</span> the &lt;rpmb device&gt; will be read to stdout.
+        mmc rpmb read-block &lt;rpmb device&gt; &lt;address&gt; &lt;blocks count&gt; &lt;output file&gt; <span style="color:#f92672">[</span>key file<span style="color:#f92672">]</span>
+                Blocks of <span style="color:#ae81ff">256</span> bytes will be read from &lt;rpmb device&gt; to output
+                file or stdout <span style="color:#66d9ef">if</span> <span style="color:#e6db74">&#39;-&#39;</span> is specified. If key is specified - read
+                data will be verified. Instead of regular path you can specify
+                <span style="color:#e6db74">&#39;-&#39;</span> to read key from stdin.
+                Example:
+                  $ echo -n AAAABBBBCCCCDDDDEEEEFFFFGGGGHHHH | <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>                    mmc rpmb read-block /dev/mmcblk0rpmb 0x02 <span style="color:#ae81ff">2</span> /tmp/block -
+                or read two blocks without verification
+                  $ mmc rpmb read-block /dev/mmcblk0rpmb 0x02 <span style="color:#ae81ff">2</span> /tmp/block
+        mmc rpmb write-block &lt;rpmb device&gt; &lt;address&gt; &lt;<span style="color:#ae81ff">256</span> byte data file&gt; &lt;key file&gt;
+                Block of <span style="color:#ae81ff">256</span> bytes will be written from data file to
+                &lt;rpmb device&gt;. Also you can specify <span style="color:#e6db74">&#39;-&#39;</span> instead of key
+                file path or data file to read the data from stdin.
+                Example:
+                  $ <span style="color:#f92672">(</span>awk <span style="color:#e6db74">&#39;BEGIN {while (c++&lt;256) printf &#34;a&#34;}&#39;</span> | <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>                    echo -n AAAABBBBCCCCDDDDEEEEFFFFGGGGHHHH<span style="color:#f92672">)</span> | <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>                    mmc rpmb write-block /dev/mmcblk0rpmb 0x02 - -
+        mmc cache enable &lt;device&gt;
+                Enable the eMMC cache feature on &lt;device&gt;.
+                NOTE! The cache is an optional feature on devices &gt;<span style="color:#f92672">=</span> eMMC4.5.
+        mmc cache disable &lt;device&gt;
+                Disable the eMMC cache feature on &lt;device&gt;.
+                NOTE! The cache is an optional feature on devices &gt;<span style="color:#f92672">=</span> eMMC4.5.
+        mmc csd read &lt;device path&gt;
+                Print CSD data from &lt;device path&gt;.
+                The device path should specify the csd file directory.
+        mmc cid read &lt;device path&gt;
+                Print CID data from &lt;device path&gt;.
+                The device path should specify the cid file directory.
+        mmc scr read &lt;device path&gt;
+                Print SCR data from &lt;device path&gt;.
+                The device path should specify the scr file directory.
+        mmc ffu &lt;image name&gt; &lt;device&gt;
+                Run Field Firmware Update with &lt;image name&gt; on &lt;device&gt;.
+
+
+        mmc help|--help|-h
+                Show the help.
+
+        mmc &lt;cmd&gt; --help
+                Show detailed help <span style="color:#66d9ef">for</span> a command or subset of commands.
+
+<span style="color:#ae81ff">0</span>.1</code></pre></div>]]></content></item><item><title>使用 VSCode 绘制数字电路时序图</title><link>https://shaocheng.li/posts/2021/07/03/</link><pubDate>Sat, 03 Jul 2021 18:32:49 +0800</pubDate><guid>https://shaocheng.li/posts/2021/07/03/</guid><description>在 VSCode 中安装 Waveform Render 插件：
 它可以解析 WaveJSON 语法的 json 文件，绘制一幅数字电路时序图。官网提供了一个完整教程：https://wavedrom.com/tutorial.html ，还有一个在线的编辑器：https://wavedrom.com/editor.html 。
 开始 在 vscode 中新建一个名为 demo.json 的文件，内容如下：
 { &amp;#34;signal&amp;#34;: [ { &amp;#34;name&amp;#34;: &amp;#34;clk&amp;#34;, &amp;#34;wave&amp;#34;: &amp;#34;p.......&amp;#34; }, { &amp;#34;name&amp;#34;: &amp;#34;data&amp;#34;, &amp;#34;wave&amp;#34;: &amp;#34;01010101&amp;#34; } ] } 保存后用 Command+Shift+P 组合键打开命令面板，选择执行 Waveform Render:Draw ，就可以看到渲染后的时序图，也可以选择执行 Waveform Render:Toggle Live Preview ，实时查看渲染结果：
