@@ -1,4 +1,128 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Shaocheng.Li</title><link>https://shaocheng.li/posts/</link><description>Recent content in Posts on Shaocheng.Li</description><generator>Hugo -- gohugo.io</generator><copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright><lastBuildDate>Thu, 15 Jul 2021 22:32:49 +0800</lastBuildDate><atom:link href="https://shaocheng.li/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>iMX8MM 从 eMMC 启动系统和烧写的笔记</title><link>https://shaocheng.li/posts/2021/07/15/</link><pubDate>Thu, 15 Jul 2021 22:32:49 +0800</pubDate><guid>https://shaocheng.li/posts/2021/07/15/</guid><description>1. iMX8MM 的启动流程 iMX8MM 系统启动的详细流程可以参考 IMX8MMRM.pdf
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Shaocheng.Li</title><link>https://shaocheng.li/posts/</link><description>Recent content in Posts on Shaocheng.Li</description><generator>Hugo -- gohugo.io</generator><copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright><lastBuildDate>Fri, 16 Jul 2021 22:22:49 +0800</lastBuildDate><atom:link href="https://shaocheng.li/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>iMX8MM 的 Fuse/OCOPT 学习笔记</title><link>https://shaocheng.li/posts/2021/07/16/</link><pubDate>Fri, 16 Jul 2021 22:22:49 +0800</pubDate><guid>https://shaocheng.li/posts/2021/07/16/</guid><description>Fuse 就是熔丝位，是一种只能写入一次的寄存器，写入后不可更改，所以写入操作也叫做烧毁（burned）。iMX8MM 的 Fuse 由 on-chip eFuse OTP 控制读写，简称 OCOPT ，结构框图如下：
+可以通过 APB 接口读写 OCOTP 的寄存器，寄存器的布局可以在芯片手册的 《6.3.4 OCOTP Memory Map/Register Definition》中查看，起始地址是 0x30350000，分为两个部分，前半部分 0x30350000~0x3035009C 是 OCOTP Control Register ，是配置 OCOTP 本身的寄存器：
+从 0x30350400 到 0x303507B0 是 Shadow Regs 寄存器：
+在硬件上，Shadow Regs 和 Fuse 是两个独立的存储设备，但是 OCOTP 的内部机制实现了二者之间的映射，Fuse 的所有内容都被映射到了这段寄存器中，完整的映射如下：
+总大小是 4x256 bytes，大部分是保留状态，不可读写。需要注意的是，在 Fuse 中，32bits 组成一个 Word ，4Words 组成一个 Bank ，读写时也要用 Bank:Word 的格式寻址。可以在 u-boot 中执行 fuse 命令读写 fuse ，语法如下：
+fuse - Fuse sub-system Usage: fuse read &amp;lt;bank&amp;gt; &amp;lt;word&amp;gt; [&amp;lt;cnt&amp;gt;] - read 1 or &amp;#39;cnt&amp;#39; fuse words, starting at &amp;#39;word&amp;#39; fuse sense &amp;lt;bank&amp;gt; &amp;lt;word&amp;gt; [&amp;lt;cnt&amp;gt;] - sense 1 or &amp;#39;cnt&amp;#39; fuse words, starting at &amp;#39;word&amp;#39; fuse prog [-y] &amp;lt;bank&amp;gt; &amp;lt;word&amp;gt; &amp;lt;hexval&amp;gt; [&amp;lt;hexval&amp;gt;.</description><content type="html"><![CDATA[<p>Fuse 就是熔丝位，是一种只能写入一次的寄存器，写入后不可更改，所以写入操作也叫做烧毁（burned）。iMX8MM 的 Fuse 由 on-chip eFuse OTP 控制读写，简称 OCOPT ，结构框图如下：</p>
+
+<p><img src="/images/2021-07-16/image-20210716221952486.png" alt="image-20210716221952486" /></p>
+
+<p>可以通过 APB 接口读写 OCOTP 的寄存器，寄存器的布局可以在芯片手册的 《6.3.4 OCOTP Memory Map/Register Definition》中查看，起始地址是 0x30350000，分为两个部分，前半部分 0x30350000~0x3035009C 是 OCOTP Control Register ，是配置 OCOTP 本身的寄存器：</p>
+
+<p><img src="/images/2021-07-16/image-20210716222130460.png" alt="image-20210716222130460" /></p>
+
+<p>从 0x30350400 到 0x303507B0 是 Shadow Regs 寄存器：</p>
+
+<p><img src="/images/2021-07-16/image-20210716222338893.png" alt="image-20210716222338893" /></p>
+
+<p>在硬件上，Shadow Regs 和 Fuse 是两个独立的存储设备，但是 OCOTP 的内部机制实现了二者之间的映射，Fuse 的所有内容都被映射到了这段寄存器中，完整的映射如下：</p>
+
+<p><img src="/images/2021-07-16/image-20210716222433535.png" alt="image-20210716222433535" /></p>
+
+<p>总大小是 4x256 bytes，大部分是保留状态，不可读写。需要注意的是，在 Fuse 中，32bits 组成一个 Word ，4Words 组成一个 Bank ，读写时也要用 Bank:Word 的格式寻址。可以在 u-boot 中执行 fuse 命令读写 fuse ，语法如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">fuse - Fuse sub-system
+
+Usage:
+fuse read &lt;bank&gt; &lt;word&gt; <span style="color:#f92672">[</span>&lt;cnt&gt;<span style="color:#f92672">]</span> - read <span style="color:#ae81ff">1</span> or <span style="color:#e6db74">&#39;cnt&#39;</span> fuse words,
+    starting at <span style="color:#e6db74">&#39;word&#39;</span>
+fuse sense &lt;bank&gt; &lt;word&gt; <span style="color:#f92672">[</span>&lt;cnt&gt;<span style="color:#f92672">]</span> - sense <span style="color:#ae81ff">1</span> or <span style="color:#e6db74">&#39;cnt&#39;</span> fuse words,
+    starting at <span style="color:#e6db74">&#39;word&#39;</span>
+fuse prog <span style="color:#f92672">[</span>-y<span style="color:#f92672">]</span> &lt;bank&gt; &lt;word&gt; &lt;hexval&gt; <span style="color:#f92672">[</span>&lt;hexval&gt;...<span style="color:#f92672">]</span> - program <span style="color:#ae81ff">1</span> or
+    several fuse words, starting at <span style="color:#e6db74">&#39;word&#39;</span> <span style="color:#f92672">(</span>PERMANENT<span style="color:#f92672">)</span>
+fuse override &lt;bank&gt; &lt;word&gt; &lt;hexval&gt; <span style="color:#f92672">[</span>&lt;hexval&gt;...<span style="color:#f92672">]</span> - override <span style="color:#ae81ff">1</span> or
+several fuse words, starting at <span style="color:#e6db74">&#39;word&#39;</span></code></pre></div>
+<ul>
+<li>read - 读取，表示从 Shadow Regs 中读取。</li>
+<li>sense - 感应，表示跳过 Shadow Regs ，直接从 Fuse 中读取。</li>
+<li>prog - 烧毁，表示直接烧写 Fuse ，写入一次后就无法更改。</li>
+<li>override - 改写，表示修改 Shadow Regs 中的值，不会影响到 Fuse ，所以，在这个操作之后，Shadow Regs 可能与 Fuse 中的值不同。</li>
+</ul>
+
+<p>第一个寄存器（Bank0，Word0）是 OCOTP_LOCK ：</p>
+
+<p><img src="/images/2021-07-16/image-20210716222739399.png" alt="image-20210716222739399" /></p>
+
+<p>它的作用是设置其他 fuse 寄存器的锁定状态，例如，Bit[1:0] 用于设置 Tester 寄存器的锁定状态，Bit[10] 用于设置 SJC 寄存器的锁定状态：</p>
+
+<p><img src="/images/2021-07-16/image-20210716222844513.png" alt="image-20210716222844513" /></p>
+
+<p>支持五种锁定状态：</p>
+
+<ul>
+<li>Unlock - 受控字段可以在 Shadow Regs 中被读取、感应、烧毁或改写。</li>
+<li>Lock - 受控字段不能被读取、烧毁或改写。</li>
+<li>OP - override protect，受控字段可以在 Shadow Regs 中被读取、感应或烧毁。</li>
+<li>WP - write protect，受控字段可以在 Shadow Regs 中被读取、感应或改写。</li>
+<li>OP+WP - 受控字段只能在 Shadow Regs 中被读取或感应到，但是不能被烧毁或改写。</li>
+</ul>
+
+<p>这个寄存器在芯片出厂时已经被写入了特定的值，无法更改，可以读取查看：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">u-boot<span style="color:#f92672">=</span>&gt; fuse sense <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span>
+Sensing bank <span style="color:#ae81ff">0</span>:
+
+Word 0x00000000: feafa9eb</code></pre></div>
+<p>几个关键的字段：</p>
+
+<ul>
+<li>Bit[1:0] TESTER_LOCK = 11，所有 TESTER 寄存器只读</li>
+<li>Bit[3:2] BOOT_CFG_LOCK = 10，所有 BOOT_CFG 寄存器可读可烧毁，不可改写。</li>
+<li>Bit[15:14] MAC_ADDR_LOCK= 10，所有 MAC_ADDR 寄存器可读可烧毁，不可改写。</li>
+</ul>
+
+<p>存储 MAC 地址是 Fuse 的重要用途，默认情况下，以太网驱动获得 MAC 地址的顺序是：</p>
+
+<ol>
+<li>从设备树的以太网节点属性 &ldquo;local-mac-address&rdquo; 中获取 MAC 地址。</li>
+<li>如果设备树没有这个属性，驱动就从 fuse 中获取 MAC 地址。</li>
+<li>如果 fuse 没有烧写 MAC 地址，驱动从 u-boot 设置的环境变量中获得MAC地址。</li>
+<li>如果不存在合法的MAC地址，会发生错误。</li>
+</ol>
+
+<p>Fuse 用了三个 Word（Bank9 Word0~2）存储以太网卡的 MAC 地址，可以存储两个 MAC 地址：</p>
+
+<p><img src="/images/2021-07-16/image-20210716223151013.png" alt="image-20210716223151013" /></p>
+
+<p>iMX8MM 本身只要一个以太网卡，占用了 FEC1_MAC 的位置，例如 MAC 地址为 00-04-9F-05-FB-39 时：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">u-boot<span style="color:#f92672">=</span>&gt; fuse read <span style="color:#ae81ff">9</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">4</span>
+Reading bank <span style="color:#ae81ff">9</span>:
+
+Word 0x00000000: 9f05fb39 <span style="color:#ae81ff">00000004</span> <span style="color:#ae81ff">00000000</span> <span style="color:#ae81ff">00000000</span></code></pre></div>
+<p>因为 Fuse 只能烧写一次，所有最好一次烧写两个 MAC 地址，防止日后增加网卡时无法烧写。假设要烧写的两个地址是：</p>
+
+<pre><code>FEC1: 001DF3513075
+FEC2: 001DF3513089
+</code></pre>
+
+<p>在u-boot 中执行如下命令：</p>
+
+<pre><code>fuse prog 9 2 001DF351
+fuse prog 9 1 3089001D
+fuse prog 9 0 F3513075
+</code></pre>
+
+<p>启动后：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">root@imx8mmevk:~# ifconfig
+eth0      Link encap:Ethernet  HWaddr <span style="color:#ae81ff">00</span>:1d:f3:51:30:75
+          UP BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 <span style="color:#f92672">(</span><span style="color:#ae81ff">0</span>.0 B<span style="color:#f92672">)</span>  TX bytes:0 <span style="color:#f92672">(</span><span style="color:#ae81ff">0</span>.0 B<span style="color:#f92672">)</span></code></pre></div>
+<p>批量生产时，用 uuu 烧写更方便，下面是一个脚本的实例：</p>
+
+<pre><code>SDP: boot -f imx-boot
+FB: ucmd fuse prog 9 2 -y 001DF351
+FB: ucmd fuse prog 9 1 -y 3089001D
+FB: ucmd fuse prog 9 0 -y F3513075
+</code></pre>
+
+<p>参考：</p>
+
+<ul>
+<li><a href="https://imxdev.gitlab.io/tutorial/Burning_eFuses_on_i.MX8_and_i.MX8x_families/" target="_blank">Understanding how to burn eFuses on i.MX8 and i.MX8x families</a></li>
+<li><a href="https://wowothink.com/2e4a33d4/" target="_blank">i.MX8 uuu</a></li>
+</ul>
+]]></content></item><item><title>iMX8MM 从 eMMC 启动系统和烧写的笔记</title><link>https://shaocheng.li/posts/2021/07/15/</link><pubDate>Thu, 15 Jul 2021 22:32:49 +0800</pubDate><guid>https://shaocheng.li/posts/2021/07/15/</guid><description>1. iMX8MM 的启动流程 iMX8MM 系统启动的详细流程可以参考 IMX8MMRM.pdf
 上电复位后，硬件复位逻辑迫使 SoC 从片上的 Boot ROM 开始执行，Boot ROM 使用 BOOT_MODE 和 eFUSEs 的状态来决定启动设备。在 POR_B 信号的上升沿采集两个外部输入引脚 BOOT_MODE0 和 BOOT_MODE1 的电平，用于设置启动模式：
 BOOT_MODE 的值可以在 SRC_SBMR2 寄存器的 IPP_BOOT_MODE[1:0] 中读到。在 Boot From Fuses 模式下，启动流程完全由 Fuse 控制，GPIO boot overrides 引脚的状态会被忽略。在 internal Boot 模式下，使用 Fuse 中的启动配置，但是为了开发方便，用于确定启动设备的 Fuse 可以通过 GPIO boot overrides 引脚的输入被覆盖，这时启动流程由 Fuse 或者 GPIO 控制的 BOOT_CFG 寄存器决定。首先会读取 BOOT_CFG[14:12] ，决定启动设备的类型：
 如果是从 eMMC/SD 启动，它们都使用 USDHC 接口与 SoC 连接，Boot ROM 会读取 BOOT_CFG[11:10] 的值，确定从哪个接口上的设备启动：</description><content type="html"><![CDATA[
