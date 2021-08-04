@@ -286,6 +286,17 @@ Writing <span style="color:#e6db74">&#39;bootloader&#39;</span> FAILED!</code></
 <p>可以从 SD 卡启动一个 Linux 系统，然后对 eMMC 进行烧写。用 dd 命令烧写 BootLoader ：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">root@imx8mmevk:~# dd <span style="color:#66d9ef">if</span><span style="color:#f92672">=</span>./imx-boot of<span style="color:#f92672">=</span>/dev/mmcblk2 bs<span style="color:#f92672">=</span>1k seek<span style="color:#f92672">=</span><span style="color:#ae81ff">33</span> conv<span style="color:#f92672">=</span>fsync
 <span style="color:#75715e"># dd 命令只会从 UDA 分区开始寻址，不会烧写到其他分区</span></code></pre></div>
+<blockquote>
+<p>如果编译 u-boot 时选择了 CONFIG_ENV_IS_IN_MMC ，u-boot 的环境变量会保存到 eMMC ，存储的位置由如下两个选项决定：</p>
+
+<ol>
+<li>CONFIG_ENV_OFFSET , Offset from the start of the device (or partition)</li>
+<li>CONFIG_ENV_SIZE , Size of the environment storage area .</li>
+</ol>
+
+<p>烧写 u-boot 时，如果没有擦除这个区域，重启后的 u-boot 还会使用原来保存的环境变量。</p>
+</blockquote>
+
 <p>FAT 和 Ext3 分区可以用 fdisk 命令新建，然后将相关文件夹拷贝到分区中，最后将 BOOT_PARTITION_ENABLE 设为 0 或者 7 ，Boot ROM 就会从 UDA 分区启动：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">root@imx8mmevk:~# mmc bootpart enable <span style="color:#ae81ff">7</span> <span style="color:#ae81ff">0</span> /dev/mmcblk2</code></pre></div>
 <p>也可以在 u-boot 中设置：</p>
