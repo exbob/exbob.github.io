@@ -1,4 +1,220 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Shaocheng.Li</title><link>https://shaocheng.li/posts/</link><description>Recent content in Posts on Shaocheng.Li</description><generator>Hugo -- gohugo.io</generator><copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright><lastBuildDate>Fri, 16 Jul 2021 22:22:49 +0800</lastBuildDate><atom:link href="https://shaocheng.li/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>iMX8MM 的 Fuse/OCOPT 学习笔记</title><link>https://shaocheng.li/posts/2021/07/16/</link><pubDate>Fri, 16 Jul 2021 22:22:49 +0800</pubDate><guid>https://shaocheng.li/posts/2021/07/16/</guid><description>Fuse 就是熔丝位，是一种只能写入一次的寄存器，写入后不可更改，所以写入操作也叫做烧毁（burned）。iMX8MM 的 Fuse 由 on-chip eFuse OTP 控制读写，简称 OCOPT ，结构框图如下：
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Shaocheng.Li</title><link>https://shaocheng.li/posts/</link><description>Recent content in Posts on Shaocheng.Li</description><generator>Hugo -- gohugo.io</generator><copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright><lastBuildDate>Tue, 26 Oct 2021 20:09:49 +0800</lastBuildDate><atom:link href="https://shaocheng.li/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Linux 下使用 ioctl 接口访问指定网卡</title><link>https://shaocheng.li/posts/2021/10/26/</link><pubDate>Tue, 26 Oct 2021 20:09:49 +0800</pubDate><guid>https://shaocheng.li/posts/2021/10/26/</guid><description>netdevice 是 glibc 提供的访问网卡设备的低级接口，支持标准 ioctl 函数，需要的头文件是：
+#include &amp;lt;sys/ioctl.h&amp;gt;#include &amp;lt;net/if.h&amp;gt; 使用方法是调用 ioctl 函数访问 socket 文件，基本语法是：
+ioctl(int fd, int request, struct ifreq *); int fd 应该是一个 socket 文件描述符，主要通过 struct ifreq 结构传递数据：
+struct ifreq { char ifr_name[IFNAMSIZ]; /* Interface name */ union { struct sockaddr ifr_addr; // IP 地址 struct sockaddr ifr_dstaddr; struct sockaddr ifr_broadaddr; // 广播地址 struct sockaddr ifr_netmask; // 子网掩码 struct sockaddr ifr_hwaddr; // MAC 地址 short ifr_flags; int ifr_ifindex; int ifr_metric; int ifr_mtu; struct ifmap ifr_map; char ifr_slave[IFNAMSIZ]; char ifr_newname[IFNAMSIZ]; char *ifr_data; }; }; 使用方法：</description><content type="html"><![CDATA[<p><a href="https://man7.org/linux/man-pages/man7/netdevice.7.html" target="_blank">netdevice</a> 是 glibc 提供的访问网卡设备的低级接口，支持标准 ioctl 函数，需要的头文件是：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;sys/ioctl.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;net/if.h&gt;</span></code></pre></div>
+<p>使用方法是调用 ioctl 函数访问 socket 文件，基本语法是：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">ioctl(<span style="color:#66d9ef">int</span> fd, <span style="color:#66d9ef">int</span> request, <span style="color:#66d9ef">struct</span> ifreq <span style="color:#f92672">*</span>);</code></pre></div>
+<p><code>int fd</code> 应该是一个 socket 文件描述符，主要通过 <code>struct ifreq</code> 结构传递数据：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">struct</span> ifreq
+{
+    <span style="color:#66d9ef">char</span> ifr_name[IFNAMSIZ]; <span style="color:#75715e">/* Interface name */</span>
+    <span style="color:#66d9ef">union</span>
+    {
+        <span style="color:#66d9ef">struct</span> sockaddr ifr_addr; <span style="color:#75715e">// IP 地址
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">struct</span> sockaddr ifr_dstaddr;
+        <span style="color:#66d9ef">struct</span> sockaddr ifr_broadaddr; <span style="color:#75715e">// 广播地址
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">struct</span> sockaddr ifr_netmask;  <span style="color:#75715e">// 子网掩码
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">struct</span> sockaddr ifr_hwaddr;   <span style="color:#75715e">// MAC 地址
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">short</span> ifr_flags;
+        <span style="color:#66d9ef">int</span> ifr_ifindex;
+        <span style="color:#66d9ef">int</span> ifr_metric;
+        <span style="color:#66d9ef">int</span> ifr_mtu;
+        <span style="color:#66d9ef">struct</span> ifmap ifr_map;
+        <span style="color:#66d9ef">char</span> ifr_slave[IFNAMSIZ];
+        <span style="color:#66d9ef">char</span> ifr_newname[IFNAMSIZ];
+        <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>ifr_data;
+    };
+};</code></pre></div>
+<p>使用方法：</p>
+
+<ol>
+<li>新建一个 AF_INET 地址的 socket 文件</li>
+<li>新建一个  <code>struct ifreq</code> 结构，并设置 <code>ifr_name</code> 为指定的网卡名称，例如 eth0</li>
+<li>调用 <code>ioctl</code> ，通过 request 指定要访问的信息，通过 <code>struct ifreq</code> 结构传递数据</li>
+<li>解析 <code>struct ifreq</code> 结构。</li>
+</ol>
+
+<p>支持的 request 包括：</p>
+
+<ul>
+<li><p>SIOCGIFFLAGS, SIOCSIFFLAGS ：获取、设置网卡的 Flag ，通过 <code>ifreq-&gt;ifr_flags</code> 传递数据，ifr_flags 包含一个由以下数值组成的位掩码。</p>
+
+<ul>
+<li>IFF_UP            Interface is running.</li>
+<li>IFF_BROADCAST     Valid broadcast address set.</li>
+<li>IFF_DEBUG         Internal debugging flag.</li>
+<li>IFF_LOOPBACK      Interface is a loopback interface.</li>
+<li>IFF_POINTOPOINT   Interface is a point-to-point link.</li>
+<li>IFF_RUNNING       Resources allocated.</li>
+<li>IFF_NOARP         No arp protocol, L2 destination address not set.</li>
+<li>IFF_PROMISC       Interface is in promiscuous mode.</li>
+<li>IFF_NOTRAILERS    Avoid use of trailers.</li>
+<li>IFF_ALLMULTI      Receive all multicast packets.</li>
+<li>IFF_MASTER        Master of a load balancing bundle.</li>
+<li>IFF_SLAVE         Slave of a load balancing bundle.</li>
+<li>IFF_MULTICAST     Supports multicast</li>
+<li>IFF_PORTSEL       Is able to select media type via ifmap.</li>
+<li>IFF_AUTOMEDIA     Auto media selection active.</li>
+<li>IFF_DYNAMIC       The addresses are lost when the interface goes down.</li>
+</ul></li>
+
+<li><p>SIOCGIFADDR, SIOCSIFADDR, SIOCDIFADDR ：获取、设置和删除网卡的 IP ，通过 <code>ifreq-&gt;ifr_addr</code> 传递数据</p></li>
+
+<li><p>SIOCGIFNETMASK, SIOCSIFNETMASK ：获取、设置子网掩码，通过 <code>ifreq-&gt;ifr_netmask</code> 传递数据</p></li>
+
+<li><p>SIOCGIFBRDADDR, SIOCSIFBRDADDR ：获取、设置广播地址，通过 <code>ifreq-&gt;ifr_broadaddr</code> 传递数据</p></li>
+
+<li><p>SIOCGIFHWADDR, SIOCSIFHWADDR ：获取、设置 MAC 地址，通过 <code>ifreq-&gt;ifr_hwaddr</code> 传递数据</p></li>
+
+<li><p>SIOCGIFMTU, SIOCSIFMTU ：获取、设置 MTU ，通过 <code>ifreq-&gt;ifr_mtu</code> 传递数据</p></li>
+</ul>
+
+<p>例如 SIOCGIFADDR 可以获得 IP 地址：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;string.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;sys/socket.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;sys/ioctl.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;net/if.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;netinet/in.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;arpa/inet.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>()
+{
+    <span style="color:#66d9ef">int</span> fd;
+    <span style="color:#66d9ef">struct</span> ifreq ifr;
+    <span style="color:#66d9ef">struct</span> in_addr addr;
+	
+    <span style="color:#75715e">// 1. 新建一个 socket
+</span><span style="color:#75715e"></span>    fd <span style="color:#f92672">=</span> socket(AF_INET, SOCK_DGRAM, <span style="color:#ae81ff">0</span>);
+    <span style="color:#75715e">// 2. 设置网卡名称
+</span><span style="color:#75715e"></span>    strncpy(ifr.ifr_name, <span style="color:#e6db74">&#34;enp3s0&#34;</span>, IFNAMSIZ <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>);
+	<span style="color:#75715e">// 3. 读取指定网卡的 IP
+</span><span style="color:#75715e"></span>    ioctl(fd, SIOCGIFADDR, <span style="color:#f92672">&amp;</span>ifr);
+	<span style="color:#75715e">// 4. IP 存放在 ifr.ifr_addr 里
+</span><span style="color:#75715e"></span>    addr <span style="color:#f92672">=</span> ((<span style="color:#66d9ef">struct</span> sockaddr_in <span style="color:#f92672">*</span>)<span style="color:#f92672">&amp;</span>ifr.ifr_addr)<span style="color:#f92672">-&gt;</span>sin_addr;
+    <span style="color:#75715e">// 5. 转换格式，并打印
+</span><span style="color:#75715e"></span>    printf(<span style="color:#e6db74">&#34;ip address is : %s &lt;%08x&gt;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, inet_ntoa(addr), addr.s_addr);
+    
+    close(fd);
+}</code></pre></div>
+<p>编译和执行：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">~# gcc test.c -o test
+~# ./test
+ip address is : <span style="color:#ae81ff">172</span>.16.1.1 &lt;010110ac&gt;</code></pre></div>
+<p>一个完整的例程：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;unistd.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;string.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;sys/types.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;sys/socket.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;sys/ioctl.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;netinet/in.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;net/if.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;arpa/inet.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">struct</span> ifinfo_t
+{
+    <span style="color:#66d9ef">struct</span> in_addr addr;  <span style="color:#75715e">// IP 地址
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">struct</span> in_addr netmask;  <span style="color:#75715e">// 子网掩码
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">struct</span> in_addr broadaddr; <span style="color:#75715e">// 广播地址
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">struct</span> in_addr net;  <span style="color:#75715e">// 网段
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">char</span>  hwaddr[<span style="color:#ae81ff">6</span>];  <span style="color:#75715e">// MAC 地址
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">int</span> netmask_len;  <span style="color:#75715e">// 十进制格式的子网掩码
+</span><span style="color:#75715e"></span>};
+
+<span style="color:#75715e">// 获得指定网卡的 IP 信息
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">getifinfo</span>(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>ifname, <span style="color:#66d9ef">struct</span> ifinfo_t <span style="color:#f92672">*</span>ifinfo)
+{
+    <span style="color:#66d9ef">int</span> fd;
+    <span style="color:#66d9ef">int</span> i;
+    <span style="color:#66d9ef">int</span> len;
+    <span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">int</span> netmask <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    <span style="color:#66d9ef">struct</span> ifreq ifr;
+
+    fd <span style="color:#f92672">=</span> socket(AF_INET, SOCK_DGRAM, <span style="color:#ae81ff">0</span>);
+    strncpy(ifr.ifr_name, ifname, IFNAMSIZ <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>);
+
+    ioctl(fd, SIOCGIFADDR, <span style="color:#f92672">&amp;</span>ifr);
+    ifinfo<span style="color:#f92672">-&gt;</span>addr <span style="color:#f92672">=</span> ((<span style="color:#66d9ef">struct</span> sockaddr_in <span style="color:#f92672">*</span>)<span style="color:#f92672">&amp;</span>ifr.ifr_addr)<span style="color:#f92672">-&gt;</span>sin_addr;
+
+    ioctl(fd, SIOCGIFNETMASK, <span style="color:#f92672">&amp;</span>ifr);
+    ifinfo<span style="color:#f92672">-&gt;</span>netmask <span style="color:#f92672">=</span> ((<span style="color:#66d9ef">struct</span> sockaddr_in <span style="color:#f92672">*</span>)<span style="color:#f92672">&amp;</span>ifr.ifr_netmask)<span style="color:#f92672">-&gt;</span>sin_addr;
+
+    ioctl(fd, SIOCGIFBRDADDR, <span style="color:#f92672">&amp;</span>ifr);
+    ifinfo<span style="color:#f92672">-&gt;</span>broadaddr <span style="color:#f92672">=</span> ((<span style="color:#66d9ef">struct</span> sockaddr_in <span style="color:#f92672">*</span>)<span style="color:#f92672">&amp;</span>ifr.ifr_broadaddr)<span style="color:#f92672">-&gt;</span>sin_addr;
+
+    ioctl(fd, SIOCGIFHWADDR, <span style="color:#f92672">&amp;</span>ifr);
+    memcpy(ifinfo<span style="color:#f92672">-&gt;</span>hwaddr, ifr.ifr_hwaddr.sa_data, <span style="color:#ae81ff">6</span>); 
+
+    netmask <span style="color:#f92672">=</span> ifinfo<span style="color:#f92672">-&gt;</span>netmask.s_addr;
+    len <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    <span style="color:#66d9ef">for</span> (i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">32</span>; i<span style="color:#f92672">++</span>)
+    {
+        <span style="color:#66d9ef">if</span> (netmask <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">0x00000001</span>)
+            len<span style="color:#f92672">++</span>;
+        netmask <span style="color:#f92672">=</span> netmask <span style="color:#f92672">&gt;&gt;</span> <span style="color:#ae81ff">1</span>;
+    }
+    ifinfo<span style="color:#f92672">-&gt;</span>netmask_len <span style="color:#f92672">=</span> len;
+
+    ifinfo<span style="color:#f92672">-&gt;</span>net.s_addr <span style="color:#f92672">=</span> ifinfo<span style="color:#f92672">-&gt;</span>addr.s_addr <span style="color:#f92672">&amp;</span> ifinfo<span style="color:#f92672">-&gt;</span>netmask.s_addr;
+
+    close(fd);
+    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}
+
+<span style="color:#75715e">//判断两个 ip 是否属于同一子网
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">issamenet</span>(<span style="color:#66d9ef">struct</span> in_addr <span style="color:#f92672">*</span>addr_1, <span style="color:#66d9ef">struct</span> in_addr <span style="color:#f92672">*</span>addr_2, <span style="color:#66d9ef">struct</span> in_addr <span style="color:#f92672">*</span>netmask)
+{
+    <span style="color:#66d9ef">return</span> (addr_1<span style="color:#f92672">-&gt;</span>s_addr <span style="color:#f92672">&amp;</span> netmask<span style="color:#f92672">-&gt;</span>s_addr) <span style="color:#f92672">==</span> (addr_2<span style="color:#f92672">-&gt;</span>s_addr <span style="color:#f92672">&amp;</span> netmask<span style="color:#f92672">-&gt;</span>s_addr);
+}
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>()
+{
+    <span style="color:#66d9ef">struct</span> ifinfo_t ifinfo;
+    getifinfo(<span style="color:#e6db74">&#34;enp3s0&#34;</span>, <span style="color:#f92672">&amp;</span>ifinfo);
+
+    printf(<span style="color:#e6db74">&#34;address : &lt;%08x&gt; %s</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, ifinfo.addr.s_addr, inet_ntoa(ifinfo.addr));
+    printf(<span style="color:#e6db74">&#34;netmask : &lt;%08x&gt; %s</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, ifinfo.netmask.s_addr, inet_ntoa(ifinfo.netmask));
+    printf(<span style="color:#e6db74">&#34;hwaddr : %02x:%02x:%02x:%02x:%02x:%02x</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, ifinfo.hwaddr[<span style="color:#ae81ff">0</span>],ifinfo.hwaddr[<span style="color:#ae81ff">1</span>],ifinfo.hwaddr[<span style="color:#ae81ff">2</span>],ifinfo.hwaddr[<span style="color:#ae81ff">3</span>],ifinfo.hwaddr[<span style="color:#ae81ff">4</span>],ifinfo.hwaddr[<span style="color:#ae81ff">5</span>]);
+    printf(<span style="color:#e6db74">&#34;broadaddr : &lt;%08x&gt; %s</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, ifinfo.broadaddr.s_addr, inet_ntoa(ifinfo.broadaddr));
+    printf(<span style="color:#e6db74">&#34;net : &lt;%08x&gt; %s</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, ifinfo.net.s_addr, inet_ntoa(ifinfo.net));
+    printf(<span style="color:#e6db74">&#34;netmask_len : %d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, ifinfo.netmask_len);
+
+    <span style="color:#75715e">// 判断两个 IP 是否属于同一个子网
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">struct</span> in_addr addr_1;
+    <span style="color:#66d9ef">struct</span> in_addr addr_2;
+    <span style="color:#66d9ef">struct</span> in_addr netmask;
+    <span style="color:#66d9ef">int</span> ret <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+
+    addr_1.s_addr <span style="color:#f92672">=</span> inet_addr(<span style="color:#e6db74">&#34;172.16.144.138&#34;</span>);
+    addr_2.s_addr <span style="color:#f92672">=</span> inet_addr(<span style="color:#e6db74">&#34;172.16.144.1&#34;</span>);
+    netmask.s_addr <span style="color:#f92672">=</span> inet_addr(<span style="color:#e6db74">&#34;255.255.255.240&#34;</span>);
+
+    ret <span style="color:#f92672">=</span> issamenet(<span style="color:#f92672">&amp;</span>addr_1, <span style="color:#f92672">&amp;</span>addr_2, <span style="color:#f92672">&amp;</span>netmask);
+    printf(<span style="color:#e6db74">&#34;ret is %d</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, ret);
+
+    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}</code></pre></div>
+<p>编译和执行：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">~# gcc test.c -o test
+~# ./test
+address : &lt;010110ac&gt; <span style="color:#ae81ff">172</span>.16.1.1
+netmask : &lt;00ffffff&gt; <span style="color:#ae81ff">255</span>.255.255.0
+hwaddr : <span style="color:#ae81ff">00</span>:1d:f3:52:99:0c
+broadaddr : &lt;ff0110ac&gt; <span style="color:#ae81ff">172</span>.16.1.255
+net : &lt;000110ac&gt; <span style="color:#ae81ff">172</span>.16.1.0
+netmask_len : <span style="color:#ae81ff">24</span>
+ret is <span style="color:#ae81ff">0</span></code></pre></div>
+<p>参考：</p>
+
+<ul>
+<li><p><a href="https://man7.org/linux/man-pages/man7/netdevice.7.html" target="_blank">https://man7.org/linux/man-pages/man7/netdevice.7.html</a></p></li>
+
+<li><p><a href="http://www.microhowto.info/howto/get_the_ip_address_of_a_network_interface_in_c_using_siocgifaddr.html" target="_blank">http://www.microhowto.info/howto/get_the_ip_address_of_a_network_interface_in_c_using_siocgifaddr.html</a></p></li>
+</ul>
+]]></content></item><item><title>iMX8MM 的 Fuse/OCOPT 学习笔记</title><link>https://shaocheng.li/posts/2021/07/16/</link><pubDate>Fri, 16 Jul 2021 22:22:49 +0800</pubDate><guid>https://shaocheng.li/posts/2021/07/16/</guid><description>Fuse 就是熔丝位，是一种只能写入一次的寄存器，写入后不可更改，所以写入操作也叫做烧毁（burned）。iMX8MM 的 Fuse 由 on-chip eFuse OTP 控制读写，简称 OCOPT ，结构框图如下：
 可以通过 APB 接口读写 OCOTP 的寄存器，寄存器的布局可以在芯片手册的 《6.3.4 OCOTP Memory Map/Register Definition》中查看，起始地址是 0x30350000，分为两个部分，前半部分 0x30350000~0x3035009C 是 OCOTP Control Register ，是配置 OCOTP 本身的寄存器：
 从 0x30350400 到 0x303507B0 是 Shadow Regs 寄存器：
 在硬件上，Shadow Regs 和 Fuse 是两个独立的存储设备，但是 OCOTP 的内部机制实现了二者之间的映射，Fuse 的所有内容都被映射到了这段寄存器中，完整的映射如下：
