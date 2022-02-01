@@ -1,4 +1,780 @@
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Shaocheng.Li</title><link>https://shaocheng.li/posts/</link><description>Recent content in Posts on Shaocheng.Li</description><generator>Hugo -- gohugo.io</generator><copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright><lastBuildDate>Tue, 26 Oct 2021 20:09:49 +0800</lastBuildDate><atom:link href="https://shaocheng.li/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Linux 下使用 ioctl 接口访问指定网卡</title><link>https://shaocheng.li/posts/2021/10/26/</link><pubDate>Tue, 26 Oct 2021 20:09:49 +0800</pubDate><guid>https://shaocheng.li/posts/2021/10/26/</guid><description>netdevice 是 glibc 提供的访问网卡设备的低级接口，支持标准 ioctl 函数，需要的头文件是：
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Shaocheng.Li</title><link>https://shaocheng.li/posts/</link><description>Recent content in Posts on Shaocheng.Li</description><generator>Hugo -- gohugo.io</generator><copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright><lastBuildDate>Tue, 01 Feb 2022 16:40:49 +0800</lastBuildDate><atom:link href="https://shaocheng.li/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>在 iMX8MM 平台调试 AW-CM276MA Wi-Fi 模块</title><link>https://shaocheng.li/posts/2022/02/01/</link><pubDate>Tue, 01 Feb 2022 16:40:49 +0800</pubDate><guid>https://shaocheng.li/posts/2022/02/01/</guid><description>1. 概述 硬件平台使用 iMX8MM 参考开发板，带有 M.2 接口，软件平台是 iMX Yocto Linux 5.4.47 。调试海华的 AW-CM276MA 模块，该模块基于 NXP 88W8997，PCIe 2.0 接口，M.2 2230 封装，外观如下：
+模块结构：
+具有如下特性：
+基于 88W8997 IEEE 802.11ac (wave2)，BlueTooth 5.2 Wi-Fi PCIe 接口，BlueTooth UART 接口 Wi-Fi 2.4&amp;frasl;5 GHz 双频，2x2 双天线 支持 20/40/80Mhz 带宽，80MHz 2x2时最高速率 866.7Mbps WPA/WPA2 和 WEP 64&amp;frasl;128 bit 加密 支持STA（Wi-Fi站点）, AP（Wi-Fi热点）和 P2P（Wi-Fi直连）三种模式 其他参考：
+NXP 的 Wi-Fi 产品列表：https://www.nxp.com/products/wireless/wi-fi-plus-bluetooth:WIFI-BLUETOOTH 88W8997 ：https://www.nxp.com/products/wireless/wi-fi-plus-bluetooth/2-4-5-ghz-dual-band-2x2-wi-fi-5-802-11ac-plus-bluetooth-5-3-solution:88W8997 2. 驱动和固件 模块使用的驱动是 mxm_wifiex ，位于内核的drivers/net/wireless/nxp/mxm_wifiex 目录下。这个驱动是 NXP 开发并维护，支持 NXP 的多种无线模块，通常，新的模块需要新的驱动版本支持，可以在 https://source.</description><content type="html"><![CDATA[
+
+<h1 id="1-概述">1. 概述</h1>
+
+<p>硬件平台使用 iMX8MM 参考开发板，带有 M.2 接口，软件平台是 iMX Yocto Linux 5.4.47 。调试海华的 AW-CM276MA 模块，该模块基于 NXP <a href="https://www.nxp.com/products/wireless/wi-fi-plus-bluetooth/2-4-5-ghz-dual-band-1x1-wi-fi-5-802-11ac-plus-bluetooth-5-2-solution:88W8987" target="_blank">88W8997</a>，PCIe 2.0 接口，M.2 2230 封装，外观如下：</p>
+
+<p><img src="/images/2022-02-01/image-20220201165220603.png" alt="image-20220201165220603" /></p>
+
+<p>模块结构：</p>
+
+<p><img src="/images/2022-02-01/image-20220201165918886.png" alt="image-20220201165918886" /></p>
+
+<p>具有如下特性：</p>
+
+<ul>
+<li>基于 88W8997</li>
+<li>IEEE 802.11ac (wave2)，BlueTooth 5.2</li>
+<li>Wi-Fi PCIe 接口，BlueTooth UART 接口</li>
+<li>Wi-Fi 2.<sup>4</sup>&frasl;<sub>5</sub> GHz 双频，2x2 双天线</li>
+<li>支持 20/40/80Mhz 带宽，80MHz 2x2时最高速率 866.7Mbps</li>
+<li>WPA/WPA2 和 WEP <sup>64</sup>&frasl;<sub>128</sub> bit 加密</li>
+<li>支持STA（Wi-Fi站点）, AP（Wi-Fi热点）和 P2P（Wi-Fi直连）三种模式</li>
+</ul>
+
+<p>其他参考：</p>
+
+<ul>
+<li>NXP 的 Wi-Fi 产品列表：<a href="https://www.nxp.com/products/wireless/wi-fi-plus-bluetooth:WIFI-BLUETOOTH" target="_blank">https://www.nxp.com/products/wireless/wi-fi-plus-bluetooth:WIFI-BLUETOOTH</a></li>
+<li>88W8997 ：<a href="https://www.nxp.com/products/wireless/wi-fi-plus-bluetooth/2-4-5-ghz-dual-band-2x2-wi-fi-5-802-11ac-plus-bluetooth-5-3-solution:88W8997" target="_blank">https://www.nxp.com/products/wireless/wi-fi-plus-bluetooth/2-4-5-ghz-dual-band-2x2-wi-fi-5-802-11ac-plus-bluetooth-5-3-solution:88W8997</a></li>
+</ul>
+
+<h1 id="2-驱动和固件">2. 驱动和固件</h1>
+
+<p>模块使用的驱动是 mxm_wifiex ，位于内核的drivers/net/wireless/nxp/mxm_wifiex 目录下。这个驱动是 NXP 开发并维护，支持 NXP 的多种无线模块，通常，新的模块需要新的驱动版本支持，可以在 <a href="https://source.codeaurora.org/external/imx/mwifiex" target="_blank">https://source.codeaurora.org/external/imx/mwifiex</a> 下载源码。此外，还需要提供相应模块的固件，NXP 的固件通过 <a href="https://github.com/NXP/imx-firmware" target="_blank">https://github.com/NXP/imx-firmware</a> 发布，也分不同的版本，需要与驱动版本匹配。</p>
+
+<p>加载驱动时，通过模块参数指定固件的路径，当 SDIO/PCIe 总线驱动检测到模块的 SDIO/PCIe 接口时，MLAN 模块将固件二进制文件下载到 SD8987/PCIE8997 中。模块驱动程序支持多种接口向用户提供控制和配置模块的通道，可以通过 CFG80211 子系统与网络协议栈相连，向 iw 、hostapt 和 wpa_supplicant(nl80211) 提供编程接口，也可以通过 IOCTL 向 iwconfig、iwpriv 和 wpa_supplicant(wext) 提供编程接口。如下是整个软件栈的图式：</p>
+
+<p><img src="/images/2022-02-01/image-20220201170148659.png" alt="image-20220201170148659" /></p>
+
+<p>使用 git 下载驱动源码：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git clone https://source.codeaurora.org/external/imx/mwifiex</code></pre></div>
+<p>源码有多个分支：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git branch -a
+* master
+  remotes/origin/HEAD -&gt; origin/master
+  remotes/origin/imx_5.4.70_2.3.0
+  remotes/origin/lf-5.10.52_2.1.0
+  remotes/origin/lf-5.10.72_2.2.0
+  remotes/origin/lf-5.10.y_1.0.0
+  remotes/origin/lf-5.10.y_2.0.0
+  remotes/origin/master</code></pre></div>
+<p>直接使用 master 分支，对应的标签 lf-5.10.35-2.0.0 表示这个版本已经集成到了 iMX Yocto L5.10.35 的内核里：</p>
+
+<p><img src="/images/2022-02-01/image-20220201170452230.png" alt="image-20220201170452230" /></p>
+
+<p>从 git 记录可以看到当前的驱动版本是 mxm5x17247.p5 ：</p>
+
+<pre><code>commit a63cac065978149d9c4c1064eddcdc1f11dda57c
+Author: Sherry Sun &lt;sherry.sun@nxp.com&gt;
+Date:  Wed Jun 2 09:47:10 2021 +0800
+
+  mxm_wifiex: update to mxm5x17247.p5 release
+</code></pre>
+
+<ul>
+<li>5X - Linux 5.x Kernel<br /></li>
+<li>17 - card type</li>
+<li>247 - Release version</li>
+<li>p5 - Patch Number</li>
+</ul>
+
+<p>然后将驱动源码中 wlan_src 目录下的所有文件复制到 iMX Yocto L5.4.47 内核源码的 drivers/net/wireless/nxp/mxm_wifiex/wlan_src/ 目录下。编译出的内核模块是 mlan.ko 和 moal.ko ，复制到目标板的如下目录，覆盖原文件：</p>
+
+<pre><code>/lib/modules/5.4.47-2.2.0+g5ec03d06f54e/kernel/drivers/net/wireless/nxp/mxm_wifiex/wlan_src/ 
+</code></pre>
+
+<p>打开 <a href="https://github.com/NXP/imx-firmware" target="_blank">https://github.com/NXP/imx-firmware</a> 页面，在 tag 中找到对应的版本 lf-5.10.35-2.0.0 ：</p>
+
+<p><img src="/images/2022-02-01/image-20220201170635284.png" alt="image-20220201170635284" /></p>
+
+<p>对应的固件版本是 PCIE-UART W8997 Firmware version 16.92.10.p213 :</p>
+
+<ul>
+<li>16 - Major revision</li>
+<li>92 - Feature pack</li>
+<li>10 - Release version</li>
+<li>p213 - Patch number</li>
+</ul>
+
+<p>下载后解压，在 nxp 目录下有多种模块的固件：</p>
+
+<p><img src="/images/2022-02-01/image-20220201170748299.png" alt="image-20220201170748299" /></p>
+
+<p>其中，FwImage_8997 下是 PCIe 接口的 88W8997 模块的固件，wifi_mod_para.conf 是传递模块参数的配置文件。将这三个复制到目标板的 /lib/firmware/nxp/ 目录下，修改 wifi_mod_para.conf 中 PCIE8997 的 fw_name 参数，设置正确的固件路径：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json"><span style="color:#960050;background-color:#1e0010">PCIE</span><span style="color:#ae81ff">8997</span> <span style="color:#960050;background-color:#1e0010">=</span> {
+        <span style="color:#960050;background-color:#1e0010">cfg80211_wext=0xf</span>
+        <span style="color:#960050;background-color:#1e0010">wfd_name=p2p</span>
+        <span style="color:#960050;background-color:#1e0010">max_vir_bss=1</span>
+        <span style="color:#960050;background-color:#1e0010">cal_data_cfg=none</span>
+        <span style="color:#960050;background-color:#1e0010">drv_mode=7</span>
+        <span style="color:#960050;background-color:#1e0010">ps_mode=2</span>
+        <span style="color:#960050;background-color:#1e0010">auto_ds=2</span>
+        <span style="color:#960050;background-color:#1e0010">fw_name=nxp/FwImage_8997/pcieuart8997_combo_v4.bin</span>
+}</code></pre></div>
+<p>关于这些模块参数的含义，在驱动源码的 READM_MLAN 文件里有详细说明。常用的参数有：</p>
+
+<ul>
+<li>drv_mode：设置驱动支持模式，低三位有效，设为 7 表示支持三种模式：
+
+<ul>
+<li>Bit 0 : STA</li>
+<li>Bit 1 : AP</li>
+<li>Bit 2 : P2P</li>
+</ul></li>
+<li>sta_name：STA 模式的接口名称 (default: &ldquo;mlan&rdquo;)</li>
+<li>uap_name：AP 模式的接口名称 (default: &ldquo;uap&rdquo;)</li>
+<li>wfd_name：P2P 模式的接口名称 (default: &ldquo;wfd&rdquo;)</li>
+<li>cfg80211_wext=<bit mask of CFG80211 and WEXT control>
+
+<ul>
+<li>Bit 0: STA WEXT</li>
+<li>Bit 1: AP WEXT</li>
+<li>Bit 2: STA CFG80211</li>
+<li>Bit 3: AP CFG80211</li>
+</ul></li>
+<li>auto_ds=0|1|2 <use MLAN default | enable auto deepsleep | disable auto deepsleep></li>
+<li>ps_mode=0|1|2 <use MLAN default | enable IEEE PS mode | disable IEEE PS mode></li>
+<li>fw_name = <FW file name>，固件的相对路径（/lib/firmware/ 目录下）</li>
+</ul>
+
+<p>确保插入模块后，可以看到 PCIe 设备：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">~# lspci -v
+<span style="color:#ae81ff">00</span>:00.0 PCI bridge: Synopsys, Inc. DWC_usb3 <span style="color:#f92672">(</span>rev <span style="color:#ae81ff">01</span><span style="color:#f92672">)</span> <span style="color:#f92672">(</span>prog-if <span style="color:#ae81ff">00</span> <span style="color:#f92672">[</span>Normal decode<span style="color:#f92672">])</span>
+        Flags: bus master, fast devsel, latency <span style="color:#ae81ff">0</span>, IRQ <span style="color:#ae81ff">232</span>
+        Memory at <span style="color:#ae81ff">18000000</span> <span style="color:#f92672">(</span><span style="color:#ae81ff">32</span>-bit, non-prefetchable<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>size<span style="color:#f92672">=</span>1M<span style="color:#f92672">]</span>
+        Bus: primary<span style="color:#f92672">=</span><span style="color:#ae81ff">00</span>, secondary<span style="color:#f92672">=</span><span style="color:#ae81ff">01</span>, subordinate<span style="color:#f92672">=</span>ff, sec-latency<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>
+        I/O behind bridge: None
+        Memory behind bridge: None
+        Prefetchable memory behind bridge: <span style="color:#ae81ff">18100000</span>-182fffff <span style="color:#f92672">[</span>size<span style="color:#f92672">=</span>2M<span style="color:#f92672">]</span>
+        <span style="color:#f92672">[</span>virtual<span style="color:#f92672">]</span> Expansion ROM at <span style="color:#ae81ff">18300000</span> <span style="color:#f92672">[</span>disabled<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>size<span style="color:#f92672">=</span>64K<span style="color:#f92672">]</span>
+        Capabilities: <span style="color:#f92672">[</span><span style="color:#ae81ff">40</span><span style="color:#f92672">]</span> Power Management version <span style="color:#ae81ff">3</span>
+        Capabilities: <span style="color:#f92672">[</span><span style="color:#ae81ff">50</span><span style="color:#f92672">]</span> MSI: Enable- Count<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>/1 Maskable+ 64bit-
+        Capabilities: <span style="color:#f92672">[</span><span style="color:#ae81ff">70</span><span style="color:#f92672">]</span> Express Root Port <span style="color:#f92672">(</span>Slot-<span style="color:#f92672">)</span>, MSI <span style="color:#ae81ff">00</span>
+        Capabilities: <span style="color:#f92672">[</span><span style="color:#ae81ff">100</span><span style="color:#f92672">]</span> Advanced Error Reporting
+        Capabilities: <span style="color:#f92672">[</span><span style="color:#ae81ff">148</span><span style="color:#f92672">]</span> L1 PM Substates
+        Kernel driver in use: pcieport
+
+<span style="color:#ae81ff">01</span>:00.0 Ethernet controller: Marvell Technology Group Ltd. Device 2b42 <span style="color:#f92672">(</span>rev <span style="color:#ae81ff">11</span><span style="color:#f92672">)</span>
+        Flags: bus master, fast devsel, latency <span style="color:#ae81ff">0</span>, IRQ <span style="color:#ae81ff">232</span>
+        Memory at <span style="color:#ae81ff">18100000</span> <span style="color:#f92672">(</span><span style="color:#ae81ff">64</span>-bit, prefetchable<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>size<span style="color:#f92672">=</span>1M<span style="color:#f92672">]</span>
+        Memory at <span style="color:#ae81ff">18200000</span> <span style="color:#f92672">(</span><span style="color:#ae81ff">64</span>-bit, prefetchable<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>size<span style="color:#f92672">=</span>1M<span style="color:#f92672">]</span>
+        Capabilities: <span style="color:#f92672">[</span><span style="color:#ae81ff">40</span><span style="color:#f92672">]</span> Power Management version <span style="color:#ae81ff">3</span>
+        Capabilities: <span style="color:#f92672">[</span><span style="color:#ae81ff">50</span><span style="color:#f92672">]</span> MSI: Enable- Count<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>/32 Maskable+ 64bit+
+        Capabilities: <span style="color:#f92672">[</span><span style="color:#ae81ff">70</span><span style="color:#f92672">]</span> Express Endpoint, MSI <span style="color:#ae81ff">00</span>
+        Capabilities: <span style="color:#f92672">[</span>b0<span style="color:#f92672">]</span> MSI-X: Enable- Count<span style="color:#f92672">=</span><span style="color:#ae81ff">32</span> Masked-
+        Capabilities: <span style="color:#f92672">[</span><span style="color:#ae81ff">100</span><span style="color:#f92672">]</span> Advanced Error Reporting
+        Capabilities: <span style="color:#f92672">[</span><span style="color:#ae81ff">148</span><span style="color:#f92672">]</span> Device Serial Number <span style="color:#ae81ff">00</span>-00-00-00-00-00-00-00
+        Capabilities: <span style="color:#f92672">[</span><span style="color:#ae81ff">158</span><span style="color:#f92672">]</span> Power Budgeting &lt;?&gt;
+        Capabilities: <span style="color:#f92672">[</span><span style="color:#ae81ff">168</span><span style="color:#f92672">]</span> Latency Tolerance Reporting
+        Capabilities: <span style="color:#f92672">[</span><span style="color:#ae81ff">170</span><span style="color:#f92672">]</span> L1 PM Substates
+        Kernel driver in use: wlan_pcie</code></pre></div>
+<p>然后加载驱动：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">~# modprobe moal mod_para<span style="color:#f92672">=</span>nxp/wifi_mod_para.conf</code></pre></div>
+<p>驱动加载成功后，内核会打印如下信息：</p>
+
+<pre><code>[  232.184958] wlan: Loading MWLAN driver
+[  232.189377] wlan_pcie 0000:01:00.0: enabling device (0000 -&gt; 0002)
+[  232.195726] Attach moal handle ops, card interface type: 0x204
+[  232.205187] PCIE8997: init module param from usr cfg
+[  232.210209] card_type: PCIE8997, config block: 0
+[  232.214848] cfg80211_wext=0xf
+[  232.217837] wfd_name=p2p
+[  232.220381] max_vir_bss=1
+[  232.223001] cal_data_cfg=none
+[  232.225986] drv_mode = 7
+[  232.228546] ps_mode = 2
+[  232.230991] auto_ds = 2
+[  232.233455] fw_name=nxp/FwImage_8997/pcieuart8997_combo_v4.bin
+[  232.239350] rx_work=1 cpu_num=4
+[  232.242530] Attach mlan adapter operations.card_type is 0x204.
+[  232.256329] Request firmware: nxp/FwImage_8997/pcieuart8997_combo_v4.bin
+[  233.115916] FW download over, size 553604 bytes
+[  233.984767] WLAN FW is active
+[  233.987752] on_time is 233983459875
+[  234.031562] fw_cap_info=0x181c3fa3, dev_cap_mask=0xffffffff
+[  234.037181] max_p2p_conn = 8, max_sta_conn = 8
+[  234.068698] wlan: version = PCIE8997--16.92.10.p213-MM5X16247.p5-GPL-(FP92)
+[  234.078130] wlan: Driver loaded successfully
+</code></pre>
+
+<p>可以看到三个网络接口：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">~# ifconfig -a
+eth0      Link encap:Ethernet  HWaddr 7a:ac:85:59:55:fb
+          BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 <span style="color:#f92672">(</span><span style="color:#ae81ff">0</span>.0 B<span style="color:#f92672">)</span>  TX bytes:0 <span style="color:#f92672">(</span><span style="color:#ae81ff">0</span>.0 B<span style="color:#f92672">)</span>
+
+lo        Link encap:Local Loopback
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:82 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:82 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:6220 <span style="color:#f92672">(</span><span style="color:#ae81ff">6</span>.0 KiB<span style="color:#f92672">)</span>  TX bytes:6220 <span style="color:#f92672">(</span><span style="color:#ae81ff">6</span>.0 KiB<span style="color:#f92672">)</span>
+
+mlan0     Link encap:Ethernet  HWaddr d8:c0:a6:6e:8f:7d
+          BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 <span style="color:#f92672">(</span><span style="color:#ae81ff">0</span>.0 B<span style="color:#f92672">)</span>  TX bytes:0 <span style="color:#f92672">(</span><span style="color:#ae81ff">0</span>.0 B<span style="color:#f92672">)</span>
+
+p2p0      Link encap:Ethernet  HWaddr da:c0:a6:6e:8f:7d
+          BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 <span style="color:#f92672">(</span><span style="color:#ae81ff">0</span>.0 B<span style="color:#f92672">)</span>  TX bytes:0 <span style="color:#f92672">(</span><span style="color:#ae81ff">0</span>.0 B<span style="color:#f92672">)</span>
+
+uap0      Link encap:Ethernet  HWaddr d8:c0:a6:6e:90:7d
+          BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:0 <span style="color:#f92672">(</span><span style="color:#ae81ff">0</span>.0 B<span style="color:#f92672">)</span>  TX bytes:0 <span style="color:#f92672">(</span><span style="color:#ae81ff">0</span>.0 B<span style="color:#f92672">)</span></code></pre></div>
+<p>mlan0 是 STA 模式的接口，p2p0 是 P2P 模式的接口，uap0 是 AP 模式的接口。</p>
+
+<p>查看驱动信息：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">~# cat /proc/mwlan/adapter0/mlan0/info
+driver_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;wlan&#34;</span>
+driver_version <span style="color:#f92672">=</span> PCIE8997--16.92.10.p213-MM5X16247.p5-GPL-<span style="color:#f92672">(</span>FP92<span style="color:#f92672">)</span>
+interface_name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;mlan0&#34;</span>
+firmware_major_version<span style="color:#f92672">=</span><span style="color:#ae81ff">16</span>.92.10
+bss_mode <span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Managed&#34;</span>
+media_state<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Disconnected&#34;</span>
+mac_address<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;d8:c0:a6:6e:8f:7d&#34;</span></code></pre></div>
+<p>驱动源码里有大量的调试信息，是通过 PRINTM 函数打印的，分为多种类型，下表列出了所有的调试信息类型：</p>
+
+<table>
+<thead>
+<tr>
+<th>Bit</th>
+<th>Message type</th>
+<th>Log format</th>
+<th>Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Bit 0</td>
+<td>MMSG</td>
+<td>PRINTM(MMSG,&hellip;)</td>
+<td>Set bit 0 to enable all driver logs with log level MMSG.</td>
+</tr>
+
+<tr>
+<td>Bit 1</td>
+<td>MFATAL</td>
+<td>PRINTM(MFATAL,&hellip;)</td>
+<td>Set bit 1 to enable all driver logs with log level MFATAL.</td>
+</tr>
+
+<tr>
+<td>Bit 2</td>
+<td>MERROR</td>
+<td>PRINTM(MERROR,&hellip;)</td>
+<td>Set bit 2 to enable all driver logs with log level MERROR.</td>
+</tr>
+
+<tr>
+<td>Bit 3</td>
+<td>MDATA</td>
+<td>PRINTM(MDATA,&hellip;)</td>
+<td>Set bit 3 to enable all driver logs with log level MDATA.</td>
+</tr>
+
+<tr>
+<td>Bit 4</td>
+<td>MCMND</td>
+<td>PRINTM(MCMND,&hellip;)</td>
+<td>Set bit 4 to enable all driver logs with log level MCMND.</td>
+</tr>
+
+<tr>
+<td>Bit 5</td>
+<td>MEVENT</td>
+<td>PRINTM(MEVENT,&hellip;)</td>
+<td>Set bit 5 to enable all driver logs with log level MEVENT.</td>
+</tr>
+
+<tr>
+<td>Bit 6</td>
+<td>MINTR</td>
+<td>PRINTM(MINTR,&hellip;)</td>
+<td>Set bit 6 to enable all driver logs with log level MINTR.</td>
+</tr>
+
+<tr>
+<td>Bit 7</td>
+<td>MIOCTL</td>
+<td>PRINTM(MIOCTL,&hellip;)</td>
+<td>Set bit 7 to enable all driver logs with log level MIOCTL.</td>
+</tr>
+
+<tr>
+<td>Bit 16</td>
+<td>MDAT_D</td>
+<td>PRINTM(MDAT_D,&hellip;), DBG_HEXDUMP(MDAT_D,&hellip;)</td>
+<td>Set bit 16 to enable all driver logs with log level MDAT_D and provide the corresponding hexdump in dmesg logs.</td>
+</tr>
+
+<tr>
+<td>Bit 17</td>
+<td>MCMD_D</td>
+<td>PRINTM(MCMD_D,&hellip;), DBG_HEXDUMP(MCMD_D,&hellip;)</td>
+<td>Set bit 17 to enable all driver logs with log level MCMD_D and provide the corresponding hexdump in dmesg logs.</td>
+</tr>
+
+<tr>
+<td>Bit 18</td>
+<td>MEVT_D</td>
+<td>PRINTM(MEVT_D,&hellip;), DBG_HEXDUMP(MEVT_D,&hellip;)</td>
+<td>Set bit 18 to enable all driver logs with log level MEVT_D and provide the corresponding hexdump in dmesg logs.</td>
+</tr>
+
+<tr>
+<td>Bit 19</td>
+<td>MFW_D</td>
+<td>PRINTM(MFW_D,&hellip;), DBG_HEXDUMP(MFW_D,&hellip;)</td>
+<td>Set bit 19 to enable all driver logs with log level MFW_D and provide the corresponding hexdump in dmesg logs.</td>
+</tr>
+
+<tr>
+<td>Bit 20</td>
+<td>MIF_D</td>
+<td>PRINTM(MIF_D,&hellip;), DBG_HEXDUMP(MIF_D,&hellip;)</td>
+<td>Set bit 20 to enable all driver logs with log level MIF_D and provide the corresponding hexdump in dmesg logs.</td>
+</tr>
+
+<tr>
+<td>Bit 28</td>
+<td>MENTRY</td>
+<td>PRINTM(MENTRY,&hellip;), ENTER(), LEAVE()</td>
+<td>Set bit 28 to enable all driver logs with API entry and exit.</td>
+</tr>
+
+<tr>
+<td>Bit 29</td>
+<td>MWARN</td>
+<td>PRINTM(MWARN,&hellip;)</td>
+<td>Set bit 29 to enable all driver logs with log level MWARN.</td>
+</tr>
+
+<tr>
+<td>Bit 30</td>
+<td>MINFO</td>
+<td>PRINTM(MINFO,&hellip;)</td>
+<td>Set bit 30 to enable all driver logs with log level MINFO.</td>
+</tr>
+</tbody>
+</table>
+
+<p>模块参数 drvdbg ，按位使能或者关闭特定的信息类型，例如 drvdbg=0x6 ，表示只打开 MFATAL 和 MERROR 类型的调试信息。加载驱动后，可以在 /sys/ 文件系统中查看这个参数的值：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">~# cat /sys/module/moal/parameters/drvdbg
+<span style="color:#ae81ff">519</span></code></pre></div>
+<p>这个参数不能在驱动配置文件中设置，只能通过 /proc 文件系统修改，例如关闭 MMSG 信息：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">~# echo <span style="color:#e6db74">&#34;drvdbg=518&#34;</span> &gt;&gt; /proc/mwlan/adapter0/uap0/debug
+~# cat /sys/module/moal/parameters/drvdbg
+<span style="color:#ae81ff">518</span></code></pre></div>
+<h1 id="3-sta-模式">3. STA 模式</h1>
+
+<p>使用 STA 模式可以让 Wi-Fi 模块连接 Wi-Fi 热点。</p>
+
+<h2 id="3-1-连接">3.1 连接</h2>
+
+<p>首先使用 iw 扫描热点：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">~# iw dev mlan0 scan
+BSS <span style="color:#ae81ff">60</span>:3a:7c:63:c2:86<span style="color:#f92672">(</span>on mlan0<span style="color:#f92672">)</span>
+        TSF: <span style="color:#ae81ff">1394835875</span> usec <span style="color:#f92672">(</span>0d, <span style="color:#ae81ff">00</span>:23:14<span style="color:#f92672">)</span>
+        freq: <span style="color:#ae81ff">2412</span>
+        beacon interval: <span style="color:#ae81ff">100</span> TUs
+        capability: ESS Privacy ShortSlotTime RadioMeasure <span style="color:#f92672">(</span>0x1411<span style="color:#f92672">)</span>
+        signal: -29.00 dBm
+        last seen: <span style="color:#ae81ff">4</span> ms ago
+        SSID: TP-LINK_5G_C286
+        Supported rates: <span style="color:#ae81ff">1</span>.0* <span style="color:#ae81ff">2</span>.0* <span style="color:#ae81ff">5</span>.5* <span style="color:#ae81ff">11</span>.0* <span style="color:#ae81ff">9</span>.0 <span style="color:#ae81ff">18</span>.0 <span style="color:#ae81ff">36</span>.0 <span style="color:#ae81ff">54</span>.0
+        DS Parameter set: channel <span style="color:#ae81ff">1</span>
+        ERP: Use_Protection Barker_Preamble_Mode
+        Extended supported rates: <span style="color:#ae81ff">6</span>.0 <span style="color:#ae81ff">12</span>.0 <span style="color:#ae81ff">24</span>.0 <span style="color:#ae81ff">48</span>.0
+        WPA:     * Version: <span style="color:#ae81ff">1</span>
+                 * Group cipher: CCMP
+                 * Pairwise ciphers: CCMP
+                 * Authentication suites: PSK
+        RSN:     * Version: <span style="color:#ae81ff">1</span>
+                 * Group cipher: CCMP
+                 * Pairwise ciphers: CCMP
+                 * Authentication suites: PSK
+                 * Capabilities: <span style="color:#ae81ff">1</span>-PTKSA-RC <span style="color:#ae81ff">1</span>-GTKSA-RC <span style="color:#f92672">(</span>0x0000<span style="color:#f92672">)</span></code></pre></div>
+<p>新建一个 wpa_supplicant 的配置文件 /etc/wpa_supplicant/wpa_supplicant-mlan0.conf，内容如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ctrl_interface<span style="color:#f92672">=</span>/var/run/wpa_supplicant
+ctrl_interface_group<span style="color:#f92672">=</span>wheel
+update_config<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span></code></pre></div>
+<p>设置 Wi-Fi 热点的名称和密码：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">wpa_passphrase &lt;ESSID&gt; &lt;PASSWORD&gt; &gt;&gt; /etc/wpa_supplicant/wpa_supplicant-mlan0.conf</code></pre></div>
+<p>手动执行 wpa_supplicant ：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">~# wpa_supplicant -i mlan0 -Dnl80211 -c /etc/wpa_supplicant/wpa_supplicant-mlan0.conf -B</code></pre></div>
+<p>或者使用 systemd 连接：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">~# systemctl start wpa_supplicant@mlan0</code></pre></div>
+<p>如果连接成功，内核会打印如下信息：</p>
+
+<pre><code>[ 1657.514313] wlan: mlan0 START SCAN
+[ 1661.922914] wlan: SCAN COMPLETED: scanned AP count=17
+[ 1661.957185] wlan: Connected to bssid 60:XX:XX:XX:c2:88 successfully
+[ 1662.062877] mlan0:
+[ 1662.062888] wlan: Send EAPOL pkt to 60:XX:XX:XX:c2:88
+[ 1662.072089] mlan0:
+[ 1662.072092] wlan: Send EAPOL pkt to 60:XX:XX:XX:c2:88
+[ 1662.080127] IPv6: ADDRCONF(NETDEV_CHANGE): mlan0: link becomes ready
+[ 1662.087172] woal_cfg80211_set_rekey_data return: gtk_rekey_offload is DISABLE
+</code></pre>
+
+<p>驱动信息里可以看到连接成功：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">~# more /proc/mwlan/adapter0/mlan0/info
+driver_name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;wlan&#34;</span>
+driver_version <span style="color:#f92672">=</span> PCIE8997--16.92.10.p213-MM5X16247.p5-GPL-<span style="color:#f92672">(</span>FP92<span style="color:#f92672">)</span>
+interface_name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;mlan0&#34;</span>
+firmware_major_version<span style="color:#f92672">=</span><span style="color:#ae81ff">16</span>.92.10
+bss_mode <span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Managed&#34;</span>
+media_state<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Connected&#34;</span>
+mac_address<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;d8:c0:a6:6e:8f:7d&#34;</span>
+multicast_count<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;10&#34;</span>
+essid<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;TP-LINK_5G_C286&#34;</span>
+bssid<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;60:3a:7c:63:c2:88&#34;</span>
+channel<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;157&#34;</span></code></pre></div>
+<p>启动 wpa_supplicant 后，可以用 wpa_cli 命令调试 Wi-Fi 连接，比如查看连接状态：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">~# wpa_cli -i mlan0 status
+bssid<span style="color:#f92672">=</span><span style="color:#ae81ff">60</span>:3a:7c:63:c2:88
+freq<span style="color:#f92672">=</span><span style="color:#ae81ff">5785</span>
+ssid<span style="color:#f92672">=</span>TP-LINK_5G_C286
+id<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+mode<span style="color:#f92672">=</span>station
+pairwise_cipher<span style="color:#f92672">=</span>CCMP
+group_cipher<span style="color:#f92672">=</span>CCMP
+key_mgmt<span style="color:#f92672">=</span>WPA2-PSK
+wpa_state<span style="color:#f92672">=</span>COMPLETED
+p2p_device_address<span style="color:#f92672">=</span>d8:c0:a6:6e:8f:7d
+address<span style="color:#f92672">=</span>d8:c0:a6:6e:8f:7d
+uuid<span style="color:#f92672">=</span>15f39fc6-08ec-59cd-82d8-8991c864b6c3
+ieee80211ac<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span></code></pre></div>
+<p>使用 iw 可以看到更底层的状态数据：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">~# iw dev mlan0 info
+Interface mlan0
+        ifindex <span style="color:#ae81ff">3</span>
+        wdev 0x1
+        addr d8:c0:a6:6e:8f:7d
+        ssid TP-LINK_5G_C286
+        type managed
+        wiphy <span style="color:#ae81ff">0</span>
+        channel <span style="color:#ae81ff">157</span> <span style="color:#f92672">(</span><span style="color:#ae81ff">5785</span> MHz<span style="color:#f92672">)</span>, width: <span style="color:#ae81ff">80</span> MHz, center1: <span style="color:#ae81ff">5775</span> MHz
+        txpower <span style="color:#ae81ff">24</span>.00 dBm
+~# iw dev mlan0 link
+Connected to <span style="color:#ae81ff">60</span>:3a:7c:63:c2:88 <span style="color:#f92672">(</span>on mlan0<span style="color:#f92672">)</span>
+        SSID: TP-LINK_5G_C286
+        freq: <span style="color:#ae81ff">5785</span>
+        RX: <span style="color:#ae81ff">111781</span> bytes <span style="color:#f92672">(</span><span style="color:#ae81ff">1487</span> packets<span style="color:#f92672">)</span>
+        TX: <span style="color:#ae81ff">44737</span> bytes <span style="color:#f92672">(</span><span style="color:#ae81ff">734</span> packets<span style="color:#f92672">)</span>
+        signal: -37 dBm
+        rx bitrate: <span style="color:#ae81ff">6</span>.0 MBit/s
+        tx bitrate: <span style="color:#ae81ff">702</span>.0 MBit/s VHT-MCS <span style="color:#ae81ff">8</span> 80MHz VHT-NSS <span style="color:#ae81ff">2</span>
+
+        bss flags:
+        dtim period:    <span style="color:#ae81ff">1</span>
+        beacon int:     <span style="color:#ae81ff">100</span></code></pre></div>
+<h2 id="3-2-获取-ip">3.2 获取 IP</h2>
+
+<p>连接成成功后，还需要通过 DHCP 获得 IP 。可以用 udhcpc 命令获取 IP ：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">~# udhcpc -i mlan0 -b
+udhcpc: started, v1.31.0
+udhcpc: sending discover
+udhcpc: sending <span style="color:#66d9ef">select</span> <span style="color:#66d9ef">for</span> <span style="color:#ae81ff">192</span>.168.1.103
+udhcpc: lease of <span style="color:#ae81ff">192</span>.168.1.103 obtained, lease time <span style="color:#ae81ff">7200</span>
+/etc/udhcpc.d/50default: Adding DNS <span style="color:#ae81ff">192</span>.168.0.99
+/etc/udhcpc.d/50default: Adding DNS <span style="color:#ae81ff">223</span>.5.5.5</code></pre></div>
+<p>如果系统支持 systemd-networkd 服务管理网卡，也可以在 /etc/systemd/network/ 目录下新建一个网卡的配置文件 12-mlan0.network ，内容如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>Match<span style="color:#f92672">]</span>
+Name<span style="color:#f92672">=</span>mlan0
+<span style="color:#f92672">[</span>Network<span style="color:#f92672">]</span>
+DHCP<span style="color:#f92672">=</span>yes</code></pre></div>
+<p>然后重启服务：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">~# systemctl restart systemd-networkd</code></pre></div>
+<p>可以看到网卡成功获取 IP ：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">~# ifconfig
+lo        Link encap:Local Loopback
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:82 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:82 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:6220 <span style="color:#f92672">(</span><span style="color:#ae81ff">6</span>.0 KiB<span style="color:#f92672">)</span>  TX bytes:6220 <span style="color:#f92672">(</span><span style="color:#ae81ff">6</span>.0 KiB<span style="color:#f92672">)</span>
+
+mlan0     Link encap:Ethernet  HWaddr d8:c0:a6:6e:8f:7d
+          inet addr:192.168.1.103  Bcast:192.168.1.255  Mask:255.255.255.0
+          inet6 addr: fe80::dac0:a6ff:fe6e:8f7d/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:17 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:45 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000
+          RX bytes:3261 <span style="color:#f92672">(</span><span style="color:#ae81ff">3</span>.1 KiB<span style="color:#f92672">)</span>  TX bytes:5822 <span style="color:#f92672">(</span><span style="color:#ae81ff">5</span>.6 KiB<span style="color:#f92672">)</span></code></pre></div>
+<h2 id="3-3-使用-wpa-cli">3.3 使用 wpa_cli</h2>
+
+<p>配置文件的 ctrl_interface 选项指定了 socket 文件（/var/run/wpa_supplicant），wpa_supplicant 启动后，可以使用 wpa_cli 与 wpa_supplicant 通讯，调试和维护 Wi-Fi 连接。</p>
+
+<p>扫描热点，然后打印扫描结果：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">~# wpa_cli -i mlan0 scan
+~# wpa_cli -i mlan0 scan_result</code></pre></div>
+<p>效果如下：</p>
+
+<p><img src="../../static/images/2022-02-01/image-20220201203039180.png" alt="image-20220201203039180" /></p>
+
+<p>向 wpa_supplicant 添加一个网络连接：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">~# wpa_cli -i mlan0 add_network
+<span style="color:#ae81ff">2</span></code></pre></div>
+<p>该命令会返回一个新的网络 ID 号，如果 wpa_supplicant.conf 文件为空，则返回 0 ，表示第一个网络连接。因为已经有两个连接，所以返回了 2 ：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">~# wpa_cli -i mlan0 list_network
+network id / ssid / bssid / flags
+<span style="color:#ae81ff">0</span>       TP-LINK_C286    any
+<span style="color:#ae81ff">1</span>       TP-LINK_5G_C286 any     <span style="color:#f92672">[</span>CURRENT<span style="color:#f92672">]</span>
+<span style="color:#ae81ff">2</span>               any     <span style="color:#f92672">[</span>DISABLED<span style="color:#f92672">]</span></code></pre></div>
+<p>然后向这个网络连接添加一个 Wi-Fi 热点的配置：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">~# wpa_cli -i mlan0 set_network <span style="color:#ae81ff">2</span> ssid <span style="color:#e6db74">&#39;&#34;Shaocheng&#34;&#39;</span>
+OK
+~# wpa_cli -i mlan0 set_network <span style="color:#ae81ff">2</span> psk <span style="color:#e6db74">&#39;&#34;1234567890&#34;&#39;</span>
+OK</code></pre></div>
+<p>如果是没有密码的 Wi-Fi 热点，按如下设置：</p>
+
+<pre><code>wpa_cli -i mlan0 set_network 2 key_mgmt NONE
+</code></pre>
+
+<p>如果要修改密码可以执行：</p>
+
+<pre><code>wpa_cli -i mlan0 set_network 2 key_mgmt NONE
+</code></pre>
+
+<p>设置网络优先级，数值越大，优先级越高：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">~# wpa_cli -i mlan0 set_network <span style="color:#ae81ff">2</span> priority <span style="color:#ae81ff">2</span>
+OK</code></pre></div>
+<p>设置 scan_ssid 为 1 ，表示扫描这个 SSID ，如果为 0 ，表示忽略这个 SSID：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">~# wpa_cli -i mlan0 set_network <span style="color:#ae81ff">2</span> scan_ssid <span style="color:#ae81ff">1</span>
+OK</code></pre></div>
+<p>使能这个网络：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">~# wpa_cli -i mlan0 enable_network <span style="color:#ae81ff">2</span>
+OK</code></pre></div>
+<p>选中这个网络连接后，开始连接：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">~# wpa_cli -i mlan0 select_network <span style="color:#ae81ff">2</span>
+OK</code></pre></div>
+<p>当前连接的网络变为 ID 2 ：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">~# wpa_cli -i mlan0 list_network
+network id / ssid / bssid / flags
+<span style="color:#ae81ff">0</span>       TP-LINK_C286    any     <span style="color:#f92672">[</span>DISABLED<span style="color:#f92672">]</span>
+<span style="color:#ae81ff">1</span>       TP-LINK_5G_C286 any     <span style="color:#f92672">[</span>DISABLED<span style="color:#f92672">]</span>
+<span style="color:#ae81ff">2</span>       Shaocheng       any     <span style="color:#f92672">[</span>CURRENT<span style="color:#f92672">]</span></code></pre></div>
+<p>连接成功后，还需要重新获取 IP :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">~# udhcpc -i mlan0 -b -q
+udhcpc: started, v1.31.0
+udhcpc: sending discover
+udhcpc: sending <span style="color:#66d9ef">select</span> <span style="color:#66d9ef">for</span> <span style="color:#ae81ff">172</span>.20.10.9
+udhcpc: lease of <span style="color:#ae81ff">172</span>.20.10.9 obtained, lease time <span style="color:#ae81ff">86400</span>
+/etc/udhcpc.d/50default: Adding DNS <span style="color:#ae81ff">172</span>.20.10.1</code></pre></div>
+<p>调试成功后，可以将当前的网络配置保存到配置文件：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">~# wpa_cli -i mlan0 save_config
+OK</code></pre></div>
+<p>想要断开热点时可以执行如下命令：</p>
+
+<pre><code>wpa_cli -i mlan0 disable_network 2    //与 ID 2 的网络进行断开
+wpa_cli -i mlan0 remove_network 2     //将 ID 2 的网络移除掉,必须先断开才行
+wpa_cli -i mlan0 save_config          //更新配置文件
+</code></pre>
+
+<p>如果直接执行 wpa_cli ，不带参数，会进入交互模式，执行 help 查看所有指令，方便调试。</p>
+
+<h1 id="4-ap-模式">4. AP 模式</h1>
+
+<p>使用 AP 模式可以将 Wi-Fi 模块作为热点，AP 模式的接口是 uap0 ，需要先设置一个静态 IP ：</p>
+
+<pre><code>ifconfig uap0 172.31.255.1 netmask 255.255.255.0 up 
+</code></pre>
+
+<h2 id="4-1-启动-hostapd">4.1 启动 hostapd</h2>
+
+<p>新建 /etc/hostapd-uap0.conf 文件，添加 WPA/WPA2-PSK 认证方式的配置选项，内容如下：</p>
+
+<pre><code>ctrl_interface=/var/run/hostapd
+interface=uap0
+driver=nl80211
+ieee80211n=1
+country_code=CN
+ssid=NXP_AP
+hw_mode=a
+channel=0
+macaddr_acl=0
+auth_algs=1
+ignore_broadcast_ssid=0
+wpa=3
+wpa_passphrase=12345678
+wpa_key_mgmt=WPA-PSK
+wpa_pairwise=TKIP
+rsn_pairwise=CCMP
+</code></pre>
+
+<p>启动 hostapd ：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">~# hostapd /etc/hostapd-uap0.conf -B</code></pre></div>
+<p>启动过程中，内核会打印如下信息：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>  <span style="color:#ae81ff">100</span>.479639<span style="color:#f92672">]</span> wlan: SCAN COMPLETED: scanned AP count<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span>
+<span style="color:#f92672">[</span>  <span style="color:#ae81ff">100</span>.872225<span style="color:#f92672">]</span> wlan: SCAN COMPLETED: scanned AP count<span style="color:#f92672">=</span><span style="color:#ae81ff">6</span>
+<span style="color:#f92672">[</span>  <span style="color:#ae81ff">101</span>.264337<span style="color:#f92672">]</span> wlan: SCAN COMPLETED: scanned AP count<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>
+<span style="color:#f92672">[</span>  <span style="color:#ae81ff">101</span>.661716<span style="color:#f92672">]</span> wlan: SCAN COMPLETED: scanned AP count<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+<span style="color:#f92672">[</span>  <span style="color:#ae81ff">102</span>.056751<span style="color:#f92672">]</span> wlan: SCAN COMPLETED: scanned AP count<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>
+<span style="color:#f92672">[</span>  <span style="color:#ae81ff">102</span>.093045<span style="color:#f92672">]</span> wlan: Starting AP
+<span style="color:#f92672">[</span>  <span style="color:#ae81ff">102</span>.096548<span style="color:#f92672">]</span> Get ht_cap from beacon ies: 0xc
+<span style="color:#f92672">[</span>  <span style="color:#ae81ff">102</span>.101107<span style="color:#f92672">]</span> fw doesn<span style="color:#960050;background-color:#1e0010">&#39;</span>t support 11ax
+<span style="color:#f92672">[</span>  <span style="color:#ae81ff">102</span>.114610<span style="color:#f92672">]</span> wlan: AP started
+<span style="color:#f92672">[</span>  <span style="color:#ae81ff">102</span>.117540<span style="color:#f92672">]</span> IPv6: ADDRCONF<span style="color:#f92672">(</span>NETDEV_CHANGE<span style="color:#f92672">)</span>: uap0: link becomes ready
+<span style="color:#f92672">[</span>  <span style="color:#ae81ff">102</span>.125433<span style="color:#f92672">]</span> Set AC<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>, txop<span style="color:#f92672">=</span><span style="color:#ae81ff">47</span> cwmin<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>, cwmax<span style="color:#f92672">=</span><span style="color:#ae81ff">7</span> aifs<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+<span style="color:#f92672">[</span>  <span style="color:#ae81ff">102</span>.132663<span style="color:#f92672">]</span> Set AC<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>, txop<span style="color:#f92672">=</span><span style="color:#ae81ff">94</span> cwmin<span style="color:#f92672">=</span><span style="color:#ae81ff">7</span>, cwmax<span style="color:#f92672">=</span><span style="color:#ae81ff">15</span> aifs<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+<span style="color:#f92672">[</span>  <span style="color:#ae81ff">102</span>.139977<span style="color:#f92672">]</span> Set AC<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>, txop<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span> cwmin<span style="color:#f92672">=</span><span style="color:#ae81ff">15</span>, cwmax<span style="color:#f92672">=</span><span style="color:#ae81ff">63</span> aifs<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>
+<span style="color:#f92672">[</span>  <span style="color:#ae81ff">102</span>.147327<span style="color:#f92672">]</span> Set AC<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, txop<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span> cwmin<span style="color:#f92672">=</span><span style="color:#ae81ff">15</span>, cwmax<span style="color:#f92672">=</span><span style="color:#ae81ff">1023</span> aifs<span style="color:#f92672">=</span><span style="color:#ae81ff">7</span></code></pre></div>
+<p>启动成功后，用 hostapd_cli 查看状态：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">~# hostapd_cli -i uap0 status
+state<span style="color:#f92672">=</span>ENABLED
+phy<span style="color:#f92672">=</span>mwiphy0
+freq<span style="color:#f92672">=</span><span style="color:#ae81ff">5180</span>
+num_sta_non_erp<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>
+num_sta_no_short_slot_time<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>
+num_sta_no_short_preamble<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>
+olbc<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>
+num_sta_ht_no_gf<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>
+num_sta_no_ht<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>
+num_sta_ht_20_mhz<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>
+num_sta_ht40_intolerant<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>
+olbc_ht<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>
+ht_op_mode<span style="color:#f92672">=</span>0x0
+cac_time_seconds<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>
+cac_time_left_seconds<span style="color:#f92672">=</span>N/A
+channel<span style="color:#f92672">=</span><span style="color:#ae81ff">36</span>
+secondary_channel<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>
+ieee80211n<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+ieee80211ac<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>
+ieee80211ax<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>
+beacon_int<span style="color:#f92672">=</span><span style="color:#ae81ff">100</span>
+dtim_period<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>
+ht_caps_info<span style="color:#f92672">=</span>000c
+ht_mcs_bitmask<span style="color:#f92672">=</span>ffff0000010000000000
+supported_rates<span style="color:#f92672">=</span>0c <span style="color:#ae81ff">12</span> <span style="color:#ae81ff">18</span> <span style="color:#ae81ff">24</span> <span style="color:#ae81ff">30</span> <span style="color:#ae81ff">48</span> <span style="color:#ae81ff">60</span> 6c
+max_txpower<span style="color:#f92672">=</span><span style="color:#ae81ff">23</span>
+bss<span style="color:#f92672">[</span><span style="color:#ae81ff">0</span><span style="color:#f92672">]=</span>uap0
+bssid<span style="color:#f92672">[</span><span style="color:#ae81ff">0</span><span style="color:#f92672">]=</span>d8:c0:a6:6e:90:7d
+ssid<span style="color:#f92672">[</span><span style="color:#ae81ff">0</span><span style="color:#f92672">]=</span>NXP_AP
+num_sta<span style="color:#f92672">[</span><span style="color:#ae81ff">0</span><span style="color:#f92672">]=</span><span style="color:#ae81ff">0</span></code></pre></div>
+<p>此时，用手机可以搜到名为 NXP_AP 的热点，密码 12345678，可以连接，但是无法获取 IP ，因为本机没有提供 DHCP 服务。</p>
+
+<h2 id="4-2-分配-ip">4.2 分配 IP</h2>
+
+<p>可以使用 udhcpd 启动 DHCP 服务，想 Wi-Fi 终端分配 IP。新建配置文件 /etc/udhcpd-uap0.conf ，内容如下：</p>
+
+<pre><code>interface uap0
+start 192.168.1.100
+end 192.168.1.199
+remaining yes
+lease_file	/var/lib/misc/udhcpd.leases
+</code></pre>
+
+<p>启动 udhcpd ：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">~# udhcpd /etc/udhcpd-uap0.conf</code></pre></div>
+<p>用手机重新连接，可以获得 IP 。用 hostapd_cli 可以列出已连接的 STA 设备：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">~# hostapd_cli -i uap0 list_sta
+ce:53:7d:79:65:a5</code></pre></div>
+<p>udhcpd 是 busybox 提供的 DHCP Server ，如果对功能和稳定性有要求，可以使用 dnsmasq 。</p>
+
+<h2 id="4-3-使用-hostapd-cli">4.3 使用 hostapd_cli</h2>
+
+<p>配置文件的 ctrl_interface 选项指定了 socket 文件（/var/run/hostapd），hostapd 启动后，可以使用 hostapd_cli 与 hostapd 通讯，调试和维护 hostapd 。</p>
+
+<p>列出所有 STA 的详细信息：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">~# hostapd_cli -i uap0 all_sta
+ce:53:7d:79:65:a5
+flags<span style="color:#f92672">=[</span>AUTH<span style="color:#f92672">][</span>ASSOC<span style="color:#f92672">][</span>AUTHORIZED<span style="color:#f92672">]</span>
+aid<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>
+capability<span style="color:#f92672">=</span>0x0
+listen_interval<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>
+supported_rates<span style="color:#f92672">=</span>0c <span style="color:#ae81ff">18</span> <span style="color:#ae81ff">30</span>
+timeout_next<span style="color:#f92672">=</span>NULLFUNC POLL
+dot11RSNAStatsSTAAddress<span style="color:#f92672">=</span>ce:53:7d:79:65:a5
+dot11RSNAStatsVersion<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>
+dot11RSNAStatsSelectedPairwiseCipher<span style="color:#f92672">=</span><span style="color:#ae81ff">00</span>-0f-ac-4
+dot11RSNAStatsTKIPLocalMICFailures<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>
+dot11RSNAStatsTKIPRemoteMICFailures<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>
+wpa<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>
+AKMSuiteSelector<span style="color:#f92672">=</span><span style="color:#ae81ff">00</span>-0f-ac-2
+hostapdWPAPTKState<span style="color:#f92672">=</span><span style="color:#ae81ff">11</span>
+hostapdWPAPTKGroupState<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>
+rx_packets<span style="color:#f92672">=</span><span style="color:#ae81ff">83</span>
+tx_packets<span style="color:#f92672">=</span><span style="color:#ae81ff">18</span>
+rx_bytes<span style="color:#f92672">=</span><span style="color:#ae81ff">9712</span>
+tx_bytes<span style="color:#f92672">=</span><span style="color:#ae81ff">2031</span>
+inactive_msec<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>
+signal<span style="color:#f92672">=</span>-56
+rx_rate_info<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>
+tx_rate_info<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>
+connected_time<span style="color:#f92672">=</span><span style="color:#ae81ff">515</span></code></pre></div>
+<h2 id="4-4-udhcpd-leases">4.4 udhcpd.leases</h2>
+
+<p>因为配置文件中设置了 lease_file 选项，有 STA 设备接入热点后，在 /var/lib/misc/ 目录下就会生成一个 udhcpd.leases 文件，这是一个二进制文件，记录了所有接入设备的信息：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">~# hexdump -C /var/lib/misc/udhcpd.leases
+<span style="color:#ae81ff">00000000</span>  <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">60</span> e3 d2 <span style="color:#ae81ff">49</span>  <span style="color:#ae81ff">00</span> 0d 2e cc ac 1f ff <span style="color:#ae81ff">64</span>  |....<span style="color:#e6db74">`</span>..I.......d|
+<span style="color:#ae81ff">00000010</span>  ce <span style="color:#ae81ff">53</span> 7d <span style="color:#ae81ff">79</span> <span style="color:#ae81ff">65</span> a5 <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span>  <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span>  |.S<span style="color:#f92672">}</span>ye...........|
+<span style="color:#ae81ff">00000020</span>  <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span>  <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span> <span style="color:#ae81ff">00</span>              |............|
+0000002c</code></pre></div>
+<p>文件的前 8 个字节为本文件的修改时间，0x60e3d249 转换为整数是1,625,543,241，就是 2021-07-06 11:47:21 ，每当有新的 sta 接入，或者 auto_time 到时（默认 7200 秒），该文件就会更新。从第9个字节开始就是 struct dyn_lease 的内容:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">typedef</span> uint32_t leasetime_t;
+
+<span style="color:#66d9ef">struct</span> dyn_lease {
+          <span style="color:#75715e">/* &#34;nip&#34;: IP in network order */</span>
+          <span style="color:#75715e">/* Unix time when lease expires. Kept in memory in host order.
+</span><span style="color:#75715e">           * When written to file, converted to network order
+</span><span style="color:#75715e">           * and adjusted (current time subtracted) */</span>
+          leasetime_t expires;
+          uint32_t lease_nip;
+          <span style="color:#75715e">/* We use lease_mac[6], since e.g. ARP probing uses
+</span><span style="color:#75715e">           * only 6 first bytes anyway. We check received dhcp packets
+</span><span style="color:#75715e">           * that their hlen == 6 and thus chaddr has only 6 significant bytes
+</span><span style="color:#75715e">           * (dhcp packet has chaddr[16], not [6])
+</span><span style="color:#75715e">           */</span>
+          uint8_t lease_mac[<span style="color:#ae81ff">6</span>];
+          <span style="color:#66d9ef">char</span> hostname[<span style="color:#ae81ff">20</span>];
+          uint8_t pad[<span style="color:#ae81ff">2</span>];
+          <span style="color:#75715e">/* total size is a multiply of 4 */</span>
+}<span style="color:#960050;background-color:#1e0010">；</span></code></pre></div>
+<p>该结构体的大小为 36 个字节，当有新的 sta 接入热点时，会向 udhcpd.leases 增加 36 字节的信息，后面接入的 sta 会放在文件的前面，但是当 sta 离开时，不会把该 sta 的信息删除。</p>
+
+<p>注意，这个文件并不稳定，不能保证及时更新。</p>
+
+<h1 id="5-参考">5. 参考</h1>
+
+<p>wpa_supplicant ：</p>
+
+<ul>
+<li><p>官网：<a href="https://w1.fi/wpa_supplicant/" target="_blank">https://w1.fi/wpa_supplicant/</a></p></li>
+
+<li><p>配置文件：<a href="https://w1.fi/cgit/hostap/plain/wpa_supplicant/wpa_supplicant.conf" target="_blank">https://w1.fi/cgit/hostap/plain/wpa_supplicant/wpa_supplicant.conf</a></p></li>
+</ul>
+
+<p>hostapd：</p>
+
+<ul>
+<li><p>官网：<a href="https://w1.fi/hostapd/" target="_blank">https://w1.fi/hostapd/</a></p></li>
+
+<li><p>配置文件：<a href="https://w1.fi/cgit/hostap/plain/hostapd/hostapd.conf" target="_blank">https://w1.fi/cgit/hostap/plain/hostapd/hostapd.conf</a></p></li>
+</ul>
+
+<p>udhcp：</p>
+
+<ul>
+<li>官网：<a href="https://udhcp.busybox.net/" target="_blank">https://udhcp.busybox.net/</a></li>
+<li>udhcpd：<a href="https://udhcp.busybox.net/README.udhcpd" target="_blank">https://udhcp.busybox.net/README.udhcpd</a></li>
+<li>udhcpd.conf：<a href="https://udhcp.busybox.net/udhcpd.conf" target="_blank">https://udhcp.busybox.net/udhcpd.conf</a></li>
+<li>udhcpc：<a href="https://udhcp.busybox.net/README.udhcpc" target="_blank">https://udhcp.busybox.net/README.udhcpc</a></li>
+</ul>
+]]></content></item><item><title>Linux 下使用 ioctl 接口访问指定网卡</title><link>https://shaocheng.li/posts/2021/10/26/</link><pubDate>Tue, 26 Oct 2021 20:09:49 +0800</pubDate><guid>https://shaocheng.li/posts/2021/10/26/</guid><description>netdevice 是 glibc 提供的访问网卡设备的低级接口，支持标准 ioctl 函数，需要的头文件是：
 #include &amp;lt;sys/ioctl.h&amp;gt;#include &amp;lt;net/if.h&amp;gt; 使用方法是调用 ioctl 函数访问 socket 文件，基本语法是：
 ioctl(int fd, int request, struct ifreq *); int fd 应该是一个 socket 文件描述符，主要通过 struct ifreq 结构传递数据：
 struct ifreq { char ifr_name[IFNAMSIZ]; /* Interface name */ union { struct sockaddr ifr_addr; // IP 地址 struct sockaddr ifr_dstaddr; struct sockaddr ifr_broadaddr; // 广播地址 struct sockaddr ifr_netmask; // 子网掩码 struct sockaddr ifr_hwaddr; // MAC 地址 short ifr_flags; int ifr_ifindex; int ifr_metric; int ifr_mtu; struct ifmap ifr_map; char ifr_slave[IFNAMSIZ]; char ifr_newname[IFNAMSIZ]; char *ifr_data; }; }; 使用方法：</description><content type="html"><![CDATA[<p><a href="https://man7.org/linux/man-pages/man7/netdevice.7.html" target="_blank">netdevice</a> 是 glibc 提供的访问网卡设备的低级接口，支持标准 ioctl 函数，需要的头文件是：</p>
