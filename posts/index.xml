@@ -43,7 +43,7 @@ sbs@192.168.42.131<span style="color:#e6db74">&#39;s password:
     IdentityFile ~/.ssh/lishaocheng_20220201</code></pre></div>
 <ul>
 <li>Host 设置为服务器 IP</li>
-<li>Hostname 设置为服务器 IP</li>
+<li>Hostname 设置为服务器名称</li>
 <li>Port 是服务器 SSH 的端口</li>
 <li>User 是用户名</li>
 <li>PreferredAuthentications 设为公钥验证</li>
