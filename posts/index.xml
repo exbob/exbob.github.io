@@ -4,7 +4,7 @@ ssh-keygen -t ed25519 -C &amp;#34;lishaocheng_20220201&amp;#34; -t 选项指定�
 chmod 600 ~/.ssh/lishaocheng_20220201 2. 将公钥添加到 SSH 服务器 在客户电脑的在 ~/.ssh/ 目录下执行 ssh-copy-id -i [public key] username@[server ip] ，将公钥添加到服务器上，例如：
 ~/.ssh $ ssh-copy-id -i lishaocheng_20220201.pub sbs@192.168.42.131 /usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: &amp;#34;lishaocheng_20220201.pub&amp;#34; /usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed /usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys sbs@192.</description><content type="html"><![CDATA[
 
-<h1 id="1-在客户端电脑生成密钥对">1. 在客户端电脑生成密钥对</h1>
+<h2 id="1-在客户端电脑生成密钥对">1. 在客户端电脑生成密钥对</h2>
 
 <p>在客户端电脑上执行如下命令，生成一个密钥对：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">ssh-keygen -t ed25519 -C <span style="color:#e6db74">&#34;lishaocheng_20220201&#34;</span></code></pre></div>
@@ -17,7 +17,7 @@ chmod 600 ~/.ssh/lishaocheng_20220201 2. 将公钥添加到 SSH 服务器 在客
 
 <p>如果在 Linux 下使用，需要设置密钥文件的权限，否则添加时会报错：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">chmod <span style="color:#ae81ff">600</span> ~/.ssh/lishaocheng_20220201</code></pre></div>
-<h1 id="2-将公钥添加到-ssh-服务器">2. 将公钥添加到 SSH 服务器</h1>
+<h2 id="2-将公钥添加到-ssh-服务器">2. 将公钥添加到 SSH 服务器</h2>
 
 <p>在客户电脑的在 ~/.ssh/ 目录下执行 <code>ssh-copy-id -i [public key] username@[server ip]</code> ，将公钥添加到服务器上，例如：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">~/.ssh $ ssh-copy-id -i lishaocheng_20220201.pub sbs@192.168.42.131
@@ -32,7 +32,7 @@ sbs@192.168.42.131<span style="color:#e6db74">&#39;s password:
 </span><span style="color:#e6db74">and check to make sure that only the key(s) you wanted were added.</span></code></pre></div>
 <p>执行成功后，公钥会复制到服务器的 ~/.ssh 目录下的 authorized_keys 文件中。</p>
 
-<p># 3. 修改客户端配置文件</p>
+<h2 id="3-修改客户端配置文件">3. 修改客户端配置文件</h2>
 
 <p>在客户端配置文件 <code>~/.ssh/config</code> 中添加如下内容：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">Host vm_ubuntu18
