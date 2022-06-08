@@ -19584,7 +19584,7 @@ git config [--global] user.email &quot;[email address]&quot;
 <li>应用一个 git 补丁并检查是否成功 <code>git apply --check [patch file]</code></li>
 </ul>
 
-<h2 id="13-版本号">13.  版本号</h2>
+<h2 id="11-版本号">11.  版本号</h2>
 
 <p>版本号以小写字母 v 开头，格式是：主版本号.次版本号-修订版本号-SHA 。</p>
 
@@ -19634,7 +19634,47 @@ v1.0-1-g740c0c4
 <pre><code>$ git push --tags origin master
 </code></pre>
 
-<h2 id="12-参考">12. 参考</h2>
+<h2 id="12-使用ssh-key">12. 使用SSH Key</h2>
+
+<p>在客户端执行如下命令生成一个密钥对：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">ssh<span style="color:#f92672">-</span>keygen <span style="color:#f92672">-</span>t ed25519 <span style="color:#f92672">-</span>C <span style="color:#e6db74">&#34;lishaocheng_20220201&#34;</span></code></pre></div>
+<ul>
+<li><p>-t 选项指定了加密类型，我们选择 ed25519 ，也可以选择其他类型。</p></li>
+
+<li><p>-C 选项是设置密钥对的注释，我习惯设置用户名和日期。</p></li>
+</ul>
+
+<p>设置一个便于记忆的文件名，密码可以跳过，生成的密钥对文件位于当前目录下，后缀为 .pub 的文件是公钥，另一个是私钥，把两个文件复制到 ~/.ssh/ 目录下，把公钥文件的内容添加到 git 服务器。</p>
+
+<p>没次使用 git 前，需要添加key 。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#960050;background-color:#1e0010">$</span> eval <span style="color:#e6db74">&#34;$(ssh-agent -s)&#34;</span>
+<span style="color:#960050;background-color:#1e0010">$</span> ssh<span style="color:#f92672">-</span>add.exe <span style="color:#f92672">~/</span>.ssh<span style="color:#f92672">/</span>lishaocheng_20220201</code></pre></div>
+<p>手动添加 key 比较麻烦，可以将这个过程写入 ssh 的配置文件。新建一个配置文件：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">touch <span style="color:#f92672">~/</span>.ssh<span style="color:#f92672">/</span>config</code></pre></div>
+<p>添加如下内容：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">Host <span style="color:#ae81ff">192.168.0.202</span>
+  Hostname <span style="color:#ae81ff">192.168.0.202</span>
+  Port <span style="color:#ae81ff">3022</span>
+  User lishaocheng
+  PreferredAuthentications publickey
+  IdentityFile <span style="color:#f92672">~/</span>.ssh<span style="color:#f92672">/</span>lishaocheng_20220201</code></pre></div>
+<ul>
+<li><p>Host 是服务器的名称，可用任意字符串，这里设置为服务器 IP</p></li>
+
+<li><p>Hostname 必须设置为服务器 IP 或者域名&#x20;</p></li>
+
+<li><p>Port 是服务器 SSH 的端口</p></li>
+
+<li><p>User 是用户名</p></li>
+
+<li><p>PreferredAuthentications 设为公钥验证</p></li>
+
+<li><p>IdentityFile 设置私钥文件的路径</p></li>
+</ul>
+
+<p>之后使用 git 的时候，就不用手动添加 key 了。</p>
+
+<h2 id="13-参考">13. 参考</h2>
 
 <ul>
 <li><a href="http://rogerdudler.github.io/git-guide/index.zh.html" target="_blank">Git 简明指南</a></li>
