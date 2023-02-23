@@ -6308,13 +6308,13 @@ fe80::4e54:99ff:fe45:e5d5 dev enp0s29u1u4c2 lladdr 4c:54:99:45:e5:d5 router REAC
 
 <li><p><a href="https://linux.cn/article-3144-1.html" target="_blank">https://linux.cn/article-3144-1.html</a></p></li>
 </ul>
-]]></content></item><item><title>UCI 和 ubus 学习笔记</title><link>https://shaocheng.li/posts/2019/12/24/</link><pubDate>Tue, 24 Dec 2019 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2019/12/24/</guid><description>UCI 和 ubus 都是 Openwrt 项目提供的软件，UCI 提供了统一的配置文件格式和读写工具，ubus 提供了基于 Unix Socket 的进程间通信框架。两个软件都可以方便的移植到其他 Linux 系统，以 Ubuntu 系统为例，首先要安装一些依赖的软件：
+]]></content></item><item><title>UCI 和 ubus 学习笔记</title><link>https://shaocheng.li/posts/2019/12/24/</link><pubDate>Tue, 24 Dec 2019 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2019/12/24/</guid><description>UCI 和 ubus 都是 Openwrt 项目提供的软件，UCI 提供了统一的配置文件格式和读写工具，ubus 提供了基于 Unix Socket 的进程间通信框架。两个软件都可以方便的移植到其他 Linux 系统，以 Ubuntu20.04 为例，首先要安装一些依赖的软件：
 apt-get install pkg-config apt-get install lua5.1 apt-get install liblua5.1-dev apt-get install cmake apt-get install libjson-c-dev 然后要编译安装 libubox ：
 git clone https://git.openwrt.org/project/libubox.git cd libubox cmake . make make install 编译时可能出现找不到头文件的错误：
 /root/libubox/lua/uloop.c:21:17: fatal error: lua.h: No such file or directory 这是路径问题，因为 lua 的头文件在 /usr/include/lua5.1 目录下，所有修改 uloop.c 文件，为 lua.h 等头文件前面加上 lua5.1/ 路径：
-#include &amp;lt;lua5.1/lua.h&amp;gt;#include &amp;lt;lua5.1/lualib.h&amp;gt;#include &amp;lt;lua5.1/lauxlib.h&amp;gt; 1. UCI 编译安装 uci</description><content type="html"><![CDATA[
+#include &amp;lt;lua5.1/lua.h&amp;gt;#include &amp;lt;lua5.1/lualib.h&amp;gt;#include &amp;lt;lua5.1/lauxlib.h&amp;gt; 1. UCI 官方文档：https://openwrt.</description><content type="html"><![CDATA[
 
-<p>UCI 和 ubus 都是 Openwrt 项目提供的软件，UCI 提供了统一的配置文件格式和读写工具，ubus 提供了基于 Unix Socket 的进程间通信框架。两个软件都可以方便的移植到其他 Linux 系统，以 Ubuntu 系统为例，首先要安装一些依赖的软件：</p>
+<p>UCI 和 ubus 都是 Openwrt 项目提供的软件，UCI 提供了统一的配置文件格式和读写工具，ubus 提供了基于 Unix Socket 的进程间通信框架。两个软件都可以方便的移植到其他 Linux 系统，以 Ubuntu20.04 为例，首先要安装一些依赖的软件：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">apt-get install pkg-config
 apt-get install lua5.1
 apt-get install liblua5.1-dev
@@ -6334,33 +6334,217 @@ make install</code></pre></div>
 </span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;lua5.1/lauxlib.h&gt;</span></code></pre></div>
 <h2 id="1-uci">1. UCI</h2>
 
-<p>编译安装 uci</p>
+<p>官方文档：<a href="https://openwrt.org/docs/guide-user/base-system/uci" target="_blank">https://openwrt.org/docs/guide-user/base-system/uci</a></p>
+
+<p>编译安装 uci ：</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">git clone https://git.openwrt.org/project/uci.git
 cd uci
 cmake .
 make 
-make install</code></pre></div>
+make install <span style="color:#75715e"># 默认都安装在 /usr/local 路径下</span></code></pre></div>
 <p>安装完成后执行一次 <code>sudo ldconfig -v</code> ，否则可能找不到刚安装的共享库。</p>
 
-<p>UCI 的配置文件格式是 <code>config -&gt; section -&gt; option</code> 这样的层级关系，它提供了 uci 命令读写配置文件，语法可以直接用 <code>uci -h</code> 获得。我们可以新建 <code>/etc/config/system</code> 文件，然后做一次配置测试：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">/etc/config$ uci add system info
-cfg0184d1
-/etc/config$ uci show
-system.@info<span style="color:#f92672">[</span><span style="color:#ae81ff">0</span><span style="color:#f92672">]=</span>info
-/etc/config$ uci rename system.@info<span style="color:#f92672">[</span><span style="color:#ae81ff">0</span><span style="color:#f92672">]=</span>time
-/etc/config$ uci show
-system.time<span style="color:#f92672">=</span>info
-/etc/config$ uci set system.time.zone<span style="color:#f92672">=</span>As^C
-/etc/config$ cat /etc/timezone
-Asia/Chongqing
-/etc/config$ uci set system.time.zone<span style="color:#f92672">=</span>Asia/Chongqing
-/etc/config$ uci show
-system.time<span style="color:#f92672">=</span>info
-system.time.zone<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;Asia/Chongqing&#39;</span>
-/etc/config$ uci commit system
-/etc/config$ cat system
-config info <span style="color:#e6db74">&#39;time&#39;</span>
-        option zone <span style="color:#e6db74">&#39;Asia/Chongqing&#39;</span></code></pre></div>
+<p>UCI 的全称叫做统一配置接口（Unified Configuration Interface），它的作用为各种不同的服务单元提供统一的配置文件格式和编程方法。配置文件是纯文本文件，只支持 ASCII 字符，UCI 提供了 shell 命令，C 语言和 Lua 语言编程接口，不推荐手动编辑配置文件，避免出现语法错误。</p>
+
+<h3 id="1-1-配置文件语法">1.1 配置文件语法</h3>
+
+<p>UCI 的配置文件默认都放在 <code>/etc/config</code> 路径下，也可以自定义。配置文件的语法是 <code>config -&gt; section -&gt; option</code> 这样的层级关系，一个配置文件就是一个 <code>config</code>，由多个 <code>section</code> 段组成的，每个 <code>section</code> 内包含了一组选项和值，以井号 <code>#</code> 开头的行是注释，语法如下：</p>
+
+<pre><code>config &lt;type&gt; [&quot;name&quot;]    # section
+        option &lt;name&gt; &quot;&lt;value&gt;&quot;    # option
+</code></pre>
+
+<p>以 openwrt 系统的 <code>/etc/confg/network</code> 文件为例，系统的网络配置程序在启动时会读取并解析这个配置文件，然后根据文件内的选项来设置网卡参数：</p>
+
+<pre><code>config interface 'lan'
+        option ifname 'eth0'
+        option proto 'static'
+        option netmask '255.255.255.0'
+        option ipaddr '192.168.1.1'
+ 
+config interface 'wan'
+        option ifname 'eth1'
+        option proto 'dhcp'
+</code></pre>
+
+<p>这里包含了两个 <code>section</code> , 每个 <code>section</code> 必须以 <code>config</code> 关键字开头，后面两个元素分别是 section 的 type 和 name ，由用户自定义，name 必须用引号包裹，如果没有定义 name，UCI 会自动分配一个 ID 作为它的 name ，这叫做匿名 section 。</p>
+
+<p>每个 <code>section</code> 下包含了若干选项，以行为单位，必须以 <code>option</code> 关键字开头，后面两个元素分别是 option 的 name 和 vlaue ，由用户自定义，value 必须用引号包裹，不能为空，否则解析时会报错。</p>
+
+<p>要获取 wan 口网卡的名称，可以用 <code>network.wan.ifname</code> 定位：</p>
+
+<pre><code>$ uci get network.wan.ifname
+eth1
+</code></pre>
+
+<h3 id="1-2-shell-命令">1.2 shell 命令</h3>
+
+<p>UCI 提供了 uci 命令读写配置文件，语法可以直接用 <code>uci -h</code> 获得，常用的命令：</p>
+
+<ul>
+<li><code>batch</code> ，进入一个交互环境，可以连续执行多条 uci 命令，用 exit 命令退出。</li>
+<li><code>export     [&lt;config&gt;]</code> ，以 uci 配置文件的语法显示 config 的内容。</li>
+<li><code>import     [&lt;config&gt;]</code> ，导入配置文件。</li>
+<li><code>changes    [&lt;config&gt;]</code> ，显示已修改未保存的内容。</li>
+<li><code>commit     [&lt;config&gt;]</code> ，将修改内容提交保存到配置文件。</li>
+<li><code>add        &lt;config&gt; &lt;section-type&gt;</code> ，添加一个匿名 section 。</li>
+<li><code>add_list   &lt;config&gt;.&lt;section&gt;.&lt;option&gt;=&lt;string&gt;</code> ，添加 list 。</li>
+<li><code>del_list   &lt;config&gt;.&lt;section&gt;.&lt;option&gt;=&lt;string&gt;</code> ，删除 list 。</li>
+<li><code>show       [&lt;config&gt;[.&lt;section&gt;[.&lt;option&gt;]]]</code> ，以编程可读的语法显示 config，section 或者 option 的内容</li>
+<li><code>get        &lt;config&gt;.&lt;section&gt;[.&lt;option&gt;]</code> ，获取 section 的 type ，或者 option 的 value 。</li>
+<li><code>set        &lt;config&gt;.&lt;section&gt;[.&lt;option&gt;]=&lt;value&gt;</code> ，设置 section 的 type ，或者 option 的 value</li>
+<li><code>delete     &lt;config&gt;[.&lt;section&gt;[[.&lt;option&gt;][=&lt;id&gt;]]]</code> ，删除一个 section，option 或者 option 的 type</li>
+<li><code>rename     &lt;config&gt;.&lt;section&gt;[.&lt;option&gt;]=&lt;name&gt;</code> ，重命名 section 或者 option 。</li>
+<li><code>revert     &lt;config&gt;[.&lt;section&gt;[.&lt;option&gt;]]</code> ，恢复未保存的修改内容</li>
+<li><code>reorder    &lt;config&gt;.&lt;section&gt;=&lt;position&gt;</code></li>
+</ul>
+
+<p>新建一个 <code>/etc/config/system</code> 文件，然后做一次配置测试：</p>
+
+<pre><code># 添加一个匿名 section
+$ sudo uci add system system
+cfg01e48a
+
+# 设置一个选项 hostname 为 openwrt
+$ sudo uci set system.@system[0].hostname=&quot;openwrt&quot;
+
+# 查看已修改未保存的内容
+$ sudo uci changes system
+system.cfg01e48a='system'
+system.cfg01e48a.hostname='openwrt'
+
+# 将修改内容提交保存到配置文件
+$ sudo uci commit system
+
+# 获取一个选项的值
+$ uci get system.@system[0].hostname
+openwrt
+
+# 查看文件内容
+$ cat /etc/config/system
+
+config system
+        option hostname 'openwrt'
+</code></pre>
+
+<blockquote>
+<p>uci 默认先将修改内容保存在 /tmp/.uci/ 目录下的临时文件中，使用 commit 命令后，才会将修改内容合并到 /etc/confg/ 下的文件。还没有 commit 的内容，可以用 revert 命令恢复，原理就是删除临时文件。</p>
+</blockquote>
+
+<p>将匿名 section 重命名 ：</p>
+
+<pre><code>$ uci rename system.@system[0]=info
+$ uci changes
+system.cfg01e48a='info'
+$ uci show
+system.info=system
+system.info.hostname='openwrt'
+$ uci commit
+$ cat /etc/config/system
+
+config system 'info'
+        option hostname 'openwrt'
+</code></pre>
+
+<p>UCI 还支持一种特别的选项 list ，通常用于记录一组常量。以设置 ntp 服务器为例：</p>
+
+<pre><code>$ sudo uci add system timeserver
+cfg02096b
+$ sudo uci rename system.@timeserver[0]=ntp
+$ sudo uci add_list system.ntp.server='0.de.pool.ntp.org'
+$ sudo uci add_list system.ntp.server='1.de.pool.ntp.org'
+$ sudo uci add_list system.ntp.server='2.de.pool.ntp.org'
+$ sudo uci export system
+package system
+
+config system 'info'
+        option hostname 'openwrt'
+
+config timeserver 'ntp'
+        list server '0.de.pool.ntp.org'
+        list server '1.de.pool.ntp.org'
+        list server '2.de.pool.ntp.org'
+$ sudo uci commit
+</code></pre>
+
+<p>同名的 list 可以一次读取：</p>
+
+<pre><code>$ uci get system.ntp.server
+0.de.pool.ntp.org 1.de.pool.ntp.org 2.de.pool.ntp.org
+</code></pre>
+
+<h3 id="1-3-c-编程接口">1.3 C 编程接口</h3>
+
+<p>使用 C 语言解析 UCI 非常复杂，不推荐。下面是一个简单的例子，可以读取一个选项的值：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#75715e">// uci-example.c
+</span><span style="color:#75715e"></span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;unistd.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdio.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;stdlib.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;string.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;uci.h&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>(<span style="color:#66d9ef">int</span> argc, <span style="color:#66d9ef">char</span> <span style="color:#f92672">**</span>argv)
+{
+    <span style="color:#66d9ef">struct</span> uci_context <span style="color:#f92672">*</span>ctx;
+    <span style="color:#66d9ef">struct</span> uci_ptr ptr;
+    <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>opt <span style="color:#f92672">=</span> strdup(<span style="color:#e6db74">&#34;system.@system[0].hostname&#34;</span>);
+
+    <span style="color:#75715e">// 申请一个 uci_context 
+</span><span style="color:#75715e"></span>    ctx <span style="color:#f92672">=</span> uci_alloc_context();
+
+    <span style="color:#75715e">// 获取并打印选项的值
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span>(UCI_OK <span style="color:#f92672">!=</span> uci_lookup_ptr(ctx, <span style="color:#f92672">&amp;</span>ptr, opt, true))
+    {
+        uci_perror(ctx, <span style="color:#e6db74">&#34;uci_lookup_ptr():&#34;</span>);
+    }
+    <span style="color:#66d9ef">else</span>
+    {
+        printf(<span style="color:#e6db74">&#34;%s</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, ptr.o<span style="color:#f92672">-&gt;</span>v.string);
+    }
+
+    <span style="color:#75715e">// 释放指针
+</span><span style="color:#75715e"></span>    uci_free_context(ctx);
+    free(opt);
+
+    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+}</code></pre></div>
+<p>要包含 uci.h 头文件，关键的数据结构和 API 都定义在这个文件中。</p>
+
+<p>首先要调用 <code>uci_alloc_context()</code> 函数申请一个 <code>struct uci_context</code> 类型的指针，该结构存储了使用 UCI 过程中的各种状态数据，其他方法都要通过这个指针获得上下文数据。使用完毕用 <code>uci_free_context()</code> 函数释放。</p>
+
+<p><code>uci_lookup_ptr()</code> 函数的作用是解析 opt 传入的 uci 元素定位字符串，查找配置文件，将该元素下的树形结构保存到一个 <code>struct uci_ptr</code> 结构变量中，原型如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">uci_lookup_ptr</span>(<span style="color:#66d9ef">struct</span> uci_context <span style="color:#f92672">*</span>ctx, <span style="color:#66d9ef">struct</span> uci_ptr <span style="color:#f92672">*</span>ptr, <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>str, <span style="color:#66d9ef">bool</span> extended);</code></pre></div>
+<p>最后一个参数用于使能 UCI 扩展语法，设为 true 才可以解析 <code>@system[0]</code> 这种匿名 section 。函数调用成功会返回 <code>UCI_OK</code> ，调用失败会返回错误代码，可以用 <code>uci_perror()</code> 打印最新的错误代码对应的错误信息，原型如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">uci_perror</span>(<span style="color:#66d9ef">struct</span> uci_context <span style="color:#f92672">*</span>ctx, <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">char</span> <span style="color:#f92672">*</span>str);</code></pre></div>
+<p>第二个参数用于设置错误信息的前缀，可以设为空。</p>
+
+<p>编译执行：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ gcc -Wall uci-example.c -o uci-example -luci
+$ ./uci-example
+openwrt</code></pre></div>
+<h3 id="1-4-lua-编程接口">1.4 Lua 编程接口</h3>
+
+<p>使用 lua 编程更为简便，只需导入 uci 包，就可以调用 uci 的 lua 语言 API ，下面是一个简单的例子：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-lua" data-lang="lua"><span style="color:#75715e">#!/usr/bin/lua</span>
+<span style="color:#75715e">-- uci-example.lua</span>
+
+require(<span style="color:#e6db74">&#34;uci&#34;</span>)
+
+print(<span style="color:#e6db74">&#34;Hello World!&#34;</span>)
+
+<span style="color:#75715e">-- 新建一个 uci 操作实例</span>
+ctx <span style="color:#f92672">=</span> uci.cursor()
+
+<span style="color:#75715e">-- 获取一个选项的值</span>
+hostname <span style="color:#f92672">=</span> ctx:get(<span style="color:#e6db74">&#34;system&#34;</span>,<span style="color:#e6db74">&#34;@system[0]&#34;</span>,<span style="color:#e6db74">&#34;hostname&#34;</span>)
+print(hostname)</code></pre></div>
+<p>保存后执行：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">$ chmod +x uci-example.lua
+$ ./uci-example.lua
+Hello World!
+openwrt</code></pre></div>
+<p>更多的 API 可以参考官方文档：<a href="https://openwrt.org/docs/techref/uci" target="_blank">https://openwrt.org/docs/techref/uci</a> 。</p>
+
 <h2 id="2-ubus">2. ubus</h2>
 
 <p>ubus 是基于 unix socket 的进程间通信框架，包含守护进程、命令行工具和链接库，守护进程 ubusd 作为 socket server ，用户可用 lua 或者 C 语言的 API 实现 socket client ，client 和 server 之间用 json 格式进行通信，client 端的消息处理抽象处理对象（object）和方法（method）。ubus 通过对 socket 的封装，简化了进程间通信的步骤，只需按照固定模式调用 ubus 提供的API即可。有两种常见的应用场景：</p>
@@ -6375,7 +6559,13 @@ config info <span style="color:#e6db74">&#39;time&#39;</span>
 cd ubus
 cmake .
 make
-make install</code></pre></div>]]></content></item><item><title>Python Socket 编程笔记</title><link>https://shaocheng.li/posts/2019/11/26/</link><pubDate>Tue, 26 Nov 2019 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2019/11/26/</guid><description>1. 套接字 套接字（Socket）是一种操作系统提供的进程间通信机制，可以用于不同主机间的进程通信，最早由 UNIX 提出，现在广泛用于各种操作系统，同时也特指这种机制下的通信端点。根据通信地址的不同种类，Socket 可以分为三类：
+make install</code></pre></div>
+<p>默认安装在 <code>/usr/local</code> 目录下，主要有四种文件：
+* ubusd ，守护进程
+* ubus ，命令行工具
+* libubus.h 等，一些头文件
+* libubus.so 等，一些链接库</p>
+]]></content></item><item><title>Python Socket 编程笔记</title><link>https://shaocheng.li/posts/2019/11/26/</link><pubDate>Tue, 26 Nov 2019 08:00:00 +0800</pubDate><guid>https://shaocheng.li/posts/2019/11/26/</guid><description>1. 套接字 套接字（Socket）是一种操作系统提供的进程间通信机制，可以用于不同主机间的进程通信，最早由 UNIX 提出，现在广泛用于各种操作系统，同时也特指这种机制下的通信端点。根据通信地址的不同种类，Socket 可以分为三类：
 INET ，这是 IPv4 地址域的套接字，用于 IPv4 网络间的通信。 INET6 ，这是 IPv6 地址域的套接字，用于 IPv6 网络间的通信。 UNIX ，这是 UNIX 域的套接字，用于主机内的进程间通信。 套接字常用的报文类型有两种：
 SOCK_DGRAM，固定长度，无连接不可靠的报文传递，两个对等进程之间通信时不需要建立逻辑连接，直接向对方的套接字发送报文即可。在 INET 套接字中，这种报文使用的默认协议是 UDP 。 SOCK_STREAM，有序的，可靠的，双向的，面向连接的字节流，两个对等进程在正式通信之前，要先建立逻辑连接。在 INET 套接字中，这种报文使用的默认协议是 TCP 。 Python 提供了 socket 模块用于底层 socket 通信，模块提供了一个同名的类，以及其他读写 socket 的方法。
 2. 获得主机信息 获取本机的名字和 IP ：
