@@ -1,54 +1,152 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>untagged on Shaocheng.Li</title><link>https://shaocheng.li/tags/untagged/</link><description>Recent content in untagged on Shaocheng.Li</description><generator>Hugo -- gohugo.io</generator><copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright><lastBuildDate>Sat, 07 May 2022 18:34:49 +0800</lastBuildDate><atom:link href="https://shaocheng.li/tags/untagged/index.xml" rel="self" type="application/rss+xml"/><item><title>Linux 进程调度的学习笔记</title><link>https://shaocheng.li/posts/2022/05/07/</link><pubDate>Sat, 07 May 2022 18:34:49 +0800</pubDate><guid>https://shaocheng.li/posts/2022/05/07/</guid><description>进程调度的概念比较简单。假设在只有单核处理器的系统中，同一时刻只有一个进程可以拥有处理器资源，那么其他的进程只能在就绪队列（runqueue）中等待，等到处理器空闲之后才有机会获取处理器资源并运行。在这种场景下，操作系统就需要从众多的就绪进程中选择一个最合适的进程来运行，这就是进程调度器（scheduler）。进程调度器产生的最大原因是为了提高处理器的利用率。一个进程在运行的过程中有可能需要等待某些资源，比如等待磁盘操作的完成、等待键盘输入、等待物理页面的分配等。如果处理器和进程一起等待，那么明显会浪费处理器资源，所以一个进程在睡眠等待时，调度器可以调度其他进程来运行，这样就提高了处理器的利用率。
-1. 进程的分类 站在处理器的角度看进程的行为，你会发现有的进程一直占用处理器，有的进程只需要处理器的一部分计算资源即可。所以进程按照这个标准可以分成两类：一类是 CPU 消耗型（CPU-Bound），另外一类是 I/O 消耗型（I/O-Bound）。 CPU消耗型的进程会把大部分时间用在执行代码上，也就是一直占用CPU。比如一个while死循环。实际上，常用的例子就是执行大量数学计算的程序，比如MATLAB等。 I/O消耗型的进程大部分时间在提交 I/O 请求或者等待 I/O 请求，所以这类进程通常只需要很少的处理器计算资源即可，比如需要键盘输入的进程或者等待网络 I/O 的进程。
-有时候，鉴别一个进程是 CPU 消耗型还是 I/O 消耗型其实挺困难的，一个典型的例子就是Linux图形服务器X-window进程，它既是I/O消耗型也是CPU消耗型。所以，调度器有必要在系统吞吐率和系统响应性方面做出一些妥协和平衡。Linux内核的调度器通常倾向于提高系统的响应性。
-2. 进程的状态 在 Linux 系统中，一个进程就是一个正在执行的程序实例，当进程被创建后，它可能处于五种状态之一：
-Running or Runnable &amp;reg;，运行或者准备就绪的状态
-Uninterruptible Sleep (D)，不可中断的睡眠状态
-Interruptable Sleep (S)，可中断的睡眠状态
-Stopped (T)，暂停状态
-Zombie (Z)，僵尸状态
-下面用一张状态图展示一个进程的生命周期：
-对于任何 Linux 进程来说，它们的起点就是被创建的那一刻。例如，一个父进程可以使用 fork() 系统调用来启动一个子进程。一旦启动，该进程就进入运行或准备就绪的状态，当进程运行时，它可能会进入一个代码路径，要求它在继续运行前等待特定的资源或信号。在等待资源时，进程将自愿放弃 CPU 周期，进入两种睡眠状态之一。此外，我们可以向进程发送SIGSTOP 信号来让它进入暂停状态，处于这种状态的进程将继续存在，直到它被杀死或用 SIGCONT 恢复。最后，当进程被终止并进入僵尸状态时，它的生命周期就结束了，然后，直到它的父进程会将它从进程表中清除。如果它的父进程先退出了，它会成为孤儿进程，一直处于僵尸状态。
-有很多工具可以查看进程状态，他们都是是利用了 /proc 文件系统（可以执行 man proc 查看 /proc 文件系统的详细说明），每个进程的信息都放在以 PID 命名的子文件夹下，例如，查看 PID 为 2780 的进程状态：</description></item><item><title>Linux 内核数据结构-链表</title><link>https://shaocheng.li/posts/2022/04/20/</link><pubDate>Wed, 20 Apr 2022 18:34:49 +0800</pubDate><guid>https://shaocheng.li/posts/2022/04/20/</guid><description>Linux 内核实现了一个循环双向链表，而且是侵入式链表，核心数据结构定义在 include/linux/types.h 文件：
-struct list_head { struct list_head *next, *prev; }; 实现方法都定义在 include/linux/list.h 文件。
-1. 初始化链表 内核提供了两种初始化链表节点的方法。
-一种是初始化宏：
-#define LIST_HEAD_INIT(name) { &amp;amp;(name), &amp;amp;(name) } #define LIST_HEAD(name) \ struct list_head name = LIST_HEAD_INIT(name) 展开后就是：
-#define LIST_HEAD(name) \ struct list_head name = { &amp;amp;(name), &amp;amp;(name) } 它的作用是新建一个 struct list_head 变量 name ，让两个指针指向自己，通常用户新建一个链表的 head ：
-另一种是初始化函数 ：
-static inline void INIT_LIST_HEAD(struct list_head *list) { WRITE_ONCE(list-&amp;gt;next, list); list-&amp;gt;prev = list; } 它的作用是让节点 struct list_head *list 的两个指针指向自己，通常用于初始一个节点。</description></item><item><title>Linux 内核镜像的类型和区别</title><link>https://shaocheng.li/posts/2022/03/13/</link><pubDate>Sun, 13 Mar 2022 18:34:49 +0800</pubDate><guid>https://shaocheng.li/posts/2022/03/13/</guid><description>原文：https://ineclabs.com/image-zimage-uimage-vmlinuz-linux-kernel/
-Linux 内核是宏内核。在建立内核镜像时，我们可以选择多种格式的内核镜像。通常情况下，初学者会因为这些不同的名称和格式而感到疑惑。在 Ubuntu 中，内核文件存储在 /boot 文件夹中，被称为 vmlinuz-version ，以 ubuntu 18 为例：
-sbs@ubuntu:~$ ls /boot/ config-5.4.0-100-generic initrd.img-5.4.0-104-generic System.map-5.4.0-100-generic config-5.4.0-104-generic memtest86+.bin System.map-5.4.0-104-generic grub memtest86+.elf vmlinuz-5.4.0-100-generic initrd.img-5.4.0-100-generic memtest86+_multiboot.bin vmlinuz-5.4.0-104-generic vmlinuz 这个名字来自于 Unix 世界，在 60 年代，他们曾经把内核简单地称为 &amp;ldquo;Unix&amp;rdquo;，所以 Linux 在90年代首次开发时开始把他们的内核称为 &amp;ldquo;Linux&amp;rdquo;。当虚拟内存被开发出来以提高多任务处理能力时，&amp;rdquo;vm &amp;ldquo;被放在文件的前面以表明内核支持虚拟内存。有一段时间，Linux 内核被称为 vmlinux ，但是内核越来越大，无法容纳在可用的启动内存中，所以内核图像被压缩，结尾的 x 被改成了 z ，以显示它是用 zlib 压缩的。在嵌入式系统中，更常用的是 LZMA 和 BZIP2 格式，有些内核干脆被称为 zImage 。在内核配置选项中，可以选择所需的格式。
-在这里，我们可以对各种内核图像有一个简单的概述：
-Image ，通用的 Linux 内核二进制镜像文件。
-vmlinux ，这是一个静态链接的可执行文件格式的 Linux 内核。一般来说，你不需要担心这个文件，它只是启动过程中的一个中间步骤。原始的 vmlinux 文件可能对调试有用。
-vmlinux.bin ，与 vmlinux 相同，但采用可启动的原始二进制文件格式。所有的符号和重定位信息都被丢弃了。通过 objcopy -O binary vmlinux vmlinux.</description></item><item><title>配置 SSH 密钥登录</title><link>https://shaocheng.li/posts/2022/03/11/</link><pubDate>Fri, 11 Mar 2022 14:34:49 +0800</pubDate><guid>https://shaocheng.li/posts/2022/03/11/</guid><description>1. 在客户端电脑生成密钥对 在客户端电脑上执行如下命令，生成一个密钥对：
-ssh-keygen -t ed25519 -C &amp;#34;lishaocheng_20220201&amp;#34; -t 选项指定了加密类型，我们选择 ed25519 ，也可以选择其他类型。 -C 选项是设置密钥对的注释，我习惯设置用户名和日期。 设置一个便于记忆的文件名，密码可以跳过，生成的密钥对文件位于当前目录下。后缀为 .pub 的文件是公钥，另一个是私钥，把两个文件复制到 ~/.ssh/ 目录下。
-如果在 Linux 下使用，需要设置密钥文件的权限，否则添加时会报错：
-chmod 600 ~/.ssh/lishaocheng_20220201 2. 将公钥添加到 SSH 服务器 在客户电脑的在 ~/.ssh/ 目录下执行 ssh-copy-id -i [public key] username@[server ip] ，将公钥添加到服务器上，例如：
-~/.ssh $ ssh-copy-id -i lishaocheng_20220201.pub sbs@192.168.42.131 /usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: &amp;#34;lishaocheng_20220201.pub&amp;#34; /usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed /usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys sbs@192.</description></item><item><title>在 iMX8MM 平台调试 AW-CM276MA Wi-Fi 模块</title><link>https://shaocheng.li/posts/2022/02/01/</link><pubDate>Tue, 01 Feb 2022 16:40:49 +0800</pubDate><guid>https://shaocheng.li/posts/2022/02/01/</guid><description>1. 概述 硬件平台使用 iMX8MM 参考开发板，带有 M.2 接口，软件平台是 iMX Yocto Linux 5.4.47 。调试海华的 AW-CM276MA 模块，该模块基于 NXP 88W8997，PCIe 2.0 接口，M.2 2230 封装，外观如下：
-模块结构：
-具有如下特性：
-基于 88W8997 IEEE 802.11ac (wave2)，BlueTooth 5.2 Wi-Fi PCIe 接口，BlueTooth UART 接口 Wi-Fi 2.4&amp;frasl;5 GHz 双频，2x2 双天线 支持 20/40/80Mhz 带宽，80MHz 2x2时最高速率 866.7Mbps WPA/WPA2 和 WEP 64&amp;frasl;128 bit 加密 支持STA（Wi-Fi站点）, AP（Wi-Fi热点）和 P2P（Wi-Fi直连）三种模式 其他参考：
-NXP 的 Wi-Fi 产品列表：https://www.nxp.com/products/wireless/wi-fi-plus-bluetooth:WIFI-BLUETOOTH 88W8997 ：https://www.nxp.com/products/wireless/wi-fi-plus-bluetooth/2-4-5-ghz-dual-band-2x2-wi-fi-5-802-11ac-plus-bluetooth-5-3-solution:88W8997 2. 驱动和固件 模块使用的驱动是 mxm_wifiex ，位于内核的drivers/net/wireless/nxp/mxm_wifiex 目录下。这个驱动是 NXP 开发并维护，支持 NXP 的多种无线模块，通常，新的模块需要新的驱动版本支持，可以在 https://source.</description></item><item><title>Linux 下使用 ioctl 接口访问指定网卡</title><link>https://shaocheng.li/posts/2021/10/26/</link><pubDate>Tue, 26 Oct 2021 20:09:49 +0800</pubDate><guid>https://shaocheng.li/posts/2021/10/26/</guid><description>netdevice 是 glibc 提供的访问网卡设备的低级接口，支持标准 ioctl 函数，需要的头文件是：
-#include &amp;lt;sys/ioctl.h&amp;gt;#include &amp;lt;net/if.h&amp;gt; 使用方法是调用 ioctl 函数访问 socket 文件，基本语法是：
-ioctl(int fd, int request, struct ifreq *); int fd 应该是一个 socket 文件描述符，主要通过 struct ifreq 结构传递数据：
-struct ifreq { char ifr_name[IFNAMSIZ]; /* Interface name */ union { struct sockaddr ifr_addr; // IP 地址 struct sockaddr ifr_dstaddr; struct sockaddr ifr_broadaddr; // 广播地址 struct sockaddr ifr_netmask; // 子网掩码 struct sockaddr ifr_hwaddr; // MAC 地址 short ifr_flags; int ifr_ifindex; int ifr_metric; int ifr_mtu; struct ifmap ifr_map; char ifr_slave[IFNAMSIZ]; char ifr_newname[IFNAMSIZ]; char *ifr_data; }; }; 使用方法：</description></item><item><title>iMX8MM 的 Fuse/OCOPT 学习笔记</title><link>https://shaocheng.li/posts/2021/07/16/</link><pubDate>Fri, 16 Jul 2021 22:22:49 +0800</pubDate><guid>https://shaocheng.li/posts/2021/07/16/</guid><description>Fuse 就是熔丝位，是一种只能写入一次的寄存器，写入后不可更改，所以写入操作也叫做烧毁（burned）。iMX8MM 的 Fuse 由 on-chip eFuse OTP 控制读写，简称 OCOPT ，结构框图如下：
-可以通过 APB 接口读写 OCOTP 的寄存器，寄存器的布局可以在芯片手册的 《6.3.4 OCOTP Memory Map/Register Definition》中查看，起始地址是 0x30350000，分为两个部分，前半部分 0x30350000~0x3035009C 是 OCOTP Control Register ，是配置 OCOTP 本身的寄存器：
-从 0x30350400 到 0x303507B0 是 Shadow Regs 寄存器：
-在硬件上，Shadow Regs 和 Fuse 是两个独立的存储设备，但是 OCOTP 的内部机制实现了二者之间的映射，Fuse 的所有内容都被映射到了这段寄存器中，完整的映射如下：
-总大小是 4x256 bytes，大部分是保留状态，不可读写。需要注意的是，在 Fuse 中，32bits 组成一个 Word ，4Words 组成一个 Bank ，读写时也要用 Bank:Word 的格式寻址。可以在 u-boot 中执行 fuse 命令读写 fuse ，语法如下：
-fuse - Fuse sub-system Usage: fuse read &amp;lt;bank&amp;gt; &amp;lt;word&amp;gt; [&amp;lt;cnt&amp;gt;] - read 1 or &amp;#39;cnt&amp;#39; fuse words, starting at &amp;#39;word&amp;#39; fuse sense &amp;lt;bank&amp;gt; &amp;lt;word&amp;gt; [&amp;lt;cnt&amp;gt;] - sense 1 or &amp;#39;cnt&amp;#39; fuse words, starting at &amp;#39;word&amp;#39; fuse prog [-y] &amp;lt;bank&amp;gt; &amp;lt;word&amp;gt; &amp;lt;hexval&amp;gt; [&amp;lt;hexval&amp;gt;.</description></item><item><title>iMX8MM 从 eMMC 启动系统和烧写的笔记</title><link>https://shaocheng.li/posts/2021/07/15/</link><pubDate>Thu, 15 Jul 2021 22:32:49 +0800</pubDate><guid>https://shaocheng.li/posts/2021/07/15/</guid><description>1. iMX8MM 的启动流程 iMX8MM 系统启动的详细流程可以参考 IMX8MMRM.pdf
-上电复位后，硬件复位逻辑迫使 SoC 从片上的 Boot ROM 开始执行，Boot ROM 使用 BOOT_MODE 和 eFUSEs 的状态来决定启动设备。在 POR_B 信号的上升沿采集两个外部输入引脚 BOOT_MODE0 和 BOOT_MODE1 的电平，用于设置启动模式：
-BOOT_MODE 的值可以在 SRC_SBMR2 寄存器的 IPP_BOOT_MODE[1:0] 中读到。在 Boot From Fuses 模式下，启动流程完全由 Fuse 控制，GPIO boot overrides 引脚的状态会被忽略。在 internal Boot 模式下，使用 Fuse 中的启动配置，但是为了开发方便，用于确定启动设备的 Fuse 可以通过 GPIO boot overrides 引脚的输入被覆盖，这时启动流程由 Fuse 或者 GPIO 控制的 BOOT_CFG 寄存器决定。首先会读取 BOOT_CFG[14:12] ，决定启动设备的类型：
-如果是从 eMMC/SD 启动，它们都使用 USDHC 接口与 SoC 连接，Boot ROM 会读取 BOOT_CFG[11:10] 的值，确定从哪个接口上的设备启动：</description></item><item><title>使用 VSCode 绘制数字电路时序图</title><link>https://shaocheng.li/posts/2021/07/03/</link><pubDate>Sat, 03 Jul 2021 18:32:49 +0800</pubDate><guid>https://shaocheng.li/posts/2021/07/03/</guid><description>在 VSCode 中安装 Waveform Render 插件：
-它可以解析 WaveJSON 语法的 json 文件，绘制一幅数字电路时序图。官网提供了一个完整教程：https://wavedrom.com/tutorial.html ，还有一个在线的编辑器：https://wavedrom.com/editor.html 。
-开始 在 vscode 中新建一个名为 demo.json 的文件，内容如下：
-{ &amp;#34;signal&amp;#34;: [ { &amp;#34;name&amp;#34;: &amp;#34;clk&amp;#34;, &amp;#34;wave&amp;#34;: &amp;#34;p.......&amp;#34; }, { &amp;#34;name&amp;#34;: &amp;#34;data&amp;#34;, &amp;#34;wave&amp;#34;: &amp;#34;01010101&amp;#34; } ] } 保存后用 Command+Shift+P 组合键打开命令面板，选择执行 Waveform Render:Draw ，就可以看到渲染后的时序图，也可以选择执行 Waveform Render:Toggle Live Preview ，实时查看渲染结果：
-这个例子展示了基本的 WaveJSON 语法：
-signal 是必须的关键词，它用一个数组表示一幅时序图。 数组内每个元素描述一个信号。 每个元素至少要包含 name 和 wave 两个变量： name 定义了信号的名称。 wave 用来描述信号的样子。 wave 定义的字符串中，每个字符代表一个时钟周期（1bit），通过不同的字符来描述信号的样子：
-0 表示低电平，1 表示高电平。 p 表示上升沿开始的一个时钟周期。 .</description></item><item><title>如何修改 ARM Linux 系统的启动画面</title><link>https://shaocheng.li/posts/2021/05/07/</link><pubDate>Fri, 07 May 2021 20:49:11 +0800</pubDate><guid>https://shaocheng.li/posts/2021/05/07/</guid><description>以 NXP 的 iMX Yocto 4.9.88 系统版本为例，启动分为三个阶段：U-Boot ，内核，根文件系统，每个阶段都可以设置自己的显示画面。
-U-Boot 的启动画面 u-boot 阶段的运行时很短，一般不用修改。待补充。
-内核的启动画面 PPM 图片格式 如果开启了 FrameBuffer ，Linux 内核启动时会在屏幕左上角显示企鹅图标，图标的数量等于 CPU 的核心数量。这个图标来自于内核源码的 driver/video/logo/ 目录下的 ppm 格式图片：
-$ ls drivers/video/logo/ clut_vga16.ppm logo_linux_mono.pbm logo_sun_clut224.ppm Kconfig logo_linux_vga16.ppm logo_superh_clut224.ppm logo_blackfin_clut224.ppm logo_m32r_clut224.ppm logo_superh_mono.pbm logo_blackfin_vga16.ppm logo_mac_clut224.ppm logo_superh_vga16.ppm logo.c logo_parisc_clut224.ppm Makefile logo_dec_clut224.ppm logo_sgi_clut224.ppm logo_linux_clut224.ppm logo_spe_clut224.ppm 这里的 ppm 格式是一种 ASCII 编码的图片文件格式，可以用文本编辑器打开，以 logo_linux_clut224.ppm 为例 ：
-P3 # Standard 224-color Linux logo 80 80 255 0 0 0 0 0 0 0 0 0 0 0 0 井号 # 开头的是注释，忽略注释后，前三行文本是文件头：</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>untagged on Shaocheng.Li</title>
+    <link>https://shaocheng.li/tags/untagged/</link>
+    <description>Recent content in untagged on Shaocheng.Li</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 07 May 2022 18:34:49 +0800</lastBuildDate>
+    <atom:link href="https://shaocheng.li/tags/untagged/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux 进程调度的学习笔记</title>
+      <link>https://shaocheng.li/posts/2022/05/07/</link>
+      <pubDate>Sat, 07 May 2022 18:34:49 +0800</pubDate>
+      <guid>https://shaocheng.li/posts/2022/05/07/</guid>
+      <description>进程调度的概念比较简单。假设在只有单核处理器的系统中，同一时刻只有一个进程可以拥有处理器资源，那么其他的进程只能在就绪队列（runqueue）中等待，等到处理器空闲之后才有机会获取处理器资源并运行。在这种场景下，操作系统就需要从众多的就绪进程中选择一个最合适的进程来运行，这就是进程调度器（scheduler）。进程调度器产生的最大原因是为了提高处理器的利用率。一个进程在运行的过程中有可能需要等待某些资源，比如等待磁盘操作的完成、等待键盘输入、等待物理页面的分配等。如果处理器和进程一起等待，那么明显会浪费处理器资源，所以一个进程在睡眠等待时，调度器可以调度其他进程来运行，这样就提高了处理器的利用率。</description>
+    </item>
+    <item>
+      <title>Linux 内核数据结构-链表</title>
+      <link>https://shaocheng.li/posts/2022/04/20/</link>
+      <pubDate>Wed, 20 Apr 2022 18:34:49 +0800</pubDate>
+      <guid>https://shaocheng.li/posts/2022/04/20/</guid>
+      <description>Linux 内核实现了一个循环双向链表，而且是侵入式链表，核心数据结构定义在 include/linux/types.</description>
+    </item>
+    <item>
+      <title>Linux 内核镜像的类型和区别</title>
+      <link>https://shaocheng.li/posts/2022/03/13/</link>
+      <pubDate>Sun, 13 Mar 2022 18:34:49 +0800</pubDate>
+      <guid>https://shaocheng.li/posts/2022/03/13/</guid>
+      <description>原文：https://ineclabs.com/image-zimage-uimage-vmlinuz-linux-kernel/</description>
+    </item>
+    <item>
+      <title>配置 SSH 密钥登录</title>
+      <link>https://shaocheng.li/posts/2022/03/11/</link>
+      <pubDate>Fri, 11 Mar 2022 14:34:49 +0800</pubDate>
+      <guid>https://shaocheng.li/posts/2022/03/11/</guid>
+      <description>1. 在客户端电脑生成密钥对 #在客户端电脑上执行如下命令，生成一个密钥对：</description>
+    </item>
+    <item>
+      <title>在 iMX8MM 平台调试 AW-CM276MA Wi-Fi 模块</title>
+      <link>https://shaocheng.li/posts/2022/02/01/</link>
+      <pubDate>Tue, 01 Feb 2022 16:40:49 +0800</pubDate>
+      <guid>https://shaocheng.li/posts/2022/02/01/</guid>
+      <description>1. 概述 #硬件平台使用 iMX8MM 参考开发板，带有 M.</description>
+    </item>
+    <item>
+      <title>Linux 下使用 ioctl 接口访问指定网卡</title>
+      <link>https://shaocheng.li/posts/2021/10/26/</link>
+      <pubDate>Tue, 26 Oct 2021 20:09:49 +0800</pubDate>
+      <guid>https://shaocheng.li/posts/2021/10/26/</guid>
+      <description>netdevice 是 glibc 提供的访问网卡设备的低级接口，支持标准 ioctl 函数，需要的头文件是：</description>
+    </item>
+    <item>
+      <title>iMX8MM 的 Fuse/OCOPT 学习笔记</title>
+      <link>https://shaocheng.li/posts/2021/07/16/</link>
+      <pubDate>Fri, 16 Jul 2021 22:22:49 +0800</pubDate>
+      <guid>https://shaocheng.li/posts/2021/07/16/</guid>
+      <description>Fuse 就是熔丝位，是一种只能写入一次的寄存器，写入后不可更改，所以写入操作也叫做烧毁（burned）。iMX8MM 的 Fuse 由 on-chip eFuse OTP 控制读写，简称 OCOPT ，结构框图如下：</description>
+    </item>
+    <item>
+      <title>iMX8MM 从 eMMC 启动系统和烧写的笔记</title>
+      <link>https://shaocheng.li/posts/2021/07/15/</link>
+      <pubDate>Thu, 15 Jul 2021 22:32:49 +0800</pubDate>
+      <guid>https://shaocheng.li/posts/2021/07/15/</guid>
+      <description>1. iMX8MM 的启动流程 # iMX8MM 系统启动的详细流程可以参考 IMX8MMRM.</description>
+    </item>
+    <item>
+      <title>使用 VSCode 绘制数字电路时序图</title>
+      <link>https://shaocheng.li/posts/2021/07/03/</link>
+      <pubDate>Sat, 03 Jul 2021 18:32:49 +0800</pubDate>
+      <guid>https://shaocheng.li/posts/2021/07/03/</guid>
+      <description>在 VSCode 中安装 Waveform Render 插件：</description>
+    </item>
+    <item>
+      <title>如何修改 ARM Linux 系统的启动画面</title>
+      <link>https://shaocheng.li/posts/2021/05/07/</link>
+      <pubDate>Fri, 07 May 2021 20:49:11 +0800</pubDate>
+      <guid>https://shaocheng.li/posts/2021/05/07/</guid>
+      <description>以 NXP 的 iMX Yocto 4.</description>
+    </item>
+    <item>
+      <title>Linux 系统的 SPI 设备编程</title>
+      <link>https://shaocheng.li/posts/2021/04/10/</link>
+      <pubDate>Sat, 10 Apr 2021 21:19:11 +0800</pubDate>
+      <guid>https://shaocheng.li/posts/2021/04/10/</guid>
+      <description>SPI 通信协议 #SPI 的全称是 Serial Peripheral Interface，是一个带时钟同步的全双工串行链接，使用主/从结构，用于连接微控制器和传感器、存储器和外设。常见的连接结构如下：</description>
+    </item>
+    <item>
+      <title>Systemd 中实现自动登录和程序自启动</title>
+      <link>https://shaocheng.li/posts/2021/03/06/</link>
+      <pubDate>Sat, 06 Mar 2021 21:19:11 +0800</pubDate>
+      <guid>https://shaocheng.li/posts/2021/03/06/</guid>
+      <description>以 NXP 的 Yocto Linux 4.</description>
+    </item>
+    <item>
+      <title>在 i.MX 6ULL 上学习 Yocto</title>
+      <link>https://shaocheng.li/posts/2020/12/12/</link>
+      <pubDate>Sat, 12 Dec 2020 18:40:11 +0800</pubDate>
+      <guid>https://shaocheng.li/posts/2020/12/12/</guid>
+      <description>1. 概述 #NXP 为官方评估板 i.</description>
+    </item>
+    <item>
+      <title>使用 Docker 学习 Redis</title>
+      <link>https://shaocheng.li/posts/2020/09/01/</link>
+      <pubDate>Tue, 01 Sep 2020 09:53:11 +0800</pubDate>
+      <guid>https://shaocheng.li/posts/2020/09/01/</guid>
+      <description># 1.</description>
+    </item>
+    <item>
+      <title>epoll 学习笔记</title>
+      <link>https://shaocheng.li/posts/2020/08/30/</link>
+      <pubDate>Sun, 30 Aug 2020 11:53:11 +0800</pubDate>
+      <guid>https://shaocheng.li/posts/2020/08/30/</guid>
+      <description>1. 工作原理 #epoll 是 Linux 独有的 I/O 多路复用机制，核心概念就是 epoll 实例，它是一个内核里的数据结构，从用户角度来看它可以简单的看做包含了两个队列：</description>
+    </item>
+    <item>
+      <title>uthash 学习笔记</title>
+      <link>https://shaocheng.li/posts/2020/08/29/</link>
+      <pubDate>Sat, 29 Aug 2020 11:23:11 +0800</pubDate>
+      <guid>https://shaocheng.li/posts/2020/08/29/</guid>
+      <description>uthash 是一个 C 语言的哈希表函数库，支持哈希表的各种操作，包括添加，删除，查找，排序等。你可以在 github 上下载到它的源码：</description>
+    </item>
+    <item>
+      <title>libubox 学习笔记</title>
+      <link>https://shaocheng.li/posts/2020/07/16/</link>
+      <pubDate>Thu, 16 Jul 2020 21:23:11 +0800</pubDate>
+      <guid>https://shaocheng.li/posts/2020/07/16/</guid>
+      <description>编译安装 #首先要安装一些依赖的软件：</description>
+    </item>
+    <item>
+      <title>CMake 学习笔记</title>
+      <link>https://shaocheng.li/posts/2020/06/29/</link>
+      <pubDate>Mon, 29 Jun 2020 22:25:11 +0800</pubDate>
+      <guid>https://shaocheng.li/posts/2020/06/29/</guid>
+      <description>本教程提供了一个渐进式的指导，参考的是官方教程 CMake Tutorial ，然后加入学习过程的笔记。涵盖了使用 CMake 构建一个工程时经常遇到的问题 。通过一个示例项目，展示各种功能是如何一起工作的，这对理解 CMake 非常有用。</description>
+    </item>
+    <item>
+      <title>tcpdump 使用笔记</title>
+      <link>https://shaocheng.li/posts/2020/04/12/</link>
+      <pubDate>Sun, 12 Apr 2020 22:25:11 +0800</pubDate>
+      <guid>https://shaocheng.li/posts/2020/04/12/</guid>
+      <description>tcpdump 是一个帮助用户捕获、筛选和解析 TCP/IP 协议数据包的命令行工具。</description>
+    </item>
+    <item>
+      <title>Markdown Syntax Guide</title>
+      <link>https://shaocheng.li/posts/2020/01/15/</link>
+      <pubDate>Wed, 15 Jan 2020 14:31:11 +0800</pubDate>
+      <guid>https://shaocheng.li/posts/2020/01/15/</guid>
+      <description>This article offers a sample of basic Markdown syntax that can be used in Hugo content files, also it shows whether basic HTML elements are decorated with CSS in a Hugo theme.</description>
+    </item>
+  </channel>
+</rss>

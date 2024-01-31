@@ -1,137 +1,645 @@
-<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=author content="Shaocheng.Li"><meta name=description content="Linux 中 3G 模块的层次结构：
-硬件模块就是 3G 模块，通常通过 USB 总线接入计算机。内核中的 3G 模块驱动可以在应用层生成串行设备，例如 ttyUSB*、ttyACM* 等。3G 模块的拨号连接过程遵循 ppp 协议，它提供了通过串行点对点链路传输数据报的方法，Linux 内核集成了 ppp 协议栈，pppd 程序是 ppp 协议在用户空间的守护进程，chat 程序负责通过串行设备与 pppd 之间的通信。
-1. 硬件和驱动 大部分 3G 模块是挂在 USB 总线上，以 Telit HE910 模块为例，这是一个支持 WCDMA ，即联通 3G 的模块 ：
-[root@localhost ~]# lsusb Bus 001 Device 006: ID 09da:0260 A4Tech Co., Ltd. KV-300H Isolation Keyboard Bus 001 Device 005: ID 0424:2514 Standard Microsystems Corp. USB 2.0 Hub Bus 001 Device 004: ID 1bc7:0021 Telit Wireless Solutions HE910  Linux 系统包含一个通用的 USB 驱动 CDC_ACM，很多 3G 模块都用它来驱动，HE910 就是这样。驱动加载成功后会创建多个 tty 设备文件，其中两个比较重要："><meta name=keywords content><meta name=robots content="noodp"><meta name=theme-color content="#252627"><link rel=canonical href=https://shaocheng.li/posts/2016/10/25/><title>Linux 3G Module HowTo :: Shaocheng.Li — Hello Friends</title><link href=https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css rel=stylesheet type=text/css><link rel=stylesheet href=https://shaocheng.li/main.min.e9b3dfcc5ffe9d55eb281ecaf47cf6179d26eec497e087299934d581c987aa0b.css><link rel=stylesheet type=text/css href=https://shaocheng.li/css/custom.css><link rel=apple-touch-icon sizes=180x180 href=https://shaocheng.li/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=https://shaocheng.li/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=https://shaocheng.li/favicon-16x16.png><link rel=manifest href=https://shaocheng.li/site.webmanifest><link rel=mask-icon href=https://shaocheng.li/safari-pinned-tab.svg color=#252627><link rel="shortcut icon" href=https://shaocheng.li/favicon.ico><meta name=msapplication-TileColor content="#252627"><meta name=theme-color content="#252627"><meta itemprop=name content="Linux 3G Module HowTo"><meta itemprop=description content="Linux 中 3G 模块的层次结构：
-硬件模块就是 3G 模块，通常通过 USB 总线接入计算机。内核中的 3G 模块驱动可以在应用层生成串行设备，例如 ttyUSB*、ttyACM* 等。3G 模块的拨号连接过程遵循 ppp 协议，它提供了通过串行点对点链路传输数据报的方法，Linux 内核集成了 ppp 协议栈，pppd 程序是 ppp 协议在用户空间的守护进程，chat 程序负责通过串行设备与 pppd 之间的通信。
-1. 硬件和驱动 大部分 3G 模块是挂在 USB 总线上，以 Telit HE910 模块为例，这是一个支持 WCDMA ，即联通 3G 的模块 ：
-[root@localhost ~]# lsusb Bus 001 Device 006: ID 09da:0260 A4Tech Co., Ltd. KV-300H Isolation Keyboard Bus 001 Device 005: ID 0424:2514 Standard Microsystems Corp. USB 2.0 Hub Bus 001 Device 004: ID 1bc7:0021 Telit Wireless Solutions HE910  Linux 系统包含一个通用的 USB 驱动 CDC_ACM，很多 3G 模块都用它来驱动，HE910 就是这样。驱动加载成功后会创建多个 tty 设备文件，其中两个比较重要："><meta itemprop=datePublished content="2016-10-25T08:00:00&#43;08:00"><meta itemprop=dateModified content="2016-10-25T08:00:00&#43;08:00"><meta itemprop=wordCount content="1561"><meta itemprop=keywords content><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://shaocheng.li"><meta name=twitter:title content="Linux 3G Module HowTo"><meta name=twitter:description content="Linux 中 3G 模块的层次结构：
-硬件模块就是 3G 模块，通常通过 USB 总线接入计算机。内核中的 3G 模块驱动可以在应用层生成串行设备，例如 ttyUSB*、ttyACM* 等。3G 模块的拨号连接过程遵循 ppp 协议，它提供了通过串行点对点链路传输数据报的方法，Linux 内核集成了 ppp 协议栈，pppd 程序是 ppp 协议在用户空间的守护进程，chat 程序负责通过串行设备与 pppd 之间的通信。
-1. 硬件和驱动 大部分 3G 模块是挂在 USB 总线上，以 Telit HE910 模块为例，这是一个支持 WCDMA ，即联通 3G 的模块 ：
-[root@localhost ~]# lsusb Bus 001 Device 006: ID 09da:0260 A4Tech Co., Ltd. KV-300H Isolation Keyboard Bus 001 Device 005: ID 0424:2514 Standard Microsystems Corp. USB 2.0 Hub Bus 001 Device 004: ID 1bc7:0021 Telit Wireless Solutions HE910  Linux 系统包含一个通用的 USB 驱动 CDC_ACM，很多 3G 模块都用它来驱动，HE910 就是这样。驱动加载成功后会创建多个 tty 设备文件，其中两个比较重要："><meta property="article:published_time" content="2016-10-25 08:00:00 &#43;0800 &#43;0800"></head><body><div class=container><header class=header><span class=header__inner><a href=https://shaocheng.li/ style=text-decoration:none><div class=logo><span class=logo__mark>></span>
-<span class=logo__text>$ cd /home/</span>
-<span class=logo__cursor></span></div></a><span class=header__right><nav class=menu><ul class=menu__inner><li><a href=https://shaocheng.li/about/>About</a></li><li><a href=https://shaocheng.li/posts/>Posts</a></li></ul></nav><span class=menu-trigger><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></span><span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 41C32.4934 41 41 32.4934 41 22 41 11.5066 32.4934 3 22 3 11.5066 3 3 11.5066 3 22s8.5066 19 19 19zM7 22C7 13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22z"/></svg></span></span></span></header><div class=content><main class=post><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>8 minutes</p></div><article><h1 class=post-title><a href=https://shaocheng.li/posts/2016/10/25/>Linux 3G Module HowTo</a></h1><hr><aside id=toc><div class=toc-title>Table of Contents</div><nav id=TableOfContents><ul><li><ul><li><a href=#1-硬件和驱动>1. 硬件和驱动</a></li><li><a href=#2-at-指令>2. AT 指令</a></li><li><a href=#3-pppd>3. pppd</a></li><li><a href=#4-wvdial>4. wvdial</a></li></ul></li></ul></nav></aside><hr><div class=post-content><p>Linux 中 3G 模块的层次结构：</p><p><img src=https://shaocheng.li/images/2016-10-25/2016-10-25_1.jpg alt></p><p>硬件模块就是 3G 模块，通常通过 USB 总线接入计算机。内核中的 3G 模块驱动可以在应用层生成串行设备，例如 ttyUSB*、ttyACM* 等。3G 模块的拨号连接过程遵循 ppp 协议，它提供了通过串行点对点链路传输数据报的方法，Linux 内核集成了 ppp 协议栈，pppd 程序是 ppp 协议在用户空间的守护进程，chat 程序负责通过串行设备与 pppd 之间的通信。</p><h2 id=1-硬件和驱动>1. 硬件和驱动</h2><p>大部分 3G 模块是挂在 USB 总线上，以 Telit HE910 模块为例，这是一个支持 WCDMA ，即联通 3G 的模块 ：</p><pre><code>[root@localhost ~]# lsusb
+
+
+
+
+
+
+<!DOCTYPE html>
+<html
+  lang="zh-cn"
+  dir="Chinese-Simplified"
+  class="scroll-smooth"
+  data-default-appearance="light"
+  data-auto-appearance="true"
+><head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="rgb(255,255,255)" />
+  
+  <title>Linux 3G Module HowTo &middot; Shaocheng.Li</title>
+    <meta name="title" content="Linux 3G Module HowTo &middot; Shaocheng.Li" />
+  
+  
+  
+  
+  
+  <script
+    type="text/javascript"
+    src="/js/appearance.min.022d0ebc3b46a335eb1c7ef79b7f2de143d7cd5156d433638592ef1ce5f8554e.js"
+    integrity="sha256-Ai0OvDtGozXrHH73m38t4UPXzVFW1DNjhZLvHOX4VU4="
+  ></script>
+  
+  
+  
+  
+  
+  
+  
+    
+  
+  
+  <link
+    type="text/css"
+    rel="stylesheet"
+    href="/css/main.bundle.min.569cc57d5993584135ff38133d1f599f8f8db0303a9e886172e4b5aabb177ac6.css"
+    integrity="sha256-VpzFfVmTWEE1/zgTPR9Zn4&#43;NsDA6nohhcuS1qrsXesY="
+  />
+  
+    
+    
+    
+  
+  
+    
+    
+  
+  
+  
+    
+    <script
+      defer
+      type="text/javascript"
+      id="script-bundle"
+      src="/js/main.bundle.min.f29ffdffd9ab4cc95250c3c7196b2d5dae8ee6ef0a4139451073f90183ae7e31.js"
+      integrity="sha256-8p/9/9mrTMlSUMPHGWstXa6O5u8KQTlFEHP5AYOufjE="
+      data-copy="复制"
+      data-copied="已复制"
+    ></script>
+  
+  
+  <meta
+    name="description"
+    content="
+      
+        Linux 中 3G 模块的层次结构：
+      
+    "
+  />
+  
+  
+  
+  <link rel="canonical" href="https://shaocheng.li/posts/2016/10/25/" />
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  
+  
+  
+  
+  
+  
+  
+  <meta property="og:title" content="Linux 3G Module HowTo" />
+<meta property="og:description" content="Linux 中 3G 模块的层次结构：" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://shaocheng.li/posts/2016/10/25/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2016-10-25T08:00:00+08:00" />
+<meta property="article:modified_time" content="2016-10-25T08:00:00+08:00" />
+
+
+  <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Linux 3G Module HowTo"/>
+<meta name="twitter:description" content="Linux 中 3G 模块的层次结构："/>
+
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "articleSection": "Posts",
+    "name": "Linux 3G Module HowTo",
+    "headline": "Linux 3G Module HowTo",
+    
+    "abstract": "Linux 中 3G 模块的层次结构：",
+    "inLanguage": "zh-cn",
+    "url" : "https:\/\/shaocheng.li\/posts\/2016\/10\/25\/",
+    "author" : {
+      "@type": "Person",
+      "name": "Shaocheng.Li"
+    },
+    "copyrightYear": "2016",
+    "dateCreated": "2016-10-25T08:00:00\u002b08:00",
+    "datePublished": "2016-10-25T08:00:00\u002b08:00",
+    
+    "dateModified": "2016-10-25T08:00:00\u002b08:00",
+    
+    
+    
+    "mainEntityOfPage": "true",
+    "wordCount": "1561"
+  }
+  </script>
+
+
+  
+  <meta name="author" content="Shaocheng.Li" />
+  
+    
+      <link href="https://github.com/exbob" rel="me" />
+    
+  
+  
+  
+
+
+
+
+
+
+  
+  
+  
+  
+  
+
+  
+  
+</head>
+<body
+    class="flex flex-col h-screen px-6 m-auto text-lg leading-7 max-w-7xl bg-neutral text-neutral-900 dark:bg-neutral-800 dark:text-neutral sm:px-14 md:px-24 lg:px-32"
+  >
+    <div id="the-top" class="absolute flex self-center">
+      <a
+        class="px-3 py-1 text-sm -translate-y-8 rounded-b-lg bg-primary-200 focus:translate-y-0 dark:bg-neutral-600"
+        href="#main-content"
+        ><span class="font-bold pe-2 text-primary-600 dark:text-primary-400">&darr;</span
+        >跳到主要内容</a
+      >
+    </div>
+    
+    
+      <header class="py-6 font-semibold text-neutral-900 dark:text-neutral print:hidden sm:py-10">
+  <nav class="flex items-start justify-between sm:items-center">
+    
+    <div class="flex flex-row items-center">
+      
+  <a
+    class="decoration-primary-500 hover:underline hover:decoration-2 hover:underline-offset-2"
+    rel="me"
+    href="/"
+    >Shaocheng.Li</a
+  >
+
+    </div>
+    
+    
+      <ul class="flex flex-col list-none text-end sm:flex-row">
+        
+          
+            
+            <li class="group mb-1 sm:mb-0 sm:me-7 sm:last:me-0.5">
+              
+                <a
+                  href="/posts/"
+                  title="Posts"
+                  
+                  ><span
+                      class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                      >文章列表</span
+                    >
+                  </a
+                >
+              
+            </li>
+          
+            
+            <li class="group mb-1 sm:mb-0 sm:me-7 sm:last:me-0.5">
+              
+                
+                
+                  <button
+                    id="search-button-1"
+                    title="搜索 (/)"
+                  >
+                    
+                      <span
+                        class="transition-colors group-dark:hover:text-primary-400 group-hover:text-primary-600"
+                      ><span class="relative inline-block align-text-bottom px-1 icon"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="svg-inline--fa fa-search fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
+</span></span><span
+                        class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                        ></span
+                      >
+                    
+                  </button>
+                
+              
+            </li>
+          
+            
+            <li class="group mb-1 sm:mb-0 sm:me-7 sm:last:me-0.5">
+              
+                
+                <button
+                  id="appearance-switcher-1"
+                  type="button"
+                  aria-label="appearance switcher"
+                >
+                  <span
+                    class="inline transition-colors group-dark:hover:text-primary-400 group-hover:text-primary-600 dark:hidden"
+                    title="切换为深色模式"
+                  >
+                    <span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M32 256c0-123.8 100.3-224 223.8-224c11.36 0 29.7 1.668 40.9 3.746c9.616 1.777 11.75 14.63 3.279 19.44C245 86.5 211.2 144.6 211.2 207.8c0 109.7 99.71 193 208.3 172.3c9.561-1.805 16.28 9.324 10.11 16.95C387.9 448.6 324.8 480 255.8 480C132.1 480 32 379.6 32 256z"/></svg>
+</span><span
+                        class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                        ></span
+                      >
+                    
+                  </span>
+                  <span
+                    class="hidden transition-colors group-dark:hover:text-primary-400 group-hover:text-primary-600 dark:inline"
+                    title="切换为浅色模式"
+                  >
+                    
+                      <span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 159.1c-53.02 0-95.1 42.98-95.1 95.1S202.1 351.1 256 351.1s95.1-42.98 95.1-95.1S309 159.1 256 159.1zM509.3 347L446.1 255.1l63.15-91.01c6.332-9.125 1.104-21.74-9.826-23.72l-109-19.7l-19.7-109c-1.975-10.93-14.59-16.16-23.72-9.824L256 65.89L164.1 2.736c-9.125-6.332-21.74-1.107-23.72 9.824L121.6 121.6L12.56 141.3C1.633 143.2-3.596 155.9 2.736 164.1L65.89 256l-63.15 91.01c-6.332 9.125-1.105 21.74 9.824 23.72l109 19.7l19.7 109c1.975 10.93 14.59 16.16 23.72 9.824L256 446.1l91.01 63.15c9.127 6.334 21.75 1.107 23.72-9.822l19.7-109l109-19.7C510.4 368.8 515.6 356.1 509.3 347zM256 383.1c-70.69 0-127.1-57.31-127.1-127.1c0-70.69 57.31-127.1 127.1-127.1s127.1 57.3 127.1 127.1C383.1 326.7 326.7 383.1 256 383.1z"/></svg>
+</span>
+                    
+                    
+                      <span
+                        class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                        ></span
+                      >
+                    
+                  </span>
+                </button>
+              
+            </li>
+          
+          
+        
+      </ul>
+    
+  </nav>
+</header>
+
+    
+    <div class="relative flex flex-col grow">
+      <main id="main-content" class="grow">
+        
+  <article>
+    <header class="max-w-prose">
+      
+      <h1 class="mt-0 text-4xl font-extrabold text-neutral-900 dark:text-neutral">
+        Linux 3G Module HowTo
+      </h1>
+      <div class="mt-8 mb-12 text-base text-neutral-500 dark:text-neutral-400 print:hidden">
+        
+
+
+
+
+
+  
+  
+
+
+
+  
+
+  
+  
+    
+  
+
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+
+
+  <div class="flex flex-row flex-wrap items-center">
+    
+    
+      <time datetime="2016-10-25 08:00:00 &#43;0800 CST">2016 October 25</time><span class="px-2 text-primary-500">&middot;</span><span>1561 字</span><span class="px-2 text-primary-500">&middot;</span><span title="预计阅读">8 分钟</span>
+    
+
+    
+    
+  </div>
+
+  
+  
+
+
+      </div>
+      
+    </header>
+    <section class="flex flex-col max-w-full mt-0 prose dark:prose-invert lg:flex-row">
+      
+        <div class="order-first px-0 lg:order-last lg:max-w-xs lg:ps-8">
+          <div class="toc pe-5 print:hidden lg:sticky lg:top-10">
+            <details open class="-ms-5 mt-0 overflow-hidden rounded-lg ps-5">
+  <summary
+    class="-ms-5 block cursor-pointer bg-neutral-100 py-1 ps-5 text-lg font-semibold text-neutral-800 dark:bg-neutral-700 dark:text-neutral-100 lg:hidden"
+  >
+    目录
+  </summary>
+  <div class="-ms-5 border-s border-dotted border-neutral-300 py-2 ps-5 dark:border-neutral-600">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-硬件和驱动">1. 硬件和驱动</a></li>
+    <li><a href="#2-at-指令">2. AT 指令</a></li>
+    <li><a href="#3-pppd">3. pppd</a></li>
+    <li><a href="#4-wvdial">4. wvdial</a></li>
+  </ul>
+</nav>
+  </div>
+</details>
+
+          </div>
+        </div>
+      
+      <div class="min-w-0 min-h-0 max-w-prose grow">
+        <p>Linux 中 3G 模块的层次结构：</p>
+<p>
+
+
+
+
+  
+  
+  
+    <figure>
+      <img
+        class="mx-auto my-0 rounded-md"
+        src="./pics_1.jpg"
+        alt=""
+        
+          loading="lazy"
+        
+      />
+      
+    </figure>
+  
+</p>
+<p>硬件模块就是 3G 模块，通常通过 USB 总线接入计算机。内核中的 3G 模块驱动可以在应用层生成串行设备，例如 ttyUSB*、ttyACM* 等。3G 模块的拨号连接过程遵循 ppp 协议，它提供了通过串行点对点链路传输数据报的方法，Linux 内核集成了 ppp 协议栈，pppd 程序是 ppp 协议在用户空间的守护进程，chat 程序负责通过串行设备与 pppd 之间的通信。</p>
+<h2 id="1-硬件和驱动" class="relative group">1. 硬件和驱动 <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#1-%e7%a1%ac%e4%bb%b6%e5%92%8c%e9%a9%b1%e5%8a%a8" aria-label="锚点">#</a></span></h2><p>大部分 3G 模块是挂在 USB 总线上，以 Telit HE910 模块为例，这是一个支持 WCDMA ，即联通 3G 的模块 ：</p>
+<pre><code>[root@localhost ~]# lsusb
 Bus 001 Device 006: ID 09da:0260 A4Tech Co., Ltd. KV-300H Isolation Keyboard
 Bus 001 Device 005: ID 0424:2514 Standard Microsystems Corp. USB 2.0 Hub
 Bus 001 Device 004: ID 1bc7:0021 Telit Wireless Solutions HE910
-</code></pre><p>Linux 系统包含一个通用的 USB 驱动 CDC_ACM，很多 3G 模块都用它来驱动，HE910 就是这样。驱动加载成功后会创建多个 tty 设备文件，其中两个比较重要：</p><ul><li>/dev/ttyACM0: PPP 连接和 AT 指令的通用接口</li><li>/dev/ttyACM3: AT 指令接口</li></ul><p>不同的模块所用驱动可能不同，具体情况要查看模块的使用手册。Linux 内核要支持 ppp 协议，这已经是现在 Linux 的默认配置。</p><h2 id=2-at-指令>2. AT 指令</h2><p>对 3G 模块执行 AT 指令用很多方式，最简单的是用 cat 和 echo 命令。例如，在一个终端执行 <code>cat &lt; /dev/ttyACM3</code>，它会持续监听该端口的返回信息，然后在另一个终端用 echo 向 /dev/ttyACM3 发送 AT 指令，在 cat 中就可以看到返回：</p><pre><code>#Terminal 1
+</code></pre>
+<p>Linux 系统包含一个通用的 USB 驱动 CDC_ACM，很多 3G 模块都用它来驱动，HE910 就是这样。驱动加载成功后会创建多个 tty 设备文件，其中两个比较重要：</p>
+<ul>
+<li>/dev/ttyACM0: PPP 连接和 AT 指令的通用接口</li>
+<li>/dev/ttyACM3: AT 指令接口</li>
+</ul>
+<p>不同的模块所用驱动可能不同，具体情况要查看模块的使用手册。Linux 内核要支持 ppp 协议，这已经是现在 Linux 的默认配置。</p>
+<h2 id="2-at-指令" class="relative group">2. AT 指令 <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#2-at-%e6%8c%87%e4%bb%a4" aria-label="锚点">#</a></span></h2><p>对 3G 模块执行 AT 指令用很多方式，最简单的是用 cat 和 echo 命令。例如，在一个终端执行 <code>cat &lt; /dev/ttyACM3</code>，它会持续监听该端口的返回信息，然后在另一个终端用 echo 向 /dev/ttyACM3 发送 AT 指令，在 cat 中就可以看到返回：</p>
+<pre><code>#Terminal 1
 [root@localhost ~]# cat &lt; /dev/ttyACM3 
 OK
 
 #Terminal 2
 [root@localhost ~]# echo -en &quot;AT\r&quot; &gt; /dev/ttyACM3
-</code></pre><p>常用的是 minicom ，可以用于交互调试：</p><pre><code>[root@localhost ~]# minicom -D /dev/ttyACM3 -b 115200
+</code></pre>
+<p>常用的是 minicom ，可以用于交互调试：</p>
+<pre><code>[root@localhost ~]# minicom -D /dev/ttyACM3 -b 115200
 Welcome to minicom 2.7                                                                         
 OPTIONS: I18n                                                                                  
 Compiled on Aug 17 2014, 17:34:01.                                                             
 Port /dev/ttyACM3, 15:39:12                                                                    
 Press CTRL-A Z for help on special keys                                                        
-
+                                                                                               
 AT                                                                                             
 OK                                                                                             
 ATZ                                                                                            
 OK                                                                                             
 AT+CSQ                                                                                         
 +CSQ: 3,3                                                                                      
-</code></pre><p>还用一个纯命令行工具 comgt ，可以很方便的集成到其他程序中，还支持脚本执行一系列 AT 指令，完成复杂的功能。一般 Linux 系统都没有安装，需要下载编译：<a href=https://sourceforge.net/projects/comgt/ target=_blank>https://sourceforge.net/projects/comgt/</a> 。 这有我写的一篇文档：<a href=http://shaocheng.li/post/blog/2015-09-09 target=_blank>http://shaocheng.li/post/blog/2015-09-09</a></p><p>AT 指令分为两部分，一部分是通用标准的指令，各个模块都一样；另一部分是各厂商为自家模块自定义的扩展指令，详细信息可以查看模块的 AT 指令手册。以 HE910 为例，介绍几个常用指令。</p><ul><li><p>ATZ ，软重启 3G 模块。</p></li><li><p>AT+CGMI ，读取模块厂商：</p><pre><code>AT+CGMI
-Telit
-</code></pre></li><li><p>AT+CGMM ，读取模块名称：</p><pre><code>AT+CGMM
-HE910-D
-</code></pre></li><li><p>AT+CGSN ，读取模块的 IMEI：</p><pre><code>AT+CGSN
-351579053301782
-</code></pre></li><li><p>AT+CGMR ，读取模块的固件版本：</p><pre><code>AT+CGMR&quot;
-12.00.024
-</code></pre></li><li><p>AT+CIMI ，查询 IMSI 。IMSI 是国际移动用户识别码，储存在 SIM 卡中，每张 SIM 卡都不一样，通常是十五位数字，由三段组成。前三位是国家代码（MCC，中国是 460）。之后的两位或者三位是移动网络代码（MNC)，用于标识不同的运营商网络，中国移动使用 00、02、07（不同的号码可以区分不同的号段），中国联通使用 01、06、09，中国电信使用 03、05、11，更多的可以查看<a href=https://en.wikipedia.org/wiki/Mobile_country_code target=_blank>这里</a>。最后是用户识别码（MSIN），由运营商自定义。</p><pre><code>AT+CIMI
-460019048517149
-</code></pre></li><li><p>AT+CSQ ，获取信号强度，信号强度与是否插 SIM 卡无关：</p><pre><code>AT+CSQ
-+CSQ: 15,1  
-</code></pre><p>第一个数字表示信号轻度，取值0~31，数字越大信号越好，99 表示未知或不可检测，换算方式： CSQ 值=（接收信号强度 dBm + 113）/2 ：</p><p><img src=~/14-31-06.jpg alt></p></li><li><p>AT+CPIN? ，可以用来查看 SIM 卡是否插好，插好会返回 READY ：</p><pre><code>AT+CPIN?
-+CPIN: READY
-OK
-</code></pre></li><li><p>AT+CNUM ，查看电话号码，前提是号码已经存储在 SIM 中 ：</p><pre><code>AT+CNUM
-+CNUM: &quot;&quot;,&quot;+8618589041260&quot;,145        
-OK
-</code></pre></li><li><p>AT+WS46=[<n>] ，选择无线网络,三个数字分别是 2G only、3G only、3G first 。</p></li></ul><p><img src=https://shaocheng.li/images/2016-10-25/2016-10-25_2.jpg alt></p><ul><li><p>AT#PSNT? ，查询当前的网络类型，返回的数据格式是 <code>#PSNT: &lt;mode&gt;,&lt;nt&gt;</code> ：</p><pre><code>AT#PSNT?
-#PSNT: 0,3
+</code></pre>
+<p>还用一个纯命令行工具 comgt ，可以很方便的集成到其他程序中，还支持脚本执行一系列 AT 指令，完成复杂的功能。一般 Linux 系统都没有安装，需要下载编译：<a href="https://sourceforge.net/projects/comgt/" target="_blank" rel="noreferrer">https://sourceforge.net/projects/comgt/</a> 。 这有我写的一篇文档：<a href="http://shaocheng.li/post/blog/2015-09-09" target="_blank" rel="noreferrer">http://shaocheng.li/post/blog/2015-09-09</a></p>
+<p>AT 指令分为两部分，一部分是通用标准的指令，各个模块都一样；另一部分是各厂商为自家模块自定义的扩展指令，详细信息可以查看模块的 AT 指令手册。以 HE910 为例，介绍几个常用指令。</p>
+<ul>
+<li>
+<p>ATZ ，软重启 3G 模块。</p>
+</li>
+<li>
+<p>AT+CGMI ，读取模块厂商：</p>
+<pre><code>  AT+CGMI
+  Telit
+</code></pre>
+</li>
+<li>
+<p>AT+CGMM ，读取模块名称：</p>
+<pre><code>  AT+CGMM
+  HE910-D
+</code></pre>
+</li>
+<li>
+<p>AT+CGSN ，读取模块的 IMEI：</p>
+<pre><code>  AT+CGSN
+  351579053301782
+</code></pre>
+</li>
+<li>
+<p>AT+CGMR ，读取模块的固件版本：</p>
+<pre><code>  AT+CGMR&quot;
+  12.00.024
+</code></pre>
+</li>
+<li>
+<p>AT+CIMI ，查询 IMSI 。IMSI 是国际移动用户识别码，储存在 SIM 卡中，每张 SIM 卡都不一样，通常是十五位数字，由三段组成。前三位是国家代码（MCC，中国是 460）。之后的两位或者三位是移动网络代码（MNC)，用于标识不同的运营商网络，中国移动使用 00、02、07（不同的号码可以区分不同的号段），中国联通使用 01、06、09，中国电信使用 03、05、11，更多的可以查看<a href="https://en.wikipedia.org/wiki/Mobile_country_code" target="_blank" rel="noreferrer">这里</a>。最后是用户识别码（MSIN），由运营商自定义。</p>
+<pre><code>  AT+CIMI
+  460019048517149
+</code></pre>
+</li>
+<li>
+<p>AT+CSQ ，获取信号强度，信号强度与是否插 SIM 卡无关：</p>
+<pre><code>  AT+CSQ
+  +CSQ: 15,1  
+</code></pre>
+<p>第一个数字表示信号轻度，取值0~31，数字越大信号越好，99 表示未知或不可检测，换算方式： CSQ 值=（接收信号强度 dBm + 113）/2 ：</p>
+<p>
 
-OK
-</code></pre><p>数据的含义：</p><pre><code>&lt;mode&gt;
-    0 - PSNT unsolicited result code disabled
-    1 - PSNT unsolicited result code enabled
-&lt;nt&gt; - network type
-    0 - GPRS network
-    1 - EGPRS network
-    2 - WCDMA network
-    3 - HSDPA network
-    4 - unknown or not registered.
-</code></pre></li><li><p>AT#RFSTS ，读取当前的网络状态，数据比较多，具体含义需要查看手册：</p><pre><code>AT#RFSTS
-#RFSTS: &quot;460 01&quot;,10713,64,-4.5,-89,-80,A53F,02,-128,64,19,4,2,,17030E9,&quot;460010892513284&quot;,&quot;CHN-UNICOM&quot;,3,0
 
-OK
-</code></pre></li></ul><p>AT 指令可能返回错误代码，下面常见错误代码的含义：</p><pre><code>CME ERROR: 0    Phone failure
-CME ERROR: 1    No connection to phone
-CME ERROR: 2    Phone adapter link reserved
-CME ERROR: 3    Operation not allowed
-CME ERROR: 4    Operation not supported
-CME ERROR: 5    PH_SIM PIN required
-CME ERROR: 6    PH_FSIM PIN required
-CME ERROR: 7    PH_FSIM PUK required
-CME ERROR: 10   SIM not inserted
-CME ERROR: 11   SIM PIN required
-CME ERROR: 12   SIM PUK required
-CME ERROR: 13   SIM failure
-CME ERROR: 14   SIM busy
-CME ERROR: 15   SIM wrong
-CME ERROR: 16   Incorrect password
-CME ERROR: 17   SIM PIN2 required
-CME ERROR: 18   SIM PUK2 required
-CME ERROR: 20   Memory full
-CME ERROR: 21   Invalid index
-CME ERROR: 22   Not found
-CME ERROR: 23   Memory failure
-CME ERROR: 24   Text string too long
-CME ERROR: 25   Invalid characters in text string
-CME ERROR: 26   Dial string too long
-CME ERROR: 27   Invalid characters in dial string
-CME ERROR: 30   No network service
-CME ERROR: 31   Network timeout
-CME ERROR: 32   Network not allowed, emergency calls only
-CME ERROR: 40   Network personalization PIN required
-CME ERROR: 41   Network personalization PUK required
-CME ERROR: 42   Network subset personalization PIN required
-CME ERROR: 43   Network subset personalization PUK required
-CME ERROR: 44   Service provider personalization PIN required
-CME ERROR: 45   Service provider personalization PUK required
-CME ERROR: 46   Corporate personalization PIN required
-CME ERROR: 47   Corporate personalization PUK required
-CME ERROR: 48   PH-SIM PUK required
-CME ERROR: 100  Unknown error
-CME ERROR: 103  Illegal MS
-CME ERROR: 106  Illegal ME
-CME ERROR: 107  GPRS services not allowed
-CME ERROR: 111  PLMN not allowed
-CME ERROR: 112  Location area not allowed
-CME ERROR: 113  Roaming not allowed in this location area
-CME ERROR: 126  Operation temporary not allowed
-CME ERROR: 132  Service operation not supported
-CME ERROR: 133  Requested service option not subscribed
-CME ERROR: 134  Service option temporary out of order
-CME ERROR: 148  Unspecified GPRS error
-CME ERROR: 149  PDP authentication failure
-CME ERROR: 150  Invalid mobile class
-CME ERROR: 256  Operation temporarily not allowed
-CME ERROR: 257  Call barred
-CME ERROR: 258  Phone is busy
-CME ERROR: 259  User abort
-CME ERROR: 260  Invalid dial string
-CME ERROR: 261  SS not executed
-CME ERROR: 262  SIM Blocked
-CME ERROR: 263  Invalid block
-CME ERROR: 527  Please wait, and retry your selection later (Specific Modem Sierra)
-CME ERROR: 528  Location update failure – emergency calls only (Specific Modem Sierra)
-CME ERROR: 529  Selection failure – emergency calls only (Specific Modem Sierra)
-CME ERROR: 772  SIM powered down
-</code></pre><h2 id=3-pppd>3. pppd</h2><p>pppd 是 ppp 协议的守护进程，全称点对点协议守护进程。它的 man 手册提供了详细使用说明，这里有中文版：<a href=https://docs.oracle.com/cd/E56344_01/html/E54077/pppd-1m.html target=_blank>https://docs.oracle.com/cd/E56344_01/html/E54077/pppd-1m.html</a> 。语法是：</p><pre><code>pppd [option]
-</code></pre><p>常用的选项：</p><ul><li><em>tty_name</em> ：指定用于 ppp 拨号的串行设备，通常是 /dev/ 目录下的 tty 设备，对于 HE910 应该设为 /dev/ttyACM0 。</li><li><em>speed</em> : 指定串口波特率，十进制数，常用的有9600、19200、115200、460800。</li><li>damand ：仅在有数据通信时启动链路，该选项隐含了 persist 选项。</li><li>persist ：连接终止后程序不退出，并尝试重新打开连接，也就是掉线重连。</li><li>debug ：启用连接调试工具。如果指定了此选项，则 pppd 将以可阅读格式记录所发送或接收的所有控制包的内容。</li><li>dump ：指定此选项后，pppd 会打印所有已经设置的选项的值。</li><li>crtscts ：使用硬件流量控制（即 RTS/CTS）来控制串行端口上的数据流。</li><li>lock ：为串行设备加锁，确保对设备的独占访问。</li><li>user <em>username</em> ：向对等方证明身份的用户名。</li><li>password <em>password</em> ： 向对等方证明身份的密码。</li><li>defaultroute ：拨号成功完成时，向系统路由表添加一个缺省路由。</li><li>usepeerdns ：向对等方请求最多两个 DNS 服务器地址。</li><li>nodetach ：设置该选项后，pppd 将保持前台运行，默认是后台运行。</li><li>logfile <em>filename</em> ：将日志信息附加到文件 filename 。</li><li>connect <em>script</em> ：使用由 script 指定的可执行文件或 shell 命令来设置串行设备。此脚本通常将使用 chat(1M) 程序拨打调制解调器并启动远程 PPP 会话。</li><li>disconnect <em>script</em> ：在 pppd 终止链路后，运行由 script 指定的可执行文件或 shell 命令。</li><li>call <em>filename</em> ：从 /etc/ppp/peers/ 下的 filename 文件中读取选项。上面这些选项可以在执行命令是设置，也可以放在 /etc/ppp/peers/ 目录下的自定义配置文件中，用 call 选项调用。</li><li>local_IP_address:remote_IP_address : 设置本地和/或远程接口 IP 地址。两者都可以省略，但冒号是必需的。IP 地址可以通过主机名来指定，也可以通过十进制点记法来指定，例如：:10.1.2.3。缺省本地地址是系统的第一个 IP 地址，除非提供了 noipdefault 选项。如果未在任何选项中指定远程地址，则将从对等方获取远程地址。因此，在简单情况下，此选项不是必需的。如果通过此选项指定了本地和/或远程 IP 地址，则 pppd 在 IPCP 协商中将不会接受来自对等方的不同值，除非分别指定了 ipcp-accept-local 和/或 ipcp-accept-remote 选项。</li><li>noipdefault : 禁用未指定本地 IP 地址时的缺省行为，即通过主机名确定本地 IP 地址（如果可行）。指定了此选项时，对等方在 IPCP 协商期间必须提供本地 IP 地址（除非在命令行上或选项文件中显式指定了该地址）。未指定该选项时，可能被设置缺省地址，而导致拨号失败，比如<code>sent [IPCP ConfReq id=0x2 &lt;addr 192.168.199.152&gt; &lt;ms-dns1 0.0.0.0&gt; &lt;ms-dns2 0.0.0.0&gt;]</code> 。</li></ul><p>在 /etc/ppp/peers/ 下新建一个配置文件，命名为 wcdma ，内容如下：</p><pre><code>/dev/ttyACM0
+
+
+  
+  
+  
+    <figure>
+      <img
+        class="mx-auto my-0 rounded-md"
+        src="~/14-31-06.jpg"
+        alt=""
+        
+          loading="lazy"
+        
+      />
+      
+    </figure>
+  
+</p>
+</li>
+<li>
+<p>AT+CPIN? ，可以用来查看 SIM 卡是否插好，插好会返回 READY ：</p>
+<pre><code>  AT+CPIN?
+  +CPIN: READY
+  OK
+</code></pre>
+</li>
+<li>
+<p>AT+CNUM ，查看电话号码，前提是号码已经存储在 SIM 中 ：</p>
+<pre><code>  AT+CNUM
+  +CNUM: &quot;&quot;,&quot;+8618589041260&quot;,145        
+  OK
+</code></pre>
+</li>
+<li>
+<p>AT+WS46=[<n>] ，选择无线网络,三个数字分别是 2G only、3G only、3G first 。</p>
+</li>
+</ul>
+<p>
+
+
+
+
+  
+  
+  
+    <figure>
+      <img
+        class="mx-auto my-0 rounded-md"
+        src="./pics_2.jpg"
+        alt=""
+        
+          loading="lazy"
+        
+      />
+      
+    </figure>
+  
+</p>
+<ul>
+<li>
+<p>AT#PSNT? ，查询当前的网络类型，返回的数据格式是 <code>#PSNT: &lt;mode&gt;,&lt;nt&gt;</code> ：</p>
+<pre><code>  AT#PSNT?
+  #PSNT: 0,3
+
+  OK
+</code></pre>
+<p>数据的含义：</p>
+<pre><code>  &lt;mode&gt;
+      0 - PSNT unsolicited result code disabled
+      1 - PSNT unsolicited result code enabled
+  &lt;nt&gt; - network type
+      0 - GPRS network
+      1 - EGPRS network
+      2 - WCDMA network
+      3 - HSDPA network
+      4 - unknown or not registered.
+</code></pre>
+</li>
+<li>
+<p>AT#RFSTS ，读取当前的网络状态，数据比较多，具体含义需要查看手册：</p>
+<pre><code>  AT#RFSTS
+  #RFSTS: &quot;460 01&quot;,10713,64,-4.5,-89,-80,A53F,02,-128,64,19,4,2,,17030E9,&quot;460010892513284&quot;,&quot;CHN-UNICOM&quot;,3,0
+
+  OK
+</code></pre>
+</li>
+</ul>
+<p>AT 指令可能返回错误代码，下面常见错误代码的含义：</p>
+<pre><code>CME ERROR: 0	Phone failure
+CME ERROR: 1	No connection to phone
+CME ERROR: 2	Phone adapter link reserved
+CME ERROR: 3	Operation not allowed
+CME ERROR: 4	Operation not supported
+CME ERROR: 5	PH_SIM PIN required
+CME ERROR: 6	PH_FSIM PIN required
+CME ERROR: 7	PH_FSIM PUK required
+CME ERROR: 10	SIM not inserted
+CME ERROR: 11	SIM PIN required
+CME ERROR: 12	SIM PUK required
+CME ERROR: 13	SIM failure
+CME ERROR: 14	SIM busy
+CME ERROR: 15	SIM wrong
+CME ERROR: 16	Incorrect password
+CME ERROR: 17	SIM PIN2 required
+CME ERROR: 18	SIM PUK2 required
+CME ERROR: 20	Memory full
+CME ERROR: 21	Invalid index
+CME ERROR: 22	Not found
+CME ERROR: 23	Memory failure
+CME ERROR: 24	Text string too long
+CME ERROR: 25	Invalid characters in text string
+CME ERROR: 26	Dial string too long
+CME ERROR: 27	Invalid characters in dial string
+CME ERROR: 30	No network service
+CME ERROR: 31	Network timeout
+CME ERROR: 32	Network not allowed, emergency calls only
+CME ERROR: 40	Network personalization PIN required
+CME ERROR: 41	Network personalization PUK required
+CME ERROR: 42	Network subset personalization PIN required
+CME ERROR: 43	Network subset personalization PUK required
+CME ERROR: 44	Service provider personalization PIN required
+CME ERROR: 45	Service provider personalization PUK required
+CME ERROR: 46	Corporate personalization PIN required
+CME ERROR: 47	Corporate personalization PUK required
+CME ERROR: 48	PH-SIM PUK required
+CME ERROR: 100	Unknown error
+CME ERROR: 103	Illegal MS
+CME ERROR: 106	Illegal ME
+CME ERROR: 107	GPRS services not allowed
+CME ERROR: 111	PLMN not allowed
+CME ERROR: 112	Location area not allowed
+CME ERROR: 113	Roaming not allowed in this location area
+CME ERROR: 126	Operation temporary not allowed
+CME ERROR: 132	Service operation not supported
+CME ERROR: 133	Requested service option not subscribed
+CME ERROR: 134	Service option temporary out of order
+CME ERROR: 148	Unspecified GPRS error
+CME ERROR: 149	PDP authentication failure
+CME ERROR: 150	Invalid mobile class
+CME ERROR: 256	Operation temporarily not allowed
+CME ERROR: 257	Call barred
+CME ERROR: 258	Phone is busy
+CME ERROR: 259	User abort
+CME ERROR: 260	Invalid dial string
+CME ERROR: 261	SS not executed
+CME ERROR: 262	SIM Blocked
+CME ERROR: 263	Invalid block
+CME ERROR: 527	Please wait, and retry your selection later (Specific Modem Sierra)
+CME ERROR: 528	Location update failure – emergency calls only (Specific Modem Sierra)
+CME ERROR: 529	Selection failure – emergency calls only (Specific Modem Sierra)
+CME ERROR: 772	SIM powered down
+</code></pre>
+<h2 id="3-pppd" class="relative group">3. pppd <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#3-pppd" aria-label="锚点">#</a></span></h2><p>pppd 是 ppp 协议的守护进程，全称点对点协议守护进程。它的 man 手册提供了详细使用说明，这里有中文版：<a href="https://docs.oracle.com/cd/E56344_01/html/E54077/pppd-1m.html" target="_blank" rel="noreferrer">https://docs.oracle.com/cd/E56344_01/html/E54077/pppd-1m.html</a> 。语法是：</p>
+<pre><code>pppd [option]
+</code></pre>
+<p>常用的选项：</p>
+<ul>
+<li><em>tty_name</em> ：指定用于 ppp 拨号的串行设备，通常是 /dev/ 目录下的 tty 设备，对于 HE910 应该设为 /dev/ttyACM0 。</li>
+<li><em>speed</em> : 指定串口波特率，十进制数，常用的有9600、19200、115200、460800。</li>
+<li>damand ：仅在有数据通信时启动链路，该选项隐含了 persist 选项。</li>
+<li>persist ：连接终止后程序不退出，并尝试重新打开连接，也就是掉线重连。</li>
+<li>debug ：启用连接调试工具。如果指定了此选项，则 pppd 将以可阅读格式记录所发送或接收的所有控制包的内容。</li>
+<li>dump ：指定此选项后，pppd 会打印所有已经设置的选项的值。</li>
+<li>crtscts ：使用硬件流量控制（即 RTS/CTS）来控制串行端口上的数据流。</li>
+<li>lock ：为串行设备加锁，确保对设备的独占访问。</li>
+<li>user <em>username</em> ：向对等方证明身份的用户名。</li>
+<li>password <em>password</em> ： 向对等方证明身份的密码。</li>
+<li>defaultroute ：拨号成功完成时，向系统路由表添加一个缺省路由。</li>
+<li>usepeerdns ：向对等方请求最多两个 DNS 服务器地址。</li>
+<li>nodetach ：设置该选项后，pppd 将保持前台运行，默认是后台运行。</li>
+<li>logfile <em>filename</em> ：将日志信息附加到文件 filename 。</li>
+<li>connect <em>script</em> ：使用由 script 指定的可执行文件或 shell 命令来设置串行设备。此脚本通常将使用 chat(1M) 程序拨打调制解调器并启动远程 PPP 会话。</li>
+<li>disconnect <em>script</em> ：在 pppd 终止链路后，运行由 script 指定的可执行文件或 shell 命令。</li>
+<li>call <em>filename</em> ：从 /etc/ppp/peers/ 下的 filename 文件中读取选项。上面这些选项可以在执行命令是设置，也可以放在 /etc/ppp/peers/ 目录下的自定义配置文件中，用 call 选项调用。</li>
+<li>local_IP_address:remote_IP_address : 设置本地和/或远程接口 IP 地址。两者都可以省略，但冒号是必需的。IP 地址可以通过主机名来指定，也可以通过十进制点记法来指定，例如：:10.1.2.3。缺省本地地址是系统的第一个 IP 地址，除非提供了 noipdefault 选项。如果未在任何选项中指定远程地址，则将从对等方获取远程地址。因此，在简单情况下，此选项不是必需的。如果通过此选项指定了本地和/或远程 IP 地址，则 pppd 在 IPCP 协商中将不会接受来自对等方的不同值，除非分别指定了 ipcp-accept-local 和/或 ipcp-accept-remote 选项。</li>
+<li>noipdefault : 禁用未指定本地 IP 地址时的缺省行为，即通过主机名确定本地 IP 地址（如果可行）。指定了此选项时，对等方在 IPCP 协商期间必须提供本地 IP 地址（除非在命令行上或选项文件中显式指定了该地址）。未指定该选项时，可能被设置缺省地址，而导致拨号失败，比如<code>sent [IPCP ConfReq id=0x2 &lt;addr 192.168.199.152&gt; &lt;ms-dns1 0.0.0.0&gt; &lt;ms-dns2 0.0.0.0&gt;]</code> 。</li>
+</ul>
+<p>在 /etc/ppp/peers/ 下新建一个配置文件，命名为 wcdma ，内容如下：</p>
+<pre><code>/dev/ttyACM0
 115200
 dump
 debug
@@ -153,7 +661,9 @@ lock
 show-password
 logfile /var/log/pppd.log
 connect &quot;/usr/sbin/chat -v -f /etc/ppp/peers/he910_connect&quot;
-</code></pre><p>对于 user 和 password ，电信 3G 是有用户名和密码的，移动和联通为空，所以最好不要设置，可以用井号注释掉，曾经遇到过随意设置这两个值后，连接被拒绝的情况。最后启动连接用的是 chat ，负责与 3G 模块的串口通信，拨打运营商的调制解调器，目的是建立 pppd 守护进程和远程 pppd 进程之间的连接，如果程序执行错误，会返回错误状态代码，代码的含义可以在 man 手册中查找。chat 通过 -f 选项指定一个脚本，脚本的内容就是执行一些 AT 指令设置拨号相关参数。这个脚本如何设置也可以在模块软件手册里找到，以 HE910 为例：</p><pre><code>[root@localhost ppp]# cat /etc/ppp/peers/he910_connect 
+</code></pre>
+<p>对于 user 和 password ，电信 3G 是有用户名和密码的，移动和联通为空，所以最好不要设置，可以用井号注释掉，曾经遇到过随意设置这两个值后，连接被拒绝的情况。最后启动连接用的是 chat ，负责与 3G 模块的串口通信，拨打运营商的调制解调器，目的是建立 pppd 守护进程和远程 pppd 进程之间的连接，如果程序执行错误，会返回错误状态代码，代码的含义可以在 man 手册中查找。chat 通过 -f 选项指定一个脚本，脚本的内容就是执行一些 AT 指令设置拨号相关参数。这个脚本如何设置也可以在模块软件手册里找到，以 HE910 为例：</p>
+<pre><code>[root@localhost ppp]# cat /etc/ppp/peers/he910_connect 
 #!/bin/sh
 # init
 TIMEOUT 30
@@ -164,7 +674,62 @@ TIMEOUT 30
 OK ATD*99#
 # The modem is waiting for the following answer
 CONNECT ''
-</code></pre><ul><li>AT+CGDCONT 指令是设置拨号的各项参数，第二个参数是设置 PDP 类型，IP 表示 Internet Protocol ；第三个参数是设置 APN （接入点名称），由运营商决定。</li><li>ATD 指令是设置拨号号码，这个值由运营商决定。</li><li>CONNECT 指令表示开始拨号，并等待回应。</li></ul><p>下面是针对不同运营商的各项参数设置列表：</p><table><thead><tr><th>运营商（ISP）</th><th>APN</th><th>拨号号码</th><th>用户名</th><th>密码</th></tr></thead><tbody><tr><td>中国联通 WCDMA (China Unicom)</td><td>3GNET</td><td>*99#</td><td>空</td><td>空</td></tr><tr><td>中国电信 CDMA2000 (China Telecom) EVDO网络</td><td>空</td><td>#777</td><td>ctnet@mycdma.cn</td><td>vnet.mobi</td></tr><tr><td>中国移动 TD-SCDMA (China Mobile)</td><td>CMNET</td><td>*98*1#</td><td>空</td><td>空</td></tr><tr><td>中国移动 GPRS (China Mobile)</td><td>CMNET</td><td>*99***1#</td><td>空</td><td>空</td></tr></tbody></table><blockquote><p>4G 模块拨号的设置都没有用户名和密码，拨号号码都用 *99# ，在拨号前要初始化模块，使用 AT^SYSCFG 或者 AT^SYSCFGEX 指令将网络连接顺序设为 LTE 优先。</p></blockquote><p>设置完毕后，执行 <code>pppd call wcdma</code> ，程序会自动到 /etc/ppp/peers/ 目录下调用名为 wcdma 配置文件，然后开始拨号，整个过程可以在日志文件中查看。拨号成功后会获得 IP 和 DNS ，DNS 保存在 /var/run/ppp/resolv.conf 文件中。之后会调用 /etc/ppp/ip-up 脚本文件 ：</p><pre><code>[root@localhost ppp]# cat /etc/ppp/ip-up
+</code></pre>
+<ul>
+<li>AT+CGDCONT 指令是设置拨号的各项参数，第二个参数是设置 PDP 类型，IP 表示  Internet Protocol ；第三个参数是设置 APN （接入点名称），由运营商决定。</li>
+<li>ATD 指令是设置拨号号码，这个值由运营商决定。</li>
+<li>CONNECT 指令表示开始拨号，并等待回应。</li>
+</ul>
+<p>下面是针对不同运营商的各项参数设置列表：</p>
+<table>
+<thead>
+<tr>
+<th>运营商（ISP）</th>
+<th>APN</th>
+<th>拨号号码</th>
+<th>用户名</th>
+<th>密码</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>中国联通 WCDMA (China Unicom)</td>
+<td>3GNET</td>
+<td>*99#</td>
+<td>空</td>
+<td>空</td>
+</tr>
+<tr>
+<td>中国电信 CDMA2000 (China Telecom) EVDO网络</td>
+<td>空</td>
+<td>#777</td>
+<td>
+  
+  
+<a href="mailto:ctnet@mycdma.cn">ctnet@mycdma.cn</a></td>
+<td>vnet.mobi</td>
+</tr>
+<tr>
+<td>中国移动 TD-SCDMA (China Mobile)</td>
+<td>CMNET</td>
+<td><em>98</em>1#</td>
+<td>空</td>
+<td>空</td>
+</tr>
+<tr>
+<td>中国移动 GPRS (China Mobile)</td>
+<td>CMNET</td>
+<td>*99***1#</td>
+<td>空</td>
+<td>空</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>4G 模块拨号的设置都没有用户名和密码，拨号号码都用 *99# ，在拨号前要初始化模块，使用 AT^SYSCFG 或者 AT^SYSCFGEX 指令将网络连接顺序设为 LTE 优先。</p>
+</blockquote>
+<p>设置完毕后，执行 <code>pppd call wcdma</code> ，程序会自动到 /etc/ppp/peers/ 目录下调用名为 wcdma 配置文件，然后开始拨号，整个过程可以在日志文件中查看。拨号成功后会获得 IP 和 DNS ，DNS 保存在 /var/run/ppp/resolv.conf 文件中。之后会调用 /etc/ppp/ip-up 脚本文件 ：</p>
+<pre><code>[root@localhost ppp]# cat /etc/ppp/ip-up
 #!/bin/bash
 # This file should not be modified -- make local changes to
 # /etc/ppp/ip-up.local instead
@@ -182,7 +747,9 @@ REALDEVICE=$1
 [ -x /etc/ppp/ip-up.local ] &amp;&amp; /etc/ppp/ip-up.local &quot;$@&quot;
 
 exit 0
-</code></pre><p>这个脚本先执行了 ifup-post 脚本，作用是配置 IP ，默认路由等网络参数。然后执行了 ip-up.local 脚本，该脚本通常不存在，可以将 /usr/share/doc/ppp/scripts/ip-up.local.add 复制过来改名，这个脚本的作用是，如果在执行 pppd 时设置了 usepeerdns ，就用 /var/run/ppp/resolv.conf 替换当前的 DNS 。</p><pre><code>[root@localhost ppp]# cat ip-up.local.add 
+</code></pre>
+<p>这个脚本先执行了 ifup-post 脚本，作用是配置 IP ，默认路由等网络参数。然后执行了 ip-up.local 脚本，该脚本通常不存在，可以将 /usr/share/doc/ppp/scripts/ip-up.local.add 复制过来改名，这个脚本的作用是，如果在执行 pppd 时设置了 usepeerdns ，就用 /var/run/ppp/resolv.conf 替换当前的 DNS 。</p>
+<pre><code>[root@localhost ppp]# cat ip-up.local.add 
 
 #
 # This sample code shows you one way to modify your setup to allow automatic
@@ -212,7 +779,9 @@ if [ -n &quot;$USEPEERDNS&quot; -a -f /var/run/ppp/resolv.conf ]; then
                 change_resolv_conf /var/run/ppp/resolv.conf
         fi
 fi
-</code></pre><h2 id=4-wvdial>4. wvdial</h2><p>wvdial 是一个智能 ppp 拨号工具，替换了 chat ，简化了拨号的步骤，可以一步实现拨号、启动 pppd 、最终连接互联网。它带有一个配置工具 wvdialconf ，用于探测当前系统中 3G 模块的串口，然后生成一个配置文件 /etc/wvdial.conf 。还是以 HE910 为例，生成的配置文件：</p><pre><code>[root@localhost ~]# cat /etc/wvdial.conf 
+</code></pre>
+<h2 id="4-wvdial" class="relative group">4. wvdial <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#4-wvdial" aria-label="锚点">#</a></span></h2><p>wvdial 是一个智能 ppp 拨号工具，替换了 chat ，简化了拨号的步骤，可以一步实现拨号、启动 pppd 、最终连接互联网。它带有一个配置工具 wvdialconf ，用于探测当前系统中 3G 模块的串口，然后生成一个配置文件 /etc/wvdial.conf 。还是以 HE910 为例，生成的配置文件：</p>
+<pre><code>[root@localhost ~]# cat /etc/wvdial.conf 
 [Dialer Defaults]
 Init2 = ATQ0 V1 E1 S0=0 &amp;C1 &amp;D2 +FCLASS=0
 Modem Type = USB Modem
@@ -223,7 +792,9 @@ Init1 = ATZ
 ; Password = &lt;Your Password&gt;
 Modem = /dev/ttyACM0
 Baud = 460800
-</code></pre><p>只需要修改账号、密码和拨号号码即可，注意要把前面的分号去掉：</p><pre><code>[root@localhost ~]# cat /etc/wvdial.conf 
+</code></pre>
+<p>只需要修改账号、密码和拨号号码即可，注意要把前面的分号去掉：</p>
+<pre><code>[root@localhost ~]# cat /etc/wvdial.conf 
 [Dialer Defaults]
 Init2 = ATQ0 V1 E1 S0=0 &amp;C1 &amp;D2 +FCLASS=0
 Modem Type = USB Modem
@@ -234,7 +805,9 @@ Init1 = ATZ
 Password = &quot;card&quot;
 Modem = /dev/ttyACM0
 Baud = 460800 
-</code></pre><p>配置文件的其他选项可以查看 wvdial.conf 的 man 手册，这些参数最终会传递给 pppd 。然后执行 wvdial ：</p><pre><code>[root@localhost ~]# wvdial         
+</code></pre>
+<p>配置文件的其他选项可以查看 wvdial.conf 的 man 手册，这些参数最终会传递给 pppd 。然后执行 wvdial ：</p>
+<pre><code>[root@localhost ~]# wvdial         
 --&gt; WvDial: Internet dialer version 1.61
 --&gt; Initializing modem.
 --&gt; Sending: ATZ
@@ -258,7 +831,9 @@ CONNECT
 --&gt; remote IP address 10.228.54.19
 --&gt; primary   DNS address 210.21.196.6
 --&gt; secondary DNS address 221.5.88.88
-</code></pre><p>默认会自动设置 default route 和 DNS 。如果没有自动替换 DNS ，应该是没有 /etc/ppp/ip-up.local 文件，可以复制一个过来。查看 pppd 进程，看看都执行了哪些参数：</p><pre><code>[root@localhost ~]# ps -ef | grep pppd
+</code></pre>
+<p>默认会自动设置 default route 和 DNS 。如果没有自动替换 DNS ，应该是没有 /etc/ppp/ip-up.local 文件，可以复制一个过来。查看 pppd 进程，看看都执行了哪些参数：</p>
+<pre><code>[root@localhost ~]# ps -ef | grep pppd
 root       955   954  0 09:02 pts/1    00:00:00 /usr/sbin/pppd 460800 modem crtscts defaultroute usehostname -detach user card noipdefault call wvdial usepeerdns idle 0 logfd 6 remotename 0
 root       982   799  0 09:03 pts/0    00:00:00 grep --color=auto pppd
 [root@localhost ~]# route
@@ -266,12 +841,234 @@ Kernel IP routing table
 Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
 default         0.0.0.0         0.0.0.0         U     0      0        0 ppp0
 192.168.5.0     0.0.0.0         255.255.255.0   U     0      0        0 enp4s0
-</code></pre><p>这个程序是前台运行的，用 Ctrl-C 键可以退出。</p></div></article><hr><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>1561 Words</p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>2016-10-25 00:00 &#43;0000</p></div><div class=pagination><div class=pagination__title><span class=pagination__title-h></span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://shaocheng.li/posts/2016/10/26/><span class=button__icon>←</span>
-<span class=button__text>Linux Wireless HowTo</span></a></span>
-<span class="button next"><a href=https://shaocheng.li/posts/2016/10/13/><span class=button__text>NetworkManager 使用笔记</span>
-<span class=button__icon>→</span></a></span></div></div><div id=comments class=thin><div id=disqus_thread></div><script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return;}
-var d=document,s=d.createElement('script');s.async=true;s.src='//'+"shaocheng-li"+'.disqus.com/embed.js';s.setAttribute('data-timestamp',+new Date());(d.head||d.body).appendChild(s);})();</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></div></main></div><footer class=footer><div class=footer__inner><div class=footer__content><span>&copy; 2023</span>
-<span><a href=https://shaocheng.li>Shaocheng.Li</a></span>
-<span><a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>CC BY-NC 4.0</a></span>
-<span><a href=https://shaocheng.li/posts/index.xml target=_blank title=rss><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg></a></span></div></div><div class=footer__inner><div class=footer__content><span>Powered by <a href=http://gohugo.io>Hugo</a></span>
-<span>Made with &#10084; by <a href=https://github.com/rhazdon>rhazdon</a></span></div></div></footer></div><script type=text/javascript src=https://shaocheng.li/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script></body></html>
+</code></pre>
+<p>这个程序是前台运行的，用 Ctrl-C 键可以退出。</p>
+
+      </div>
+    </section>
+    <footer class="pt-8 max-w-prose print:hidden">
+      
+  <div class="flex">
+    
+      
+      
+        
+        <img
+          class="!mb-0 !mt-0 me-4 h-24 w-24 rounded-full"
+          width="96"
+          height="96"
+          alt="Shaocheng.Li"
+          src="/img/author_hucdd16a8e5aab658b1bf3664f1886d7a1_71871_192x192_fill_box_center_3.png"
+          
+            loading="lazy"
+          
+        />
+      
+    
+    <div class="place-self-center">
+      
+        <div class="text-[0.6rem] uppercase leading-3 text-neutral-500 dark:text-neutral-400">
+          作者
+        </div>
+        <div class="font-semibold leading-6 text-neutral-800 dark:text-neutral-300">
+          Shaocheng.Li
+        </div>
+      
+      
+        <div class="text-sm text-neutral-700 dark:text-neutral-400">A Linux software engineer.</div>
+      
+      <div class="text-2xl sm:text-lg">
+  <div class="flex flex-wrap text-neutral-400 dark:text-neutral-500">
+    
+      
+        <a
+          class="px-1 transition-transform hover:scale-125 hover:text-primary-700 dark:hover:text-primary-400"
+          style="will-change:transform;"
+          href="https://github.com/exbob"
+          target="_blank"
+          aria-label="Github"
+          rel="me noopener noreferrer"
+          ><span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+</span></a
+        >
+      
+    
+  </div>
+
+</div>
+    </div>
+  </div>
+
+
+      
+
+      
+  
+    
+    
+    
+    <div class="pt-8">
+      <hr class="border-dotted border-neutral-300 dark:border-neutral-600" />
+      <div class="flex justify-between pt-3">
+        <span>
+          
+            <a class="group flex" href="/posts/2016/10/13/">
+              <span
+                class="me-2 text-neutral-700 transition-transform group-hover:-translate-x-[2px] group-hover:text-primary-600 dark:text-neutral dark:group-hover:text-primary-400"
+                ><span class="ltr:inline rtl:hidden">&larr;</span
+                ><span class="ltr:hidden rtl:inline">&rarr;</span></span
+              >
+              <span class="flex flex-col">
+                <span
+                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+                  >NetworkManager 使用笔记</span
+                >
+                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+                  
+                    <time datetime="2016-10-13 08:00:00 &#43;0800 CST">2016 October 13</time>
+                  
+                </span>
+              </span>
+            </a>
+          
+        </span>
+        <span>
+          
+            <a class="group flex text-right" href="/posts/2016/10/26/">
+              <span class="flex flex-col">
+                <span
+                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+                  >Linux Wireless HowTo</span
+                >
+                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+                  
+                    <time datetime="2016-10-26 08:00:00 &#43;0800 CST">2016 October 26</time>
+                  
+                </span>
+              </span>
+              <span
+                class="ms-2 text-neutral-700 transition-transform group-hover:-translate-x-[2px] group-hover:text-primary-600 dark:text-neutral dark:group-hover:text-primary-400"
+                ><span class="ltr:inline rtl:hidden">&rarr;</span
+                ><span class="ltr:hidden rtl:inline">&larr;</span></span
+              >
+            </a>
+          
+        </span>
+      </div>
+    </div>
+  
+
+
+      
+    </footer>
+  </article>
+
+        
+          <div class="pointer-events-none absolute bottom-0 end-0 top-[100vh] w-12">
+            <a
+              href="#the-top"
+              class="pointer-events-auto sticky top-[calc(100vh-5.5rem)] flex h-12 w-12 items-center justify-center rounded-full bg-neutral/50 text-xl text-neutral-700 backdrop-blur hover:text-primary-600 dark:bg-neutral-800/50 dark:text-neutral dark:hover:text-primary-400"
+              aria-label="回到顶部"
+              title="回到顶部"
+            >
+              &uarr;
+            </a>
+          </div>
+        
+      </main><footer class="py-10 print:hidden">
+  
+  
+  <div class="flex items-center justify-between">
+    <div>
+      
+      
+        <p class="text-sm text-neutral-500 dark:text-neutral-400">
+            &copy;
+            2024
+            Shaocheng.Li
+        </p>
+      
+      
+      
+        <p class="text-xs text-neutral-500 dark:text-neutral-400">
+          
+          
+          由 <a class="hover:underline hover:decoration-primary-400 hover:text-primary-500"
+            href="https://gohugo.io/" target="_blank" rel="noopener noreferrer">Hugo</a> &amp; <a class="hover:underline hover:decoration-primary-400 hover:text-primary-500" href="https://github.com/jpanther/congo" target="_blank" rel="noopener noreferrer">Congo</a> 强力驱动
+        </p>
+      
+    </div>
+    <div class="flex flex-row items-center">
+      
+      
+      
+      
+        <div
+          class="me-14 cursor-pointer text-sm text-neutral-700 hover:text-primary-600 dark:text-neutral dark:hover:text-primary-400"
+        >
+          <button id="appearance-switcher-0" type="button" aria-label="appearance switcher">
+            <div
+              class="flex items-center justify-center w-12 h-12 dark:hidden"
+              title="切换为深色模式"
+            >
+              <span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M32 256c0-123.8 100.3-224 223.8-224c11.36 0 29.7 1.668 40.9 3.746c9.616 1.777 11.75 14.63 3.279 19.44C245 86.5 211.2 144.6 211.2 207.8c0 109.7 99.71 193 208.3 172.3c9.561-1.805 16.28 9.324 10.11 16.95C387.9 448.6 324.8 480 255.8 480C132.1 480 32 379.6 32 256z"/></svg>
+</span>
+            </div>
+            <div
+              class="items-center justify-center hidden w-12 h-12 dark:flex"
+              title="切换为浅色模式"
+            >
+              <span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 159.1c-53.02 0-95.1 42.98-95.1 95.1S202.1 351.1 256 351.1s95.1-42.98 95.1-95.1S309 159.1 256 159.1zM509.3 347L446.1 255.1l63.15-91.01c6.332-9.125 1.104-21.74-9.826-23.72l-109-19.7l-19.7-109c-1.975-10.93-14.59-16.16-23.72-9.824L256 65.89L164.1 2.736c-9.125-6.332-21.74-1.107-23.72 9.824L121.6 121.6L12.56 141.3C1.633 143.2-3.596 155.9 2.736 164.1L65.89 256l-63.15 91.01c-6.332 9.125-1.105 21.74 9.824 23.72l109 19.7l19.7 109c1.975 10.93 14.59 16.16 23.72 9.824L256 446.1l91.01 63.15c9.127 6.334 21.75 1.107 23.72-9.822l19.7-109l109-19.7C510.4 368.8 515.6 356.1 509.3 347zM256 383.1c-70.69 0-127.1-57.31-127.1-127.1c0-70.69 57.31-127.1 127.1-127.1s127.1 57.3 127.1 127.1C383.1 326.7 326.7 383.1 256 383.1z"/></svg>
+</span>
+            </div>
+          </button>
+        </div>
+      
+    </div>
+  </div>
+  
+  
+</footer>
+<div
+  id="search-wrapper"
+  class="invisible fixed inset-0 z-50 flex h-screen w-screen cursor-default flex-col bg-neutral-500/50 p-4 backdrop-blur-sm dark:bg-neutral-900/50 sm:p-6 md:p-[10vh] lg:p-[12vh]"
+  data-url="https://shaocheng.li/"
+>
+  <div
+    id="search-modal"
+    class="flex flex-col w-full max-w-3xl min-h-0 mx-auto border rounded-md shadow-lg top-20 border-neutral-200 bg-neutral dark:border-neutral-700 dark:bg-neutral-800"
+  >
+    <header class="relative z-10 flex items-center justify-between flex-none px-2">
+      <form class="flex items-center flex-auto min-w-0">
+        <div class="flex items-center justify-center w-8 h-8 text-neutral-400">
+          <span class="relative inline-block align-text-bottom px-1 icon"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="svg-inline--fa fa-search fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
+</span>
+        </div>
+        <input
+          type="search"
+          id="search-query"
+          class="flex flex-auto h-12 mx-1 bg-transparent appearance-none focus:outline-dotted focus:outline-2 focus:outline-transparent"
+          placeholder="搜索"
+          tabindex="0"
+        />
+      </form>
+      <button
+        id="close-search-button"
+        class="flex items-center justify-center w-8 h-8 text-neutral-700 hover:text-primary-600 dark:text-neutral dark:hover:text-primary-400"
+        title="关闭 (Esc)"
+      >
+        <span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"/></svg>
+</span>
+      </button>
+    </header>
+    <section class="flex-auto px-2 overflow-auto">
+      <ul id="search-results">
+        
+      </ul>
+    </section>
+  </div>
+</div>
+
+    </div>
+  </body>
+</html>

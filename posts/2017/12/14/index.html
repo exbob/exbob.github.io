@@ -1,253 +1,897 @@
-<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=author content="Shaocheng.Li"><meta name=description content="1. sysconfig() sysconfig() 是获取系统运行时配置信息的函数，包括内存、CPU 等。函数声明：
-#include &amp;lt;unistd.h&amp;gt;long sysconf(int name); 参数 name 用于指示要获取的信息，通过返回值将结果返回。新建一个 test.c ，获取当前系统的信息：
-#include &amp;lt;stdio.h&amp;gt;#include &amp;lt;unistd.h&amp;gt; #define ONE_MB (1024 * 1024)  int main() { printf(&amp;#34;The number of processors configured is :%ld\n&amp;#34;, sysconf(_SC_NPROCESSORS_CONF)); printf(&amp;#34;The number of processors currently online (available) is :%ld\n&amp;#34;, sysconf(_SC_NPROCESSORS_ONLN)); printf(&amp;#34;The pagesize: %ld\n&amp;#34;, sysconf(_SC_PAGESIZE)); printf(&amp;#34;The number of pages: %ld\n&amp;#34;, sysconf(_SC_PHYS_PAGES)); printf(&amp;#34;The number of available pages: %ld\n&amp;#34;, sysconf(_SC_AVPHYS_PAGES)); printf(&amp;#34;The memory size: %lld MB\n&amp;#34;, (long long)sysconf(_SC_PAGESIZE) * (long long)sysconf(_SC_PHYS_PAGES) / ONE_MB ); printf(&amp;#34;The number of files max opened:: %ld\n&amp;#34;, sysconf(_SC_OPEN_MAX)); printf(&amp;#34;The number of ticks per second: %ld\n&amp;#34;, sysconf(_SC_CLK_TCK)); printf(&amp;#34;The max length of host name: %ld\n&amp;#34;, sysconf(_SC_HOST_NAME_MAX)); printf(&amp;#34;The max length of login name: %ld\n&amp;#34;, sysconf(_SC_LOGIN_NAME_MAX)); return 0; } 编译后执行："><meta name=keywords content><meta name=robots content="noodp"><meta name=theme-color content="#252627"><link rel=canonical href=https://shaocheng.li/posts/2017/12/14/><title>Linux Program Tips :: Shaocheng.Li — Hello Friends</title><link href=https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css rel=stylesheet type=text/css><link rel=stylesheet href=https://shaocheng.li/main.min.e9b3dfcc5ffe9d55eb281ecaf47cf6179d26eec497e087299934d581c987aa0b.css><link rel=stylesheet type=text/css href=https://shaocheng.li/css/custom.css><link rel=apple-touch-icon sizes=180x180 href=https://shaocheng.li/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=https://shaocheng.li/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=https://shaocheng.li/favicon-16x16.png><link rel=manifest href=https://shaocheng.li/site.webmanifest><link rel=mask-icon href=https://shaocheng.li/safari-pinned-tab.svg color=#252627><link rel="shortcut icon" href=https://shaocheng.li/favicon.ico><meta name=msapplication-TileColor content="#252627"><meta name=theme-color content="#252627"><meta itemprop=name content="Linux Program Tips"><meta itemprop=description content="1. sysconfig() sysconfig() 是获取系统运行时配置信息的函数，包括内存、CPU 等。函数声明：
-#include &lt;unistd.h&gt;long sysconf(int name); 参数 name 用于指示要获取的信息，通过返回值将结果返回。新建一个 test.c ，获取当前系统的信息：
-#include &lt;stdio.h&gt;#include &lt;unistd.h&gt; #define ONE_MB (1024 * 1024)  int main() { printf(&#34;The number of processors configured is :%ld\n&#34;, sysconf(_SC_NPROCESSORS_CONF)); printf(&#34;The number of processors currently online (available) is :%ld\n&#34;, sysconf(_SC_NPROCESSORS_ONLN)); printf(&#34;The pagesize: %ld\n&#34;, sysconf(_SC_PAGESIZE)); printf(&#34;The number of pages: %ld\n&#34;, sysconf(_SC_PHYS_PAGES)); printf(&#34;The number of available pages: %ld\n&#34;, sysconf(_SC_AVPHYS_PAGES)); printf(&#34;The memory size: %lld MB\n&#34;, (long long)sysconf(_SC_PAGESIZE) * (long long)sysconf(_SC_PHYS_PAGES) / ONE_MB ); printf(&#34;The number of files max opened:: %ld\n&#34;, sysconf(_SC_OPEN_MAX)); printf(&#34;The number of ticks per second: %ld\n&#34;, sysconf(_SC_CLK_TCK)); printf(&#34;The max length of host name: %ld\n&#34;, sysconf(_SC_HOST_NAME_MAX)); printf(&#34;The max length of login name: %ld\n&#34;, sysconf(_SC_LOGIN_NAME_MAX)); return 0; } 编译后执行："><meta itemprop=datePublished content="2017-12-14T08:00:00&#43;08:00"><meta itemprop=dateModified content="2017-12-14T08:00:00&#43;08:00"><meta itemprop=wordCount content="927"><meta itemprop=keywords content><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://shaocheng.li"><meta name=twitter:title content="Linux Program Tips"><meta name=twitter:description content="1. sysconfig() sysconfig() 是获取系统运行时配置信息的函数，包括内存、CPU 等。函数声明：
-#include &lt;unistd.h&gt;long sysconf(int name); 参数 name 用于指示要获取的信息，通过返回值将结果返回。新建一个 test.c ，获取当前系统的信息：
-#include &lt;stdio.h&gt;#include &lt;unistd.h&gt; #define ONE_MB (1024 * 1024)  int main() { printf(&#34;The number of processors configured is :%ld\n&#34;, sysconf(_SC_NPROCESSORS_CONF)); printf(&#34;The number of processors currently online (available) is :%ld\n&#34;, sysconf(_SC_NPROCESSORS_ONLN)); printf(&#34;The pagesize: %ld\n&#34;, sysconf(_SC_PAGESIZE)); printf(&#34;The number of pages: %ld\n&#34;, sysconf(_SC_PHYS_PAGES)); printf(&#34;The number of available pages: %ld\n&#34;, sysconf(_SC_AVPHYS_PAGES)); printf(&#34;The memory size: %lld MB\n&#34;, (long long)sysconf(_SC_PAGESIZE) * (long long)sysconf(_SC_PHYS_PAGES) / ONE_MB ); printf(&#34;The number of files max opened:: %ld\n&#34;, sysconf(_SC_OPEN_MAX)); printf(&#34;The number of ticks per second: %ld\n&#34;, sysconf(_SC_CLK_TCK)); printf(&#34;The max length of host name: %ld\n&#34;, sysconf(_SC_HOST_NAME_MAX)); printf(&#34;The max length of login name: %ld\n&#34;, sysconf(_SC_LOGIN_NAME_MAX)); return 0; } 编译后执行："><meta property="article:published_time" content="2017-12-14 08:00:00 &#43;0800 &#43;0800"></head><body><div class=container><header class=header><span class=header__inner><a href=https://shaocheng.li/ style=text-decoration:none><div class=logo><span class=logo__mark>></span>
-<span class=logo__text>$ cd /home/</span>
-<span class=logo__cursor></span></div></a><span class=header__right><nav class=menu><ul class=menu__inner><li><a href=https://shaocheng.li/about/>About</a></li><li><a href=https://shaocheng.li/posts/>Posts</a></li></ul></nav><span class=menu-trigger><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></span><span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 41C32.4934 41 41 32.4934 41 22 41 11.5066 32.4934 3 22 3 11.5066 3 3 11.5066 3 22s8.5066 19 19 19zM7 22C7 13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22z"/></svg></span></span></span></header><div class=content><main class=post><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>5 minutes</p></div><article><h1 class=post-title><a href=https://shaocheng.li/posts/2017/12/14/>Linux Program Tips</a></h1><hr><aside id=toc><div class=toc-title>Table of Contents</div><nav id=TableOfContents><ul><li><ul><li><a href=#1-sysconfig>1. sysconfig()</a></li><li><a href=#2-attribute>2. <strong>attribute</strong></a><ul><li><a href=#2-1-packed>2.1. packed</a></li><li><a href=#2-2-aligned-alignment>2.2. aligned(alignment)</a></li><li><a href=#2-3-constructor-destructor>2.3. constructor &amp; destructor</a></li><li><a href=#2-4-visibility>2.4. visibility</a></li><li><a href=#2-5-format>2.5 format</a></li></ul></li><li><a href=#3-size-t>3. size_t</a></li><li><a href=#4-container-of>4. container_of</a></li><li><a href=#5-pid-文件>5. PID 文件</a></li><li><a href=#6-debug>6. Debug</a></li></ul></li></ul></nav></aside><hr><div class=post-content><h2 id=1-sysconfig>1. sysconfig()</h2><p><code>sysconfig()</code> 是获取系统运行时配置信息的函数，包括内存、CPU 等。函数声明：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;unistd.h&gt;</span><span style=color:#75715e>
-</span><span style=color:#75715e></span><span style=color:#66d9ef>long</span> <span style=color:#a6e22e>sysconf</span>(<span style=color:#66d9ef>int</span> name);</code></pre></div><p>参数 name 用于指示要获取的信息，通过返回值将结果返回。新建一个 test.c ，获取当前系统的信息：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;stdio.h&gt;</span><span style=color:#75715e>
-</span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;unistd.h&gt;</span><span style=color:#75715e>
-</span><span style=color:#75715e></span>
-<span style=color:#75715e>#define ONE_MB (1024 * 1024)
-</span><span style=color:#75715e></span>
-<span style=color:#66d9ef>int</span> <span style=color:#a6e22e>main</span>()
-{
-    printf(<span style=color:#e6db74>&#34;The number of processors configured is :%ld</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, sysconf(_SC_NPROCESSORS_CONF));
-    printf(<span style=color:#e6db74>&#34;The number of processors currently online (available) is :%ld</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, sysconf(_SC_NPROCESSORS_ONLN));
-    printf(<span style=color:#e6db74>&#34;The pagesize: %ld</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, sysconf(_SC_PAGESIZE));
-    printf(<span style=color:#e6db74>&#34;The number of pages: %ld</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, sysconf(_SC_PHYS_PAGES));
-    printf(<span style=color:#e6db74>&#34;The number of available pages: %ld</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, sysconf(_SC_AVPHYS_PAGES));
-    printf(<span style=color:#e6db74>&#34;The memory size: %lld MB</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, (<span style=color:#66d9ef>long</span> <span style=color:#66d9ef>long</span>)sysconf(_SC_PAGESIZE) <span style=color:#f92672>*</span> (<span style=color:#66d9ef>long</span> <span style=color:#66d9ef>long</span>)sysconf(_SC_PHYS_PAGES) <span style=color:#f92672>/</span> ONE_MB );
-    printf(<span style=color:#e6db74>&#34;The number of files max opened:: %ld</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, sysconf(_SC_OPEN_MAX));
-    printf(<span style=color:#e6db74>&#34;The number of ticks per second: %ld</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, sysconf(_SC_CLK_TCK));
-    printf(<span style=color:#e6db74>&#34;The max length of host name: %ld</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, sysconf(_SC_HOST_NAME_MAX));
-    printf(<span style=color:#e6db74>&#34;The max length of login name: %ld</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, sysconf(_SC_LOGIN_NAME_MAX));
-    <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
-}</code></pre></div><p>编译后执行：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ gcc test.c
-$ ./a.out
-The number of processors configured is :1
-The number of processors currently online <span style=color:#f92672>(</span>available<span style=color:#f92672>)</span> is :1
-The pagesize: <span style=color:#ae81ff>4096</span>
-The number of pages: <span style=color:#ae81ff>221303</span>
-The number of available pages: <span style=color:#ae81ff>19370</span>
-The memory size: <span style=color:#ae81ff>864</span> MB
-The number of files max opened:: <span style=color:#ae81ff>1024</span>
-The number of ticks per second: <span style=color:#ae81ff>100</span>
-The max length of host name: <span style=color:#ae81ff>64</span>
-The max length of login name: <span style=color:#ae81ff>256</span></code></pre></div><h2 id=2-attribute>2. <strong>attribute</strong></h2><p><code>__attribute__</code> 是 GCC 提供的一种语法，可以帮助我们在编译时对声明的函数、变量和类型做一些特殊处理或者是检查操作，提升城程序的性能。语法格式为: <code>__attribute__ ((attribute-list))</code> ，attribute-list 是指令集 , 分为三种类型：函数属性，变量属性，类型属性。<code>__attribute__</code> 应该出现在函数、变量和类型声明的 “;” 前。</p><h3 id=2-1-packed>2.1. packed</h3><p>packed 用于设置变量或者结构体成员以最小的对齐方式对齐，减少空间浪费，例如：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;stdio.h&gt;</span><span style=color:#75715e>
-</span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;stdlib.h&gt;</span><span style=color:#75715e>
-</span><span style=color:#75715e></span>
-<span style=color:#66d9ef>struct</span> foo1 {
-    <span style=color:#66d9ef>char</span> a;
-    <span style=color:#66d9ef>int</span> b[<span style=color:#ae81ff>2</span>];
-};
-<span style=color:#66d9ef>struct</span> foo2 {
-    <span style=color:#66d9ef>char</span> a;
-    <span style=color:#66d9ef>int</span> b[<span style=color:#ae81ff>2</span>];
-} __attribute__((packed));
 
-<span style=color:#66d9ef>int</span> <span style=color:#a6e22e>main</span>()
-{
-    <span style=color:#66d9ef>int</span> s1 <span style=color:#f92672>=</span> <span style=color:#66d9ef>sizeof</span>(<span style=color:#66d9ef>struct</span> foo1);
-    <span style=color:#66d9ef>int</span> s2 <span style=color:#f92672>=</span> <span style=color:#66d9ef>sizeof</span>(<span style=color:#66d9ef>struct</span> foo2);
-    printf(<span style=color:#e6db74>&#34;s1 = %d</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>s2 = %d</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>,s1,s2);
 
-    <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
-}</code></pre></div><p>运行结果：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>s1 <span style=color:#f92672>=</span> <span style=color:#ae81ff>12</span>
-s2 <span style=color:#f92672>=</span> <span style=color:#ae81ff>9</span></code></pre></div><h3 id=2-2-aligned-alignment>2.2. aligned(alignment)</h3><p>aligned 用于指定变量或者结构体成语按照 alignment 字节大小对齐。如果对齐长度有大于 alignment 的，就按照最大对齐长度对齐。例如：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;stdio.h&gt;</span><span style=color:#75715e>
-</span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;stdlib.h&gt;</span><span style=color:#75715e>
-</span><span style=color:#75715e></span>
-<span style=color:#66d9ef>struct</span> foo1 {
-    <span style=color:#66d9ef>char</span> a;
-    <span style=color:#66d9ef>int</span> b[<span style=color:#ae81ff>2</span>];
-};
-<span style=color:#66d9ef>struct</span> foo2 {
-    <span style=color:#66d9ef>char</span> a;
-    <span style=color:#66d9ef>int</span> b[<span style=color:#ae81ff>2</span>] __attribute__((aligned(<span style=color:#ae81ff>8</span>)));
-};
-    <span style=color:#66d9ef>int</span> <span style=color:#a6e22e>main</span>()
-    {
-        <span style=color:#66d9ef>int</span> s1 <span style=color:#f92672>=</span> <span style=color:#66d9ef>sizeof</span>(<span style=color:#66d9ef>struct</span> foo1);
-        <span style=color:#66d9ef>int</span> s2 <span style=color:#f92672>=</span> <span style=color:#66d9ef>sizeof</span>(<span style=color:#66d9ef>struct</span> foo2);
-        printf(<span style=color:#e6db74>&#34;s1 = %d</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>s2 = %d</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>,s1,s2);
 
-        <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
-    }</code></pre></div><p>运行结果：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>s1 <span style=color:#f92672>=</span> <span style=color:#ae81ff>12</span>
-s2 <span style=color:#f92672>=</span> <span style=color:#ae81ff>16</span></code></pre></div><h3 id=2-3-constructor-destructor>2.3. constructor &amp; destructor</h3><p>函数属性，设置 constructor 可以使函数在 main 方法之前执行，而设置 destructor 可以使函数在 main 方法之后执行。例如：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;stdio.h&gt;</span><span style=color:#75715e>
-</span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;stdlib.h&gt;</span><span style=color:#75715e>
-</span><span style=color:#75715e></span>
-<span style=color:#66d9ef>void</span> <span style=color:#a6e22e>__attribute__</span>((constructor)) fun1()
-{
-    printf(<span style=color:#e6db74>&#34;function 1</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
-}
-<span style=color:#66d9ef>void</span> <span style=color:#a6e22e>__attribute__</span>((destructor)) fun2()
-{
-    printf(<span style=color:#e6db74>&#34;function 2</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
-}
 
-<span style=color:#66d9ef>int</span> <span style=color:#a6e22e>main</span>()
-{
-    printf(<span style=color:#e6db74>&#34;Main</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
 
-    <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
-}</code></pre></div><p>运行结果：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=color:#66d9ef>function</span> <span style=color:#ae81ff>1</span>
-Main
-<span style=color:#66d9ef>function</span> <span style=color:#ae81ff>2</span></code></pre></div><h3 id=2-4-visibility>2.4. visibility</h3><p><a href=https://www.ibm.com/developerworks/cn/aix/library/au-aix-symbol-visibility/index.html target=_blank>控制符号可见性</a>，用与设置函数是否被导出，常用的有两个选项：</p><ol><li><code>__attribute__((visibility(&quot;default&quot;)))</code> ，用它定义的符号将被导出。</li><li><code>__attribute__((visibility(&quot;hidden&quot;)))</code> ，用它定义的符号将不被导出，其他对象无法调用。</li></ol><h3 id=2-5-format>2.5 format</h3><p>format 用于检查格式化字符串与可变参数 <code>...</code> 的匹配情况，防止出错。标准语法是：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c>format(archetype, string<span style=color:#f92672>-</span>index, first<span style=color:#f92672>-</span>to<span style=color:#f92672>-</span>check)</code></pre></div><ul><li>archetype 用于检查格式化字符串的类型，例如 <code>printf</code> 和 <code>scanf</code> 。</li><li>string-index 表示传入函数的第几个参数是格式化字符串，从 1 开始数。</li><li>first-to-check 表示从传入函数的第几个参数开始检查，从 1 开始数。</li></ul><p>例如：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;stdio.h&gt;</span><span style=color:#75715e>
-</span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;stdarg.h&gt;</span><span style=color:#75715e>
-</span><span style=color:#75715e></span>
-__attribute__((format(printf, <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>2</span>)))
-<span style=color:#66d9ef>void</span> mylog(<span style=color:#66d9ef>const</span> <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>fmt, ...)
-{
-    va_list ap;
-    va_start(ap, fmt);
-    (<span style=color:#66d9ef>void</span>)printf(fmt, ap);
 
-    va_end(ap);
-}
-
-<span style=color:#66d9ef>int</span> main(<span style=color:#66d9ef>void</span>)
-{
-    mylog(<span style=color:#e6db74>&#34;value = %d</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, <span style=color:#ae81ff>8</span>);
-    mylog(<span style=color:#e6db74>&#34;value = %d</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, <span style=color:#e6db74>&#34;hello&#34;</span>);
-
-    <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
-}</code></pre></div><p>第二次调用 <code>mylog()</code> 时，因为传给格式化字符串的参数 <code>&quot;hello&quot;</code> 的类型不符，在编译会报错：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>~$ gcc -Wall main.c -o main
-main.c: In <span style=color:#66d9ef>function</span> <span style=color:#e6db74>&#39;main&#39;</span>:
-main.c:17:11: warning: format <span style=color:#e6db74>&#39;%d&#39;</span> expects argument of type <span style=color:#e6db74>&#39;int&#39;</span>, but argument <span style=color:#ae81ff>2</span> has type <span style=color:#e6db74>&#39;char *&#39;</span> <span style=color:#f92672>[</span>-Wformat<span style=color:#f92672>=]</span>
-     mylog<span style=color:#f92672>(</span><span style=color:#e6db74>&#34;value = %d\n&#34;</span>, <span style=color:#e6db74>&#34;hello&#34;</span><span style=color:#f92672>)</span>;</code></pre></div><h2 id=3-size-t>3. size_t</h2><p>size_t 是 C/C++ 标准定义的数据类型，无符号，它在不同的系统中大小是不一样的，32 位系统中通常定义为 unsigned int ，4 Byte ，64 位系统中通常定义为 unsigned long ，8 Byte 。它的含义是当前系统可操作的内存最大值，通常用于内存相关的变量，可以确保不会因为类型太小导致变量溢出，提高程序的有效性和可移植性。例如：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#66d9ef>void</span> <span style=color:#f92672>*</span>malloc(size_t n)</code></pre></div><p>如果把 n 定义为 unsigned int ，那么在 64 位系统中就有溢出的可能性。参考<a href=http://jeremybai.github.io/blog/2014/09/10/size-t target=_blank>为什么 size_t 很重要</a> 。</p><h2 id=4-container-of>4. container_of</h2><p>container_of 是 Linux 内核定义的一个宏，在 linux/kernel.h 中声明，它的作用是通过结构体变量中某个成员的地址获得这个结构体变量的地址。定义：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#75715e>#define container_of(ptr, type, member) ({ \
-</span><span style=color:#75715e>        const typeof( ((type *)0)-&gt;member ) *__mptr = (ptr); \
-</span><span style=color:#75715e>        (type *)( (char *)__mptr - offsetof(type,member) );})</span></code></pre></div><p>三个参数分别表示：</p><ul><li>ptr ：结构体成员变量 member 的地址</li><li>type ：结构体类型的名称</li><li>member ：结构体中的成员变量的名称</li></ul><p>宏定义包含两条语句：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>typeof</span>( ((type <span style=color:#f92672>*</span>)<span style=color:#ae81ff>0</span>)<span style=color:#f92672>-&gt;</span>member ) <span style=color:#f92672>*</span>__mptr <span style=color:#f92672>=</span> (ptr); </code></pre></div><p>首先将 0 转化成 type 类型的指针变量（指向的地址为 0x0 ），然后再引用 member 成员 <code>((type *)0)-&gt;member ) )</code>。注意这里的 typeof(x)，是返回 x 的数据类型，那么 <code>typeof( ((type *)0)-&gt;member )</code> 就是返回 member 成员的数据类型。那么这条语句整体就是定义了一个 member 成员的数据类型的指针 __mptr，指向 ptr ，而 ptr 就是 member 的地址。</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c>(type <span style=color:#f92672>*</span>)( (<span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>)__mptr <span style=color:#f92672>-</span> offsetof(type,member) );</code></pre></div><p>这条语句中的 offsetof 的作用是获取结构体中某个成员的偏移量，那么从 __mptr 指向的地址向前 offsetof 个字节就是 member 所属结构体变量的首地址。offsetof 的原型：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#75715e>#define offsetof(type, member) (size_t)&amp;( ((type *)0)-&gt;member )</span></code></pre></div><p>type 表示结构体的名称，member 表示成员变量的名称。<code>(type *)0</code> 定义了一个 type 类型的指针，指向的地址是 0 ，那么成员 member 的地址就是它在结构体内的偏移量。</p><p>下面这个历程展示 container_of 和 offsetof 的用法：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;stdio.h&gt;</span><span style=color:#75715e>
-</span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;stdlib.h&gt;</span><span style=color:#75715e>
-</span><span style=color:#75715e></span>
-<span style=color:#75715e>#define offsetof(type, member) (size_t)&amp;( ((type *)0)-&gt;member )
-</span><span style=color:#75715e></span>
-<span style=color:#75715e>#define container_of(ptr, type, member) ({ \
-</span><span style=color:#75715e>        const typeof( ((type *)0)-&gt;member ) *__mptr = (ptr); \
-</span><span style=color:#75715e>        (type *)( (char *)__mptr - offsetof(type,member) );})
-</span><span style=color:#75715e></span>
-<span style=color:#66d9ef>typedef</span> <span style=color:#66d9ef>struct</span> foo
-{
-    <span style=color:#66d9ef>char</span>  a;
-    <span style=color:#66d9ef>int</span>  b;
-}foo;
-
-<span style=color:#66d9ef>int</span> <span style=color:#a6e22e>main</span>()
-{
-    size_t off_set <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
-    off_set <span style=color:#f92672>=</span> offsetof(foo, b);
-    printf(<span style=color:#e6db74>&#34;foo-&gt;b offset: %lu</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>,off_set);
-
-    foo s ;
-    printf(<span style=color:#e6db74>&#34;s address : %lu</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>,(size_t)<span style=color:#f92672>&amp;</span>s);
-    s.b <span style=color:#f92672>=</span> <span style=color:#ae81ff>10</span>;
-    foo <span style=color:#f92672>*</span>p <span style=color:#f92672>=</span> container_of(<span style=color:#f92672>&amp;</span>(s.b), foo, b);
-    printf(<span style=color:#e6db74>&#34;p-&gt;b value : %d</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, p<span style=color:#f92672>-&gt;</span>b);
-    printf(<span style=color:#e6db74>&#34;p address : %lu</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, (size_t)p);
-    <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
-}</code></pre></div><p>运行结果：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>foo-&gt;b offset: <span style=color:#ae81ff>4</span>
-s address : <span style=color:#ae81ff>140723509298320</span>
-p-&gt;b value : <span style=color:#ae81ff>10</span>
-p address : <span style=color:#ae81ff>140723509298320</span></code></pre></div><h2 id=5-pid-文件>5. PID 文件</h2><p>在 Linux 系统的 /var/run/ 目录下可以看到很多 *.pid 文件，很多程序启动后都会在该目录下新建一个自己的 PID 文件，记录该进程的 PID ，方便管理进程。PID 文件的另一个作用是防止进程启动多个副本，进程启动后新建 PID 文件，然后为文件加独占的记录锁，只有获得 PID 文件写入权限（F_WRLCK）的进程才可以启动，并将自身的 PID 写入文件，锁定失败的进程启动退出。下面是一个例程：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;stdio.h&gt;</span><span style=color:#75715e>
-</span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;unistd.h&gt;</span><span style=color:#75715e>
-</span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;fcntl.h&gt;</span><span style=color:#75715e>
-</span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;sys/types.h&gt;</span><span style=color:#75715e>
-</span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;errno.h&gt;</span><span style=color:#75715e>
-</span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;signal.h&gt;</span><span style=color:#75715e>
-</span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;string.h&gt;</span><span style=color:#75715e>
-</span><span style=color:#75715e></span>
-<span style=color:#66d9ef>int</span> run <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
-
-<span style=color:#75715e>//锁定一个文件，参数是文件描述符，出错返回 -1    
-</span><span style=color:#75715e></span><span style=color:#66d9ef>int</span> <span style=color:#a6e22e>lockfile</span>(<span style=color:#66d9ef>int</span> fd)
-{
-   <span style=color:#66d9ef>struct</span> flock lock;
-   lock.l_type <span style=color:#f92672>=</span> F_WRLCK;  <span style=color:#75715e>//独占性写锁
-</span><span style=color:#75715e></span>   lock.l_whence <span style=color:#f92672>=</span> SEEK_SET;  <span style=color:#75715e>//为整个文件加锁
-</span><span style=color:#75715e></span>   lock.l_start <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
-   lock.l_len <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
-   <span style=color:#66d9ef>return</span> fcntl(fd, F_SETLK, <span style=color:#f92672>&amp;</span>lock);
-}
-
-<span style=color:#75715e>//新建 PID 文件并加锁，参数是 PID 文件的路径和当前进程的 PID ，失败返回负数
-</span><span style=color:#75715e></span><span style=color:#66d9ef>int</span> <span style=color:#a6e22e>creat_pidfile</span>(<span style=color:#66d9ef>const</span> <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>pid_file, pid_t pid)
-{
-    <span style=color:#66d9ef>int</span> fd <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
-    fd <span style=color:#f92672>=</span> open(pid_file, O_RDWR<span style=color:#f92672>|</span>O_CREAT, (S_IRUSR <span style=color:#f92672>|</span> S_IWUSR <span style=color:#f92672>|</span> S_IRGRP <span style=color:#f92672>|</span> S_IROTH));
-    <span style=color:#66d9ef>if</span>(fd <span style=color:#f92672>&lt;</span> <span style=color:#ae81ff>0</span>)
-    {
-        printf(<span style=color:#e6db74>&#34;ERROR: can not open pid file %s</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>,pid_file);
-        <span style=color:#66d9ef>return</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>;
-    }
-    <span style=color:#66d9ef>if</span>(lockfile(fd)<span style=color:#f92672>&lt;</span><span style=color:#ae81ff>0</span>)
-    {
-        <span style=color:#66d9ef>if</span>(errno<span style=color:#f92672>==</span>EACCES <span style=color:#f92672>||</span> errno<span style=color:#f92672>==</span>EAGAIN)
-        {
-            close(fd);
-            printf(<span style=color:#e6db74>&#34;WARNING: process already run</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
-            <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
-        }
-        printf(<span style=color:#e6db74>&#34;ERROR: can not lock pid file: %s error: %s</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, pid_file, strerror(errno));
-        <span style=color:#66d9ef>return</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>2</span>;
-    }
-    <span style=color:#66d9ef>if</span>(dprintf(fd, <span style=color:#e6db74>&#34;%d&#34;</span>, pid)<span style=color:#f92672>&lt;</span><span style=color:#ae81ff>0</span>)
-    {
-        close(fd);
-        printf(<span style=color:#e6db74>&#34;ERROR: write pid failed</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
-        <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
-    }
-    <span style=color:#66d9ef>return</span> fd;
-}
-
-<span style=color:#66d9ef>int</span> <span style=color:#a6e22e>remove_pidfile</span>(<span style=color:#66d9ef>const</span> <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>pid_file, <span style=color:#66d9ef>int</span> fd)
-{
-    close(fd);
-    remove(pid_file);
-    <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
-}
-
-<span style=color:#66d9ef>void</span> <span style=color:#a6e22e>handle_sig</span>(<span style=color:#66d9ef>int</span> signo)
-{
-    <span style=color:#66d9ef>if</span>( (signo<span style=color:#f92672>==</span>SIGINT)<span style=color:#f92672>|</span>(signo<span style=color:#f92672>==</span>SIGTERM) )
-        run<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>;
-}
-
-<span style=color:#66d9ef>int</span> <span style=color:#a6e22e>main</span>()
-{
-    <span style=color:#66d9ef>int</span> fd <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
-    <span style=color:#66d9ef>const</span> <span style=color:#66d9ef>char</span> <span style=color:#f92672>*</span>pid_file <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;/var/run/test.pid&#34;</span>; 
-
-    fd <span style=color:#f92672>=</span> creat_pidfile(pid_file,getpid());
-    <span style=color:#66d9ef>if</span>(fd<span style=color:#f92672>&gt;</span><span style=color:#ae81ff>0</span>)
-        close(fd);
-    <span style=color:#66d9ef>else</span>
-    {
-        printf(<span style=color:#e6db74>&#34;create pid file error</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
-        <span style=color:#66d9ef>return</span> <span style=color:#f92672>-</span><span style=color:#ae81ff>1</span>;
-    }
+<!DOCTYPE html>
+<html
+  lang="zh-cn"
+  dir="Chinese-Simplified"
+  class="scroll-smooth"
+  data-default-appearance="light"
+  data-auto-appearance="true"
+><head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="rgb(255,255,255)" />
+  
+  <title>Linux Program Tips &middot; Shaocheng.Li</title>
+    <meta name="title" content="Linux Program Tips &middot; Shaocheng.Li" />
+  
+  
+  
+  
+  
+  <script
+    type="text/javascript"
+    src="/js/appearance.min.022d0ebc3b46a335eb1c7ef79b7f2de143d7cd5156d433638592ef1ce5f8554e.js"
+    integrity="sha256-Ai0OvDtGozXrHH73m38t4UPXzVFW1DNjhZLvHOX4VU4="
+  ></script>
+  
+  
+  
+  
+  
+  
+  
     
-    signal(SIGINT,handle_sig);
-    signal(SIGTERM,handle_sig);
-
-    <span style=color:#66d9ef>while</span>(run)
-    {
-        sleep(<span style=color:#ae81ff>5</span>);
-    }
-
-    remove_pidfile(pid_file,fd);
+  
+  
+  <link
+    type="text/css"
+    rel="stylesheet"
+    href="/css/main.bundle.min.569cc57d5993584135ff38133d1f599f8f8db0303a9e886172e4b5aabb177ac6.css"
+    integrity="sha256-VpzFfVmTWEE1/zgTPR9Zn4&#43;NsDA6nohhcuS1qrsXesY="
+  />
+  
     
-    <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
-}</code></pre></div><h2 id=6-debug>6. Debug</h2><p>在源文件里声明：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=color:#75715e>#ifdef __DEBUG__
-</span><span style=color:#75715e>#define DEBUG(format, ...) printr(&#34;%03d: &#34;format&#34;&#34;, __LINE__, ##__VA_ARGS__)
-</span><span style=color:#75715e>#else
-</span><span style=color:#75715e>#define DEBUG(format, ...)
-</span><span style=color:#75715e>#endif</span></code></pre></div><p>调用 <code>DEBUG()</code> 的语法与 <code>printf()</code> 一样，编译时在 gcc 中声明 <code>-D __DEBUG__</code> 即可打开调试信息。</p></div></article><hr><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>927 Words</p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>2017-12-14 00:00 &#43;0000</p></div><div class=pagination><div class=pagination__title><span class=pagination__title-h></span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://shaocheng.li/posts/2017/12/18/><span class=button__icon>←</span>
-<span class=button__text>Tkinter 学习笔记</span></a></span>
-<span class="button next"><a href=https://shaocheng.li/posts/2017/11/30/><span class=button__text>计算机是如何实现重启的</span>
-<span class=button__icon>→</span></a></span></div></div><div id=comments class=thin><div id=disqus_thread></div><script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return;}
-var d=document,s=d.createElement('script');s.async=true;s.src='//'+"shaocheng-li"+'.disqus.com/embed.js';s.setAttribute('data-timestamp',+new Date());(d.head||d.body).appendChild(s);})();</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></div></main></div><footer class=footer><div class=footer__inner><div class=footer__content><span>&copy; 2023</span>
-<span><a href=https://shaocheng.li>Shaocheng.Li</a></span>
-<span><a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>CC BY-NC 4.0</a></span>
-<span><a href=https://shaocheng.li/posts/index.xml target=_blank title=rss><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg></a></span></div></div><div class=footer__inner><div class=footer__content><span>Powered by <a href=http://gohugo.io>Hugo</a></span>
-<span>Made with &#10084; by <a href=https://github.com/rhazdon>rhazdon</a></span></div></div></footer></div><script type=text/javascript src=https://shaocheng.li/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script></body></html>
+    
+    
+  
+  
+    
+    
+  
+  
+  
+    
+    <script
+      defer
+      type="text/javascript"
+      id="script-bundle"
+      src="/js/main.bundle.min.f29ffdffd9ab4cc95250c3c7196b2d5dae8ee6ef0a4139451073f90183ae7e31.js"
+      integrity="sha256-8p/9/9mrTMlSUMPHGWstXa6O5u8KQTlFEHP5AYOufjE="
+      data-copy="复制"
+      data-copied="已复制"
+    ></script>
+  
+  
+  <meta
+    name="description"
+    content="
+      
+        1. sysconfig() #sysconfig() 是获取系统运行时配置信息的函数，包括内存、CPU 等。函数声明：
+      
+    "
+  />
+  
+  
+  
+  <link rel="canonical" href="https://shaocheng.li/posts/2017/12/14/" />
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  
+  
+  
+  
+  
+  
+  
+  <meta property="og:title" content="Linux Program Tips" />
+<meta property="og:description" content="1. sysconfig() #sysconfig() 是获取系统运行时配置信息的函数，包括内存、CPU 等。函数声明：" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://shaocheng.li/posts/2017/12/14/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2017-12-14T08:00:00+08:00" />
+<meta property="article:modified_time" content="2017-12-14T08:00:00+08:00" />
+
+
+  <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Linux Program Tips"/>
+<meta name="twitter:description" content="1. sysconfig() #sysconfig() 是获取系统运行时配置信息的函数，包括内存、CPU 等。函数声明："/>
+
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "articleSection": "Posts",
+    "name": "Linux Program Tips",
+    "headline": "Linux Program Tips",
+    
+    "abstract": "1. sysconfig() #sysconfig() 是获取系统运行时配置信息的函数，包括内存、CPU 等。函数声明：",
+    "inLanguage": "zh-cn",
+    "url" : "https:\/\/shaocheng.li\/posts\/2017\/12\/14\/",
+    "author" : {
+      "@type": "Person",
+      "name": "Shaocheng.Li"
+    },
+    "copyrightYear": "2017",
+    "dateCreated": "2017-12-14T08:00:00\u002b08:00",
+    "datePublished": "2017-12-14T08:00:00\u002b08:00",
+    
+    "dateModified": "2017-12-14T08:00:00\u002b08:00",
+    
+    
+    
+    "mainEntityOfPage": "true",
+    "wordCount": "940"
+  }
+  </script>
+
+
+  
+  <meta name="author" content="Shaocheng.Li" />
+  
+    
+      <link href="https://github.com/exbob" rel="me" />
+    
+  
+  
+  
+
+
+
+
+
+
+  
+  
+  
+  
+  
+
+  
+  
+</head>
+<body
+    class="flex flex-col h-screen px-6 m-auto text-lg leading-7 max-w-7xl bg-neutral text-neutral-900 dark:bg-neutral-800 dark:text-neutral sm:px-14 md:px-24 lg:px-32"
+  >
+    <div id="the-top" class="absolute flex self-center">
+      <a
+        class="px-3 py-1 text-sm -translate-y-8 rounded-b-lg bg-primary-200 focus:translate-y-0 dark:bg-neutral-600"
+        href="#main-content"
+        ><span class="font-bold pe-2 text-primary-600 dark:text-primary-400">&darr;</span
+        >跳到主要内容</a
+      >
+    </div>
+    
+    
+      <header class="py-6 font-semibold text-neutral-900 dark:text-neutral print:hidden sm:py-10">
+  <nav class="flex items-start justify-between sm:items-center">
+    
+    <div class="flex flex-row items-center">
+      
+  <a
+    class="decoration-primary-500 hover:underline hover:decoration-2 hover:underline-offset-2"
+    rel="me"
+    href="/"
+    >Shaocheng.Li</a
+  >
+
+    </div>
+    
+    
+      <ul class="flex flex-col list-none text-end sm:flex-row">
+        
+          
+            
+            <li class="group mb-1 sm:mb-0 sm:me-7 sm:last:me-0.5">
+              
+                <a
+                  href="/posts/"
+                  title="Posts"
+                  
+                  ><span
+                      class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                      >文章列表</span
+                    >
+                  </a
+                >
+              
+            </li>
+          
+            
+            <li class="group mb-1 sm:mb-0 sm:me-7 sm:last:me-0.5">
+              
+                
+                
+                  <button
+                    id="search-button-1"
+                    title="搜索 (/)"
+                  >
+                    
+                      <span
+                        class="transition-colors group-dark:hover:text-primary-400 group-hover:text-primary-600"
+                      ><span class="relative inline-block align-text-bottom px-1 icon"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="svg-inline--fa fa-search fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
+</span></span><span
+                        class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                        ></span
+                      >
+                    
+                  </button>
+                
+              
+            </li>
+          
+            
+            <li class="group mb-1 sm:mb-0 sm:me-7 sm:last:me-0.5">
+              
+                
+                <button
+                  id="appearance-switcher-1"
+                  type="button"
+                  aria-label="appearance switcher"
+                >
+                  <span
+                    class="inline transition-colors group-dark:hover:text-primary-400 group-hover:text-primary-600 dark:hidden"
+                    title="切换为深色模式"
+                  >
+                    <span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M32 256c0-123.8 100.3-224 223.8-224c11.36 0 29.7 1.668 40.9 3.746c9.616 1.777 11.75 14.63 3.279 19.44C245 86.5 211.2 144.6 211.2 207.8c0 109.7 99.71 193 208.3 172.3c9.561-1.805 16.28 9.324 10.11 16.95C387.9 448.6 324.8 480 255.8 480C132.1 480 32 379.6 32 256z"/></svg>
+</span><span
+                        class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                        ></span
+                      >
+                    
+                  </span>
+                  <span
+                    class="hidden transition-colors group-dark:hover:text-primary-400 group-hover:text-primary-600 dark:inline"
+                    title="切换为浅色模式"
+                  >
+                    
+                      <span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 159.1c-53.02 0-95.1 42.98-95.1 95.1S202.1 351.1 256 351.1s95.1-42.98 95.1-95.1S309 159.1 256 159.1zM509.3 347L446.1 255.1l63.15-91.01c6.332-9.125 1.104-21.74-9.826-23.72l-109-19.7l-19.7-109c-1.975-10.93-14.59-16.16-23.72-9.824L256 65.89L164.1 2.736c-9.125-6.332-21.74-1.107-23.72 9.824L121.6 121.6L12.56 141.3C1.633 143.2-3.596 155.9 2.736 164.1L65.89 256l-63.15 91.01c-6.332 9.125-1.105 21.74 9.824 23.72l109 19.7l19.7 109c1.975 10.93 14.59 16.16 23.72 9.824L256 446.1l91.01 63.15c9.127 6.334 21.75 1.107 23.72-9.822l19.7-109l109-19.7C510.4 368.8 515.6 356.1 509.3 347zM256 383.1c-70.69 0-127.1-57.31-127.1-127.1c0-70.69 57.31-127.1 127.1-127.1s127.1 57.3 127.1 127.1C383.1 326.7 326.7 383.1 256 383.1z"/></svg>
+</span>
+                    
+                    
+                      <span
+                        class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                        ></span
+                      >
+                    
+                  </span>
+                </button>
+              
+            </li>
+          
+          
+        
+      </ul>
+    
+  </nav>
+</header>
+
+    
+    <div class="relative flex flex-col grow">
+      <main id="main-content" class="grow">
+        
+  <article>
+    <header class="max-w-prose">
+      
+      <h1 class="mt-0 text-4xl font-extrabold text-neutral-900 dark:text-neutral">
+        Linux Program Tips
+      </h1>
+      <div class="mt-8 mb-12 text-base text-neutral-500 dark:text-neutral-400 print:hidden">
+        
+
+
+
+
+
+  
+  
+
+
+
+  
+
+  
+  
+    
+  
+
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+
+
+  <div class="flex flex-row flex-wrap items-center">
+    
+    
+      <time datetime="2017-12-14 08:00:00 &#43;0800 CST">2017 December 14</time><span class="px-2 text-primary-500">&middot;</span><span>940 字</span><span class="px-2 text-primary-500">&middot;</span><span title="预计阅读">5 分钟</span>
+    
+
+    
+    
+  </div>
+
+  
+  
+
+
+      </div>
+      
+    </header>
+    <section class="flex flex-col max-w-full mt-0 prose dark:prose-invert lg:flex-row">
+      
+        <div class="order-first px-0 lg:order-last lg:max-w-xs lg:ps-8">
+          <div class="toc pe-5 print:hidden lg:sticky lg:top-10">
+            <details open class="-ms-5 mt-0 overflow-hidden rounded-lg ps-5">
+  <summary
+    class="-ms-5 block cursor-pointer bg-neutral-100 py-1 ps-5 text-lg font-semibold text-neutral-800 dark:bg-neutral-700 dark:text-neutral-100 lg:hidden"
+  >
+    目录
+  </summary>
+  <div class="-ms-5 border-s border-dotted border-neutral-300 py-2 ps-5 dark:border-neutral-600">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-sysconfig">1. sysconfig()</a></li>
+    <li><a href="#2-__attribute__">2. <strong>attribute</strong></a>
+      <ul>
+        <li><a href="#21-packed">2.1. packed</a></li>
+        <li><a href="#22-alignedalignment">2.2. aligned(alignment)</a></li>
+        <li><a href="#23-constructor--destructor">2.3. constructor &amp; destructor</a></li>
+        <li><a href="#24-visibility">2.4. visibility</a></li>
+        <li><a href="#25-format">2.5 format</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-size_t">3. size_t</a></li>
+    <li><a href="#4-container_of">4. container_of</a></li>
+    <li><a href="#5-pid-文件">5. PID 文件</a></li>
+    <li><a href="#6-debug">6. Debug</a></li>
+  </ul>
+</nav>
+  </div>
+</details>
+
+          </div>
+        </div>
+      
+      <div class="min-w-0 min-h-0 max-w-prose grow">
+        <h2 id="1-sysconfig" class="relative group">1. sysconfig() <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#1-sysconfig" aria-label="锚点">#</a></span></h2><p><code>sysconfig()</code> 是获取系统运行时配置信息的函数，包括内存、CPU 等。函数声明：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="kt">long</span> <span class="nf">sysconf</span><span class="p">(</span><span class="kt">int</span> <span class="n">name</span><span class="p">);</span>
+</span></span></code></pre></div><p>参数 name 用于指示要获取的信息，通过返回值将结果返回。新建一个 test.c ，获取当前系统的信息：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="cp">#define ONE_MB (1024 * 1024)
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;The number of processors configured is :%ld</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="nf">sysconf</span><span class="p">(</span><span class="n">_SC_NPROCESSORS_CONF</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;The number of processors currently online (available) is :%ld</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="nf">sysconf</span><span class="p">(</span><span class="n">_SC_NPROCESSORS_ONLN</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;The pagesize: %ld</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="nf">sysconf</span><span class="p">(</span><span class="n">_SC_PAGESIZE</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;The number of pages: %ld</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="nf">sysconf</span><span class="p">(</span><span class="n">_SC_PHYS_PAGES</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;The number of available pages: %ld</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="nf">sysconf</span><span class="p">(</span><span class="n">_SC_AVPHYS_PAGES</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;The memory size: %lld MB</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="p">(</span><span class="kt">long</span> <span class="kt">long</span><span class="p">)</span><span class="nf">sysconf</span><span class="p">(</span><span class="n">_SC_PAGESIZE</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="kt">long</span> <span class="kt">long</span><span class="p">)</span><span class="nf">sysconf</span><span class="p">(</span><span class="n">_SC_PHYS_PAGES</span><span class="p">)</span> <span class="o">/</span> <span class="n">ONE_MB</span> <span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;The number of files max opened:: %ld</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="nf">sysconf</span><span class="p">(</span><span class="n">_SC_OPEN_MAX</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;The number of ticks per second: %ld</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="nf">sysconf</span><span class="p">(</span><span class="n">_SC_CLK_TCK</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;The max length of host name: %ld</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="nf">sysconf</span><span class="p">(</span><span class="n">_SC_HOST_NAME_MAX</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;The max length of login name: %ld</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="nf">sysconf</span><span class="p">(</span><span class="n">_SC_LOGIN_NAME_MAX</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>编译后执行：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ gcc test.c
+</span></span><span class="line"><span class="cl">$ ./a.out
+</span></span><span class="line"><span class="cl">The number of processors configured is :1
+</span></span><span class="line"><span class="cl">The number of processors currently online <span class="o">(</span>available<span class="o">)</span> is :1
+</span></span><span class="line"><span class="cl">The pagesize: <span class="m">4096</span>
+</span></span><span class="line"><span class="cl">The number of pages: <span class="m">221303</span>
+</span></span><span class="line"><span class="cl">The number of available pages: <span class="m">19370</span>
+</span></span><span class="line"><span class="cl">The memory size: <span class="m">864</span> MB
+</span></span><span class="line"><span class="cl">The number of files max opened:: <span class="m">1024</span>
+</span></span><span class="line"><span class="cl">The number of ticks per second: <span class="m">100</span>
+</span></span><span class="line"><span class="cl">The max length of host name: <span class="m">64</span>
+</span></span><span class="line"><span class="cl">The max length of login name: <span class="m">256</span>
+</span></span></code></pre></div><h2 id="2-__attribute__" class="relative group">2. <strong>attribute</strong> <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#2-__attribute__" aria-label="锚点">#</a></span></h2><p><code>__attribute__</code> 是 GCC 提供的一种语法，可以帮助我们在编译时对声明的函数、变量和类型做一些特殊处理或者是检查操作，提升城程序的性能。语法格式为: <code>__attribute__ ((attribute-list))</code> ，attribute-list 是指令集 , 分为三种类型：函数属性，变量属性，类型属性。<code>__attribute__</code> 应该出现在函数、变量和类型声明的 “;” 前。</p>
+<h3 id="21-packed" class="relative group">2.1. packed <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#21-packed" aria-label="锚点">#</a></span></h3><p>packed 用于设置变量或者结构体成员以最小的对齐方式对齐，减少空间浪费，例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">foo1</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">a</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">b</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">foo2</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">a</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">b</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="nf">__attribute__</span><span class="p">((</span><span class="n">packed</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">s1</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="n">foo1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">s2</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="n">foo2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;s1 = %d</span><span class="se">\n</span><span class="s">s2 = %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span><span class="n">s1</span><span class="p">,</span><span class="n">s2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>运行结果：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">s1</span> <span class="o">=</span> <span class="m">12</span>
+</span></span><span class="line"><span class="cl"><span class="nv">s2</span> <span class="o">=</span> <span class="m">9</span>
+</span></span></code></pre></div><h3 id="22-alignedalignment" class="relative group">2.2. aligned(alignment) <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#22-alignedalignment" aria-label="锚点">#</a></span></h3><p>aligned 用于指定变量或者结构体成语按照 alignment 字节大小对齐。如果对齐长度有大于 alignment 的，就按照最大对齐长度对齐。例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">foo1</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">a</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">b</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="k">struct</span> <span class="n">foo2</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">a</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">b</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="nf">__attribute__</span><span class="p">((</span><span class="nf">aligned</span><span class="p">(</span><span class="mi">8</span><span class="p">)));</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">s1</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="n">foo1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">s2</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="n">foo2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;s1 = %d</span><span class="se">\n</span><span class="s">s2 = %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span><span class="n">s1</span><span class="p">,</span><span class="n">s2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span></code></pre></div><p>运行结果：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">s1</span> <span class="o">=</span> <span class="m">12</span>
+</span></span><span class="line"><span class="cl"><span class="nv">s2</span> <span class="o">=</span> <span class="m">16</span>
+</span></span></code></pre></div><h3 id="23-constructor--destructor" class="relative group">2.3. constructor &amp; destructor <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#23-constructor--destructor" aria-label="锚点">#</a></span></h3><p>函数属性，设置 constructor 可以使函数在 main 方法之前执行，而设置 destructor 可以使函数在 main 方法之后执行。例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">__attribute__</span><span class="p">((</span><span class="n">constructor</span><span class="p">))</span> <span class="nf">fun1</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;function 1</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">__attribute__</span><span class="p">((</span><span class="n">destructor</span><span class="p">))</span> <span class="nf">fun2</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;function 2</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Main</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>运行结果：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="k">function</span> <span class="m">1</span>
+</span></span><span class="line"><span class="cl">Main
+</span></span><span class="line"><span class="cl"><span class="k">function</span> <span class="m">2</span>
+</span></span></code></pre></div><h3 id="24-visibility" class="relative group">2.4. visibility <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#24-visibility" aria-label="锚点">#</a></span></h3><p><a href="https://www.ibm.com/developerworks/cn/aix/library/au-aix-symbol-visibility/index.html" target="_blank" rel="noreferrer">控制符号可见性</a>，用与设置函数是否被导出，常用的有两个选项：</p>
+<ol>
+<li><code>__attribute__((visibility(&quot;default&quot;)))</code> ，用它定义的符号将被导出。</li>
+<li><code>__attribute__((visibility(&quot;hidden&quot;)))</code> ，用它定义的符号将不被导出，其他对象无法调用。</li>
+</ol>
+<h3 id="25-format" class="relative group">2.5 format <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#25-format" aria-label="锚点">#</a></span></h3><p>format 用于检查格式化字符串与可变参数 <code>...</code> 的匹配情况，防止出错。标准语法是：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="nf">format</span><span class="p">(</span><span class="n">archetype</span><span class="p">,</span> <span class="n">string</span><span class="o">-</span><span class="n">index</span><span class="p">,</span> <span class="n">first</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">check</span><span class="p">)</span>
+</span></span></code></pre></div><ul>
+<li>archetype 用于检查格式化字符串的类型，例如 <code>printf</code> 和 <code>scanf</code> 。</li>
+<li>string-index 表示传入函数的第几个参数是格式化字符串，从 1 开始数。</li>
+<li>first-to-check 表示从传入函数的第几个参数开始检查，从 1 开始数。</li>
+</ul>
+<p>例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdarg.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="nf">__attribute__</span><span class="p">((</span><span class="nf">format</span><span class="p">(</span><span class="n">printf</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">mylog</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">fmt</span><span class="p">,</span> <span class="p">...)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">va_list</span> <span class="n">ap</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">va_start</span><span class="p">(</span><span class="n">ap</span><span class="p">,</span> <span class="n">fmt</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">printf</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="n">ap</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nf">va_end</span><span class="p">(</span><span class="n">ap</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mylog</span><span class="p">(</span><span class="s">&#34;value = %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="mi">8</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mylog</span><span class="p">(</span><span class="s">&#34;value = %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="s">&#34;hello&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>第二次调用 <code>mylog()</code> 时，因为传给格式化字符串的参数 <code>&quot;hello&quot;</code> 的类型不符，在编译会报错：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">~$ gcc -Wall main.c -o main
+</span></span><span class="line"><span class="cl">main.c: In <span class="k">function</span> <span class="s1">&#39;main&#39;</span>:
+</span></span><span class="line"><span class="cl">main.c:17:11: warning: format <span class="s1">&#39;%d&#39;</span> expects argument of <span class="nb">type</span> <span class="s1">&#39;int&#39;</span>, but argument <span class="m">2</span> has <span class="nb">type</span> <span class="s1">&#39;char *&#39;</span> <span class="o">[</span>-Wformat<span class="o">=]</span>
+</span></span><span class="line"><span class="cl">     mylog<span class="o">(</span><span class="s2">&#34;value = %d\n&#34;</span>, <span class="s2">&#34;hello&#34;</span><span class="o">)</span><span class="p">;</span>
+</span></span></code></pre></div><h2 id="3-size_t" class="relative group">3. size_t <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#3-size_t" aria-label="锚点">#</a></span></h2><p>size_t 是 C/C++ 标准定义的数据类型，无符号，它在不同的系统中大小是不一样的，32 位系统中通常定义为 unsigned int ，4 Byte ，64 位系统中通常定义为 unsigned long ，8 Byte 。它的含义是当前系统可操作的内存最大值，通常用于内存相关的变量，可以确保不会因为类型太小导致变量溢出，提高程序的有效性和可移植性。例如：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">void</span> <span class="o">*</span><span class="nf">malloc</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">n</span><span class="p">)</span>
+</span></span></code></pre></div><p>如果把 n 定义为 unsigned int ，那么在 64 位系统中就有溢出的可能性。参考<a href="http://jeremybai.github.io/blog/2014/09/10/size-t" target="_blank" rel="noreferrer">为什么 size_t 很重要</a> 。</p>
+<h2 id="4-container_of" class="relative group">4. container_of <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#4-container_of" aria-label="锚点">#</a></span></h2><p>container_of 是 Linux 内核定义的一个宏，在 linux/kernel.h 中声明，它的作用是通过结构体变量中某个成员的地址获得这个结构体变量的地址。定义：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#define container_of(ptr, type, member) ({ \
+</span></span></span><span class="line"><span class="cl"><span class="cp">        const typeof( ((type *)0)-&gt;member ) *__mptr = (ptr); \
+</span></span></span><span class="line"><span class="cl"><span class="cp">        (type *)( (char *)__mptr - offsetof(type,member) );})
+</span></span></span></code></pre></div><p>三个参数分别表示：</p>
+<ul>
+<li>ptr ：结构体成员变量 member 的地址</li>
+<li>type ：结构体类型的名称</li>
+<li>member ：结构体中的成员变量的名称</li>
+</ul>
+<p>宏定义包含两条语句：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="k">const</span> <span class="nf">typeof</span><span class="p">(</span> <span class="p">((</span><span class="n">type</span> <span class="o">*</span><span class="p">)</span><span class="mi">0</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">member</span> <span class="p">)</span> <span class="o">*</span><span class="n">__mptr</span> <span class="o">=</span> <span class="p">(</span><span class="n">ptr</span><span class="p">);</span> 
+</span></span></code></pre></div><p>首先将 0 转化成 type 类型的指针变量（指向的地址为 0x0 ），然后再引用 member 成员 <code>((type *)0)-&gt;member ) )</code>。注意这里的 typeof(x)，是返回 x 的数据类型，那么 <code>typeof( ((type *)0)-&gt;member )</code> 就是返回 member 成员的数据类型。那么这条语句整体就是定义了一个  member 成员的数据类型的指针 __mptr，指向 ptr ，而 ptr 就是 member 的地址。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="p">(</span><span class="n">type</span> <span class="o">*</span><span class="p">)(</span> <span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="n">__mptr</span> <span class="o">-</span> <span class="nf">offsetof</span><span class="p">(</span><span class="n">type</span><span class="p">,</span><span class="n">member</span><span class="p">)</span> <span class="p">);</span>
+</span></span></code></pre></div><p>这条语句中的 offsetof 的作用是获取结构体中某个成员的偏移量，那么从 __mptr 指向的地址向前 offsetof 个字节就是 member 所属结构体变量的首地址。offsetof  的原型：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#define offsetof(type, member) (size_t)&amp;( ((type *)0)-&gt;member )
+</span></span></span></code></pre></div><p>type 表示结构体的名称，member 表示成员变量的名称。<code>(type *)0</code> 定义了一个 type 类型的指针，指向的地址是 0 ，那么成员 member 的地址就是它在结构体内的偏移量。</p>
+<p>下面这个历程展示 container_of 和 offsetof 的用法：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="cp">#define offsetof(type, member) (size_t)&amp;( ((type *)0)-&gt;member )
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="cp">#define container_of(ptr, type, member) ({ \
+</span></span></span><span class="line"><span class="cl"><span class="cp">        const typeof( ((type *)0)-&gt;member ) *__mptr = (ptr); \
+</span></span></span><span class="line"><span class="cl"><span class="cp">        (type *)( (char *)__mptr - offsetof(type,member) );})
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span> <span class="n">foo</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span>  <span class="n">a</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span>  <span class="n">b</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span><span class="n">foo</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">size_t</span> <span class="n">off_set</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">off_set</span> <span class="o">=</span> <span class="nf">offsetof</span><span class="p">(</span><span class="n">foo</span><span class="p">,</span> <span class="n">b</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;foo-&gt;b offset: %lu</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span><span class="n">off_set</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">foo</span> <span class="n">s</span> <span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;s address : %lu</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,(</span><span class="kt">size_t</span><span class="p">)</span><span class="o">&amp;</span><span class="n">s</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">s</span><span class="p">.</span><span class="n">b</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">foo</span> <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="nf">container_of</span><span class="p">(</span><span class="o">&amp;</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">b</span><span class="p">),</span> <span class="n">foo</span><span class="p">,</span> <span class="n">b</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;p-&gt;b value : %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">p</span><span class="o">-&gt;</span><span class="n">b</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;p address : %lu</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="p">(</span><span class="kt">size_t</span><span class="p">)</span><span class="n">p</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>运行结果：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">foo-&gt;b offset: <span class="m">4</span>
+</span></span><span class="line"><span class="cl">s address : <span class="m">140723509298320</span>
+</span></span><span class="line"><span class="cl">p-&gt;b value : <span class="m">10</span>
+</span></span><span class="line"><span class="cl">p address : <span class="m">140723509298320</span>
+</span></span></code></pre></div><h2 id="5-pid-文件" class="relative group">5. PID 文件 <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#5-pid-%e6%96%87%e4%bb%b6" aria-label="锚点">#</a></span></h2><p>在 Linux 系统的 /var/run/ 目录下可以看到很多 *.pid 文件，很多程序启动后都会在该目录下新建一个自己的 PID 文件，记录该进程的 PID ，方便管理进程。PID 文件的另一个作用是防止进程启动多个副本，进程启动后新建 PID 文件，然后为文件加独占的记录锁，只有获得 PID 文件写入权限（F_WRLCK）的进程才可以启动，并将自身的 PID 写入文件，锁定失败的进程启动退出。下面是一个例程：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;fcntl.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;errno.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;signal.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">run</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//锁定一个文件，参数是文件描述符，出错返回 -1    
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="nf">lockfile</span><span class="p">(</span><span class="kt">int</span> <span class="n">fd</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">   <span class="k">struct</span> <span class="n">flock</span> <span class="n">lock</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   <span class="n">lock</span><span class="p">.</span><span class="n">l_type</span> <span class="o">=</span> <span class="n">F_WRLCK</span><span class="p">;</span>  <span class="c1">//独占性写锁
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>   <span class="n">lock</span><span class="p">.</span><span class="n">l_whence</span> <span class="o">=</span> <span class="n">SEEK_SET</span><span class="p">;</span>  <span class="c1">//为整个文件加锁
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>   <span class="n">lock</span><span class="p">.</span><span class="n">l_start</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   <span class="n">lock</span><span class="p">.</span><span class="n">l_len</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">   <span class="k">return</span> <span class="nf">fcntl</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">F_SETLK</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">lock</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">//新建 PID 文件并加锁，参数是 PID 文件的路径和当前进程的 PID ，失败返回负数
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">int</span> <span class="nf">creat_pidfile</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">pid_file</span><span class="p">,</span> <span class="kt">pid_t</span> <span class="n">pid</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">fd</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">fd</span> <span class="o">=</span> <span class="nf">open</span><span class="p">(</span><span class="n">pid_file</span><span class="p">,</span> <span class="n">O_RDWR</span><span class="o">|</span><span class="n">O_CREAT</span><span class="p">,</span> <span class="p">(</span><span class="n">S_IRUSR</span> <span class="o">|</span> <span class="n">S_IWUSR</span> <span class="o">|</span> <span class="n">S_IRGRP</span> <span class="o">|</span> <span class="n">S_IROTH</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">fd</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;ERROR: can not open pid file %s</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span><span class="n">pid_file</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="nf">lockfile</span><span class="p">(</span><span class="n">fd</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span><span class="p">(</span><span class="n">errno</span><span class="o">==</span><span class="n">EACCES</span> <span class="o">||</span> <span class="n">errno</span><span class="o">==</span><span class="n">EAGAIN</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;WARNING: process already run</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;ERROR: can not lock pid file: %s error: %s</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">pid_file</span><span class="p">,</span> <span class="nf">strerror</span><span class="p">(</span><span class="n">errno</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="o">-</span><span class="mi">2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="nf">dprintf</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="s">&#34;%d&#34;</span><span class="p">,</span> <span class="n">pid</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;ERROR: write pid failed</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">fd</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">remove_pidfile</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">pid_file</span><span class="p">,</span> <span class="kt">int</span> <span class="n">fd</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">remove</span><span class="p">(</span><span class="n">pid_file</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">handle_sig</span><span class="p">(</span><span class="kt">int</span> <span class="n">signo</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span> <span class="p">(</span><span class="n">signo</span><span class="o">==</span><span class="n">SIGINT</span><span class="p">)</span><span class="o">|</span><span class="p">(</span><span class="n">signo</span><span class="o">==</span><span class="n">SIGTERM</span><span class="p">)</span> <span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">run</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">fd</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">pid_file</span> <span class="o">=</span> <span class="s">&#34;/var/run/test.pid&#34;</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">fd</span> <span class="o">=</span> <span class="nf">creat_pidfile</span><span class="p">(</span><span class="n">pid_file</span><span class="p">,</span><span class="nf">getpid</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span><span class="p">(</span><span class="n">fd</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;create pid file error</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="nf">signal</span><span class="p">(</span><span class="n">SIGINT</span><span class="p">,</span><span class="n">handle_sig</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">signal</span><span class="p">(</span><span class="n">SIGTERM</span><span class="p">,</span><span class="n">handle_sig</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">while</span><span class="p">(</span><span class="n">run</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nf">remove_pidfile</span><span class="p">(</span><span class="n">pid_file</span><span class="p">,</span><span class="n">fd</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h2 id="6-debug" class="relative group">6. Debug <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#6-debug" aria-label="锚点">#</a></span></h2><p>在源文件里声明：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#ifdef __DEBUG__
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define DEBUG(format, ...) printr(&#34;%03d: &#34;format&#34;&#34;, __LINE__, ##__VA_ARGS__)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#else
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define DEBUG(format, ...)
+</span></span></span><span class="line"><span class="cl"><span class="cp">#endif
+</span></span></span></code></pre></div><p>调用 <code>DEBUG()</code> 的语法与 <code>printf()</code> 一样，编译时在 gcc 中声明 <code>-D __DEBUG__</code> 即可打开调试信息。</p>
+
+      </div>
+    </section>
+    <footer class="pt-8 max-w-prose print:hidden">
+      
+  <div class="flex">
+    
+      
+      
+        
+        <img
+          class="!mb-0 !mt-0 me-4 h-24 w-24 rounded-full"
+          width="96"
+          height="96"
+          alt="Shaocheng.Li"
+          src="/img/author_hucdd16a8e5aab658b1bf3664f1886d7a1_71871_192x192_fill_box_center_3.png"
+          
+            loading="lazy"
+          
+        />
+      
+    
+    <div class="place-self-center">
+      
+        <div class="text-[0.6rem] uppercase leading-3 text-neutral-500 dark:text-neutral-400">
+          作者
+        </div>
+        <div class="font-semibold leading-6 text-neutral-800 dark:text-neutral-300">
+          Shaocheng.Li
+        </div>
+      
+      
+        <div class="text-sm text-neutral-700 dark:text-neutral-400">A Linux software engineer.</div>
+      
+      <div class="text-2xl sm:text-lg">
+  <div class="flex flex-wrap text-neutral-400 dark:text-neutral-500">
+    
+      
+        <a
+          class="px-1 transition-transform hover:scale-125 hover:text-primary-700 dark:hover:text-primary-400"
+          style="will-change:transform;"
+          href="https://github.com/exbob"
+          target="_blank"
+          aria-label="Github"
+          rel="me noopener noreferrer"
+          ><span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+</span></a
+        >
+      
+    
+  </div>
+
+</div>
+    </div>
+  </div>
+
+
+      
+
+      
+  
+    
+    
+    
+    <div class="pt-8">
+      <hr class="border-dotted border-neutral-300 dark:border-neutral-600" />
+      <div class="flex justify-between pt-3">
+        <span>
+          
+            <a class="group flex" href="/posts/2017/11/30/">
+              <span
+                class="me-2 text-neutral-700 transition-transform group-hover:-translate-x-[2px] group-hover:text-primary-600 dark:text-neutral dark:group-hover:text-primary-400"
+                ><span class="ltr:inline rtl:hidden">&larr;</span
+                ><span class="ltr:hidden rtl:inline">&rarr;</span></span
+              >
+              <span class="flex flex-col">
+                <span
+                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+                  >计算机是如何实现重启的</span
+                >
+                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+                  
+                    <time datetime="2017-11-30 08:00:00 &#43;0800 CST">2017 November 30</time>
+                  
+                </span>
+              </span>
+            </a>
+          
+        </span>
+        <span>
+          
+            <a class="group flex text-right" href="/posts/2017/12/18/">
+              <span class="flex flex-col">
+                <span
+                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+                  >Tkinter 学习笔记</span
+                >
+                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+                  
+                    <time datetime="2017-12-18 08:00:00 &#43;0800 CST">2017 December 18</time>
+                  
+                </span>
+              </span>
+              <span
+                class="ms-2 text-neutral-700 transition-transform group-hover:-translate-x-[2px] group-hover:text-primary-600 dark:text-neutral dark:group-hover:text-primary-400"
+                ><span class="ltr:inline rtl:hidden">&rarr;</span
+                ><span class="ltr:hidden rtl:inline">&larr;</span></span
+              >
+            </a>
+          
+        </span>
+      </div>
+    </div>
+  
+
+
+      
+    </footer>
+  </article>
+
+        
+          <div class="pointer-events-none absolute bottom-0 end-0 top-[100vh] w-12">
+            <a
+              href="#the-top"
+              class="pointer-events-auto sticky top-[calc(100vh-5.5rem)] flex h-12 w-12 items-center justify-center rounded-full bg-neutral/50 text-xl text-neutral-700 backdrop-blur hover:text-primary-600 dark:bg-neutral-800/50 dark:text-neutral dark:hover:text-primary-400"
+              aria-label="回到顶部"
+              title="回到顶部"
+            >
+              &uarr;
+            </a>
+          </div>
+        
+      </main><footer class="py-10 print:hidden">
+  
+  
+  <div class="flex items-center justify-between">
+    <div>
+      
+      
+        <p class="text-sm text-neutral-500 dark:text-neutral-400">
+            &copy;
+            2024
+            Shaocheng.Li
+        </p>
+      
+      
+      
+        <p class="text-xs text-neutral-500 dark:text-neutral-400">
+          
+          
+          由 <a class="hover:underline hover:decoration-primary-400 hover:text-primary-500"
+            href="https://gohugo.io/" target="_blank" rel="noopener noreferrer">Hugo</a> &amp; <a class="hover:underline hover:decoration-primary-400 hover:text-primary-500" href="https://github.com/jpanther/congo" target="_blank" rel="noopener noreferrer">Congo</a> 强力驱动
+        </p>
+      
+    </div>
+    <div class="flex flex-row items-center">
+      
+      
+      
+      
+        <div
+          class="me-14 cursor-pointer text-sm text-neutral-700 hover:text-primary-600 dark:text-neutral dark:hover:text-primary-400"
+        >
+          <button id="appearance-switcher-0" type="button" aria-label="appearance switcher">
+            <div
+              class="flex items-center justify-center w-12 h-12 dark:hidden"
+              title="切换为深色模式"
+            >
+              <span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M32 256c0-123.8 100.3-224 223.8-224c11.36 0 29.7 1.668 40.9 3.746c9.616 1.777 11.75 14.63 3.279 19.44C245 86.5 211.2 144.6 211.2 207.8c0 109.7 99.71 193 208.3 172.3c9.561-1.805 16.28 9.324 10.11 16.95C387.9 448.6 324.8 480 255.8 480C132.1 480 32 379.6 32 256z"/></svg>
+</span>
+            </div>
+            <div
+              class="items-center justify-center hidden w-12 h-12 dark:flex"
+              title="切换为浅色模式"
+            >
+              <span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 159.1c-53.02 0-95.1 42.98-95.1 95.1S202.1 351.1 256 351.1s95.1-42.98 95.1-95.1S309 159.1 256 159.1zM509.3 347L446.1 255.1l63.15-91.01c6.332-9.125 1.104-21.74-9.826-23.72l-109-19.7l-19.7-109c-1.975-10.93-14.59-16.16-23.72-9.824L256 65.89L164.1 2.736c-9.125-6.332-21.74-1.107-23.72 9.824L121.6 121.6L12.56 141.3C1.633 143.2-3.596 155.9 2.736 164.1L65.89 256l-63.15 91.01c-6.332 9.125-1.105 21.74 9.824 23.72l109 19.7l19.7 109c1.975 10.93 14.59 16.16 23.72 9.824L256 446.1l91.01 63.15c9.127 6.334 21.75 1.107 23.72-9.822l19.7-109l109-19.7C510.4 368.8 515.6 356.1 509.3 347zM256 383.1c-70.69 0-127.1-57.31-127.1-127.1c0-70.69 57.31-127.1 127.1-127.1s127.1 57.3 127.1 127.1C383.1 326.7 326.7 383.1 256 383.1z"/></svg>
+</span>
+            </div>
+          </button>
+        </div>
+      
+    </div>
+  </div>
+  
+  
+</footer>
+<div
+  id="search-wrapper"
+  class="invisible fixed inset-0 z-50 flex h-screen w-screen cursor-default flex-col bg-neutral-500/50 p-4 backdrop-blur-sm dark:bg-neutral-900/50 sm:p-6 md:p-[10vh] lg:p-[12vh]"
+  data-url="https://shaocheng.li/"
+>
+  <div
+    id="search-modal"
+    class="flex flex-col w-full max-w-3xl min-h-0 mx-auto border rounded-md shadow-lg top-20 border-neutral-200 bg-neutral dark:border-neutral-700 dark:bg-neutral-800"
+  >
+    <header class="relative z-10 flex items-center justify-between flex-none px-2">
+      <form class="flex items-center flex-auto min-w-0">
+        <div class="flex items-center justify-center w-8 h-8 text-neutral-400">
+          <span class="relative inline-block align-text-bottom px-1 icon"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="svg-inline--fa fa-search fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
+</span>
+        </div>
+        <input
+          type="search"
+          id="search-query"
+          class="flex flex-auto h-12 mx-1 bg-transparent appearance-none focus:outline-dotted focus:outline-2 focus:outline-transparent"
+          placeholder="搜索"
+          tabindex="0"
+        />
+      </form>
+      <button
+        id="close-search-button"
+        class="flex items-center justify-center w-8 h-8 text-neutral-700 hover:text-primary-600 dark:text-neutral dark:hover:text-primary-400"
+        title="关闭 (Esc)"
+      >
+        <span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"/></svg>
+</span>
+      </button>
+    </header>
+    <section class="flex-auto px-2 overflow-auto">
+      <ul id="search-results">
+        
+      </ul>
+    </section>
+  </div>
+</div>
+
+    </div>
+  </body>
+</html>

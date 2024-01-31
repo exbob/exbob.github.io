@@ -1,57 +1,420 @@
-<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=author content="Shaocheng.Li"><meta name=description content="1. 时区 Linux 系统中通过 /etc/localtime 文件设置系统时区，所有的时区文件在 /usr/share/zoneinfo/ 目录下
-如果要修改时区，直接将 /usr/share/zoneinfo/ 下的相应时区文件复制到 /etc/ 下，改名为 localtime 即可。
-2. 系统时间的显示和设置 常用的显示或设置系统时间的命令是 date 。
-直接执行 date 就可以显示当前的日期时间和时区，如果要格式化显示，需要用加号指定格式化参数，例如按 “年-月-日 时:分:秒”当前时间：
-~# date &#43;&amp;quot;%Y-%m-%d %H:%M:%S&amp;quot; 2015-07-01 11:00:40  设置时间需要用 -s 参数，例如：
-~# date -s &amp;quot;20150701 12:03:00&amp;quot; Wed Jul 1 12:03:00 HKT 2015  查看硬件时钟的时间用 hwclock命令：
-~# hwclock Wed Jul 1 11:09:54 2015 -0.127600 seconds  将系统时间写入硬件时钟：
-~# hwclock --systohc  读取硬件时钟设置系统时间：
-~# hwclock --hctosys  3."><meta name=keywords content><meta name=robots content="noodp"><meta name=theme-color content="#252627"><link rel=canonical href=https://shaocheng.li/posts/2015/07/01/><title>Linux 系统中的时间 :: Shaocheng.Li — Hello Friends</title><link href=https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css rel=stylesheet type=text/css><link rel=stylesheet href=https://shaocheng.li/main.min.e9b3dfcc5ffe9d55eb281ecaf47cf6179d26eec497e087299934d581c987aa0b.css><link rel=stylesheet type=text/css href=https://shaocheng.li/css/custom.css><link rel=apple-touch-icon sizes=180x180 href=https://shaocheng.li/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=https://shaocheng.li/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=https://shaocheng.li/favicon-16x16.png><link rel=manifest href=https://shaocheng.li/site.webmanifest><link rel=mask-icon href=https://shaocheng.li/safari-pinned-tab.svg color=#252627><link rel="shortcut icon" href=https://shaocheng.li/favicon.ico><meta name=msapplication-TileColor content="#252627"><meta name=theme-color content="#252627"><meta itemprop=name content="Linux 系统中的时间"><meta itemprop=description content="1. 时区 Linux 系统中通过 /etc/localtime 文件设置系统时区，所有的时区文件在 /usr/share/zoneinfo/ 目录下
-如果要修改时区，直接将 /usr/share/zoneinfo/ 下的相应时区文件复制到 /etc/ 下，改名为 localtime 即可。
-2. 系统时间的显示和设置 常用的显示或设置系统时间的命令是 date 。
-直接执行 date 就可以显示当前的日期时间和时区，如果要格式化显示，需要用加号指定格式化参数，例如按 “年-月-日 时:分:秒”当前时间：
-~# date &#43;&#34;%Y-%m-%d %H:%M:%S&#34; 2015-07-01 11:00:40  设置时间需要用 -s 参数，例如：
-~# date -s &#34;20150701 12:03:00&#34; Wed Jul 1 12:03:00 HKT 2015  查看硬件时钟的时间用 hwclock命令：
-~# hwclock Wed Jul 1 11:09:54 2015 -0.127600 seconds  将系统时间写入硬件时钟：
-~# hwclock --systohc  读取硬件时钟设置系统时间：
-~# hwclock --hctosys  3."><meta itemprop=datePublished content="2015-07-01T08:00:00&#43;08:00"><meta itemprop=dateModified content="2015-07-01T08:00:00&#43;08:00"><meta itemprop=wordCount content="835"><meta itemprop=keywords content><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://shaocheng.li"><meta name=twitter:title content="Linux 系统中的时间"><meta name=twitter:description content="1. 时区 Linux 系统中通过 /etc/localtime 文件设置系统时区，所有的时区文件在 /usr/share/zoneinfo/ 目录下
-如果要修改时区，直接将 /usr/share/zoneinfo/ 下的相应时区文件复制到 /etc/ 下，改名为 localtime 即可。
-2. 系统时间的显示和设置 常用的显示或设置系统时间的命令是 date 。
-直接执行 date 就可以显示当前的日期时间和时区，如果要格式化显示，需要用加号指定格式化参数，例如按 “年-月-日 时:分:秒”当前时间：
-~# date &#43;&#34;%Y-%m-%d %H:%M:%S&#34; 2015-07-01 11:00:40  设置时间需要用 -s 参数，例如：
-~# date -s &#34;20150701 12:03:00&#34; Wed Jul 1 12:03:00 HKT 2015  查看硬件时钟的时间用 hwclock命令：
-~# hwclock Wed Jul 1 11:09:54 2015 -0.127600 seconds  将系统时间写入硬件时钟：
-~# hwclock --systohc  读取硬件时钟设置系统时间：
-~# hwclock --hctosys  3."><meta property="article:published_time" content="2015-07-01 08:00:00 &#43;0800 &#43;0800"></head><body><div class=container><header class=header><span class=header__inner><a href=https://shaocheng.li/ style=text-decoration:none><div class=logo><span class=logo__mark>></span>
-<span class=logo__text>$ cd /home/</span>
-<span class=logo__cursor></span></div></a><span class=header__right><nav class=menu><ul class=menu__inner><li><a href=https://shaocheng.li/about/>About</a></li><li><a href=https://shaocheng.li/posts/>Posts</a></li></ul></nav><span class=menu-trigger><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></span><span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 41C32.4934 41 41 32.4934 41 22 41 11.5066 32.4934 3 22 3 11.5066 3 3 11.5066 3 22s8.5066 19 19 19zM7 22C7 13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22z"/></svg></span></span></span></header><div class=content><main class=post><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>4 minutes</p></div><article><h1 class=post-title><a href=https://shaocheng.li/posts/2015/07/01/>Linux 系统中的时间</a></h1><div class=post-content><h2 id=1-时区>1. 时区</h2><p>Linux 系统中通过 /etc/localtime 文件设置系统时区，所有的时区文件在 /usr/share/zoneinfo/ 目录下</p><p>如果要修改时区，直接将 /usr/share/zoneinfo/ 下的相应时区文件复制到 /etc/ 下，改名为 localtime 即可。</p><h2 id=2-系统时间的显示和设置>2. 系统时间的显示和设置</h2><p>常用的显示或设置系统时间的命令是 date 。</p><p>直接执行 date 就可以显示当前的日期时间和时区，如果要格式化显示，需要用加号指定格式化参数，例如按 “年-月-日 时:分:秒”当前时间：</p><pre><code>~# date  +&quot;%Y-%m-%d  %H:%M:%S&quot;  
+
+
+
+
+
+
+<!DOCTYPE html>
+<html
+  lang="zh-cn"
+  dir="Chinese-Simplified"
+  class="scroll-smooth"
+  data-default-appearance="light"
+  data-auto-appearance="true"
+><head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="rgb(255,255,255)" />
+  
+  <title>Linux 系统中的时间 &middot; Shaocheng.Li</title>
+    <meta name="title" content="Linux 系统中的时间 &middot; Shaocheng.Li" />
+  
+  
+  
+  
+  
+  <script
+    type="text/javascript"
+    src="/js/appearance.min.022d0ebc3b46a335eb1c7ef79b7f2de143d7cd5156d433638592ef1ce5f8554e.js"
+    integrity="sha256-Ai0OvDtGozXrHH73m38t4UPXzVFW1DNjhZLvHOX4VU4="
+  ></script>
+  
+  
+  
+  
+  
+  
+  
+    
+  
+  
+  <link
+    type="text/css"
+    rel="stylesheet"
+    href="/css/main.bundle.min.569cc57d5993584135ff38133d1f599f8f8db0303a9e886172e4b5aabb177ac6.css"
+    integrity="sha256-VpzFfVmTWEE1/zgTPR9Zn4&#43;NsDA6nohhcuS1qrsXesY="
+  />
+  
+    
+    
+    
+  
+  
+    
+    
+  
+  
+  
+    
+    <script
+      defer
+      type="text/javascript"
+      id="script-bundle"
+      src="/js/main.bundle.min.f29ffdffd9ab4cc95250c3c7196b2d5dae8ee6ef0a4139451073f90183ae7e31.js"
+      integrity="sha256-8p/9/9mrTMlSUMPHGWstXa6O5u8KQTlFEHP5AYOufjE="
+      data-copy="复制"
+      data-copied="已复制"
+    ></script>
+  
+  
+  <meta
+    name="description"
+    content="
+      
+        1. 时区 #Linux 系统中通过 /etc/localtime 文件设置系统时区，所有的时区文件在 /usr/share/zoneinfo/ 目录下
+      
+    "
+  />
+  
+  
+  
+  <link rel="canonical" href="https://shaocheng.li/posts/2015/07/01/" />
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  
+  
+  
+  
+  
+  
+  
+  <meta property="og:title" content="Linux 系统中的时间" />
+<meta property="og:description" content="1. 时区 #Linux 系统中通过 /etc/localtime 文件设置系统时区，所有的时区文件在 /usr/share/zoneinfo/ 目录下" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://shaocheng.li/posts/2015/07/01/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2015-07-01T08:00:00+08:00" />
+<meta property="article:modified_time" content="2015-07-01T08:00:00+08:00" />
+
+
+  <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Linux 系统中的时间"/>
+<meta name="twitter:description" content="1. 时区 #Linux 系统中通过 /etc/localtime 文件设置系统时区，所有的时区文件在 /usr/share/zoneinfo/ 目录下"/>
+
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "articleSection": "Posts",
+    "name": "Linux 系统中的时间",
+    "headline": "Linux 系统中的时间",
+    
+    "abstract": "1. 时区 #Linux 系统中通过 \/etc\/localtime 文件设置系统时区，所有的时区文件在 \/usr\/share\/zoneinfo\/ 目录下",
+    "inLanguage": "zh-cn",
+    "url" : "https:\/\/shaocheng.li\/posts\/2015\/07\/01\/",
+    "author" : {
+      "@type": "Person",
+      "name": "Shaocheng.Li"
+    },
+    "copyrightYear": "2015",
+    "dateCreated": "2015-07-01T08:00:00\u002b08:00",
+    "datePublished": "2015-07-01T08:00:00\u002b08:00",
+    
+    "dateModified": "2015-07-01T08:00:00\u002b08:00",
+    
+    
+    
+    "mainEntityOfPage": "true",
+    "wordCount": "835"
+  }
+  </script>
+
+
+  
+  <meta name="author" content="Shaocheng.Li" />
+  
+    
+      <link href="https://github.com/exbob" rel="me" />
+    
+  
+  
+  
+
+
+
+
+
+
+  
+  
+  
+  
+  
+
+  
+  
+</head>
+<body
+    class="flex flex-col h-screen px-6 m-auto text-lg leading-7 max-w-7xl bg-neutral text-neutral-900 dark:bg-neutral-800 dark:text-neutral sm:px-14 md:px-24 lg:px-32"
+  >
+    <div id="the-top" class="absolute flex self-center">
+      <a
+        class="px-3 py-1 text-sm -translate-y-8 rounded-b-lg bg-primary-200 focus:translate-y-0 dark:bg-neutral-600"
+        href="#main-content"
+        ><span class="font-bold pe-2 text-primary-600 dark:text-primary-400">&darr;</span
+        >跳到主要内容</a
+      >
+    </div>
+    
+    
+      <header class="py-6 font-semibold text-neutral-900 dark:text-neutral print:hidden sm:py-10">
+  <nav class="flex items-start justify-between sm:items-center">
+    
+    <div class="flex flex-row items-center">
+      
+  <a
+    class="decoration-primary-500 hover:underline hover:decoration-2 hover:underline-offset-2"
+    rel="me"
+    href="/"
+    >Shaocheng.Li</a
+  >
+
+    </div>
+    
+    
+      <ul class="flex flex-col list-none text-end sm:flex-row">
+        
+          
+            
+            <li class="group mb-1 sm:mb-0 sm:me-7 sm:last:me-0.5">
+              
+                <a
+                  href="/posts/"
+                  title="Posts"
+                  
+                  ><span
+                      class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                      >文章列表</span
+                    >
+                  </a
+                >
+              
+            </li>
+          
+            
+            <li class="group mb-1 sm:mb-0 sm:me-7 sm:last:me-0.5">
+              
+                
+                
+                  <button
+                    id="search-button-1"
+                    title="搜索 (/)"
+                  >
+                    
+                      <span
+                        class="transition-colors group-dark:hover:text-primary-400 group-hover:text-primary-600"
+                      ><span class="relative inline-block align-text-bottom px-1 icon"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="svg-inline--fa fa-search fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
+</span></span><span
+                        class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                        ></span
+                      >
+                    
+                  </button>
+                
+              
+            </li>
+          
+            
+            <li class="group mb-1 sm:mb-0 sm:me-7 sm:last:me-0.5">
+              
+                
+                <button
+                  id="appearance-switcher-1"
+                  type="button"
+                  aria-label="appearance switcher"
+                >
+                  <span
+                    class="inline transition-colors group-dark:hover:text-primary-400 group-hover:text-primary-600 dark:hidden"
+                    title="切换为深色模式"
+                  >
+                    <span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M32 256c0-123.8 100.3-224 223.8-224c11.36 0 29.7 1.668 40.9 3.746c9.616 1.777 11.75 14.63 3.279 19.44C245 86.5 211.2 144.6 211.2 207.8c0 109.7 99.71 193 208.3 172.3c9.561-1.805 16.28 9.324 10.11 16.95C387.9 448.6 324.8 480 255.8 480C132.1 480 32 379.6 32 256z"/></svg>
+</span><span
+                        class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                        ></span
+                      >
+                    
+                  </span>
+                  <span
+                    class="hidden transition-colors group-dark:hover:text-primary-400 group-hover:text-primary-600 dark:inline"
+                    title="切换为浅色模式"
+                  >
+                    
+                      <span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 159.1c-53.02 0-95.1 42.98-95.1 95.1S202.1 351.1 256 351.1s95.1-42.98 95.1-95.1S309 159.1 256 159.1zM509.3 347L446.1 255.1l63.15-91.01c6.332-9.125 1.104-21.74-9.826-23.72l-109-19.7l-19.7-109c-1.975-10.93-14.59-16.16-23.72-9.824L256 65.89L164.1 2.736c-9.125-6.332-21.74-1.107-23.72 9.824L121.6 121.6L12.56 141.3C1.633 143.2-3.596 155.9 2.736 164.1L65.89 256l-63.15 91.01c-6.332 9.125-1.105 21.74 9.824 23.72l109 19.7l19.7 109c1.975 10.93 14.59 16.16 23.72 9.824L256 446.1l91.01 63.15c9.127 6.334 21.75 1.107 23.72-9.822l19.7-109l109-19.7C510.4 368.8 515.6 356.1 509.3 347zM256 383.1c-70.69 0-127.1-57.31-127.1-127.1c0-70.69 57.31-127.1 127.1-127.1s127.1 57.3 127.1 127.1C383.1 326.7 326.7 383.1 256 383.1z"/></svg>
+</span>
+                    
+                    
+                      <span
+                        class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                        ></span
+                      >
+                    
+                  </span>
+                </button>
+              
+            </li>
+          
+          
+        
+      </ul>
+    
+  </nav>
+</header>
+
+    
+    <div class="relative flex flex-col grow">
+      <main id="main-content" class="grow">
+        
+  <article>
+    <header class="max-w-prose">
+      
+      <h1 class="mt-0 text-4xl font-extrabold text-neutral-900 dark:text-neutral">
+        Linux 系统中的时间
+      </h1>
+      <div class="mt-8 mb-12 text-base text-neutral-500 dark:text-neutral-400 print:hidden">
+        
+
+
+
+
+
+  
+  
+
+
+
+  
+
+  
+  
+    
+  
+
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+
+
+  <div class="flex flex-row flex-wrap items-center">
+    
+    
+      <time datetime="2015-07-01 08:00:00 &#43;0800 CST">2015 July 1</time><span class="px-2 text-primary-500">&middot;</span><span>835 字</span><span class="px-2 text-primary-500">&middot;</span><span title="预计阅读">4 分钟</span>
+    
+
+    
+    
+  </div>
+
+  
+  
+
+
+      </div>
+      
+    </header>
+    <section class="flex flex-col max-w-full mt-0 prose dark:prose-invert lg:flex-row">
+      
+        <div class="order-first px-0 lg:order-last lg:max-w-xs lg:ps-8">
+          <div class="toc pe-5 print:hidden lg:sticky lg:top-10">
+            <details open class="-ms-5 mt-0 overflow-hidden rounded-lg ps-5">
+  <summary
+    class="-ms-5 block cursor-pointer bg-neutral-100 py-1 ps-5 text-lg font-semibold text-neutral-800 dark:bg-neutral-700 dark:text-neutral-100 lg:hidden"
+  >
+    目录
+  </summary>
+  <div class="-ms-5 border-s border-dotted border-neutral-300 py-2 ps-5 dark:border-neutral-600">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-时区">1. 时区</a></li>
+    <li><a href="#2-系统时间的显示和设置">2. 系统时间的显示和设置</a></li>
+    <li><a href="#3-c语言的时间转换">3. C语言的时间转换</a></li>
+    <li><a href="#4-c语言的时间测量">4. C语言的时间测量</a></li>
+    <li><a href="#5-计时器">5. 计时器</a>
+      <ul>
+        <li><a href="#创建-timer">创建 Timer</a></li>
+        <li><a href="#启动-timer">启动 Timer</a></li>
+        <li><a href="#例程">例程</a></li>
+      </ul>
+    </li>
+    <li><a href="#参考">参考</a></li>
+  </ul>
+</nav>
+  </div>
+</details>
+
+          </div>
+        </div>
+      
+      <div class="min-w-0 min-h-0 max-w-prose grow">
+        <h2 id="1-时区" class="relative group">1. 时区 <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#1-%e6%97%b6%e5%8c%ba" aria-label="锚点">#</a></span></h2><p>Linux 系统中通过 /etc/localtime 文件设置系统时区，所有的时区文件在 /usr/share/zoneinfo/ 目录下</p>
+<p>如果要修改时区，直接将 /usr/share/zoneinfo/ 下的相应时区文件复制到 /etc/ 下，改名为 localtime 即可。</p>
+<h2 id="2-系统时间的显示和设置" class="relative group">2. 系统时间的显示和设置 <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#2-%e7%b3%bb%e7%bb%9f%e6%97%b6%e9%97%b4%e7%9a%84%e6%98%be%e7%a4%ba%e5%92%8c%e8%ae%be%e7%bd%ae" aria-label="锚点">#</a></span></h2><p>常用的显示或设置系统时间的命令是 date 。</p>
+<p>直接执行 date 就可以显示当前的日期时间和时区，如果要格式化显示，需要用加号指定格式化参数，例如按 “年-月-日 时:分:秒”当前时间：</p>
+<pre><code>~# date  +&quot;%Y-%m-%d  %H:%M:%S&quot;  
 2015-07-01 11:00:40
-</code></pre><p>设置时间需要用 -s 参数，例如：</p><pre><code>~# date  -s  &quot;20150701 12:03:00&quot;  
+</code></pre>
+<p>设置时间需要用 -s 参数，例如：</p>
+<pre><code>~# date  -s  &quot;20150701 12:03:00&quot;  
 Wed Jul  1 12:03:00 HKT 2015
-</code></pre><p>查看硬件时钟的时间用 hwclock命令：</p><pre><code>~# hwclock
+</code></pre>
+<p>查看硬件时钟的时间用 hwclock命令：</p>
+<pre><code>~# hwclock
 Wed Jul  1 11:09:54 2015  -0.127600 seconds
-</code></pre><p>将系统时间写入硬件时钟：</p><pre><code>~# hwclock --systohc
-</code></pre><p>读取硬件时钟设置系统时间：</p><pre><code>~# hwclock --hctosys
-</code></pre><h2 id=3-c语言的时间转换>3. C语言的时间转换</h2><p>C语言对时间的处理函数大部分在 <code>&lt;time.h&gt;</code> 头文件。</p><p>函数 time 会返回从 ”1970 年 1 月 1 日 0 点“ 到当前的秒数，如果参数 t 不为空，也会存储在该指针指向的内存里。失败会返回 -1 。函数原型：</p><pre><code>time_t time(time_t *t);
-</code></pre><p>time 返回的时间可读性不好，如果要看到类似 ”2014 年 12 月 7 日“ 这样的显示，需要将其转换。用 localtime 函数可以将 time_t 类型转换为本地时间，存储在 tm 结构中：</p><pre><code>struct tm
+</code></pre>
+<p>将系统时间写入硬件时钟：</p>
+<pre><code>~# hwclock --systohc
+</code></pre>
+<p>读取硬件时钟设置系统时间：</p>
+<pre><code>~# hwclock --hctosys
+</code></pre>
+<h2 id="3-c语言的时间转换" class="relative group">3. C语言的时间转换 <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#3-c%e8%af%ad%e8%a8%80%e7%9a%84%e6%97%b6%e9%97%b4%e8%bd%ac%e6%8d%a2" aria-label="锚点">#</a></span></h2><p>C语言对时间的处理函数大部分在 <code>&lt;time.h&gt;</code> 头文件。</p>
+<p>函数 time 会返回从 ”1970 年 1 月 1 日 0 点“ 到当前的秒数，如果参数 t 不为空，也会存储在该指针指向的内存里。失败会返回 -1 。函数原型：</p>
+<pre><code>time_t time(time_t *t);
+</code></pre>
+<p>time 返回的时间可读性不好，如果要看到类似 ”2014 年 12 月 7 日“  这样的显示，需要将其转换。用 localtime 函数可以将 time_t 类型转换为本地时间，存储在 tm 结构中：</p>
+<pre><code>struct tm
 {
     int tm_sec; /* Seconds (0-60) */
-    int tm_min; /* Minutes (0-59) */
-    int tm_hour; /* Hours (0-23) */
-    int tm_mday; /* Day of the month (1-31) */
-    int tm_mon; /* Month (0-11) */
-    int tm_year; /* Year since 1900 */
-    int tm_wday; /* Day of the week (Sunday = 0)*/
-    int tm_yday; /* Day in the year (0-365; 1 Jan = 0)*/
-    int tm_isdst; /* Daylight saving time flag
-     &gt; 0: DST is in effect;
-     = 0: DST is not effect;
-     &lt; 0: DST information not available */
+	int tm_min; /* Minutes (0-59) */
+	int tm_hour; /* Hours (0-23) */
+	int tm_mday; /* Day of the month (1-31) */
+	int tm_mon; /* Month (0-11) */
+	int tm_year; /* Year since 1900 */
+	int tm_wday; /* Day of the week (Sunday = 0)*/
+	int tm_yday; /* Day in the year (0-365; 1 Jan = 0)*/
+	int tm_isdst; /* Daylight saving time flag
+	 &gt; 0: DST is in effect;
+	 = 0: DST is not effect;
+	 &lt; 0: DST information not available */
 };
 
 struct tm *localtime(const time_t *timep);
-</code></pre><p>tm 结构的格式就很清晰了，还可以进一步将这个结构按照指定的格式转换为字符串，这需要 strftime 函数：</p><pre><code>size_t strftime(char *outstr, size_t maxsize, const char *format, const struct tm *timeptr);
-</code></pre><p>strftime 会将 timeptr 结构按照 format 指定的格式转换为字符串，并存储在 outstr 中。maxsize 指定 outstr 的字节数。format 的常用格式命令有 ：</p><pre><code>%y 不带世纪的十进制年份（值从0到99）
+</code></pre>
+<p>tm 结构的格式就很清晰了，还可以进一步将这个结构按照指定的格式转换为字符串，这需要 strftime 函数：</p>
+<pre><code>size_t strftime(char *outstr, size_t maxsize, const char *format, const struct tm *timeptr);
+</code></pre>
+<p>strftime 会将 timeptr 结构按照 format 指定的格式转换为字符串，并存储在 outstr 中。maxsize 指定 outstr 的字节数。format 的常用格式命令有 ：</p>
+<pre><code>%y 不带世纪的十进制年份（值从0到99）
 %Y 带世纪部分的十制年份
 %m 十进制表示的月份
 %B 月份的全称
@@ -63,7 +426,9 @@ struct tm *localtime(const time_t *timep);
 %S 十进制的秒数
 %x 标准的日期串
 %X 标准的时间串
-</code></pre><p>获取系统时间并格式化显示的例程：</p><pre><code>#include &lt;stdio.h&gt;
+</code></pre>
+<p>获取系统时间并格式化显示的例程：</p>
+<pre><code>#include &lt;stdio.h&gt;
 #include &lt;time.h&gt;
 
 int main ()
@@ -79,33 +444,68 @@ int main ()
         printf(&quot;NOW:%s\n&quot;,time_buf);
         return 0;
 }
-</code></pre><p>该程序的输出：</p><pre><code>NOW:2015-07-01 11:53:59
-</code></pre><h2 id=4-c语言的时间测量>4. C语言的时间测量</h2><p>C语言提供了 gettimeofday 函数，它会返回从 1970 年 1 月 1 日 0 点到现在的时间，精确到微秒，保存在 timeval 结构中，函数原型：</p><pre><code>#include &lt;sys/time.h&gt;
+</code></pre>
+<p>该程序的输出：</p>
+<pre><code>NOW:2015-07-01 11:53:59
+</code></pre>
+<h2 id="4-c语言的时间测量" class="relative group">4. C语言的时间测量 <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#4-c%e8%af%ad%e8%a8%80%e7%9a%84%e6%97%b6%e9%97%b4%e6%b5%8b%e9%87%8f" aria-label="锚点">#</a></span></h2><p>C语言提供了 gettimeofday 函数，它会返回从 1970 年 1 月 1 日 0 点到现在的时间，精确到微秒，保存在 timeval 结构中，函数原型：</p>
+<pre><code>#include &lt;sys/time.h&gt;
 int gettimeofday(struct timeval *tv, struct timezone *tz);
 
 struct timeval 
 {
-    time_t      tv_sec;     /* seconds */
-    suseconds_t tv_usec;    /* microseconds */
+	time_t      tv_sec;     /* seconds */
+	suseconds_t tv_usec;    /* microseconds */
 };
-</code></pre><blockquote><p>注：第二个参数已经废止，传入 NULL 即可。</p></blockquote><p>例如，计算输出 Hello world 的耗时：</p><pre><code>#include &lt;stdio.h&gt;
+</code></pre>
+<blockquote>
+<p>注：第二个参数已经废止，传入 NULL 即可。</p>
+</blockquote>
+<p>例如，计算输出 Hello world 的耗时：</p>
+<pre><code>#include &lt;stdio.h&gt;
 #include &lt;sys/time.h&gt;
 
 int main ()
 {
-    struct timeval start_time,end_time;
+	struct timeval start_time,end_time;
 
-    gettimeofday(&amp;start_time,NULL);
-    printf(&quot;Hello world\n&quot;);
-    gettimeofday(&amp;end_time,NULL);
+	gettimeofday(&amp;start_time,NULL);
+	printf(&quot;Hello world\n&quot;);
+	gettimeofday(&amp;end_time,NULL);
 
-    printf(&quot;%ld s %ld us\n&quot;,end_time.tv_sec-start_time.tv_sec,end_time.tv_usec-start_time.tv_usec);
+	printf(&quot;%ld s %ld us\n&quot;,end_time.tv_sec-start_time.tv_sec,end_time.tv_usec-start_time.tv_usec);
     return 0;
 }
-</code></pre><p>该程序的输出：</p><pre><code>Hello world
+</code></pre>
+<p>该程序的输出：</p>
+<pre><code>Hello world
 0 s 41 us
-</code></pre><h2 id=5-计时器>5. 计时器</h2><p>要定时执行某段代码，最简单的方法是用 sleep 函数，它会使进程挂起一段时间，单位是秒，更精确的睡眠需要调用 usleep 函数，它单位是微秒 。</p><p>更好的方法是使用 POSIX Timer 。POSIX Timer 可以为一个进程设置多个计时器，时间到达后，可以通过信号或其他方式通知进程，最高可以达到纳秒级别的精度。</p><p>涉及的函数：</p><ul><li>timer_create ：创建一个新的 Timer；并且指定定时器到时通知机制</li><li>timer_delete ：删除一个 Timer</li><li>timer_gettime ：Get the time remaining on a POSIX.1b interval timer</li><li>timer_settime ：开始或者停止某个定时器。</li><li>timer_getoverrun ：获取丢失的定时通知个数。</li></ul><h3 id=创建-timer>创建 Timer</h3><p>使用 Posix Timer 的基本流程很简单，首先调用 timer_create 函数创建一个 Timer。函数原型：</p><pre><code>int timer_create(clockid_t clockid, struct sigevent *sevp, timer_t *timerid);
-</code></pre><p>创建的时候需要指定该 Timer 的一些特性，比如 clock ID。clock ID 即 Timer 的种类，可以为如下任意一种：</p><ul><li>CLOCK_REALTIME ：Settable system-wide real-time clock；</li><li>CLOCK_MONOTONIC ：Nonsettable monotonic clock</li><li>CLOCK_PROCESS_CPUTIME_ID ：Per-process CPU-time clock</li><li>CLOCK_THREAD_CPUTIME_ID ：Per-thread CPU-time clock</li></ul><p>CLOCK_REALTIME 时间是系统保存的时间，即可以由 date 命令显示的时间，该时间可以重新设置。比如当前时间为上午 10 点 10 分，Timer 打算在 10 分钟后到时。假如 5 分钟后，我用 date 命令修改当前时间为 10 点 10 分，那么 Timer 还会再等十分钟到期，因此实际上 Timer 等待了 15 分钟。假如您希望无论任何人如何修改系统时间，Timer 都严格按照 10 分钟的周期进行触发，那么就可以使用 CLOCK_MONOTONIC。</p><p>CLOCK_PROCESS_CPUTIME_ID 的含义与 setitimer 的 ITIMER_VIRTUAL 类似。计时器只记录当前进程所实际花费的时间；比如还是上面的例子，假设系统非常繁忙，当前进程只能获得 50%的 CPU 时间，为了让进程真正地运行 10 分钟，应该到 10 点 30 分才允许 Timer 到期。</p><p>CLOCK_THREAD_CPUTIME_ID 以线程为计时实体，当前进程中的某个线程真正地运行了一定时间才触发 Timer。</p><p>timer_create 的第二个参数 struct sigevent 用来设置定时器到时时的通知方式。该数据结构如下：</p><pre><code>struct sigevent
+</code></pre>
+<h2 id="5-计时器" class="relative group">5. 计时器 <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#5-%e8%ae%a1%e6%97%b6%e5%99%a8" aria-label="锚点">#</a></span></h2><p>要定时执行某段代码，最简单的方法是用 sleep 函数，它会使进程挂起一段时间，单位是秒，更精确的睡眠需要调用 usleep 函数，它单位是微秒 。</p>
+<p>更好的方法是使用 POSIX Timer 。POSIX  Timer 可以为一个进程设置多个计时器，时间到达后，可以通过信号或其他方式通知进程，最高可以达到纳秒级别的精度。</p>
+<p>涉及的函数：</p>
+<ul>
+<li>timer_create ：创建一个新的 Timer；并且指定定时器到时通知机制</li>
+<li>timer_delete ：删除一个 Timer</li>
+<li>timer_gettime ：Get the time remaining on a POSIX.1b interval timer</li>
+<li>timer_settime ：开始或者停止某个定时器。</li>
+<li>timer_getoverrun ：获取丢失的定时通知个数。</li>
+</ul>
+<h3 id="创建-timer" class="relative group">创建 Timer <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#%e5%88%9b%e5%bb%ba-timer" aria-label="锚点">#</a></span></h3><p>使用 Posix Timer 的基本流程很简单，首先调用 timer_create 函数创建一个 Timer。函数原型：</p>
+<pre><code>int timer_create(clockid_t clockid, struct sigevent *sevp, timer_t *timerid);
+</code></pre>
+<p>创建的时候需要指定该 Timer 的一些特性，比如 clock ID。clock ID 即 Timer 的种类，可以为如下任意一种：</p>
+<ul>
+<li>CLOCK_REALTIME ：Settable system-wide real-time clock；</li>
+<li>CLOCK_MONOTONIC	：Nonsettable monotonic clock</li>
+<li>CLOCK_PROCESS_CPUTIME_ID	：Per-process CPU-time clock</li>
+<li>CLOCK_THREAD_CPUTIME_ID	：Per-thread CPU-time clock</li>
+</ul>
+<p>CLOCK_REALTIME 时间是系统保存的时间，即可以由 date 命令显示的时间，该时间可以重新设置。比如当前时间为上午 10 点 10 分，Timer 打算在 10 分钟后到时。假如 5 分钟后，我用 date 命令修改当前时间为 10 点 10 分，那么 Timer 还会再等十分钟到期，因此实际上 Timer 等待了 15 分钟。假如您希望无论任何人如何修改系统时间，Timer 都严格按照 10 分钟的周期进行触发，那么就可以使用 CLOCK_MONOTONIC。</p>
+<p>CLOCK_PROCESS_CPUTIME_ID 的含义与 setitimer 的 ITIMER_VIRTUAL 类似。计时器只记录当前进程所实际花费的时间；比如还是上面的例子，假设系统非常繁忙，当前进程只能获得 50%的 CPU 时间，为了让进程真正地运行 10 分钟，应该到 10 点 30 分才允许 Timer 到期。</p>
+<p>CLOCK_THREAD_CPUTIME_ID 以线程为计时实体，当前进程中的某个线程真正地运行了一定时间才触发 Timer。</p>
+<p>timer_create 的第二个参数 struct sigevent 用来设置定时器到时时的通知方式。该数据结构如下：</p>
+<pre><code>struct sigevent
 {
     int sigev_notify; /* Notification method */
     int sigev_signo; /* Notification signal */
@@ -122,20 +522,43 @@ union sigval
     int   sival_int;    /* Integer value */
     void   *sival_ptr;    /* Pointer value */
 };
-</code></pre><p>其中 sigev_notify 表示通知方式，有如下几种：</p><ul><li>SIGEV_NONE ：定时器到期时不产生通知。。。</li><li>SIGEV_SIGNAL ：定时器到期时将给进程投递一个信号，用 sigev_signo 指定信号值。</li><li>SIGEV_THREAD ：定时器到期时将启动新的线程进行需要的处理</li><li>SIGEV_THREAD_ID ：（仅针对 Linux)定时器到期时将向指定线程发送信号。</li></ul><p>如果采用 SIGEV_NONE 方式，使用者必须调用timer_gettime 函数主动读取定时器已经走过的时间。类似轮询。</p><p>如果采用 SIGEV_SIGNAL 方式，使用者可以选择使用什么信号，用 sigev_signo 表示信号值，比如 SIG_ALARM。</p><p>如果使用 SIGEV_THREAD 方式，则需要设置 sigev_notify_function，当 Timer 到期时，将使用该函数作为入口启动一个线程来处理信号；sigev_value 保存了传入 sigev_notify_function 的参数。sigev_notify_attributes 如果非空，则应该是一个指向 pthread_attr_t 的指针，用来设置线程的属性（比如 stack 大小,detach 状态等）。</p><p>SIGEV_THREAD_ID 通常和 SIGEV_SIGNAL 联合使用，这样当 Timer 到期时，系统会向由 sigev_notify_thread_id 指定的线程发送信号，否则可能进程中的任意线程都可能收到该信号。这个选项是 Linux 对 POSIX 标准的扩展，目前主要是 GLibc 在实现 SIGEV_THREAD 的时候使用到，应用程序很少会需要用到这种模式。</p><h3 id=启动-timer>启动 Timer</h3><p>创建 Timer 之后，便可以调用 timer_settime() 函数指定定时器的时间间隔，并启动了。函数原型：</p><pre><code>int timer_settime(timer_t timerid, int flags,
+</code></pre>
+<p>其中 sigev_notify 表示通知方式，有如下几种：</p>
+<ul>
+<li>SIGEV_NONE	：定时器到期时不产生通知。。。</li>
+<li>SIGEV_SIGNAL	 ：定时器到期时将给进程投递一个信号，用 sigev_signo 指定信号值。</li>
+<li>SIGEV_THREAD	：定时器到期时将启动新的线程进行需要的处理</li>
+<li>SIGEV_THREAD_ID ：（仅针对 Linux)定时器到期时将向指定线程发送信号。</li>
+</ul>
+<p>如果采用 SIGEV_NONE 方式，使用者必须调用timer_gettime 函数主动读取定时器已经走过的时间。类似轮询。</p>
+<p>如果采用 SIGEV_SIGNAL 方式，使用者可以选择使用什么信号，用 sigev_signo 表示信号值，比如 SIG_ALARM。</p>
+<p>如果使用 SIGEV_THREAD 方式，则需要设置 sigev_notify_function，当 Timer 到期时，将使用该函数作为入口启动一个线程来处理信号；sigev_value 保存了传入 sigev_notify_function 的参数。sigev_notify_attributes 如果非空，则应该是一个指向 pthread_attr_t 的指针，用来设置线程的属性（比如 stack 大小,detach 状态等）。</p>
+<p>SIGEV_THREAD_ID 通常和 SIGEV_SIGNAL 联合使用，这样当 Timer 到期时，系统会向由 sigev_notify_thread_id 指定的线程发送信号，否则可能进程中的任意线程都可能收到该信号。这个选项是 Linux 对 POSIX 标准的扩展，目前主要是 GLibc 在实现 SIGEV_THREAD 的时候使用到，应用程序很少会需要用到这种模式。</p>
+<h3 id="启动-timer" class="relative group">启动 Timer <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#%e5%90%af%e5%8a%a8-timer" aria-label="锚点">#</a></span></h3><p>创建 Timer 之后，便可以调用 timer_settime() 函数指定定时器的时间间隔，并启动了。函数原型：</p>
+<pre><code>int timer_settime(timer_t timerid, int flags,
 const struct itimerspec *new_value,
 struct itimerspec * old_value);
-</code></pre><p>new_value 和 old_value 都是 struct itimerspec 数据结构：</p><pre><code>struct itimerspec
+</code></pre>
+<p>new_value 和 old_value 都是 struct itimerspec 数据结构：</p>
+<pre><code>struct itimerspec
 {
      struct timespec it_interval; //定时器周期值
      struct timespec it_value; //定时器到期值
 };
 struct timespec
 {
-    time_t   tv_sec;  //秒
-    long     tv_nsec;  //纳秒
+    time_t 	 tv_sec;  //秒
+    long	 tv_nsec;  //纳秒
 };
-</code></pre><p>启动和停止 Timer 都可以通过设置 new_value 来实现：</p><ul><li>new_value-&gt;it_interval 为定时器的周期值，比如 1 秒，表示定时器每隔 1 秒到期；</li><li>new_value-&gt;it_value 如果大于 0，表示启动定时器，Timer 将在 it_value 这么长的时间过去后到期，此后每隔 it_interval 便到期一次。如果 it_value 为 0，表示停止该 Timer。</li></ul><p>有些时候，应用程序会先启动用一个时间间隔启动定时器，随后又修改该定时器的时间间隔，这都可以通过修改 new_value 来实现；假如应用程序在修改了时间间隔之后希望了解之前的时间间隔设置，则传入一个非 NULL 的 old_value 指针，这样在 timer_settime() 调用返回时，old_value 就保存了上一次 Timer 的时间间隔设置。多数情况下我们并不需要这样，便可以简单地将 old_value 设置为 NULL，忽略它。</p><h3 id=例程>例程</h3><p>下面这个例程使用 SIGEV_THREAD 方式的 timer ，每隔两秒调用一次 timer_thread 函数，将 counter 加一，并打印。主函数等待 counter 等于 5 时退出。</p><pre><code>#include &lt;stdio.h&gt;
+</code></pre>
+<p>启动和停止 Timer 都可以通过设置 new_value 来实现：</p>
+<ul>
+<li>new_value-&gt;it_interval 为定时器的周期值，比如 1 秒，表示定时器每隔 1 秒到期；</li>
+<li>new_value-&gt;it_value 如果大于 0，表示启动定时器，Timer 将在 it_value 这么长的时间过去后到期，此后每隔 it_interval 便到期一次。如果 it_value 为 0，表示停止该 Timer。</li>
+</ul>
+<p>有些时候，应用程序会先启动用一个时间间隔启动定时器，随后又修改该定时器的时间间隔，这都可以通过修改 new_value 来实现；假如应用程序在修改了时间间隔之后希望了解之前的时间间隔设置，则传入一个非 NULL 的 old_value 指针，这样在 timer_settime() 调用返回时，old_value 就保存了上一次 Timer 的时间间隔设置。多数情况下我们并不需要这样，便可以简单地将 old_value 设置为 NULL，忽略它。</p>
+<h3 id="例程" class="relative group">例程 <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#%e4%be%8b%e7%a8%8b" aria-label="锚点">#</a></span></h3><p>下面这个例程使用 SIGEV_THREAD 方式的 timer ，每隔两秒调用一次 timer_thread 函数，将 counter 加一，并打印。主函数等待 counter 等于 5 时退出。</p>
+<pre><code>#include &lt;stdio.h&gt;
 #include &lt;unistd.h&gt;
 #include &lt;time.h&gt;
 #include &lt;signal.h&gt;
@@ -185,7 +608,9 @@ int main ()
 
     return 0;
 }
-</code></pre><p>编译时要带 -lrt 参数，该程序的输出是：</p><pre><code>~# gcc test.c -Wall -lpthread  -lrt -o test
+</code></pre>
+<p>编译时要带 -lrt 参数，该程序的输出是：</p>
+<pre><code>~# gcc test.c -Wall -lpthread  -lrt -o test
 ~# ./test 
 ...start
 counter = 1
@@ -193,12 +618,234 @@ counter = 2
 counter = 3
 counter = 4
 counter = 5
-</code></pre><h2 id=参考>参考</h2><p><a href=http://www.ibm.com/developerworks/cn/linux/1307_liuming_linuxtime1/ target=_blank>浅析 Linux 中的时间编程和实现原理</a></p></div></article><hr><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>835 Words</p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>2015-07-01 00:00 &#43;0000</p></div><div class=pagination><div class=pagination__title><span class=pagination__title-h></span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://shaocheng.li/posts/2015/07/21/><span class=button__icon>←</span>
-<span class=button__text>Python 对 JSON 的处理</span></a></span>
-<span class="button next"><a href=https://shaocheng.li/posts/2015/06/13/><span class=button__text>Python 学习资料</span>
-<span class=button__icon>→</span></a></span></div></div><div id=comments class=thin><div id=disqus_thread></div><script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return;}
-var d=document,s=d.createElement('script');s.async=true;s.src='//'+"shaocheng-li"+'.disqus.com/embed.js';s.setAttribute('data-timestamp',+new Date());(d.head||d.body).appendChild(s);})();</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></div></main></div><footer class=footer><div class=footer__inner><div class=footer__content><span>&copy; 2023</span>
-<span><a href=https://shaocheng.li>Shaocheng.Li</a></span>
-<span><a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>CC BY-NC 4.0</a></span>
-<span><a href=https://shaocheng.li/posts/index.xml target=_blank title=rss><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg></a></span></div></div><div class=footer__inner><div class=footer__content><span>Powered by <a href=http://gohugo.io>Hugo</a></span>
-<span>Made with &#10084; by <a href=https://github.com/rhazdon>rhazdon</a></span></div></div></footer></div><script type=text/javascript src=https://shaocheng.li/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script></body></html>
+</code></pre>
+<h2 id="参考" class="relative group">参考 <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#%e5%8f%82%e8%80%83" aria-label="锚点">#</a></span></h2><p><a href="http://www.ibm.com/developerworks/cn/linux/1307_liuming_linuxtime1/" target="_blank" rel="noreferrer">浅析 Linux 中的时间编程和实现原理</a></p>
+
+      </div>
+    </section>
+    <footer class="pt-8 max-w-prose print:hidden">
+      
+  <div class="flex">
+    
+      
+      
+        
+        <img
+          class="!mb-0 !mt-0 me-4 h-24 w-24 rounded-full"
+          width="96"
+          height="96"
+          alt="Shaocheng.Li"
+          src="/img/author_hucdd16a8e5aab658b1bf3664f1886d7a1_71871_192x192_fill_box_center_3.png"
+          
+            loading="lazy"
+          
+        />
+      
+    
+    <div class="place-self-center">
+      
+        <div class="text-[0.6rem] uppercase leading-3 text-neutral-500 dark:text-neutral-400">
+          作者
+        </div>
+        <div class="font-semibold leading-6 text-neutral-800 dark:text-neutral-300">
+          Shaocheng.Li
+        </div>
+      
+      
+        <div class="text-sm text-neutral-700 dark:text-neutral-400">A Linux software engineer.</div>
+      
+      <div class="text-2xl sm:text-lg">
+  <div class="flex flex-wrap text-neutral-400 dark:text-neutral-500">
+    
+      
+        <a
+          class="px-1 transition-transform hover:scale-125 hover:text-primary-700 dark:hover:text-primary-400"
+          style="will-change:transform;"
+          href="https://github.com/exbob"
+          target="_blank"
+          aria-label="Github"
+          rel="me noopener noreferrer"
+          ><span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+</span></a
+        >
+      
+    
+  </div>
+
+</div>
+    </div>
+  </div>
+
+
+      
+
+      
+  
+    
+    
+    
+    <div class="pt-8">
+      <hr class="border-dotted border-neutral-300 dark:border-neutral-600" />
+      <div class="flex justify-between pt-3">
+        <span>
+          
+            <a class="group flex" href="/posts/2015/06/13/">
+              <span
+                class="me-2 text-neutral-700 transition-transform group-hover:-translate-x-[2px] group-hover:text-primary-600 dark:text-neutral dark:group-hover:text-primary-400"
+                ><span class="ltr:inline rtl:hidden">&larr;</span
+                ><span class="ltr:hidden rtl:inline">&rarr;</span></span
+              >
+              <span class="flex flex-col">
+                <span
+                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+                  >Python 学习资料</span
+                >
+                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+                  
+                    <time datetime="2015-06-13 08:00:00 &#43;0800 CST">2015 June 13</time>
+                  
+                </span>
+              </span>
+            </a>
+          
+        </span>
+        <span>
+          
+            <a class="group flex text-right" href="/posts/2015/07/21/">
+              <span class="flex flex-col">
+                <span
+                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+                  >Python 对 JSON 的处理</span
+                >
+                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+                  
+                    <time datetime="2015-07-21 08:00:00 &#43;0800 CST">2015 July 21</time>
+                  
+                </span>
+              </span>
+              <span
+                class="ms-2 text-neutral-700 transition-transform group-hover:-translate-x-[2px] group-hover:text-primary-600 dark:text-neutral dark:group-hover:text-primary-400"
+                ><span class="ltr:inline rtl:hidden">&rarr;</span
+                ><span class="ltr:hidden rtl:inline">&larr;</span></span
+              >
+            </a>
+          
+        </span>
+      </div>
+    </div>
+  
+
+
+      
+    </footer>
+  </article>
+
+        
+          <div class="pointer-events-none absolute bottom-0 end-0 top-[100vh] w-12">
+            <a
+              href="#the-top"
+              class="pointer-events-auto sticky top-[calc(100vh-5.5rem)] flex h-12 w-12 items-center justify-center rounded-full bg-neutral/50 text-xl text-neutral-700 backdrop-blur hover:text-primary-600 dark:bg-neutral-800/50 dark:text-neutral dark:hover:text-primary-400"
+              aria-label="回到顶部"
+              title="回到顶部"
+            >
+              &uarr;
+            </a>
+          </div>
+        
+      </main><footer class="py-10 print:hidden">
+  
+  
+  <div class="flex items-center justify-between">
+    <div>
+      
+      
+        <p class="text-sm text-neutral-500 dark:text-neutral-400">
+            &copy;
+            2024
+            Shaocheng.Li
+        </p>
+      
+      
+      
+        <p class="text-xs text-neutral-500 dark:text-neutral-400">
+          
+          
+          由 <a class="hover:underline hover:decoration-primary-400 hover:text-primary-500"
+            href="https://gohugo.io/" target="_blank" rel="noopener noreferrer">Hugo</a> &amp; <a class="hover:underline hover:decoration-primary-400 hover:text-primary-500" href="https://github.com/jpanther/congo" target="_blank" rel="noopener noreferrer">Congo</a> 强力驱动
+        </p>
+      
+    </div>
+    <div class="flex flex-row items-center">
+      
+      
+      
+      
+        <div
+          class="me-14 cursor-pointer text-sm text-neutral-700 hover:text-primary-600 dark:text-neutral dark:hover:text-primary-400"
+        >
+          <button id="appearance-switcher-0" type="button" aria-label="appearance switcher">
+            <div
+              class="flex items-center justify-center w-12 h-12 dark:hidden"
+              title="切换为深色模式"
+            >
+              <span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M32 256c0-123.8 100.3-224 223.8-224c11.36 0 29.7 1.668 40.9 3.746c9.616 1.777 11.75 14.63 3.279 19.44C245 86.5 211.2 144.6 211.2 207.8c0 109.7 99.71 193 208.3 172.3c9.561-1.805 16.28 9.324 10.11 16.95C387.9 448.6 324.8 480 255.8 480C132.1 480 32 379.6 32 256z"/></svg>
+</span>
+            </div>
+            <div
+              class="items-center justify-center hidden w-12 h-12 dark:flex"
+              title="切换为浅色模式"
+            >
+              <span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 159.1c-53.02 0-95.1 42.98-95.1 95.1S202.1 351.1 256 351.1s95.1-42.98 95.1-95.1S309 159.1 256 159.1zM509.3 347L446.1 255.1l63.15-91.01c6.332-9.125 1.104-21.74-9.826-23.72l-109-19.7l-19.7-109c-1.975-10.93-14.59-16.16-23.72-9.824L256 65.89L164.1 2.736c-9.125-6.332-21.74-1.107-23.72 9.824L121.6 121.6L12.56 141.3C1.633 143.2-3.596 155.9 2.736 164.1L65.89 256l-63.15 91.01c-6.332 9.125-1.105 21.74 9.824 23.72l109 19.7l19.7 109c1.975 10.93 14.59 16.16 23.72 9.824L256 446.1l91.01 63.15c9.127 6.334 21.75 1.107 23.72-9.822l19.7-109l109-19.7C510.4 368.8 515.6 356.1 509.3 347zM256 383.1c-70.69 0-127.1-57.31-127.1-127.1c0-70.69 57.31-127.1 127.1-127.1s127.1 57.3 127.1 127.1C383.1 326.7 326.7 383.1 256 383.1z"/></svg>
+</span>
+            </div>
+          </button>
+        </div>
+      
+    </div>
+  </div>
+  
+  
+</footer>
+<div
+  id="search-wrapper"
+  class="invisible fixed inset-0 z-50 flex h-screen w-screen cursor-default flex-col bg-neutral-500/50 p-4 backdrop-blur-sm dark:bg-neutral-900/50 sm:p-6 md:p-[10vh] lg:p-[12vh]"
+  data-url="https://shaocheng.li/"
+>
+  <div
+    id="search-modal"
+    class="flex flex-col w-full max-w-3xl min-h-0 mx-auto border rounded-md shadow-lg top-20 border-neutral-200 bg-neutral dark:border-neutral-700 dark:bg-neutral-800"
+  >
+    <header class="relative z-10 flex items-center justify-between flex-none px-2">
+      <form class="flex items-center flex-auto min-w-0">
+        <div class="flex items-center justify-center w-8 h-8 text-neutral-400">
+          <span class="relative inline-block align-text-bottom px-1 icon"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="svg-inline--fa fa-search fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
+</span>
+        </div>
+        <input
+          type="search"
+          id="search-query"
+          class="flex flex-auto h-12 mx-1 bg-transparent appearance-none focus:outline-dotted focus:outline-2 focus:outline-transparent"
+          placeholder="搜索"
+          tabindex="0"
+        />
+      </form>
+      <button
+        id="close-search-button"
+        class="flex items-center justify-center w-8 h-8 text-neutral-700 hover:text-primary-600 dark:text-neutral dark:hover:text-primary-400"
+        title="关闭 (Esc)"
+      >
+        <span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"/></svg>
+</span>
+      </button>
+    </header>
+    <section class="flex-auto px-2 overflow-auto">
+      <ul id="search-results">
+        
+      </ul>
+    </section>
+  </div>
+</div>
+
+    </div>
+  </body>
+</html>

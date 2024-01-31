@@ -1,21 +1,370 @@
-<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=author content="Shaocheng.Li"><meta name=description content="对于unicode编码的字符，可以先将unicode编码转换为GBK编码，然后利用GBK点阵字库（gbk.bin)显示字符。一个比较好的编码转换方法是，制作一个按照unicode编码顺序排列的GBK编码表，直接根据unicode编码就可以查到对应的GBK编码，具体的制作方法如下：
-1.生成一个unicode字符文件 上以篇文章中已经制作了一个GBK编码的全字符文件gbk.txt，用记事本打开gbk.txt，然后以unicode编码另存为unicode.txt文件。
-这样的话，所有的GBK编码字符都用unicode编码保存在unicode.txt中了，可以用winhex打开unicode.txt，会发现前两个字节是FFFE，这是unicode编码的标识，要注意后面的unicode编码是小端存储。
-2.制作unicode转gbk的文件 这里要用程序制作一个unicode与gbk编码相对应的文件，该文件每四个字节为一组，其中前两个字节为unicode编码，后两个字节是对应的gbk编码，两种编码都以小端存储，数据结构如下：
-union code { unsigned int unigbk; unsigned short int uni_gbk[2]; unsigned char buffer[4]; };  这个数据结构是以gbk编码的顺序存放在文件uni2gbk.txt中，文件大小为128764Byte。程序如下：
-//由unicode.txt和gbk.txt生成uni2gbk.txt #include &amp;lt;stdio.h&amp;gt; int main(void) { unsigned char buffer[2]; int count=0; FILE *fup=0; FILE *fgp=0; FILE *fwp=0; fup=fopen(&amp;quot;unicode.txt&amp;quot;,&amp;quot;rb&amp;quot;); fgp=fopen(&amp;quot;gbk.txt&amp;quot;,&amp;quot;rb&amp;quot;); fwp=fopen(&amp;quot;uni2gbk.txt&amp;quot;,&amp;quot;wb&amp;quot;); fgetc(fup); fgetc(fup); while(1) { //读取unicode编码，写入uni2gbk.txt buffer[0]=fgetc(fup); buffer[1]=fgetc(fup); fputc(buffer[0],fwp); fputc(buffer[1],fwp); //读取gbk编码，写入uni2gbk.txt buffer[0]=fgetc(fgp); buffer[1]=fgetc(fgp); fputc(buffer[1],fwp); fputc(buffer[0],fwp); count&#43;=2; if(count==0xfb7c) printf(&amp;quot;xxxxxxxxx/n&amp;quot;); if(buffer[0]==0xfe &amp;amp;&amp;amp; buffer[1]==0xfe) { printf(&amp;quot;count = %x/n&amp;quot;,count); fclose(fup); fclose(fgp); fclose(fwp); return; } } return 0； }  3."><meta name=keywords content><meta name=robots content="noodp"><meta name=theme-color content="#252627"><link rel=canonical href=https://shaocheng.li/posts/2011/06/13/><title>Unicode编码字符的点阵显示 :: Shaocheng.Li — Hello Friends</title><link href=https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css rel=stylesheet type=text/css><link rel=stylesheet href=https://shaocheng.li/main.min.e9b3dfcc5ffe9d55eb281ecaf47cf6179d26eec497e087299934d581c987aa0b.css><link rel=stylesheet type=text/css href=https://shaocheng.li/css/custom.css><link rel=apple-touch-icon sizes=180x180 href=https://shaocheng.li/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=https://shaocheng.li/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=https://shaocheng.li/favicon-16x16.png><link rel=manifest href=https://shaocheng.li/site.webmanifest><link rel=mask-icon href=https://shaocheng.li/safari-pinned-tab.svg color=#252627><link rel="shortcut icon" href=https://shaocheng.li/favicon.ico><meta name=msapplication-TileColor content="#252627"><meta name=theme-color content="#252627"><meta itemprop=name content="Unicode编码字符的点阵显示"><meta itemprop=description content="对于unicode编码的字符，可以先将unicode编码转换为GBK编码，然后利用GBK点阵字库（gbk.bin)显示字符。一个比较好的编码转换方法是，制作一个按照unicode编码顺序排列的GBK编码表，直接根据unicode编码就可以查到对应的GBK编码，具体的制作方法如下：
-1.生成一个unicode字符文件 上以篇文章中已经制作了一个GBK编码的全字符文件gbk.txt，用记事本打开gbk.txt，然后以unicode编码另存为unicode.txt文件。
-这样的话，所有的GBK编码字符都用unicode编码保存在unicode.txt中了，可以用winhex打开unicode.txt，会发现前两个字节是FFFE，这是unicode编码的标识，要注意后面的unicode编码是小端存储。
-2.制作unicode转gbk的文件 这里要用程序制作一个unicode与gbk编码相对应的文件，该文件每四个字节为一组，其中前两个字节为unicode编码，后两个字节是对应的gbk编码，两种编码都以小端存储，数据结构如下：
-union code { unsigned int unigbk; unsigned short int uni_gbk[2]; unsigned char buffer[4]; };  这个数据结构是以gbk编码的顺序存放在文件uni2gbk.txt中，文件大小为128764Byte。程序如下：
-//由unicode.txt和gbk.txt生成uni2gbk.txt #include &lt;stdio.h&gt; int main(void) { unsigned char buffer[2]; int count=0; FILE *fup=0; FILE *fgp=0; FILE *fwp=0; fup=fopen(&#34;unicode.txt&#34;,&#34;rb&#34;); fgp=fopen(&#34;gbk.txt&#34;,&#34;rb&#34;); fwp=fopen(&#34;uni2gbk.txt&#34;,&#34;wb&#34;); fgetc(fup); fgetc(fup); while(1) { //读取unicode编码，写入uni2gbk.txt buffer[0]=fgetc(fup); buffer[1]=fgetc(fup); fputc(buffer[0],fwp); fputc(buffer[1],fwp); //读取gbk编码，写入uni2gbk.txt buffer[0]=fgetc(fgp); buffer[1]=fgetc(fgp); fputc(buffer[1],fwp); fputc(buffer[0],fwp); count&#43;=2; if(count==0xfb7c) printf(&#34;xxxxxxxxx/n&#34;); if(buffer[0]==0xfe &amp;&amp; buffer[1]==0xfe) { printf(&#34;count = %x/n&#34;,count); fclose(fup); fclose(fgp); fclose(fwp); return; } } return 0； }  3."><meta itemprop=datePublished content="2011-06-13T08:00:00&#43;08:00"><meta itemprop=dateModified content="2011-06-13T08:00:00&#43;08:00"><meta itemprop=wordCount content="359"><meta itemprop=keywords content><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://shaocheng.li"><meta name=twitter:title content="Unicode编码字符的点阵显示"><meta name=twitter:description content="对于unicode编码的字符，可以先将unicode编码转换为GBK编码，然后利用GBK点阵字库（gbk.bin)显示字符。一个比较好的编码转换方法是，制作一个按照unicode编码顺序排列的GBK编码表，直接根据unicode编码就可以查到对应的GBK编码，具体的制作方法如下：
-1.生成一个unicode字符文件 上以篇文章中已经制作了一个GBK编码的全字符文件gbk.txt，用记事本打开gbk.txt，然后以unicode编码另存为unicode.txt文件。
-这样的话，所有的GBK编码字符都用unicode编码保存在unicode.txt中了，可以用winhex打开unicode.txt，会发现前两个字节是FFFE，这是unicode编码的标识，要注意后面的unicode编码是小端存储。
-2.制作unicode转gbk的文件 这里要用程序制作一个unicode与gbk编码相对应的文件，该文件每四个字节为一组，其中前两个字节为unicode编码，后两个字节是对应的gbk编码，两种编码都以小端存储，数据结构如下：
-union code { unsigned int unigbk; unsigned short int uni_gbk[2]; unsigned char buffer[4]; };  这个数据结构是以gbk编码的顺序存放在文件uni2gbk.txt中，文件大小为128764Byte。程序如下：
-//由unicode.txt和gbk.txt生成uni2gbk.txt #include &lt;stdio.h&gt; int main(void) { unsigned char buffer[2]; int count=0; FILE *fup=0; FILE *fgp=0; FILE *fwp=0; fup=fopen(&#34;unicode.txt&#34;,&#34;rb&#34;); fgp=fopen(&#34;gbk.txt&#34;,&#34;rb&#34;); fwp=fopen(&#34;uni2gbk.txt&#34;,&#34;wb&#34;); fgetc(fup); fgetc(fup); while(1) { //读取unicode编码，写入uni2gbk.txt buffer[0]=fgetc(fup); buffer[1]=fgetc(fup); fputc(buffer[0],fwp); fputc(buffer[1],fwp); //读取gbk编码，写入uni2gbk.txt buffer[0]=fgetc(fgp); buffer[1]=fgetc(fgp); fputc(buffer[1],fwp); fputc(buffer[0],fwp); count&#43;=2; if(count==0xfb7c) printf(&#34;xxxxxxxxx/n&#34;); if(buffer[0]==0xfe &amp;&amp; buffer[1]==0xfe) { printf(&#34;count = %x/n&#34;,count); fclose(fup); fclose(fgp); fclose(fwp); return; } } return 0； }  3."><meta property="article:published_time" content="2011-06-13 08:00:00 &#43;0800 &#43;0800"></head><body><div class=container><header class=header><span class=header__inner><a href=https://shaocheng.li/ style=text-decoration:none><div class=logo><span class=logo__mark>></span>
-<span class=logo__text>$ cd /home/</span>
-<span class=logo__cursor></span></div></a><span class=header__right><nav class=menu><ul class=menu__inner><li><a href=https://shaocheng.li/about/>About</a></li><li><a href=https://shaocheng.li/posts/>Posts</a></li></ul></nav><span class=menu-trigger><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></span><span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 41C32.4934 41 41 32.4934 41 22 41 11.5066 32.4934 3 22 3 11.5066 3 3 11.5066 3 22s8.5066 19 19 19zM7 22C7 13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22z"/></svg></span></span></span></header><div class=content><main class=post><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>2 minutes</p></div><article><h1 class=post-title><a href=https://shaocheng.li/posts/2011/06/13/>Unicode编码字符的点阵显示</a></h1><div class=post-content><p>对于unicode编码的字符，可以先将unicode编码转换为GBK编码，然后利用GBK点阵字库（gbk.bin)显示字符。一个比较好的编码转换方法是，制作一个按照unicode编码顺序排列的GBK编码表，直接根据unicode编码就可以查到对应的GBK编码，具体的制作方法如下：</p><h2 id=1-生成一个unicode字符文件>1.生成一个unicode字符文件</h2><p>上以篇文章中已经制作了一个GBK编码的全字符文件gbk.txt，用记事本打开gbk.txt，然后以unicode编码另存为unicode.txt文件。</p><p>这样的话，所有的GBK编码字符都用unicode编码保存在unicode.txt中了，可以用winhex打开unicode.txt，会发现前两个字节是FFFE，这是unicode编码的标识，要注意后面的unicode编码是小端存储。</p><h2 id=2-制作unicode转gbk的文件>2.制作unicode转gbk的文件</h2><p>这里要用程序制作一个unicode与gbk编码相对应的文件，该文件每四个字节为一组，其中前两个字节为unicode编码，后两个字节是对应的gbk编码，两种编码都以小端存储，数据结构如下：</p><pre><code>union code
+
+
+
+
+
+
+<!DOCTYPE html>
+<html
+  lang="zh-cn"
+  dir="Chinese-Simplified"
+  class="scroll-smooth"
+  data-default-appearance="light"
+  data-auto-appearance="true"
+><head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="rgb(255,255,255)" />
+  
+  <title>Unicode编码字符的点阵显示 &middot; Shaocheng.Li</title>
+    <meta name="title" content="Unicode编码字符的点阵显示 &middot; Shaocheng.Li" />
+  
+  
+  
+  
+  
+  <script
+    type="text/javascript"
+    src="/js/appearance.min.022d0ebc3b46a335eb1c7ef79b7f2de143d7cd5156d433638592ef1ce5f8554e.js"
+    integrity="sha256-Ai0OvDtGozXrHH73m38t4UPXzVFW1DNjhZLvHOX4VU4="
+  ></script>
+  
+  
+  
+  
+  
+  
+  
+    
+  
+  
+  <link
+    type="text/css"
+    rel="stylesheet"
+    href="/css/main.bundle.min.569cc57d5993584135ff38133d1f599f8f8db0303a9e886172e4b5aabb177ac6.css"
+    integrity="sha256-VpzFfVmTWEE1/zgTPR9Zn4&#43;NsDA6nohhcuS1qrsXesY="
+  />
+  
+    
+    
+    
+  
+  
+    
+    
+  
+  
+  
+    
+    <script
+      defer
+      type="text/javascript"
+      id="script-bundle"
+      src="/js/main.bundle.min.f29ffdffd9ab4cc95250c3c7196b2d5dae8ee6ef0a4139451073f90183ae7e31.js"
+      integrity="sha256-8p/9/9mrTMlSUMPHGWstXa6O5u8KQTlFEHP5AYOufjE="
+      data-copy="复制"
+      data-copied="已复制"
+    ></script>
+  
+  
+  <meta
+    name="description"
+    content="
+      
+        对于unicode编码的字符，可以先将unicode编码转换为GBK编码，然后利用GBK点阵字库（gbk.bin)显示字符。一个比较好的编码转换方法是，制作一个按照unicode编码顺序排列的GBK编码表，直接根据unicode编码就可以查到对应的GBK编码，具体的制作方法如下：
+      
+    "
+  />
+  
+  
+  
+  <link rel="canonical" href="https://shaocheng.li/posts/2011/06/13/" />
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  
+  
+  
+  
+  
+  
+  
+  <meta property="og:title" content="Unicode编码字符的点阵显示" />
+<meta property="og:description" content="对于unicode编码的字符，可以先将unicode编码转换为GBK编码，然后利用GBK点阵字库（gbk.bin)显示字符。一个比较好的编码转换方法是，制作一个按照unicode编码顺序排列的GBK编码表，直接根据unicode编码就可以查到对应的GBK编码，具体的制作方法如下：" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://shaocheng.li/posts/2011/06/13/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2011-06-13T08:00:00+08:00" />
+<meta property="article:modified_time" content="2011-06-13T08:00:00+08:00" />
+
+
+  <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Unicode编码字符的点阵显示"/>
+<meta name="twitter:description" content="对于unicode编码的字符，可以先将unicode编码转换为GBK编码，然后利用GBK点阵字库（gbk.bin)显示字符。一个比较好的编码转换方法是，制作一个按照unicode编码顺序排列的GBK编码表，直接根据unicode编码就可以查到对应的GBK编码，具体的制作方法如下："/>
+
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "articleSection": "Posts",
+    "name": "Unicode编码字符的点阵显示",
+    "headline": "Unicode编码字符的点阵显示",
+    
+    "abstract": "对于unicode编码的字符，可以先将unicode编码转换为GBK编码，然后利用GBK点阵字库（gbk.bin)显示字符。一个比较好的编码转换方法是，制作一个按照unicode编码顺序排列的GBK编码表，直接根据unicode编码就可以查到对应的GBK编码，具体的制作方法如下：",
+    "inLanguage": "zh-cn",
+    "url" : "https:\/\/shaocheng.li\/posts\/2011\/06\/13\/",
+    "author" : {
+      "@type": "Person",
+      "name": "Shaocheng.Li"
+    },
+    "copyrightYear": "2011",
+    "dateCreated": "2011-06-13T08:00:00\u002b08:00",
+    "datePublished": "2011-06-13T08:00:00\u002b08:00",
+    
+    "dateModified": "2011-06-13T08:00:00\u002b08:00",
+    
+    
+    
+    "mainEntityOfPage": "true",
+    "wordCount": "359"
+  }
+  </script>
+
+
+  
+  <meta name="author" content="Shaocheng.Li" />
+  
+    
+      <link href="https://github.com/exbob" rel="me" />
+    
+  
+  
+  
+
+
+
+
+
+
+  
+  
+  
+  
+  
+
+  
+  
+</head>
+<body
+    class="flex flex-col h-screen px-6 m-auto text-lg leading-7 max-w-7xl bg-neutral text-neutral-900 dark:bg-neutral-800 dark:text-neutral sm:px-14 md:px-24 lg:px-32"
+  >
+    <div id="the-top" class="absolute flex self-center">
+      <a
+        class="px-3 py-1 text-sm -translate-y-8 rounded-b-lg bg-primary-200 focus:translate-y-0 dark:bg-neutral-600"
+        href="#main-content"
+        ><span class="font-bold pe-2 text-primary-600 dark:text-primary-400">&darr;</span
+        >跳到主要内容</a
+      >
+    </div>
+    
+    
+      <header class="py-6 font-semibold text-neutral-900 dark:text-neutral print:hidden sm:py-10">
+  <nav class="flex items-start justify-between sm:items-center">
+    
+    <div class="flex flex-row items-center">
+      
+  <a
+    class="decoration-primary-500 hover:underline hover:decoration-2 hover:underline-offset-2"
+    rel="me"
+    href="/"
+    >Shaocheng.Li</a
+  >
+
+    </div>
+    
+    
+      <ul class="flex flex-col list-none text-end sm:flex-row">
+        
+          
+            
+            <li class="group mb-1 sm:mb-0 sm:me-7 sm:last:me-0.5">
+              
+                <a
+                  href="/posts/"
+                  title="Posts"
+                  
+                  ><span
+                      class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                      >文章列表</span
+                    >
+                  </a
+                >
+              
+            </li>
+          
+            
+            <li class="group mb-1 sm:mb-0 sm:me-7 sm:last:me-0.5">
+              
+                
+                
+                  <button
+                    id="search-button-1"
+                    title="搜索 (/)"
+                  >
+                    
+                      <span
+                        class="transition-colors group-dark:hover:text-primary-400 group-hover:text-primary-600"
+                      ><span class="relative inline-block align-text-bottom px-1 icon"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="svg-inline--fa fa-search fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
+</span></span><span
+                        class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                        ></span
+                      >
+                    
+                  </button>
+                
+              
+            </li>
+          
+            
+            <li class="group mb-1 sm:mb-0 sm:me-7 sm:last:me-0.5">
+              
+                
+                <button
+                  id="appearance-switcher-1"
+                  type="button"
+                  aria-label="appearance switcher"
+                >
+                  <span
+                    class="inline transition-colors group-dark:hover:text-primary-400 group-hover:text-primary-600 dark:hidden"
+                    title="切换为深色模式"
+                  >
+                    <span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M32 256c0-123.8 100.3-224 223.8-224c11.36 0 29.7 1.668 40.9 3.746c9.616 1.777 11.75 14.63 3.279 19.44C245 86.5 211.2 144.6 211.2 207.8c0 109.7 99.71 193 208.3 172.3c9.561-1.805 16.28 9.324 10.11 16.95C387.9 448.6 324.8 480 255.8 480C132.1 480 32 379.6 32 256z"/></svg>
+</span><span
+                        class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                        ></span
+                      >
+                    
+                  </span>
+                  <span
+                    class="hidden transition-colors group-dark:hover:text-primary-400 group-hover:text-primary-600 dark:inline"
+                    title="切换为浅色模式"
+                  >
+                    
+                      <span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 159.1c-53.02 0-95.1 42.98-95.1 95.1S202.1 351.1 256 351.1s95.1-42.98 95.1-95.1S309 159.1 256 159.1zM509.3 347L446.1 255.1l63.15-91.01c6.332-9.125 1.104-21.74-9.826-23.72l-109-19.7l-19.7-109c-1.975-10.93-14.59-16.16-23.72-9.824L256 65.89L164.1 2.736c-9.125-6.332-21.74-1.107-23.72 9.824L121.6 121.6L12.56 141.3C1.633 143.2-3.596 155.9 2.736 164.1L65.89 256l-63.15 91.01c-6.332 9.125-1.105 21.74 9.824 23.72l109 19.7l19.7 109c1.975 10.93 14.59 16.16 23.72 9.824L256 446.1l91.01 63.15c9.127 6.334 21.75 1.107 23.72-9.822l19.7-109l109-19.7C510.4 368.8 515.6 356.1 509.3 347zM256 383.1c-70.69 0-127.1-57.31-127.1-127.1c0-70.69 57.31-127.1 127.1-127.1s127.1 57.3 127.1 127.1C383.1 326.7 326.7 383.1 256 383.1z"/></svg>
+</span>
+                    
+                    
+                      <span
+                        class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                        ></span
+                      >
+                    
+                  </span>
+                </button>
+              
+            </li>
+          
+          
+        
+      </ul>
+    
+  </nav>
+</header>
+
+    
+    <div class="relative flex flex-col grow">
+      <main id="main-content" class="grow">
+        
+  <article>
+    <header class="max-w-prose">
+      
+      <h1 class="mt-0 text-4xl font-extrabold text-neutral-900 dark:text-neutral">
+        Unicode编码字符的点阵显示
+      </h1>
+      <div class="mt-8 mb-12 text-base text-neutral-500 dark:text-neutral-400 print:hidden">
+        
+
+
+
+
+
+  
+  
+
+
+
+  
+
+  
+  
+    
+  
+
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+
+
+  <div class="flex flex-row flex-wrap items-center">
+    
+    
+      <time datetime="2011-06-13 08:00:00 &#43;0800 CST">2011 June 13</time><span class="px-2 text-primary-500">&middot;</span><span>359 字</span><span class="px-2 text-primary-500">&middot;</span><span title="预计阅读">2 分钟</span>
+    
+
+    
+    
+  </div>
+
+  
+  
+
+
+      </div>
+      
+    </header>
+    <section class="flex flex-col max-w-full mt-0 prose dark:prose-invert lg:flex-row">
+      
+        <div class="order-first px-0 lg:order-last lg:max-w-xs lg:ps-8">
+          <div class="toc pe-5 print:hidden lg:sticky lg:top-10">
+            <details open class="-ms-5 mt-0 overflow-hidden rounded-lg ps-5">
+  <summary
+    class="-ms-5 block cursor-pointer bg-neutral-100 py-1 ps-5 text-lg font-semibold text-neutral-800 dark:bg-neutral-700 dark:text-neutral-100 lg:hidden"
+  >
+    目录
+  </summary>
+  <div class="-ms-5 border-s border-dotted border-neutral-300 py-2 ps-5 dark:border-neutral-600">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1生成一个unicode字符文件">1.生成一个unicode字符文件</a></li>
+    <li><a href="#2制作unicode转gbk的文件">2.制作unicode转gbk的文件</a></li>
+    <li><a href="#3将uni2gbktxt排序">3.将uni2gbk.txt排序</a></li>
+    <li><a href="#4删除无用的编码">4.删除无用的编码</a></li>
+    <li><a href="#5uni2gbkbin的使用">5.uni2gbk.bin的使用</a></li>
+    <li><a href="#下载">下载：</a></li>
+  </ul>
+</nav>
+  </div>
+</details>
+
+          </div>
+        </div>
+      
+      <div class="min-w-0 min-h-0 max-w-prose grow">
+        <p>对于unicode编码的字符，可以先将unicode编码转换为GBK编码，然后利用GBK点阵字库（gbk.bin)显示字符。一个比较好的编码转换方法是，制作一个按照unicode编码顺序排列的GBK编码表，直接根据unicode编码就可以查到对应的GBK编码，具体的制作方法如下：</p>
+<h2 id="1生成一个unicode字符文件" class="relative group">1.生成一个unicode字符文件 <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#1%e7%94%9f%e6%88%90%e4%b8%80%e4%b8%aaunicode%e5%ad%97%e7%ac%a6%e6%96%87%e4%bb%b6" aria-label="锚点">#</a></span></h2><p>上以篇文章中已经制作了一个GBK编码的全字符文件gbk.txt，用记事本打开gbk.txt，然后以unicode编码另存为unicode.txt文件。</p>
+<p>这样的话，所有的GBK编码字符都用unicode编码保存在unicode.txt中了，可以用winhex打开unicode.txt，会发现前两个字节是FFFE，这是unicode编码的标识，要注意后面的unicode编码是小端存储。</p>
+<h2 id="2制作unicode转gbk的文件" class="relative group">2.制作unicode转gbk的文件 <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#2%e5%88%b6%e4%bd%9cunicode%e8%bd%acgbk%e7%9a%84%e6%96%87%e4%bb%b6" aria-label="锚点">#</a></span></h2><p>这里要用程序制作一个unicode与gbk编码相对应的文件，该文件每四个字节为一组，其中前两个字节为unicode编码，后两个字节是对应的gbk编码，两种编码都以小端存储，数据结构如下：</p>
+<pre><code>union code
 
 {
 
@@ -26,158 +375,172 @@ unsigned short int uni_gbk[2];
 unsigned char buffer[4];
 
 };
-</code></pre><p>这个数据结构是以gbk编码的顺序存放在文件uni2gbk.txt中，文件大小为128764Byte。程序如下：</p><pre><code>//由unicode.txt和gbk.txt生成uni2gbk.txt
+</code></pre>
+<p>这个数据结构是以gbk编码的顺序存放在文件uni2gbk.txt中，文件大小为128764Byte。程序如下：</p>
+<pre><code>//由unicode.txt和gbk.txt生成uni2gbk.txt
 #include &lt;stdio.h&gt;
 
 int main(void)
 {
-    unsigned char buffer[2];
-    int count=0;
+	unsigned char buffer[2];
+	int count=0;
 
-    FILE *fup=0;
-    FILE *fgp=0;
-    FILE *fwp=0;
+	FILE *fup=0;
+	FILE *fgp=0;
+	FILE *fwp=0;
 
-    fup=fopen(&quot;unicode.txt&quot;,&quot;rb&quot;);
-    fgp=fopen(&quot;gbk.txt&quot;,&quot;rb&quot;);
-    fwp=fopen(&quot;uni2gbk.txt&quot;,&quot;wb&quot;);
+	fup=fopen(&quot;unicode.txt&quot;,&quot;rb&quot;);
+	fgp=fopen(&quot;gbk.txt&quot;,&quot;rb&quot;);
+	fwp=fopen(&quot;uni2gbk.txt&quot;,&quot;wb&quot;);
 
-    fgetc(fup);
-    fgetc(fup);
+	fgetc(fup);
+	fgetc(fup);
 
-    while(1)
-    {
-        //读取unicode编码，写入uni2gbk.txt
-        buffer[0]=fgetc(fup);
-        buffer[1]=fgetc(fup);
-        fputc(buffer[0],fwp);
-        fputc(buffer[1],fwp);
-        //读取gbk编码，写入uni2gbk.txt
-        buffer[0]=fgetc(fgp);
-        buffer[1]=fgetc(fgp);
-        fputc(buffer[1],fwp);
-        fputc(buffer[0],fwp);
+	while(1)
+	{
+		//读取unicode编码，写入uni2gbk.txt
+		buffer[0]=fgetc(fup);
+		buffer[1]=fgetc(fup);
+		fputc(buffer[0],fwp);
+		fputc(buffer[1],fwp);
+		//读取gbk编码，写入uni2gbk.txt
+		buffer[0]=fgetc(fgp);
+		buffer[1]=fgetc(fgp);
+		fputc(buffer[1],fwp);
+		fputc(buffer[0],fwp);
 
-        count+=2;
-        if(count==0xfb7c)
-            printf(&quot;xxxxxxxxx/n&quot;);
+		count+=2;
+		if(count==0xfb7c)
+			printf(&quot;xxxxxxxxx/n&quot;);
 
 
-        if(buffer[0]==0xfe &amp;&amp; buffer[1]==0xfe)
-        {
-            printf(&quot;count = %x/n&quot;,count);
+		if(buffer[0]==0xfe &amp;&amp; buffer[1]==0xfe)
+		{
+			printf(&quot;count = %x/n&quot;,count);
 
-            fclose(fup);
-            fclose(fgp);
-            fclose(fwp);
+			fclose(fup);
+			fclose(fgp);
+			fclose(fwp);
 
-            return;
-        }
-    }
-    return 0；
+			return;
+		}
+	}
+	return 0；
 }
-</code></pre><h2 id=3-将uni2gbk-txt排序>3.将uni2gbk.txt排序</h2><p>用程序将uni2gbk.txt文件中的union code数据结构按照unicode编码的顺序从小到大排序，程序如下：</p><pre><code>#include &lt;stdio.h&gt;
+</code></pre>
+<h2 id="3将uni2gbktxt排序" class="relative group">3.将uni2gbk.txt排序 <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#3%e5%b0%86uni2gbktxt%e6%8e%92%e5%ba%8f" aria-label="锚点">#</a></span></h2><p>用程序将uni2gbk.txt文件中的union code数据结构按照unicode编码的顺序从小到大排序，程序如下：</p>
+<pre><code>#include &lt;stdio.h&gt;
 #include &lt;stdlib.h&gt;
 
 #define MAXSIZE (0x7DBF)  //union code的个数
 
 union code
 {
-    unsigned int unigbk;
-    unsigned short int uni_gbk[2];
-    unsigned char buffer[4];
+	unsigned int unigbk;
+	unsigned short int uni_gbk[2];
+	unsigned char buffer[4];
 };
 
 
 int main(void)
 {
-    unsigned char flag=1;
+	unsigned char flag=1;
 
-    unsigned int i=0;
-    unsigned int j=0;
+	unsigned int i=0;
+	unsigned int j=0;
 
-    union code pdata;
-    union code ndata;
+	union code pdata;
+	union code ndata;
 
-    FILE *fp=0;
+	FILE *fp=0;
 
-    fp = fopen(&quot;uni2gbk.txt&quot;,&quot;rb+&quot;);
+	fp = fopen(&quot;uni2gbk.txt&quot;,&quot;rb+&quot;);
 
-    for(i=1; i&lt;MAXSIZE &amp;&amp; flag==1; i++)
-    {
-        flag=0;
+	for(i=1; i&lt;MAXSIZE &amp;&amp; flag==1; i++)
+	{
+		flag=0;
 
-        for(j=0; j&lt;(MAXSIZE-i); j++)
-        {
-            fseek(fp,j*4,0);
-            fread(pdata.buffer,1,4,fp);
-            fseek(fp,j*4+4,0);
-            fread(ndata.buffer,1,4,fp);
+		for(j=0; j&lt;(MAXSIZE-i); j++)
+		{
+			fseek(fp,j*4,0);
+			fread(pdata.buffer,1,4,fp);
+			fseek(fp,j*4+4,0);
+			fread(ndata.buffer,1,4,fp);
 
-            if(pdata.uni_gbk[0]&gt;ndata.uni_gbk[0])
-            {
-                flag=1;
+			if(pdata.uni_gbk[0]&gt;ndata.uni_gbk[0])
+			{
+				flag=1;
 
-                fseek(fp,j*4,0);
-                fwrite(ndata.buffer,4,1,fp);
-                fseek(fp,j*4+4,0);
-                fwrite(pdata.buffer,4,1,fp);
+				fseek(fp,j*4,0);
+				fwrite(ndata.buffer,4,1,fp);
+				fseek(fp,j*4+4,0);
+				fwrite(pdata.buffer,4,1,fp);
 
-            }
+			}
 
-        }
+		}
 
-        printf(&quot;i=%d/n&quot;,i);
-    }
+		printf(&quot;i=%d/n&quot;,i);
+	}
 
-    fclose(fp);
+	fclose(fp);
 
 }
-</code></pre><p>排序后，为了与没有排序的uni2gbk.txt区分，将文件名改为uni2gbkp.txt。</p><h2 id=4-删除无用的编码>4.删除无用的编码</h2><p>用winhex打开uni2gbkp.txt，可以发现，从0到第0x80EB个字节中的unicode编码都是0x0020或0x003F，这些都是无用的编码，它们所对应的gbk编码也是无用的，都可以删除。</p><p>删除后，uni2gbkp.txt文件中的union code数据结构的unicode编码就是从0x00A4开始，以0xFFE5结束。但是这些unicode编码不是连续的，例如0x00A4之后就是0x00A7，为了方便查找，需要在不连续的编码中间用union code填充，对应的gbk编码部分用0x0000填充，然后将union code中的unicode编码全部删除。最后生成uni2gbk.bin文件。程序如下：</p><pre><code>#include &lt;stdio.h&gt;
+</code></pre>
+<p>排序后，为了与没有排序的uni2gbk.txt区分，将文件名改为uni2gbkp.txt。</p>
+<h2 id="4删除无用的编码" class="relative group">4.删除无用的编码 <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#4%e5%88%a0%e9%99%a4%e6%97%a0%e7%94%a8%e7%9a%84%e7%bc%96%e7%a0%81" aria-label="锚点">#</a></span></h2><p>用winhex打开uni2gbkp.txt，可以发现，从0到第0x80EB个字节中的unicode编码都是0x0020或0x003F，这些都是无用的编码，它们所对应的gbk编码也是无用的，都可以删除。</p>
+<p>删除后，uni2gbkp.txt文件中的union code数据结构的unicode编码就是从0x00A4开始，以0xFFE5结束。但是这些unicode编码不是连续的，例如0x00A4之后就是0x00A7，为了方便查找，需要在不连续的编码中间用union code填充，对应的gbk编码部分用0x0000填充，然后将union code中的unicode编码全部删除。最后生成uni2gbk.bin文件。程序如下：</p>
+<pre><code>#include &lt;stdio.h&gt;
 #include &lt;stdlib.h&gt;
 
 union code
 {
-    unsigned int unigbk;
-    unsigned short int uni_gbk[2];
-    unsigned char buffer[4];
+	unsigned int unigbk;
+	unsigned short int uni_gbk[2];
+	unsigned char buffer[4];
 };
 
 int main()
 {
-    unsigned short int count=0x00A4;  //从unicode的0x00A4开始
-    union code temp;
+	unsigned short int count=0x00A4;  //从unicode的0x00A4开始
+	union code temp;
 
-    FILE *frp=0;
-    FILE *fwp=0;
+	FILE *frp=0;
+	FILE *fwp=0;
 
-    frp=fopen(&quot;uni2gbkp.txt&quot;,&quot;rb&quot;);
-    fwp=fopen(&quot;uni2gbk.bin&quot;,&quot;wb&quot;);
+	frp=fopen(&quot;uni2gbkp.txt&quot;,&quot;rb&quot;);
+	fwp=fopen(&quot;uni2gbk.bin&quot;,&quot;wb&quot;);
 
-    fseek(frp,0x80EC,SEEK_SET);  //舍弃uni2gbkp.txt文件的前0x80EC个字节
-    fread(temp.buffer,1,4,frp);
+	fseek(frp,0x80EC,SEEK_SET);  //舍弃uni2gbkp.txt文件的前0x80EC个字节
+	fread(temp.buffer,1,4,frp);
 
-    while(count&lt;=0xffe5) //以unicode的0xffe5结束
-    {
-        if(temp.uni_gbk[0]==count)     //判断unicode编码是否连续
-        {
-            fputc(temp.buffer[2],fwp);  //将对应的gbk编码写入uni2gbk.bin
-            fputc(temp.buffer[3],fwp);
-            fread(temp.buffer,1,4,frp);
-        }
-        else                        //不连续的地方填充0
-        {
-            fputc(0x00,fwp);
-            fputc(0x00,fwp);
-        }
+	while(count&lt;=0xffe5) //以unicode的0xffe5结束
+	{
+		if(temp.uni_gbk[0]==count)     //判断unicode编码是否连续
+		{
+			fputc(temp.buffer[2],fwp);  //将对应的gbk编码写入uni2gbk.bin
+			fputc(temp.buffer[3],fwp);
+			fread(temp.buffer,1,4,frp);
+		}
+		else                        //不连续的地方填充0
+		{
+			fputc(0x00,fwp);
+			fputc(0x00,fwp);
+		}
 
-        count++;
-    }
-    fclose(frp);
-    fclose(fwp);
-    return 0;
+		count++;
+	}
+	fclose(frp);
+	fclose(fwp);
+	return 0;
 }
-</code></pre><p>生成的uni2gbk.bin文件中都是gbk编码，这些gbk编码都是按照对应的unicode编码（0x00A4到0xFFE5）的顺序排列的。</p><h2 id=5-uni2gbk-bin的使用>5.uni2gbk.bin的使用</h2><p>假设一个字符的unicode编码为X，那么它对应的gbk编码在uni2gbk.bin文件中的位置就是：</p><p>（X-0x00A4）*2</p><p>从这个位置读取一个unsigned short int数据，就是它的gbk码。然后利用GBK点阵字库（gbk.bin）即可显示。</p><p>例如，以Linux的终端模拟点阵屏幕，程序如下：</p><pre><code>#include &lt;stdio.h&gt;
+</code></pre>
+<p>生成的uni2gbk.bin文件中都是gbk编码，这些gbk编码都是按照对应的unicode编码（0x00A4到0xFFE5）的顺序排列的。</p>
+<h2 id="5uni2gbkbin的使用" class="relative group">5.uni2gbk.bin的使用 <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#5uni2gbkbin%e7%9a%84%e4%bd%bf%e7%94%a8" aria-label="锚点">#</a></span></h2><p>假设一个字符的unicode编码为X，那么它对应的gbk编码在uni2gbk.bin文件中的位置就是：</p>
+<p>（X-0x00A4）*2</p>
+<p>从这个位置读取一个unsigned short int数据，就是它的gbk码。然后利用GBK点阵字库（gbk.bin）即可显示。</p>
+<p>例如，以Linux的终端模拟点阵屏幕，程序如下：</p>
+<pre><code>#include &lt;stdio.h&gt;
 #include &lt;unistd.h&gt;
 #include &lt;curses.h&gt;
 
@@ -188,32 +551,32 @@ int displaychar(FILE *fp,unsigned short int dispch,char fillch,char start_x,char
 
 int main(void)
 {
-    FILE * fp=0;
-    unsigned short int testch = 0x7231;  //汉字'爱‘的unicode码
-    unsigned short int gbkch=0;       //存放testch的gbk编码
+	FILE * fp=0;
+	unsigned short int testch = 0x7231;  //汉字'爱‘的unicode码
+	unsigned short int gbkch=0;       //存放testch的gbk编码
 
-    //将unicode转换为gbk
-    fp = fopen(&quot;uni2gbk.bin&quot;,&quot;rb&quot;);
-    fseek(fp,(testch-0x00A4)*((unsigned int)2),SEEK_SET);
+	//将unicode转换为gbk
+	fp = fopen(&quot;uni2gbk.bin&quot;,&quot;rb&quot;);
+	fseek(fp,(testch-0x00A4)*((unsigned int)2),SEEK_SET);
 
-    gbkch = fgetc(fp);
-    gbkch = (fgetc(fp)&lt;&lt;8) + gbkch;
+	gbkch = fgetc(fp);
+	gbkch = (fgetc(fp)&lt;&lt;8) + gbkch;
 
-    fclose(fp);
+	fclose(fp);
 
-    fp = fopen(&quot;gbk.bin&quot;,&quot;rb&quot;);
+	fp = fopen(&quot;gbk.bin&quot;,&quot;rb&quot;);
 
-    initscr();
+	initscr();
 
-    displaychar(fp,gbkch,'*',0,0);
+	displaychar(fp,gbkch,'*',0,0);
 
-    refresh();
+	refresh();
 
-    while(1);
-    endwin();
+	while(1);
+	endwin();
 
-    fclose(fp);
-    return 0;
+	fclose(fp);
+	return 0;
 }
 
 /*
@@ -224,47 +587,269 @@ int main(void)
  */
 int displaychar(FILE *fp,unsigned short int dispch,char fillch,char start_x,char start_y)
 {
-    char x=start_x;
-    char y=start_y;
-    unsigned int location=(dispch-START)*DATANUM;
+	char x=start_x;
+	char y=start_y;
+	unsigned int location=(dispch-START)*DATANUM;
 
-    int i=0;
-    int j=0;
-    char buf=0;
+	int i=0;
+	int j=0;
+	char buf=0;
 
-    fseek(fp,location,SEEK_SET);
+	fseek(fp,location,SEEK_SET);
 
-    for(i=0;i&lt;DATANUM;i++)
-    {
-        buf=fgetc(fp);
+	for(i=0;i&lt;DATANUM;i++)
+	{
+		buf=fgetc(fp);
 
-        //显示一个字节
-        for(j=0;j&lt;8;j++)
-        {
-            move(y+j,x);
-            if( buf &amp; (0x01&lt;&lt;j) )
-            {
-                addch(fillch);
-            }
-        }
+		//显示一个字节
+		for(j=0;j&lt;8;j++)
+		{
+			move(y+j,x);
+			if( buf &amp; (0x01&lt;&lt;j) )
+			{
+				addch(fillch);
+			}
+		}
 
-        if(x == (start_x+15))
-        {
-            x=start_x;
-            y=start_y+8;
-        }
-        else
-            x++;
-    }
-    return 0;
+		if(x == (start_x+15))
+		{
+			x=start_x;
+			y=start_y+8;
+		}
+		else
+			x++;
+	}
+	return 0;
 
 }
-</code></pre><h2 id=下载>下载：</h2><p>unicode点阵字库文件：<a href=http://download.csdn.net/source/3362591 target=_blank>http://download.csdn.net/source/3362591</a></p></div></article><hr><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>359 Words</p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>2011-06-13 00:00 &#43;0000</p></div><div class=pagination><div class=pagination__title><span class=pagination__title-h></span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://shaocheng.li/posts/2011/06/28/><span class=button__icon>←</span>
-<span class=button__text>神级排序算法</span></a></span>
-<span class="button next"><a href=https://shaocheng.li/posts/2011/06/12/><span class=button__text>GBK点阵显示字库的制作和使用</span>
-<span class=button__icon>→</span></a></span></div></div><div id=comments class=thin><div id=disqus_thread></div><script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return;}
-var d=document,s=d.createElement('script');s.async=true;s.src='//'+"shaocheng-li"+'.disqus.com/embed.js';s.setAttribute('data-timestamp',+new Date());(d.head||d.body).appendChild(s);})();</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></div></main></div><footer class=footer><div class=footer__inner><div class=footer__content><span>&copy; 2023</span>
-<span><a href=https://shaocheng.li>Shaocheng.Li</a></span>
-<span><a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>CC BY-NC 4.0</a></span>
-<span><a href=https://shaocheng.li/posts/index.xml target=_blank title=rss><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg></a></span></div></div><div class=footer__inner><div class=footer__content><span>Powered by <a href=http://gohugo.io>Hugo</a></span>
-<span>Made with &#10084; by <a href=https://github.com/rhazdon>rhazdon</a></span></div></div></footer></div><script type=text/javascript src=https://shaocheng.li/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script></body></html>
+</code></pre>
+<h2 id="下载" class="relative group">下载： <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#%e4%b8%8b%e8%bd%bd" aria-label="锚点">#</a></span></h2><p>unicode点阵字库文件：<a href="http://download.csdn.net/source/3362591" target="_blank" rel="noreferrer">http://download.csdn.net/source/3362591</a></p>
+
+      </div>
+    </section>
+    <footer class="pt-8 max-w-prose print:hidden">
+      
+  <div class="flex">
+    
+      
+      
+        
+        <img
+          class="!mb-0 !mt-0 me-4 h-24 w-24 rounded-full"
+          width="96"
+          height="96"
+          alt="Shaocheng.Li"
+          src="/img/author_hucdd16a8e5aab658b1bf3664f1886d7a1_71871_192x192_fill_box_center_3.png"
+          
+            loading="lazy"
+          
+        />
+      
+    
+    <div class="place-self-center">
+      
+        <div class="text-[0.6rem] uppercase leading-3 text-neutral-500 dark:text-neutral-400">
+          作者
+        </div>
+        <div class="font-semibold leading-6 text-neutral-800 dark:text-neutral-300">
+          Shaocheng.Li
+        </div>
+      
+      
+        <div class="text-sm text-neutral-700 dark:text-neutral-400">A Linux software engineer.</div>
+      
+      <div class="text-2xl sm:text-lg">
+  <div class="flex flex-wrap text-neutral-400 dark:text-neutral-500">
+    
+      
+        <a
+          class="px-1 transition-transform hover:scale-125 hover:text-primary-700 dark:hover:text-primary-400"
+          style="will-change:transform;"
+          href="https://github.com/exbob"
+          target="_blank"
+          aria-label="Github"
+          rel="me noopener noreferrer"
+          ><span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+</span></a
+        >
+      
+    
+  </div>
+
+</div>
+    </div>
+  </div>
+
+
+      
+
+      
+  
+    
+    
+    
+    <div class="pt-8">
+      <hr class="border-dotted border-neutral-300 dark:border-neutral-600" />
+      <div class="flex justify-between pt-3">
+        <span>
+          
+            <a class="group flex" href="/posts/2011/06/12/">
+              <span
+                class="me-2 text-neutral-700 transition-transform group-hover:-translate-x-[2px] group-hover:text-primary-600 dark:text-neutral dark:group-hover:text-primary-400"
+                ><span class="ltr:inline rtl:hidden">&larr;</span
+                ><span class="ltr:hidden rtl:inline">&rarr;</span></span
+              >
+              <span class="flex flex-col">
+                <span
+                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+                  >GBK点阵显示字库的制作和使用</span
+                >
+                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+                  
+                    <time datetime="2011-06-12 08:00:00 &#43;0800 CST">2011 June 12</time>
+                  
+                </span>
+              </span>
+            </a>
+          
+        </span>
+        <span>
+          
+            <a class="group flex text-right" href="/posts/2011/06/28/">
+              <span class="flex flex-col">
+                <span
+                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+                  >神级排序算法</span
+                >
+                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+                  
+                    <time datetime="2011-06-28 08:00:00 &#43;0800 CST">2011 June 28</time>
+                  
+                </span>
+              </span>
+              <span
+                class="ms-2 text-neutral-700 transition-transform group-hover:-translate-x-[2px] group-hover:text-primary-600 dark:text-neutral dark:group-hover:text-primary-400"
+                ><span class="ltr:inline rtl:hidden">&rarr;</span
+                ><span class="ltr:hidden rtl:inline">&larr;</span></span
+              >
+            </a>
+          
+        </span>
+      </div>
+    </div>
+  
+
+
+      
+    </footer>
+  </article>
+
+        
+          <div class="pointer-events-none absolute bottom-0 end-0 top-[100vh] w-12">
+            <a
+              href="#the-top"
+              class="pointer-events-auto sticky top-[calc(100vh-5.5rem)] flex h-12 w-12 items-center justify-center rounded-full bg-neutral/50 text-xl text-neutral-700 backdrop-blur hover:text-primary-600 dark:bg-neutral-800/50 dark:text-neutral dark:hover:text-primary-400"
+              aria-label="回到顶部"
+              title="回到顶部"
+            >
+              &uarr;
+            </a>
+          </div>
+        
+      </main><footer class="py-10 print:hidden">
+  
+  
+  <div class="flex items-center justify-between">
+    <div>
+      
+      
+        <p class="text-sm text-neutral-500 dark:text-neutral-400">
+            &copy;
+            2024
+            Shaocheng.Li
+        </p>
+      
+      
+      
+        <p class="text-xs text-neutral-500 dark:text-neutral-400">
+          
+          
+          由 <a class="hover:underline hover:decoration-primary-400 hover:text-primary-500"
+            href="https://gohugo.io/" target="_blank" rel="noopener noreferrer">Hugo</a> &amp; <a class="hover:underline hover:decoration-primary-400 hover:text-primary-500" href="https://github.com/jpanther/congo" target="_blank" rel="noopener noreferrer">Congo</a> 强力驱动
+        </p>
+      
+    </div>
+    <div class="flex flex-row items-center">
+      
+      
+      
+      
+        <div
+          class="me-14 cursor-pointer text-sm text-neutral-700 hover:text-primary-600 dark:text-neutral dark:hover:text-primary-400"
+        >
+          <button id="appearance-switcher-0" type="button" aria-label="appearance switcher">
+            <div
+              class="flex items-center justify-center w-12 h-12 dark:hidden"
+              title="切换为深色模式"
+            >
+              <span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M32 256c0-123.8 100.3-224 223.8-224c11.36 0 29.7 1.668 40.9 3.746c9.616 1.777 11.75 14.63 3.279 19.44C245 86.5 211.2 144.6 211.2 207.8c0 109.7 99.71 193 208.3 172.3c9.561-1.805 16.28 9.324 10.11 16.95C387.9 448.6 324.8 480 255.8 480C132.1 480 32 379.6 32 256z"/></svg>
+</span>
+            </div>
+            <div
+              class="items-center justify-center hidden w-12 h-12 dark:flex"
+              title="切换为浅色模式"
+            >
+              <span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 159.1c-53.02 0-95.1 42.98-95.1 95.1S202.1 351.1 256 351.1s95.1-42.98 95.1-95.1S309 159.1 256 159.1zM509.3 347L446.1 255.1l63.15-91.01c6.332-9.125 1.104-21.74-9.826-23.72l-109-19.7l-19.7-109c-1.975-10.93-14.59-16.16-23.72-9.824L256 65.89L164.1 2.736c-9.125-6.332-21.74-1.107-23.72 9.824L121.6 121.6L12.56 141.3C1.633 143.2-3.596 155.9 2.736 164.1L65.89 256l-63.15 91.01c-6.332 9.125-1.105 21.74 9.824 23.72l109 19.7l19.7 109c1.975 10.93 14.59 16.16 23.72 9.824L256 446.1l91.01 63.15c9.127 6.334 21.75 1.107 23.72-9.822l19.7-109l109-19.7C510.4 368.8 515.6 356.1 509.3 347zM256 383.1c-70.69 0-127.1-57.31-127.1-127.1c0-70.69 57.31-127.1 127.1-127.1s127.1 57.3 127.1 127.1C383.1 326.7 326.7 383.1 256 383.1z"/></svg>
+</span>
+            </div>
+          </button>
+        </div>
+      
+    </div>
+  </div>
+  
+  
+</footer>
+<div
+  id="search-wrapper"
+  class="invisible fixed inset-0 z-50 flex h-screen w-screen cursor-default flex-col bg-neutral-500/50 p-4 backdrop-blur-sm dark:bg-neutral-900/50 sm:p-6 md:p-[10vh] lg:p-[12vh]"
+  data-url="https://shaocheng.li/"
+>
+  <div
+    id="search-modal"
+    class="flex flex-col w-full max-w-3xl min-h-0 mx-auto border rounded-md shadow-lg top-20 border-neutral-200 bg-neutral dark:border-neutral-700 dark:bg-neutral-800"
+  >
+    <header class="relative z-10 flex items-center justify-between flex-none px-2">
+      <form class="flex items-center flex-auto min-w-0">
+        <div class="flex items-center justify-center w-8 h-8 text-neutral-400">
+          <span class="relative inline-block align-text-bottom px-1 icon"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="svg-inline--fa fa-search fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
+</span>
+        </div>
+        <input
+          type="search"
+          id="search-query"
+          class="flex flex-auto h-12 mx-1 bg-transparent appearance-none focus:outline-dotted focus:outline-2 focus:outline-transparent"
+          placeholder="搜索"
+          tabindex="0"
+        />
+      </form>
+      <button
+        id="close-search-button"
+        class="flex items-center justify-center w-8 h-8 text-neutral-700 hover:text-primary-600 dark:text-neutral dark:hover:text-primary-400"
+        title="关闭 (Esc)"
+      >
+        <span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"/></svg>
+</span>
+      </button>
+    </header>
+    <section class="flex-auto px-2 overflow-auto">
+      <ul id="search-results">
+        
+      </ul>
+    </section>
+  </div>
+</div>
+
+    </div>
+  </body>
+</html>

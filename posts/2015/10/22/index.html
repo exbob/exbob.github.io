@@ -1,27 +1,407 @@
-<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=author content="Shaocheng.Li"><meta name=description content="1. 蓝牙简介 蓝牙是一种支持设备短距离通信的无线电技术，使用 2.4GHz 频段，数据速率为1Mbps 。采用时分复用方案实现全双工传输。
-蓝牙技术将设备分为两种：主设备和从设备。
-蓝牙主设备的特点：主设备一般具有输入端。在进行蓝牙匹配操作时，用户通过输入端可输入随机的匹配密码来将两个设备匹配。蓝牙手机、安装有蓝牙模块的 PC 等都是主设备。（例如：蓝牙手机和蓝牙 PC 进行匹配时，用户可在蓝牙手机上任意输入一组数字，然后在蓝牙PC上输入相同的一组数字，来完成这两个设备之间的匹配。）
-蓝牙从设备特点：从设备一般不具备输入端。因此从设备在出厂时，在其蓝牙芯片中，固化有一个4位或6位数字的匹配密码。蓝牙耳机等都是从设备。（例如：蓝牙 PC 与蓝牙耳机匹配时，用户将蓝牙耳机上的匹配密码输入到蓝牙 PC 上，完成匹配。）
-蓝牙设备的呼叫过程：
- 蓝牙主端设备发起呼叫，首先是查找，找出周围处于可被查找的蓝牙设备，此时从端设备需要处于可被查找状态。 主端设备找到从端蓝牙设备后，与从端蓝牙设备进行配对，此时需要输入从端设备的 PIN 码。 配对完成后，从端蓝牙设备会记录主端设备的信任信息，此时主端即可向从端设备发起呼叫，根据应用不同，可能是ACL数据链路呼叫或SCO语音链路呼叫，已配对的设备在下次呼叫时，不再需要重新配对。 已配对的设备，做为从端的蓝牙耳机也可以发起建链请求，但做数据通讯的蓝牙模块一般不发起呼叫。 链路建立成功后，主从两端之间即可进行双向的数据通讯。在通信状态下，主端和从端设备都可以发起断链，断开蓝牙链路。  蓝牙协议栈：
- RFCOMM 叫做电缆替代协议，它在蓝牙基带协议上仿真 RS-232 控制和数据信号，为使用串行线传送机制的上层协议（如 OBEX ）提供服务。 OBEX 叫做对象交换协议，采用简单的和自发的方式交换目标，用于传输文件。  2. Linux 对蓝牙的支持 2.6 之后的内核都提供了蓝牙支持，通常都已经是默认的设置：
-[*] Networking support ---&amp;gt; [CONFIG_NET] &amp;lt;/M&amp;gt; Bluetooth subsystem support ---&amp;gt; [CONFIG_BT] &amp;lt;*/M&amp;gt; RFCOMM protocol support [CONFIG_BT_RFCOMM] [*] RFCOMM TTY support [CONFIG_BT_RFCOMM_TTY] &amp;lt;*/M&amp;gt; BNEP protocol support [CONFIG_BT_BNEP] [*] Multicast filter support [CONFIG_BT_BNEP_MC_FILTER] [*] Protocol filter support [CONFIG_BT_BNEP_PROTO_FILTER] &amp;lt;*/M&amp;gt; HIDP protocol support [CONFIG_BT_HIDP] Bluetooth device drivers ---&amp;gt; (Select the appropriate drivers for your Bluetooth hardware) &amp;lt;*/M&amp;gt; RF switch subsystem support ---&amp;gt; [CONFIG_RFKILL]  Linux 官方的蓝牙协议栈是 BlueZ ，BlueZ 包括 ： * HCI Core * HCI UART, USB and Virtual HCI device drivers * L2CAP module * Configuration and testing utilities"><meta name=keywords content><meta name=robots content="noodp"><meta name=theme-color content="#252627"><link rel=canonical href=https://shaocheng.li/posts/2015/10/22/><title>Linux 下调试蓝牙模块的笔记 :: Shaocheng.Li — Hello Friends</title><link href=https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css rel=stylesheet type=text/css><link rel=stylesheet href=https://shaocheng.li/main.min.e9b3dfcc5ffe9d55eb281ecaf47cf6179d26eec497e087299934d581c987aa0b.css><link rel=stylesheet type=text/css href=https://shaocheng.li/css/custom.css><link rel=apple-touch-icon sizes=180x180 href=https://shaocheng.li/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=https://shaocheng.li/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=https://shaocheng.li/favicon-16x16.png><link rel=manifest href=https://shaocheng.li/site.webmanifest><link rel=mask-icon href=https://shaocheng.li/safari-pinned-tab.svg color=#252627><link rel="shortcut icon" href=https://shaocheng.li/favicon.ico><meta name=msapplication-TileColor content="#252627"><meta name=theme-color content="#252627"><meta itemprop=name content="Linux 下调试蓝牙模块的笔记"><meta itemprop=description content="1. 蓝牙简介 蓝牙是一种支持设备短距离通信的无线电技术，使用 2.4GHz 频段，数据速率为1Mbps 。采用时分复用方案实现全双工传输。
-蓝牙技术将设备分为两种：主设备和从设备。
-蓝牙主设备的特点：主设备一般具有输入端。在进行蓝牙匹配操作时，用户通过输入端可输入随机的匹配密码来将两个设备匹配。蓝牙手机、安装有蓝牙模块的 PC 等都是主设备。（例如：蓝牙手机和蓝牙 PC 进行匹配时，用户可在蓝牙手机上任意输入一组数字，然后在蓝牙PC上输入相同的一组数字，来完成这两个设备之间的匹配。）
-蓝牙从设备特点：从设备一般不具备输入端。因此从设备在出厂时，在其蓝牙芯片中，固化有一个4位或6位数字的匹配密码。蓝牙耳机等都是从设备。（例如：蓝牙 PC 与蓝牙耳机匹配时，用户将蓝牙耳机上的匹配密码输入到蓝牙 PC 上，完成匹配。）
-蓝牙设备的呼叫过程：
- 蓝牙主端设备发起呼叫，首先是查找，找出周围处于可被查找的蓝牙设备，此时从端设备需要处于可被查找状态。 主端设备找到从端蓝牙设备后，与从端蓝牙设备进行配对，此时需要输入从端设备的 PIN 码。 配对完成后，从端蓝牙设备会记录主端设备的信任信息，此时主端即可向从端设备发起呼叫，根据应用不同，可能是ACL数据链路呼叫或SCO语音链路呼叫，已配对的设备在下次呼叫时，不再需要重新配对。 已配对的设备，做为从端的蓝牙耳机也可以发起建链请求，但做数据通讯的蓝牙模块一般不发起呼叫。 链路建立成功后，主从两端之间即可进行双向的数据通讯。在通信状态下，主端和从端设备都可以发起断链，断开蓝牙链路。  蓝牙协议栈：
- RFCOMM 叫做电缆替代协议，它在蓝牙基带协议上仿真 RS-232 控制和数据信号，为使用串行线传送机制的上层协议（如 OBEX ）提供服务。 OBEX 叫做对象交换协议，采用简单的和自发的方式交换目标，用于传输文件。  2. Linux 对蓝牙的支持 2.6 之后的内核都提供了蓝牙支持，通常都已经是默认的设置：
-[*] Networking support ---&gt; [CONFIG_NET] &lt;/M&gt; Bluetooth subsystem support ---&gt; [CONFIG_BT] &lt;*/M&gt; RFCOMM protocol support [CONFIG_BT_RFCOMM] [*] RFCOMM TTY support [CONFIG_BT_RFCOMM_TTY] &lt;*/M&gt; BNEP protocol support [CONFIG_BT_BNEP] [*] Multicast filter support [CONFIG_BT_BNEP_MC_FILTER] [*] Protocol filter support [CONFIG_BT_BNEP_PROTO_FILTER] &lt;*/M&gt; HIDP protocol support [CONFIG_BT_HIDP] Bluetooth device drivers ---&gt; (Select the appropriate drivers for your Bluetooth hardware) &lt;*/M&gt; RF switch subsystem support ---&gt; [CONFIG_RFKILL]  Linux 官方的蓝牙协议栈是 BlueZ ，BlueZ 包括 ： * HCI Core * HCI UART, USB and Virtual HCI device drivers * L2CAP module * Configuration and testing utilities"><meta itemprop=datePublished content="2015-10-22T08:00:00&#43;08:00"><meta itemprop=dateModified content="2015-10-22T08:00:00&#43;08:00"><meta itemprop=wordCount content="1389"><meta itemprop=keywords content><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://shaocheng.li"><meta name=twitter:title content="Linux 下调试蓝牙模块的笔记"><meta name=twitter:description content="1. 蓝牙简介 蓝牙是一种支持设备短距离通信的无线电技术，使用 2.4GHz 频段，数据速率为1Mbps 。采用时分复用方案实现全双工传输。
-蓝牙技术将设备分为两种：主设备和从设备。
-蓝牙主设备的特点：主设备一般具有输入端。在进行蓝牙匹配操作时，用户通过输入端可输入随机的匹配密码来将两个设备匹配。蓝牙手机、安装有蓝牙模块的 PC 等都是主设备。（例如：蓝牙手机和蓝牙 PC 进行匹配时，用户可在蓝牙手机上任意输入一组数字，然后在蓝牙PC上输入相同的一组数字，来完成这两个设备之间的匹配。）
-蓝牙从设备特点：从设备一般不具备输入端。因此从设备在出厂时，在其蓝牙芯片中，固化有一个4位或6位数字的匹配密码。蓝牙耳机等都是从设备。（例如：蓝牙 PC 与蓝牙耳机匹配时，用户将蓝牙耳机上的匹配密码输入到蓝牙 PC 上，完成匹配。）
-蓝牙设备的呼叫过程：
- 蓝牙主端设备发起呼叫，首先是查找，找出周围处于可被查找的蓝牙设备，此时从端设备需要处于可被查找状态。 主端设备找到从端蓝牙设备后，与从端蓝牙设备进行配对，此时需要输入从端设备的 PIN 码。 配对完成后，从端蓝牙设备会记录主端设备的信任信息，此时主端即可向从端设备发起呼叫，根据应用不同，可能是ACL数据链路呼叫或SCO语音链路呼叫，已配对的设备在下次呼叫时，不再需要重新配对。 已配对的设备，做为从端的蓝牙耳机也可以发起建链请求，但做数据通讯的蓝牙模块一般不发起呼叫。 链路建立成功后，主从两端之间即可进行双向的数据通讯。在通信状态下，主端和从端设备都可以发起断链，断开蓝牙链路。  蓝牙协议栈：
- RFCOMM 叫做电缆替代协议，它在蓝牙基带协议上仿真 RS-232 控制和数据信号，为使用串行线传送机制的上层协议（如 OBEX ）提供服务。 OBEX 叫做对象交换协议，采用简单的和自发的方式交换目标，用于传输文件。  2. Linux 对蓝牙的支持 2.6 之后的内核都提供了蓝牙支持，通常都已经是默认的设置：
-[*] Networking support ---&gt; [CONFIG_NET] &lt;/M&gt; Bluetooth subsystem support ---&gt; [CONFIG_BT] &lt;*/M&gt; RFCOMM protocol support [CONFIG_BT_RFCOMM] [*] RFCOMM TTY support [CONFIG_BT_RFCOMM_TTY] &lt;*/M&gt; BNEP protocol support [CONFIG_BT_BNEP] [*] Multicast filter support [CONFIG_BT_BNEP_MC_FILTER] [*] Protocol filter support [CONFIG_BT_BNEP_PROTO_FILTER] &lt;*/M&gt; HIDP protocol support [CONFIG_BT_HIDP] Bluetooth device drivers ---&gt; (Select the appropriate drivers for your Bluetooth hardware) &lt;*/M&gt; RF switch subsystem support ---&gt; [CONFIG_RFKILL]  Linux 官方的蓝牙协议栈是 BlueZ ，BlueZ 包括 ： * HCI Core * HCI UART, USB and Virtual HCI device drivers * L2CAP module * Configuration and testing utilities"><meta property="article:published_time" content="2015-10-22 08:00:00 &#43;0800 &#43;0800"></head><body><div class=container><header class=header><span class=header__inner><a href=https://shaocheng.li/ style=text-decoration:none><div class=logo><span class=logo__mark>></span>
-<span class=logo__text>$ cd /home/</span>
-<span class=logo__cursor></span></div></a><span class=header__right><nav class=menu><ul class=menu__inner><li><a href=https://shaocheng.li/about/>About</a></li><li><a href=https://shaocheng.li/posts/>Posts</a></li></ul></nav><span class=menu-trigger><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></span><span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 41C32.4934 41 41 32.4934 41 22 41 11.5066 32.4934 3 22 3 11.5066 3 3 11.5066 3 22s8.5066 19 19 19zM7 22C7 13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22z"/></svg></span></span></span></header><div class=content><main class=post><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>7 minutes</p></div><article><h1 class=post-title><a href=https://shaocheng.li/posts/2015/10/22/>Linux 下调试蓝牙模块的笔记</a></h1><div class=post-content><h2 id=1-蓝牙简介>1. 蓝牙简介</h2><p>蓝牙是一种支持设备短距离通信的无线电技术，使用 2.4GHz 频段，数据速率为1Mbps 。采用时分复用方案实现全双工传输。</p><p>蓝牙技术将设备分为两种：主设备和从设备。</p><p>蓝牙主设备的特点：主设备一般具有输入端。在进行蓝牙匹配操作时，用户通过输入端可输入随机的匹配密码来将两个设备匹配。蓝牙手机、安装有蓝牙模块的 PC 等都是主设备。（例如：蓝牙手机和蓝牙 PC 进行匹配时，用户可在蓝牙手机上任意输入一组数字，然后在蓝牙PC上输入相同的一组数字，来完成这两个设备之间的匹配。）</p><p>蓝牙从设备特点：从设备一般不具备输入端。因此从设备在出厂时，在其蓝牙芯片中，固化有一个4位或6位数字的匹配密码。蓝牙耳机等都是从设备。（例如：蓝牙 PC 与蓝牙耳机匹配时，用户将蓝牙耳机上的匹配密码输入到蓝牙 PC 上，完成匹配。）</p><p>蓝牙设备的呼叫过程：</p><ol><li>蓝牙主端设备发起呼叫，首先是查找，找出周围处于可被查找的蓝牙设备，此时从端设备需要处于可被查找状态。</li><li>主端设备找到从端蓝牙设备后，与从端蓝牙设备进行配对，此时需要输入从端设备的 PIN 码。</li><li>配对完成后，从端蓝牙设备会记录主端设备的信任信息，此时主端即可向从端设备发起呼叫，根据应用不同，可能是ACL数据链路呼叫或SCO语音链路呼叫，已配对的设备在下次呼叫时，不再需要重新配对。</li><li>已配对的设备，做为从端的蓝牙耳机也可以发起建链请求，但做数据通讯的蓝牙模块一般不发起呼叫。</li><li>链路建立成功后，主从两端之间即可进行双向的数据通讯。在通信状态下，主端和从端设备都可以发起断链，断开蓝牙链路。</li></ol><p>蓝牙协议栈：</p><p><img src=https://shaocheng.li/images/2015-10-22/2015-10-22_1.jpg alt></p><ul><li>RFCOMM 叫做电缆替代协议，它在蓝牙基带协议上仿真 RS-232 控制和数据信号，为使用串行线传送机制的上层协议（如 OBEX ）提供服务。</li><li>OBEX 叫做对象交换协议，采用简单的和自发的方式交换目标，用于传输文件。</li></ul><h2 id=2-linux-对蓝牙的支持>2. Linux 对蓝牙的支持</h2><p>2.6 之后的内核都提供了蓝牙支持，通常都已经是默认的设置：</p><pre><code>[*] Networking support ---&gt;                [CONFIG_NET]
+
+
+
+
+
+
+<!DOCTYPE html>
+<html
+  lang="zh-cn"
+  dir="Chinese-Simplified"
+  class="scroll-smooth"
+  data-default-appearance="light"
+  data-auto-appearance="true"
+><head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="rgb(255,255,255)" />
+  
+  <title>Linux 下调试蓝牙模块的笔记 &middot; Shaocheng.Li</title>
+    <meta name="title" content="Linux 下调试蓝牙模块的笔记 &middot; Shaocheng.Li" />
+  
+  
+  
+  
+  
+  <script
+    type="text/javascript"
+    src="/js/appearance.min.022d0ebc3b46a335eb1c7ef79b7f2de143d7cd5156d433638592ef1ce5f8554e.js"
+    integrity="sha256-Ai0OvDtGozXrHH73m38t4UPXzVFW1DNjhZLvHOX4VU4="
+  ></script>
+  
+  
+  
+  
+  
+  
+  
+    
+  
+  
+  <link
+    type="text/css"
+    rel="stylesheet"
+    href="/css/main.bundle.min.569cc57d5993584135ff38133d1f599f8f8db0303a9e886172e4b5aabb177ac6.css"
+    integrity="sha256-VpzFfVmTWEE1/zgTPR9Zn4&#43;NsDA6nohhcuS1qrsXesY="
+  />
+  
+    
+    
+    
+  
+  
+    
+    
+  
+  
+  
+    
+    <script
+      defer
+      type="text/javascript"
+      id="script-bundle"
+      src="/js/main.bundle.min.f29ffdffd9ab4cc95250c3c7196b2d5dae8ee6ef0a4139451073f90183ae7e31.js"
+      integrity="sha256-8p/9/9mrTMlSUMPHGWstXa6O5u8KQTlFEHP5AYOufjE="
+      data-copy="复制"
+      data-copied="已复制"
+    ></script>
+  
+  
+  <meta
+    name="description"
+    content="
+      
+        1. 蓝牙简介 #蓝牙是一种支持设备短距离通信的无线电技术，使用 2.
+      
+    "
+  />
+  
+  
+  
+  <link rel="canonical" href="https://shaocheng.li/posts/2015/10/22/" />
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  
+  
+  
+  
+  
+  
+  
+  <meta property="og:title" content="Linux 下调试蓝牙模块的笔记" />
+<meta property="og:description" content="1. 蓝牙简介 #蓝牙是一种支持设备短距离通信的无线电技术，使用 2." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://shaocheng.li/posts/2015/10/22/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2015-10-22T08:00:00+08:00" />
+<meta property="article:modified_time" content="2015-10-22T08:00:00+08:00" />
+
+
+  <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Linux 下调试蓝牙模块的笔记"/>
+<meta name="twitter:description" content="1. 蓝牙简介 #蓝牙是一种支持设备短距离通信的无线电技术，使用 2."/>
+
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "articleSection": "Posts",
+    "name": "Linux 下调试蓝牙模块的笔记",
+    "headline": "Linux 下调试蓝牙模块的笔记",
+    
+    "abstract": "1. 蓝牙简介 #蓝牙是一种支持设备短距离通信的无线电技术，使用 2.",
+    "inLanguage": "zh-cn",
+    "url" : "https:\/\/shaocheng.li\/posts\/2015\/10\/22\/",
+    "author" : {
+      "@type": "Person",
+      "name": "Shaocheng.Li"
+    },
+    "copyrightYear": "2015",
+    "dateCreated": "2015-10-22T08:00:00\u002b08:00",
+    "datePublished": "2015-10-22T08:00:00\u002b08:00",
+    
+    "dateModified": "2015-10-22T08:00:00\u002b08:00",
+    
+    
+    
+    "mainEntityOfPage": "true",
+    "wordCount": "1385"
+  }
+  </script>
+
+
+  
+  <meta name="author" content="Shaocheng.Li" />
+  
+    
+      <link href="https://github.com/exbob" rel="me" />
+    
+  
+  
+  
+
+
+
+
+
+
+  
+  
+  
+  
+  
+
+  
+  
+</head>
+<body
+    class="flex flex-col h-screen px-6 m-auto text-lg leading-7 max-w-7xl bg-neutral text-neutral-900 dark:bg-neutral-800 dark:text-neutral sm:px-14 md:px-24 lg:px-32"
+  >
+    <div id="the-top" class="absolute flex self-center">
+      <a
+        class="px-3 py-1 text-sm -translate-y-8 rounded-b-lg bg-primary-200 focus:translate-y-0 dark:bg-neutral-600"
+        href="#main-content"
+        ><span class="font-bold pe-2 text-primary-600 dark:text-primary-400">&darr;</span
+        >跳到主要内容</a
+      >
+    </div>
+    
+    
+      <header class="py-6 font-semibold text-neutral-900 dark:text-neutral print:hidden sm:py-10">
+  <nav class="flex items-start justify-between sm:items-center">
+    
+    <div class="flex flex-row items-center">
+      
+  <a
+    class="decoration-primary-500 hover:underline hover:decoration-2 hover:underline-offset-2"
+    rel="me"
+    href="/"
+    >Shaocheng.Li</a
+  >
+
+    </div>
+    
+    
+      <ul class="flex flex-col list-none text-end sm:flex-row">
+        
+          
+            
+            <li class="group mb-1 sm:mb-0 sm:me-7 sm:last:me-0.5">
+              
+                <a
+                  href="/posts/"
+                  title="Posts"
+                  
+                  ><span
+                      class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                      >文章列表</span
+                    >
+                  </a
+                >
+              
+            </li>
+          
+            
+            <li class="group mb-1 sm:mb-0 sm:me-7 sm:last:me-0.5">
+              
+                
+                
+                  <button
+                    id="search-button-1"
+                    title="搜索 (/)"
+                  >
+                    
+                      <span
+                        class="transition-colors group-dark:hover:text-primary-400 group-hover:text-primary-600"
+                      ><span class="relative inline-block align-text-bottom px-1 icon"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="svg-inline--fa fa-search fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
+</span></span><span
+                        class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                        ></span
+                      >
+                    
+                  </button>
+                
+              
+            </li>
+          
+            
+            <li class="group mb-1 sm:mb-0 sm:me-7 sm:last:me-0.5">
+              
+                
+                <button
+                  id="appearance-switcher-1"
+                  type="button"
+                  aria-label="appearance switcher"
+                >
+                  <span
+                    class="inline transition-colors group-dark:hover:text-primary-400 group-hover:text-primary-600 dark:hidden"
+                    title="切换为深色模式"
+                  >
+                    <span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M32 256c0-123.8 100.3-224 223.8-224c11.36 0 29.7 1.668 40.9 3.746c9.616 1.777 11.75 14.63 3.279 19.44C245 86.5 211.2 144.6 211.2 207.8c0 109.7 99.71 193 208.3 172.3c9.561-1.805 16.28 9.324 10.11 16.95C387.9 448.6 324.8 480 255.8 480C132.1 480 32 379.6 32 256z"/></svg>
+</span><span
+                        class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                        ></span
+                      >
+                    
+                  </span>
+                  <span
+                    class="hidden transition-colors group-dark:hover:text-primary-400 group-hover:text-primary-600 dark:inline"
+                    title="切换为浅色模式"
+                  >
+                    
+                      <span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 159.1c-53.02 0-95.1 42.98-95.1 95.1S202.1 351.1 256 351.1s95.1-42.98 95.1-95.1S309 159.1 256 159.1zM509.3 347L446.1 255.1l63.15-91.01c6.332-9.125 1.104-21.74-9.826-23.72l-109-19.7l-19.7-109c-1.975-10.93-14.59-16.16-23.72-9.824L256 65.89L164.1 2.736c-9.125-6.332-21.74-1.107-23.72 9.824L121.6 121.6L12.56 141.3C1.633 143.2-3.596 155.9 2.736 164.1L65.89 256l-63.15 91.01c-6.332 9.125-1.105 21.74 9.824 23.72l109 19.7l19.7 109c1.975 10.93 14.59 16.16 23.72 9.824L256 446.1l91.01 63.15c9.127 6.334 21.75 1.107 23.72-9.822l19.7-109l109-19.7C510.4 368.8 515.6 356.1 509.3 347zM256 383.1c-70.69 0-127.1-57.31-127.1-127.1c0-70.69 57.31-127.1 127.1-127.1s127.1 57.3 127.1 127.1C383.1 326.7 326.7 383.1 256 383.1z"/></svg>
+</span>
+                    
+                    
+                      <span
+                        class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                        ></span
+                      >
+                    
+                  </span>
+                </button>
+              
+            </li>
+          
+          
+        
+      </ul>
+    
+  </nav>
+</header>
+
+    
+    <div class="relative flex flex-col grow">
+      <main id="main-content" class="grow">
+        
+  <article>
+    <header class="max-w-prose">
+      
+      <h1 class="mt-0 text-4xl font-extrabold text-neutral-900 dark:text-neutral">
+        Linux 下调试蓝牙模块的笔记
+      </h1>
+      <div class="mt-8 mb-12 text-base text-neutral-500 dark:text-neutral-400 print:hidden">
+        
+
+
+
+
+
+  
+  
+
+
+
+  
+
+  
+  
+    
+  
+
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+
+
+  <div class="flex flex-row flex-wrap items-center">
+    
+    
+      <time datetime="2015-10-22 08:00:00 &#43;0800 CST">2015 October 22</time><span class="px-2 text-primary-500">&middot;</span><span>1385 字</span><span class="px-2 text-primary-500">&middot;</span><span title="预计阅读">7 分钟</span>
+    
+
+    
+    
+  </div>
+
+  
+  
+
+
+      </div>
+      
+    </header>
+    <section class="flex flex-col max-w-full mt-0 prose dark:prose-invert lg:flex-row">
+      
+        <div class="order-first px-0 lg:order-last lg:max-w-xs lg:ps-8">
+          <div class="toc pe-5 print:hidden lg:sticky lg:top-10">
+            <details open class="-ms-5 mt-0 overflow-hidden rounded-lg ps-5">
+  <summary
+    class="-ms-5 block cursor-pointer bg-neutral-100 py-1 ps-5 text-lg font-semibold text-neutral-800 dark:bg-neutral-700 dark:text-neutral-100 lg:hidden"
+  >
+    目录
+  </summary>
+  <div class="-ms-5 border-s border-dotted border-neutral-300 py-2 ps-5 dark:border-neutral-600">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-蓝牙简介">1. 蓝牙简介</a></li>
+    <li><a href="#2-linux-对蓝牙的支持">2. Linux 对蓝牙的支持</a></li>
+    <li><a href="#3-在-linux-中配置蓝牙">3. 在 Linux 中配置蓝牙</a>
+      <ul>
+        <li><a href="#31-连接手机蓝牙">3.1 连接手机蓝牙</a></li>
+        <li><a href="#32-连接蓝牙耳机">3.2 连接蓝牙耳机</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</details>
+
+          </div>
+        </div>
+      
+      <div class="min-w-0 min-h-0 max-w-prose grow">
+        <h2 id="1-蓝牙简介" class="relative group">1. 蓝牙简介 <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#1-%e8%93%9d%e7%89%99%e7%ae%80%e4%bb%8b" aria-label="锚点">#</a></span></h2><p>蓝牙是一种支持设备短距离通信的无线电技术，使用 2.4GHz 频段，数据速率为1Mbps 。采用时分复用方案实现全双工传输。</p>
+<p>蓝牙技术将设备分为两种：主设备和从设备。</p>
+<p>蓝牙主设备的特点：主设备一般具有输入端。在进行蓝牙匹配操作时，用户通过输入端可输入随机的匹配密码来将两个设备匹配。蓝牙手机、安装有蓝牙模块的 PC 等都是主设备。（例如：蓝牙手机和蓝牙 PC 进行匹配时，用户可在蓝牙手机上任意输入一组数字，然后在蓝牙PC上输入相同的一组数字，来完成这两个设备之间的匹配。）</p>
+<p>蓝牙从设备特点：从设备一般不具备输入端。因此从设备在出厂时，在其蓝牙芯片中，固化有一个4位或6位数字的匹配密码。蓝牙耳机等都是从设备。（例如：蓝牙 PC 与蓝牙耳机匹配时，用户将蓝牙耳机上的匹配密码输入到蓝牙 PC 上，完成匹配。）</p>
+<p>蓝牙设备的呼叫过程：</p>
+<ol>
+<li>蓝牙主端设备发起呼叫，首先是查找，找出周围处于可被查找的蓝牙设备，此时从端设备需要处于可被查找状态。</li>
+<li>主端设备找到从端蓝牙设备后，与从端蓝牙设备进行配对，此时需要输入从端设备的 PIN 码。</li>
+<li>配对完成后，从端蓝牙设备会记录主端设备的信任信息，此时主端即可向从端设备发起呼叫，根据应用不同，可能是ACL数据链路呼叫或SCO语音链路呼叫，已配对的设备在下次呼叫时，不再需要重新配对。</li>
+<li>已配对的设备，做为从端的蓝牙耳机也可以发起建链请求，但做数据通讯的蓝牙模块一般不发起呼叫。</li>
+<li>链路建立成功后，主从两端之间即可进行双向的数据通讯。在通信状态下，主端和从端设备都可以发起断链，断开蓝牙链路。</li>
+</ol>
+<p>蓝牙协议栈：</p>
+<p>
+
+
+
+
+  
+  
+  
+    <figure>
+      <img
+        class="mx-auto my-0 rounded-md"
+        src="./pics_1.jpg"
+        alt=""
+        
+          loading="lazy"
+        
+      />
+      
+    </figure>
+  
+</p>
+<ul>
+<li>RFCOMM 叫做电缆替代协议，它在蓝牙基带协议上仿真 RS-232 控制和数据信号，为使用串行线传送机制的上层协议（如 OBEX ）提供服务。</li>
+<li>OBEX 叫做对象交换协议，采用简单的和自发的方式交换目标，用于传输文件。</li>
+</ul>
+<h2 id="2-linux-对蓝牙的支持" class="relative group">2. Linux 对蓝牙的支持 <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#2-linux-%e5%af%b9%e8%93%9d%e7%89%99%e7%9a%84%e6%94%af%e6%8c%81" aria-label="锚点">#</a></span></h2><p>2.6 之后的内核都提供了蓝牙支持，通常都已经是默认的设置：</p>
+<pre><code>[*] Networking support ---&gt;                [CONFIG_NET]
   &lt;/M&gt; Bluetooth subsystem support ---&gt;    [CONFIG_BT]
     &lt;*/M&gt; RFCOMM protocol support          [CONFIG_BT_RFCOMM]
     [*]   RFCOMM TTY support               [CONFIG_BT_RFCOMM_TTY]
@@ -33,19 +413,50 @@
           (Select the appropriate drivers for your Bluetooth hardware)
 
   &lt;*/M&gt; RF switch subsystem support ---&gt;   [CONFIG_RFKILL]
-</code></pre><p>Linux 官方的蓝牙协议栈是 BlueZ ，BlueZ 包括 ：
-* HCI Core
-* HCI UART, USB and Virtual HCI device drivers
-* L2CAP module
-* Configuration and testing utilities</p><p>BlueZ 包提供了蓝牙编程库和各种工具：</p><ul><li>bccmd : is used to issue BlueCore commands to Cambridge Silicon Radio devices.</li><li>bluemoon : is a Bluemoon configuration utility.</li><li>bluetoothctl : is the interactive Bluetooth control program.</li><li>bluetoothd : is the Bluetooth daemon.</li><li>btmon : provides access to the Bluetooth subsystem monitor infrastructure for reading HCI traces.</li><li>ciptool : is used to set up, maintain, and inspect the CIP configuration of the Bluetooth subsystem in the Linux kernel.</li><li>hciattach : is used to attach a serial UART to the Bluetooth stack as HCI transport interface.</li><li>hciconfig : is used to configure Bluetooth devices.</li><li>hcidump : reads raw HCI data coming from and going to a Bluetooth device and prints to screen commands, events and data in a human-readable form.</li><li>hcitool : is used to configure Bluetooth connections and send some special command to Bluetooth devices.</li><li>hex2hcd : is used to convert a file needed by Broadcom devices to hcd (Broadcom bluetooth firmware) format.</li><li>l2ping : is used to send a L2CAP echo request to the Bluetooth MAC address given in dotted hex notation.</li><li>l2test : is L2CAP testing program.</li><li>rctest : is used to test RFCOMM communications on the Bluetooth stack.</li><li>rfcomm : is used to set up, maintain, and inspect the RFCOMM configuration of the Bluetooth subsystem in the Linux kernel.</li><li>sdptool : is used to perform SDP queries on Bluetooth devices.</li><li>libbluetooth.so : contains the BlueZ 4 API functions.</li></ul><p>安装了 BlueZ 之后，配置文件都在 /etc/bluetooth 目录下。</p><h2 id=3-在-linux-中配置蓝牙>3. 在 Linux 中配置蓝牙</h2><p>使用的模块是 Intel 2330 ，同时支持 WIFI 和 Bluetooth 。调试前应该先下载模块的固件 iwlwifi-2030-6.ucode ，放入系统的 /lib/fireware 目录下，系统加载驱动 iwlwifi 时会自动查找。使用的系统是 yocto linux ，运行在 Intel Quark 平台的主板。</p><p>系统启动后可以查看设备：</p><pre><code>root@WR-IntelligentDevice:~# lsusb
+</code></pre>
+<p>Linux 官方的蓝牙协议栈是 BlueZ ，BlueZ 包括 ：</p>
+<ul>
+<li>HCI Core</li>
+<li>HCI UART, USB and Virtual HCI device drivers</li>
+<li>L2CAP module</li>
+<li>Configuration and testing utilities</li>
+</ul>
+<p>BlueZ 包提供了蓝牙编程库和各种工具：</p>
+<ul>
+<li>bccmd : is used to issue BlueCore commands to Cambridge Silicon Radio devices.</li>
+<li>bluemoon : is a Bluemoon configuration utility.</li>
+<li>bluetoothctl : is the interactive Bluetooth control program.</li>
+<li>bluetoothd : is the Bluetooth daemon.</li>
+<li>btmon : provides access to the Bluetooth subsystem monitor infrastructure for reading HCI traces.</li>
+<li>ciptool : is used to set up, maintain, and inspect the CIP configuration of the Bluetooth subsystem in the Linux kernel.</li>
+<li>hciattach : is used to attach a serial UART to the Bluetooth stack as HCI transport interface.</li>
+<li>hciconfig : is used to configure Bluetooth devices.</li>
+<li>hcidump : reads raw HCI data coming from and going to a Bluetooth device and prints to screen commands, events and data in a human-readable form.</li>
+<li>hcitool : is used to configure Bluetooth connections and send some special command to Bluetooth devices.</li>
+<li>hex2hcd : is used to convert a file needed by Broadcom devices to hcd (Broadcom bluetooth firmware) format.</li>
+<li>l2ping : is used to send a L2CAP echo request to the Bluetooth MAC address given in dotted hex notation.</li>
+<li>l2test : is L2CAP testing program.</li>
+<li>rctest : is used to test RFCOMM communications on the Bluetooth stack.</li>
+<li>rfcomm : is used to set up, maintain, and inspect the RFCOMM configuration of the Bluetooth subsystem in the Linux kernel.</li>
+<li>sdptool : is used to perform SDP queries on Bluetooth devices.</li>
+<li>libbluetooth.so : contains the BlueZ 4 API functions.</li>
+</ul>
+<p>安装了 BlueZ 之后，配置文件都在 /etc/bluetooth 目录下。</p>
+<h2 id="3-在-linux-中配置蓝牙" class="relative group">3. 在 Linux 中配置蓝牙 <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#3-%e5%9c%a8-linux-%e4%b8%ad%e9%85%8d%e7%bd%ae%e8%93%9d%e7%89%99" aria-label="锚点">#</a></span></h2><p>使用的模块是 Intel 2330 ，同时支持 WIFI 和 Bluetooth 。调试前应该先下载模块的固件 iwlwifi-2030-6.ucode ，放入系统的 /lib/fireware 目录下，系统加载驱动 iwlwifi 时会自动查找。使用的系统是 yocto linux ，运行在 Intel Quark 平台的主板。</p>
+<p>系统启动后可以查看设备：</p>
+<pre><code>root@WR-IntelligentDevice:~# lsusb
 Bus 001 Device 002: ID 0424:2514 Standard Microsystems Corp. USB 2.0 Hub
 Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
 Bus 002 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
 Bus 001 Device 003: ID 8087:07da Intel Corp. 
-</code></pre><p>应该加载的驱动：</p><pre><code>root@WR-IntelligentDevice:~# lsmod | grep bt
+</code></pre>
+<p>应该加载的驱动：</p>
+<pre><code>root@WR-IntelligentDevice:~# lsmod | grep bt
 bluetooth             200527  6 rfcomm,hidp,btusb
 btusb                  11506  0 
-</code></pre><p>如果驱动加载成功，会出现蓝牙的设备节点，使用 hciconfig 命令查看：</p><pre><code>root@WR-IntelligentDevice:~# hciconfig -a
+</code></pre>
+<p>如果驱动加载成功，会出现蓝牙的设备节点，使用 hciconfig 命令查看：</p>
+<pre><code>root@WR-IntelligentDevice:~# hciconfig -a
 hci0:   Type: BR/EDR  Bus: USB
         BD Address: 00:15:00:A1:E3:83  ACL MTU: 310:10  SCO MTU: 64:8
         DOWN 
@@ -55,7 +466,9 @@ hci0:   Type: BR/EDR  Bus: USB
         Packet type: DM1 DM3 DM5 DH1 DH3 DH5 HV1 HV2 HV3 
         Link policy: RSWITCH HOLD SNIFF PARK 
         Link mode: SLAVE ACCEPT 
-</code></pre><p>可以看到设备的状态是 DOWN ，表示蓝牙还没有启动。手动启动蓝牙，可以看到蓝牙状态变为 UP RUNNING ，而且是从设备：</p><pre><code>root@WR-IntelligentDevice:~# hciconfig hci0 up
+</code></pre>
+<p>可以看到设备的状态是 DOWN ，表示蓝牙还没有启动。手动启动蓝牙，可以看到蓝牙状态变为 UP RUNNING ，而且是从设备：</p>
+<pre><code>root@WR-IntelligentDevice:~# hciconfig hci0 up
 root@WR-IntelligentDevice:~# hciconfig -a 
 hci0:   Type: BR/EDR  Bus: USB
         BD Address: 00:15:00:A1:E3:83  ACL MTU: 310:10  SCO MTU: 64:8
@@ -73,17 +486,28 @@ hci0:   Type: BR/EDR  Bus: USB
         HCI Version: 4.0 (0x6)  Revision: 0x1ebd
         LMP Version: 4.0 (0x6)  Subversion: 0xfc00
         Manufacturer: Intel Corp. (2)
-</code></pre><p>更好的方法是用 bluetoothd 启动蓝牙， bluetoothd 是一个守护进程，启动时会根据 /etc/bluetooth/ 下的配置文件初始化蓝牙，直接执行 <code>bluetoothd</code> 。</p><h3 id=3-1-连接手机蓝牙>3.1 连接手机蓝牙</h3><p>打开手机的蓝牙，测试用的是小米手机。这里要注意一点，手机上的蓝牙在打开后会有一段时间处于可检测状态，也就是其他蓝牙设备可以扫描到它，之后会关闭可检测性，这段时间的长短通常可以设置，有的手机在熄屏时也会关闭蓝牙的可检测性。</p><p>然后扫描一下周边的蓝牙设备：</p><pre><code>root@WR-IntelligentDevice:~# hcitool scan
+</code></pre>
+<p>更好的方法是用 bluetoothd 启动蓝牙， bluetoothd 是一个守护进程，启动时会根据 /etc/bluetooth/ 下的配置文件初始化蓝牙，直接执行 <code>bluetoothd</code> 。</p>
+<h3 id="31-连接手机蓝牙" class="relative group">3.1 连接手机蓝牙 <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#31-%e8%bf%9e%e6%8e%a5%e6%89%8b%e6%9c%ba%e8%93%9d%e7%89%99" aria-label="锚点">#</a></span></h3><p>打开手机的蓝牙，测试用的是小米手机。这里要注意一点，手机上的蓝牙在打开后会有一段时间处于可检测状态，也就是其他蓝牙设备可以扫描到它，之后会关闭可检测性，这段时间的长短通常可以设置，有的手机在熄屏时也会关闭蓝牙的可检测性。</p>
+<p>然后扫描一下周边的蓝牙设备：</p>
+<pre><code>root@WR-IntelligentDevice:~# hcitool scan
 Scanning ...
         A2:CF:49:FD:99:AF       MI-ONE Plus
-</code></pre><blockquote><p>scan 用于扫描经典蓝牙设备，如果是低功耗蓝牙设备（BLE），例如手环之类，要 用 lescan 选项，调试 BLE 设备要用 gatttool 工具。</p></blockquote><p>测试能否连通：</p><pre><code>root@WR-IntelligentDevice:~# l2ping -i hci0 -c 4 A2:CF:49:FD:99:AF
+</code></pre>
+<blockquote>
+<p>scan 用于扫描经典蓝牙设备，如果是低功耗蓝牙设备（BLE），例如手环之类，要 用 lescan 选项，调试 BLE 设备要用 gatttool 工具。</p>
+</blockquote>
+<p>测试能否连通：</p>
+<pre><code>root@WR-IntelligentDevice:~# l2ping -i hci0 -c 4 A2:CF:49:FD:99:AF
 Ping: A2:CF:49:FD:99:AF from 00:15:00:A1:E3:83 (data size 44) ...
 44 bytes from A2:CF:49:FD:99:AF id 0 time 25.03ms
 44 bytes from A2:CF:49:FD:99:AF id 1 time 25.32ms
 44 bytes from A2:CF:49:FD:99:AF id 2 time 26.96ms
 44 bytes from A2:CF:49:FD:99:AF id 3 time 27.06ms
 4 sent, 4 received, 0% loss
-</code></pre><p>利用 SDP 协议，我们还可以查看每个设备都有功能，能提供什么服务，每种基于 RFCOMM 的服务都使用某种协议，占据哪个“频道 (channel)”，这是使用服务时的一个重要参数，先看看自己：</p><pre><code>root@WR-IntelligentDevice:~# sdptool browse local
+</code></pre>
+<p>利用 SDP 协议，我们还可以查看每个设备都有功能，能提供什么服务，每种基于 RFCOMM 的服务都使用某种协议，占据哪个“频道 (channel)”，这是使用服务时的一个重要参数，先看看自己：</p>
+<pre><code>root@WR-IntelligentDevice:~# sdptool browse local
 Browsing FF:FF:FF:00:00:00 ...
 Service Name: SIM Access Server
 Service RecHandle: 0x10000
@@ -175,7 +599,9 @@ Protocol Descriptor List:
 Profile Descriptor List:
   &quot;Dialup Networking&quot; (0x1103)
     Version: 0x0100
-</code></pre><p>再看看手机的蓝牙服务：</p><pre><code>root@WR-IntelligentDevice:~# sdptool browse  A2:CF:49:FD:99:AF 
+</code></pre>
+<p>再看看手机的蓝牙服务：</p>
+<pre><code>root@WR-IntelligentDevice:~# sdptool browse  A2:CF:49:FD:99:AF 
 Browsing A2:CF:49:FD:99:AF ...
 Service RecHandle: 0x10000
 Service Class ID List:
@@ -261,15 +687,22 @@ Protocol Descriptor List:
 Profile Descriptor List:
   &quot;Phonebook Access&quot; (0x1130)
     Version: 0x0100
-</code></pre><p>使用 openobex 包提供的 obex_test 工具，在 yocto 的官网可以下载到 recipes 文件和补丁。或者在下载源码：<a href=https://github.com/zuckschwerdt/openobex target=_blank>https://github.com/zuckschwerdt/openobex</a></p><h3 id=3-2-连接蓝牙耳机>3.2 连接蓝牙耳机</h3><p>先启动本地的蓝牙服务并配置：</p><pre><code>root@WR-IntelligentDevice:~# bluetoothd
+</code></pre>
+<p>使用 openobex 包提供的 obex_test 工具，在 yocto 的官网可以下载到 recipes 文件和补丁。或者在下载源码：<a href="https://github.com/zuckschwerdt/openobex" target="_blank" rel="noreferrer">https://github.com/zuckschwerdt/openobex</a></p>
+<h3 id="32-连接蓝牙耳机" class="relative group">3.2 连接蓝牙耳机 <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#32-%e8%bf%9e%e6%8e%a5%e8%93%9d%e7%89%99%e8%80%b3%e6%9c%ba" aria-label="锚点">#</a></span></h3><p>先启动本地的蓝牙服务并配置：</p>
+<pre><code>root@WR-IntelligentDevice:~# bluetoothd
 root@WR-IntelligentDevice:~# hciconfig hci0 noencrypt
 root@WR-IntelligentDevice:~# hciconfig hci0 piscan
 root@WR-IntelligentDevice:~# hciconfig hci0 name &quot;bluez4&quot;
 root@WR-IntelligentDevice:~# hciconfig hci0 pageto 65535
-</code></pre><p>然后启动蓝牙耳机，使之处于可检测状态，然后扫描：</p><pre><code>root@WR-IntelligentDevice:~# hcitool scan
+</code></pre>
+<p>然后启动蓝牙耳机，使之处于可检测状态，然后扫描：</p>
+<pre><code>root@WR-IntelligentDevice:~# hcitool scan
 Scanning ...
         50:C9:71:AA:E0:AE       JABRA EASYGO
-</code></pre><p>准备一个 test.wav 的音频文件，然后用如下脚本测试蓝牙耳机：</p><pre><code>#!/bin/sh
+</code></pre>
+<p>准备一个 test.wav 的音频文件，然后用如下脚本测试蓝牙耳机：</p>
+<pre><code>#!/bin/sh
 local mac=&quot;50:C9:71:AA:E0:AE&quot;
 local asoundconf=&quot;/etc/asound.conf&quot;
 
@@ -305,7 +738,9 @@ hcitool con
 
 echo &quot;Play audio ...&quot;
 aplay -D bluetooth ./test.wav
-</code></pre><p>正常情况会打印如下信息，蓝牙耳机可以听到音频内容：</p><pre><code>Audio sink service registered
+</code></pre>
+<p>正常情况会打印如下信息，蓝牙耳机可以听到音频内容：</p>
+<pre><code>Audio sink service registered
 Audio source service registered
 Remote control service registered
 Remote target service registered
@@ -320,12 +755,233 @@ Connections:
         &lt; ACL 50:C9:71:AA:E0:AE handle 34 state 1 lm MASTER AUTH ENCRYPT 
 Play audio ...
 Playing WAVE './test.wav' : Signed 16 bit Little Endian, Rate 44100 Hz, Stereo
-</code></pre></div></article><hr><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>1389 Words</p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>2015-10-22 00:00 &#43;0000</p></div><div class=pagination><div class=pagination__title><span class=pagination__title-h></span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://shaocheng.li/posts/2015/11/27/><span class=button__icon>←</span>
-<span class=button__text>Linux IPv6 HOWTO</span></a></span>
-<span class="button next"><a href=https://shaocheng.li/posts/2015/09/09/><span class=button__text>Linux 命令行下的 3G 模块配置工具 comgt</span>
-<span class=button__icon>→</span></a></span></div></div><div id=comments class=thin><div id=disqus_thread></div><script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return;}
-var d=document,s=d.createElement('script');s.async=true;s.src='//'+"shaocheng-li"+'.disqus.com/embed.js';s.setAttribute('data-timestamp',+new Date());(d.head||d.body).appendChild(s);})();</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></div></main></div><footer class=footer><div class=footer__inner><div class=footer__content><span>&copy; 2023</span>
-<span><a href=https://shaocheng.li>Shaocheng.Li</a></span>
-<span><a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>CC BY-NC 4.0</a></span>
-<span><a href=https://shaocheng.li/posts/index.xml target=_blank title=rss><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg></a></span></div></div><div class=footer__inner><div class=footer__content><span>Powered by <a href=http://gohugo.io>Hugo</a></span>
-<span>Made with &#10084; by <a href=https://github.com/rhazdon>rhazdon</a></span></div></div></footer></div><script type=text/javascript src=https://shaocheng.li/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script></body></html>
+</code></pre>
+
+      </div>
+    </section>
+    <footer class="pt-8 max-w-prose print:hidden">
+      
+  <div class="flex">
+    
+      
+      
+        
+        <img
+          class="!mb-0 !mt-0 me-4 h-24 w-24 rounded-full"
+          width="96"
+          height="96"
+          alt="Shaocheng.Li"
+          src="/img/author_hucdd16a8e5aab658b1bf3664f1886d7a1_71871_192x192_fill_box_center_3.png"
+          
+            loading="lazy"
+          
+        />
+      
+    
+    <div class="place-self-center">
+      
+        <div class="text-[0.6rem] uppercase leading-3 text-neutral-500 dark:text-neutral-400">
+          作者
+        </div>
+        <div class="font-semibold leading-6 text-neutral-800 dark:text-neutral-300">
+          Shaocheng.Li
+        </div>
+      
+      
+        <div class="text-sm text-neutral-700 dark:text-neutral-400">A Linux software engineer.</div>
+      
+      <div class="text-2xl sm:text-lg">
+  <div class="flex flex-wrap text-neutral-400 dark:text-neutral-500">
+    
+      
+        <a
+          class="px-1 transition-transform hover:scale-125 hover:text-primary-700 dark:hover:text-primary-400"
+          style="will-change:transform;"
+          href="https://github.com/exbob"
+          target="_blank"
+          aria-label="Github"
+          rel="me noopener noreferrer"
+          ><span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+</span></a
+        >
+      
+    
+  </div>
+
+</div>
+    </div>
+  </div>
+
+
+      
+
+      
+  
+    
+    
+    
+    <div class="pt-8">
+      <hr class="border-dotted border-neutral-300 dark:border-neutral-600" />
+      <div class="flex justify-between pt-3">
+        <span>
+          
+            <a class="group flex" href="/posts/2015/09/09/">
+              <span
+                class="me-2 text-neutral-700 transition-transform group-hover:-translate-x-[2px] group-hover:text-primary-600 dark:text-neutral dark:group-hover:text-primary-400"
+                ><span class="ltr:inline rtl:hidden">&larr;</span
+                ><span class="ltr:hidden rtl:inline">&rarr;</span></span
+              >
+              <span class="flex flex-col">
+                <span
+                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+                  >Linux 命令行下的 3G 模块配置工具 comgt</span
+                >
+                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+                  
+                    <time datetime="2015-09-09 08:00:00 &#43;0800 CST">2015 September 9</time>
+                  
+                </span>
+              </span>
+            </a>
+          
+        </span>
+        <span>
+          
+            <a class="group flex text-right" href="/posts/2015/11/27/">
+              <span class="flex flex-col">
+                <span
+                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+                  >Linux IPv6 HOWTO</span
+                >
+                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+                  
+                    <time datetime="2015-11-27 08:00:00 &#43;0800 CST">2015 November 27</time>
+                  
+                </span>
+              </span>
+              <span
+                class="ms-2 text-neutral-700 transition-transform group-hover:-translate-x-[2px] group-hover:text-primary-600 dark:text-neutral dark:group-hover:text-primary-400"
+                ><span class="ltr:inline rtl:hidden">&rarr;</span
+                ><span class="ltr:hidden rtl:inline">&larr;</span></span
+              >
+            </a>
+          
+        </span>
+      </div>
+    </div>
+  
+
+
+      
+    </footer>
+  </article>
+
+        
+          <div class="pointer-events-none absolute bottom-0 end-0 top-[100vh] w-12">
+            <a
+              href="#the-top"
+              class="pointer-events-auto sticky top-[calc(100vh-5.5rem)] flex h-12 w-12 items-center justify-center rounded-full bg-neutral/50 text-xl text-neutral-700 backdrop-blur hover:text-primary-600 dark:bg-neutral-800/50 dark:text-neutral dark:hover:text-primary-400"
+              aria-label="回到顶部"
+              title="回到顶部"
+            >
+              &uarr;
+            </a>
+          </div>
+        
+      </main><footer class="py-10 print:hidden">
+  
+  
+  <div class="flex items-center justify-between">
+    <div>
+      
+      
+        <p class="text-sm text-neutral-500 dark:text-neutral-400">
+            &copy;
+            2024
+            Shaocheng.Li
+        </p>
+      
+      
+      
+        <p class="text-xs text-neutral-500 dark:text-neutral-400">
+          
+          
+          由 <a class="hover:underline hover:decoration-primary-400 hover:text-primary-500"
+            href="https://gohugo.io/" target="_blank" rel="noopener noreferrer">Hugo</a> &amp; <a class="hover:underline hover:decoration-primary-400 hover:text-primary-500" href="https://github.com/jpanther/congo" target="_blank" rel="noopener noreferrer">Congo</a> 强力驱动
+        </p>
+      
+    </div>
+    <div class="flex flex-row items-center">
+      
+      
+      
+      
+        <div
+          class="me-14 cursor-pointer text-sm text-neutral-700 hover:text-primary-600 dark:text-neutral dark:hover:text-primary-400"
+        >
+          <button id="appearance-switcher-0" type="button" aria-label="appearance switcher">
+            <div
+              class="flex items-center justify-center w-12 h-12 dark:hidden"
+              title="切换为深色模式"
+            >
+              <span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M32 256c0-123.8 100.3-224 223.8-224c11.36 0 29.7 1.668 40.9 3.746c9.616 1.777 11.75 14.63 3.279 19.44C245 86.5 211.2 144.6 211.2 207.8c0 109.7 99.71 193 208.3 172.3c9.561-1.805 16.28 9.324 10.11 16.95C387.9 448.6 324.8 480 255.8 480C132.1 480 32 379.6 32 256z"/></svg>
+</span>
+            </div>
+            <div
+              class="items-center justify-center hidden w-12 h-12 dark:flex"
+              title="切换为浅色模式"
+            >
+              <span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 159.1c-53.02 0-95.1 42.98-95.1 95.1S202.1 351.1 256 351.1s95.1-42.98 95.1-95.1S309 159.1 256 159.1zM509.3 347L446.1 255.1l63.15-91.01c6.332-9.125 1.104-21.74-9.826-23.72l-109-19.7l-19.7-109c-1.975-10.93-14.59-16.16-23.72-9.824L256 65.89L164.1 2.736c-9.125-6.332-21.74-1.107-23.72 9.824L121.6 121.6L12.56 141.3C1.633 143.2-3.596 155.9 2.736 164.1L65.89 256l-63.15 91.01c-6.332 9.125-1.105 21.74 9.824 23.72l109 19.7l19.7 109c1.975 10.93 14.59 16.16 23.72 9.824L256 446.1l91.01 63.15c9.127 6.334 21.75 1.107 23.72-9.822l19.7-109l109-19.7C510.4 368.8 515.6 356.1 509.3 347zM256 383.1c-70.69 0-127.1-57.31-127.1-127.1c0-70.69 57.31-127.1 127.1-127.1s127.1 57.3 127.1 127.1C383.1 326.7 326.7 383.1 256 383.1z"/></svg>
+</span>
+            </div>
+          </button>
+        </div>
+      
+    </div>
+  </div>
+  
+  
+</footer>
+<div
+  id="search-wrapper"
+  class="invisible fixed inset-0 z-50 flex h-screen w-screen cursor-default flex-col bg-neutral-500/50 p-4 backdrop-blur-sm dark:bg-neutral-900/50 sm:p-6 md:p-[10vh] lg:p-[12vh]"
+  data-url="https://shaocheng.li/"
+>
+  <div
+    id="search-modal"
+    class="flex flex-col w-full max-w-3xl min-h-0 mx-auto border rounded-md shadow-lg top-20 border-neutral-200 bg-neutral dark:border-neutral-700 dark:bg-neutral-800"
+  >
+    <header class="relative z-10 flex items-center justify-between flex-none px-2">
+      <form class="flex items-center flex-auto min-w-0">
+        <div class="flex items-center justify-center w-8 h-8 text-neutral-400">
+          <span class="relative inline-block align-text-bottom px-1 icon"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="svg-inline--fa fa-search fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
+</span>
+        </div>
+        <input
+          type="search"
+          id="search-query"
+          class="flex flex-auto h-12 mx-1 bg-transparent appearance-none focus:outline-dotted focus:outline-2 focus:outline-transparent"
+          placeholder="搜索"
+          tabindex="0"
+        />
+      </form>
+      <button
+        id="close-search-button"
+        class="flex items-center justify-center w-8 h-8 text-neutral-700 hover:text-primary-600 dark:text-neutral dark:hover:text-primary-400"
+        title="关闭 (Esc)"
+      >
+        <span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"/></svg>
+</span>
+      </button>
+    </header>
+    <section class="flex-auto px-2 overflow-auto">
+      <ul id="search-results">
+        
+      </ul>
+    </section>
+  </div>
+</div>
+
+    </div>
+  </body>
+</html>

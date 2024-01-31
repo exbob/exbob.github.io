@@ -1,14 +1,368 @@
-<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=author content="Shaocheng.Li"><meta name=description content="处理中断的线程应该先获得 I/O 权限，调用 ThreadCtl() 函数：
-#include &amp;lt;sys/neutrino.h&amp;gt; ThreadCtl( _NTO_TCTL_IO, 0 );  QNX 提供了两种捆绑中断服务程序和中断号的方式：InterruptAttach() 和 InterruptAttachEvent() 。两种方式调用中断服务程序的方式也不同。分离可以调用 InterruptDetach() 函数：
-#define IRQ3 3 /* A forward reference for the handler */ extern const sigevent *serint (void *, int); … /* * Associate the interrupt handler, serint, * with IRQ 3, the 2nd PC serial port */ ThreadCtl( _NTO_TCTL_IO, 0 ); id = InterruptAttach (IRQ3, serint, NULL, 0, 0); … /* Perform some processing."><meta name=keywords content><meta name=robots content="noodp"><meta name=theme-color content="#252627"><link rel=canonical href=https://shaocheng.li/posts/2013/07/28/><title>QNX 编程 :: Shaocheng.Li — Hello Friends</title><link href=https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css rel=stylesheet type=text/css><link rel=stylesheet href=https://shaocheng.li/main.min.e9b3dfcc5ffe9d55eb281ecaf47cf6179d26eec497e087299934d581c987aa0b.css><link rel=stylesheet type=text/css href=https://shaocheng.li/css/custom.css><link rel=apple-touch-icon sizes=180x180 href=https://shaocheng.li/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=https://shaocheng.li/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=https://shaocheng.li/favicon-16x16.png><link rel=manifest href=https://shaocheng.li/site.webmanifest><link rel=mask-icon href=https://shaocheng.li/safari-pinned-tab.svg color=#252627><link rel="shortcut icon" href=https://shaocheng.li/favicon.ico><meta name=msapplication-TileColor content="#252627"><meta name=theme-color content="#252627"><meta itemprop=name content="QNX 编程"><meta itemprop=description content="处理中断的线程应该先获得 I/O 权限，调用 ThreadCtl() 函数：
-#include &lt;sys/neutrino.h&gt; ThreadCtl( _NTO_TCTL_IO, 0 );  QNX 提供了两种捆绑中断服务程序和中断号的方式：InterruptAttach() 和 InterruptAttachEvent() 。两种方式调用中断服务程序的方式也不同。分离可以调用 InterruptDetach() 函数：
-#define IRQ3 3 /* A forward reference for the handler */ extern const sigevent *serint (void *, int); … /* * Associate the interrupt handler, serint, * with IRQ 3, the 2nd PC serial port */ ThreadCtl( _NTO_TCTL_IO, 0 ); id = InterruptAttach (IRQ3, serint, NULL, 0, 0); … /* Perform some processing."><meta itemprop=datePublished content="2013-07-28T08:00:00&#43;08:00"><meta itemprop=dateModified content="2013-07-28T08:00:00&#43;08:00"><meta itemprop=wordCount content="579"><meta itemprop=keywords content><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://shaocheng.li"><meta name=twitter:title content="QNX 编程"><meta name=twitter:description content="处理中断的线程应该先获得 I/O 权限，调用 ThreadCtl() 函数：
-#include &lt;sys/neutrino.h&gt; ThreadCtl( _NTO_TCTL_IO, 0 );  QNX 提供了两种捆绑中断服务程序和中断号的方式：InterruptAttach() 和 InterruptAttachEvent() 。两种方式调用中断服务程序的方式也不同。分离可以调用 InterruptDetach() 函数：
-#define IRQ3 3 /* A forward reference for the handler */ extern const sigevent *serint (void *, int); … /* * Associate the interrupt handler, serint, * with IRQ 3, the 2nd PC serial port */ ThreadCtl( _NTO_TCTL_IO, 0 ); id = InterruptAttach (IRQ3, serint, NULL, 0, 0); … /* Perform some processing."><meta property="article:published_time" content="2013-07-28 08:00:00 &#43;0800 &#43;0800"></head><body><div class=container><header class=header><span class=header__inner><a href=https://shaocheng.li/ style=text-decoration:none><div class=logo><span class=logo__mark>></span>
-<span class=logo__text>$ cd /home/</span>
-<span class=logo__cursor></span></div></a><span class=header__right><nav class=menu><ul class=menu__inner><li><a href=https://shaocheng.li/about/>About</a></li><li><a href=https://shaocheng.li/posts/>Posts</a></li></ul></nav><span class=menu-trigger><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></span><span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 41C32.4934 41 41 32.4934 41 22 41 11.5066 32.4934 3 22 3 11.5066 3 3 11.5066 3 22s8.5066 19 19 19zM7 22C7 13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22z"/></svg></span></span></span></header><div class=content><main class=post><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>3 minutes</p></div><article><h1 class=post-title><a href=https://shaocheng.li/posts/2013/07/28/>QNX 编程</a></h1><div class=post-content><p>处理中断的线程应该先获得 I/O 权限，调用 ThreadCtl() 函数：</p><pre><code>#include &lt;sys/neutrino.h&gt;
+
+
+
+
+
+
+<!DOCTYPE html>
+<html
+  lang="zh-cn"
+  dir="Chinese-Simplified"
+  class="scroll-smooth"
+  data-default-appearance="light"
+  data-auto-appearance="true"
+><head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="rgb(255,255,255)" />
+  
+  <title>QNX 编程 &middot; Shaocheng.Li</title>
+    <meta name="title" content="QNX 编程 &middot; Shaocheng.Li" />
+  
+  
+  
+  
+  
+  <script
+    type="text/javascript"
+    src="/js/appearance.min.022d0ebc3b46a335eb1c7ef79b7f2de143d7cd5156d433638592ef1ce5f8554e.js"
+    integrity="sha256-Ai0OvDtGozXrHH73m38t4UPXzVFW1DNjhZLvHOX4VU4="
+  ></script>
+  
+  
+  
+  
+  
+  
+  
+    
+  
+  
+  <link
+    type="text/css"
+    rel="stylesheet"
+    href="/css/main.bundle.min.569cc57d5993584135ff38133d1f599f8f8db0303a9e886172e4b5aabb177ac6.css"
+    integrity="sha256-VpzFfVmTWEE1/zgTPR9Zn4&#43;NsDA6nohhcuS1qrsXesY="
+  />
+  
+    
+    
+    
+  
+  
+    
+    
+  
+  
+  
+    
+    <script
+      defer
+      type="text/javascript"
+      id="script-bundle"
+      src="/js/main.bundle.min.f29ffdffd9ab4cc95250c3c7196b2d5dae8ee6ef0a4139451073f90183ae7e31.js"
+      integrity="sha256-8p/9/9mrTMlSUMPHGWstXa6O5u8KQTlFEHP5AYOufjE="
+      data-copy="复制"
+      data-copied="已复制"
+    ></script>
+  
+  
+  <meta
+    name="description"
+    content="
+      
+        处理中断的线程应该先获得 I/O 权限，调用 ThreadCtl() 函数：
+      
+    "
+  />
+  
+  
+  
+  <link rel="canonical" href="https://shaocheng.li/posts/2013/07/28/" />
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  
+  
+  
+  
+  
+  
+  
+  <meta property="og:title" content="QNX 编程" />
+<meta property="og:description" content="处理中断的线程应该先获得 I/O 权限，调用 ThreadCtl() 函数：" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://shaocheng.li/posts/2013/07/28/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2013-07-28T08:00:00+08:00" />
+<meta property="article:modified_time" content="2013-07-28T08:00:00+08:00" />
+
+
+  <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="QNX 编程"/>
+<meta name="twitter:description" content="处理中断的线程应该先获得 I/O 权限，调用 ThreadCtl() 函数："/>
+
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "articleSection": "Posts",
+    "name": "QNX 编程",
+    "headline": "QNX 编程",
+    
+    "abstract": "处理中断的线程应该先获得 I\/O 权限，调用 ThreadCtl() 函数：",
+    "inLanguage": "zh-cn",
+    "url" : "https:\/\/shaocheng.li\/posts\/2013\/07\/28\/",
+    "author" : {
+      "@type": "Person",
+      "name": "Shaocheng.Li"
+    },
+    "copyrightYear": "2013",
+    "dateCreated": "2013-07-28T08:00:00\u002b08:00",
+    "datePublished": "2013-07-28T08:00:00\u002b08:00",
+    
+    "dateModified": "2013-07-28T08:00:00\u002b08:00",
+    
+    
+    
+    "mainEntityOfPage": "true",
+    "wordCount": "579"
+  }
+  </script>
+
+
+  
+  <meta name="author" content="Shaocheng.Li" />
+  
+    
+      <link href="https://github.com/exbob" rel="me" />
+    
+  
+  
+  
+
+
+
+
+
+
+  
+  
+  
+  
+  
+
+  
+  
+</head>
+<body
+    class="flex flex-col h-screen px-6 m-auto text-lg leading-7 max-w-7xl bg-neutral text-neutral-900 dark:bg-neutral-800 dark:text-neutral sm:px-14 md:px-24 lg:px-32"
+  >
+    <div id="the-top" class="absolute flex self-center">
+      <a
+        class="px-3 py-1 text-sm -translate-y-8 rounded-b-lg bg-primary-200 focus:translate-y-0 dark:bg-neutral-600"
+        href="#main-content"
+        ><span class="font-bold pe-2 text-primary-600 dark:text-primary-400">&darr;</span
+        >跳到主要内容</a
+      >
+    </div>
+    
+    
+      <header class="py-6 font-semibold text-neutral-900 dark:text-neutral print:hidden sm:py-10">
+  <nav class="flex items-start justify-between sm:items-center">
+    
+    <div class="flex flex-row items-center">
+      
+  <a
+    class="decoration-primary-500 hover:underline hover:decoration-2 hover:underline-offset-2"
+    rel="me"
+    href="/"
+    >Shaocheng.Li</a
+  >
+
+    </div>
+    
+    
+      <ul class="flex flex-col list-none text-end sm:flex-row">
+        
+          
+            
+            <li class="group mb-1 sm:mb-0 sm:me-7 sm:last:me-0.5">
+              
+                <a
+                  href="/posts/"
+                  title="Posts"
+                  
+                  ><span
+                      class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                      >文章列表</span
+                    >
+                  </a
+                >
+              
+            </li>
+          
+            
+            <li class="group mb-1 sm:mb-0 sm:me-7 sm:last:me-0.5">
+              
+                
+                
+                  <button
+                    id="search-button-1"
+                    title="搜索 (/)"
+                  >
+                    
+                      <span
+                        class="transition-colors group-dark:hover:text-primary-400 group-hover:text-primary-600"
+                      ><span class="relative inline-block align-text-bottom px-1 icon"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="svg-inline--fa fa-search fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
+</span></span><span
+                        class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                        ></span
+                      >
+                    
+                  </button>
+                
+              
+            </li>
+          
+            
+            <li class="group mb-1 sm:mb-0 sm:me-7 sm:last:me-0.5">
+              
+                
+                <button
+                  id="appearance-switcher-1"
+                  type="button"
+                  aria-label="appearance switcher"
+                >
+                  <span
+                    class="inline transition-colors group-dark:hover:text-primary-400 group-hover:text-primary-600 dark:hidden"
+                    title="切换为深色模式"
+                  >
+                    <span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M32 256c0-123.8 100.3-224 223.8-224c11.36 0 29.7 1.668 40.9 3.746c9.616 1.777 11.75 14.63 3.279 19.44C245 86.5 211.2 144.6 211.2 207.8c0 109.7 99.71 193 208.3 172.3c9.561-1.805 16.28 9.324 10.11 16.95C387.9 448.6 324.8 480 255.8 480C132.1 480 32 379.6 32 256z"/></svg>
+</span><span
+                        class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                        ></span
+                      >
+                    
+                  </span>
+                  <span
+                    class="hidden transition-colors group-dark:hover:text-primary-400 group-hover:text-primary-600 dark:inline"
+                    title="切换为浅色模式"
+                  >
+                    
+                      <span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 159.1c-53.02 0-95.1 42.98-95.1 95.1S202.1 351.1 256 351.1s95.1-42.98 95.1-95.1S309 159.1 256 159.1zM509.3 347L446.1 255.1l63.15-91.01c6.332-9.125 1.104-21.74-9.826-23.72l-109-19.7l-19.7-109c-1.975-10.93-14.59-16.16-23.72-9.824L256 65.89L164.1 2.736c-9.125-6.332-21.74-1.107-23.72 9.824L121.6 121.6L12.56 141.3C1.633 143.2-3.596 155.9 2.736 164.1L65.89 256l-63.15 91.01c-6.332 9.125-1.105 21.74 9.824 23.72l109 19.7l19.7 109c1.975 10.93 14.59 16.16 23.72 9.824L256 446.1l91.01 63.15c9.127 6.334 21.75 1.107 23.72-9.822l19.7-109l109-19.7C510.4 368.8 515.6 356.1 509.3 347zM256 383.1c-70.69 0-127.1-57.31-127.1-127.1c0-70.69 57.31-127.1 127.1-127.1s127.1 57.3 127.1 127.1C383.1 326.7 326.7 383.1 256 383.1z"/></svg>
+</span>
+                    
+                    
+                      <span
+                        class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                        ></span
+                      >
+                    
+                  </span>
+                </button>
+              
+            </li>
+          
+          
+        
+      </ul>
+    
+  </nav>
+</header>
+
+    
+    <div class="relative flex flex-col grow">
+      <main id="main-content" class="grow">
+        
+  <article>
+    <header class="max-w-prose">
+      
+      <h1 class="mt-0 text-4xl font-extrabold text-neutral-900 dark:text-neutral">
+        QNX 编程
+      </h1>
+      <div class="mt-8 mb-12 text-base text-neutral-500 dark:text-neutral-400 print:hidden">
+        
+
+
+
+
+
+  
+  
+
+
+
+  
+
+  
+  
+    
+  
+
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+
+
+  <div class="flex flex-row flex-wrap items-center">
+    
+    
+      <time datetime="2013-07-28 08:00:00 &#43;0800 CST">2013 July 28</time><span class="px-2 text-primary-500">&middot;</span><span>579 字</span><span class="px-2 text-primary-500">&middot;</span><span title="预计阅读">3 分钟</span>
+    
+
+    
+    
+  </div>
+
+  
+  
+
+
+      </div>
+      
+    </header>
+    <section class="flex flex-col max-w-full mt-0 prose dark:prose-invert lg:flex-row">
+      
+        <div class="order-first px-0 lg:order-last lg:max-w-xs lg:ps-8">
+          <div class="toc pe-5 print:hidden lg:sticky lg:top-10">
+            <details open class="-ms-5 mt-0 overflow-hidden rounded-lg ps-5">
+  <summary
+    class="-ms-5 block cursor-pointer bg-neutral-100 py-1 ps-5 text-lg font-semibold text-neutral-800 dark:bg-neutral-700 dark:text-neutral-100 lg:hidden"
+  >
+    目录
+  </summary>
+  <div class="-ms-5 border-s border-dotted border-neutral-300 py-2 ps-5 dark:border-neutral-600">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#中断服务程序">中断服务程序</a></li>
+    <li><a href="#使用-interruptattach">使用 InterruptAttach</a></li>
+    <li><a href="#使用-interruptattachevent">使用 InterruptAttachEvent</a></li>
+  </ul>
+</nav>
+  </div>
+</details>
+
+          </div>
+        </div>
+      
+      <div class="min-w-0 min-h-0 max-w-prose grow">
+        <p>处理中断的线程应该先获得 I/O 权限，调用 ThreadCtl() 函数：</p>
+<pre><code>#include &lt;sys/neutrino.h&gt;
 ThreadCtl( _NTO_TCTL_IO, 0 );
-</code></pre><p>QNX 提供了两种捆绑中断服务程序和中断号的方式：<code>InterruptAttach()</code> 和 <code>InterruptAttachEvent()</code> 。两种方式调用中断服务程序的方式也不同。分离可以调用 <code>InterruptDetach()</code> 函数：</p><pre><code>#define IRQ3 3
+</code></pre>
+<p>QNX 提供了两种捆绑中断服务程序和中断号的方式：<code>InterruptAttach()</code> 和 <code>InterruptAttachEvent()</code> 。两种方式调用中断服务程序的方式也不同。分离可以调用 <code>InterruptDetach()</code> 函数：</p>
+<pre><code>#define IRQ3 3
 
 /*  A forward reference for the handler */
 extern const sigevent *serint (void *, int);
@@ -27,19 +381,131 @@ id = InterruptAttach (IRQ3, serint, NULL, 0, 0);
 
 /*  Done; detach the interrupt source. */
 InterruptDetach (id);
-</code></pre><h2 id=中断服务程序>中断服务程序</h2><p>中断服务程序中应该完成如下几个工作：</p><ol><li><p>判断中断源</p><p>根据你的硬件配置，可能出现多个硬件共享一个中断号。大部分PIC(可编程中断控制器)芯片可以编程配置为电平触发中断或边沿触发中断。触发方式决定了中断是否可以共享。</p><p>下面是多中断源请求中断的示意图：</p><p><img src=~/IMG_2491.JPG alt></p><p>在上面这种情况下，如果 PIC 配置为电平触发，只要电平为高，就认为 IRQ 处于激活状态。第二个中断请求(step2)本身并不会产生新的中断，中断一直被认为处于激活状态，即使最初引起中断的中断源已经删除(step3)。直到最后一个中断源被清除，该中断才会被认为处于未激活状态。</p><p>如果是边沿触发模式，中断只会被“注意”一次，即 step1 。只有当中断线被清除，然后被再次请求，PIC 才会认为有新的中断产生。</p><p>QNX 允许多个中断服务程序关联一个中断号。这样的话，每个服务程序必须找到自己关联的硬件并且判断是否是由该硬件引起的中断。这项工作在电平触发环境下是可靠的，边沿触发环境就不一定了。</p></li><li><p>处理硬件</p><p>通常是读写硬件寄存器。</p><p>需要注意的是，在 ISR 中不能使用大部分内核调用。在使用库函数时也要小心，因为它们的底层实现可能使用了系统调用，例如 <code>printf()</code> 函数。</p><p>在 ISR 中可以使用的内核调用有：</p><pre><code>* InterruptMask()
-* InterruptUnmask()
-* TraceEvent()
-</code></pre><p><code>InterruptMask()</code> 和 <code>InterruptUnmask()</code> 用于关闭和使能一个特定的中断号。
-<code>TraceEvent()</code> 用于跟踪内核事件。</p></li><li><p>更新数据结构</p><p>另一个问题是如何安全的更新 ISR 和软件线程共同使用的数据结构。有两个特点值得重申：</p><ul><li>ISR 拥有比任何软件线程都高的优先级</li><li>ISR 不能使用内核调用(特别声明的除外)</li></ul><p>这意味着不能在 ISR 中使用线程级别的同步(例如互斥)。</p></li><li><p>唤醒应用层代码</p><p>因为 ISR 中的操作受到很大限制，通常需要将大量的操作放在线程级别运行</p><p>为了做到这一点，有两个选择：</p><ul><li>在 ISR 中完成一些对时限要求严格的工作，其他的安排给唤醒的线程来处理</li><li>在 ISR 中什么都不做，只是唤醒一个线程</li></ul><p>这也是 <code>InterruptAttach()</code> 和 <code>InterruptAttachEvent()</code> 的区别。</p></li></ol><h2 id=使用-interruptattach>使用 InterruptAttach</h2><p><code>InterruptAttach()</code> 函数的原型：</p><pre><code>#include &lt;sys/neutrino.h&gt;
+</code></pre>
+<h2 id="中断服务程序" class="relative group">中断服务程序 <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#%e4%b8%ad%e6%96%ad%e6%9c%8d%e5%8a%a1%e7%a8%8b%e5%ba%8f" aria-label="锚点">#</a></span></h2><p>中断服务程序中应该完成如下几个工作：</p>
+<ol>
+<li>
+<p>判断中断源</p>
+<p>根据你的硬件配置，可能出现多个硬件共享一个中断号。大部分PIC(可编程中断控制器)芯片可以编程配置为电平触发中断或边沿触发中断。触发方式决定了中断是否可以共享。</p>
+<p>下面是多中断源请求中断的示意图：</p>
+<p>
+
+
+
+
+  
+  
+  
+    <figure>
+      <img
+        class="mx-auto my-0 rounded-md"
+        src="~/IMG_2491.JPG"
+        alt=""
+        
+          loading="lazy"
+        
+      />
+      
+    </figure>
+  
+</p>
+<p>在上面这种情况下，如果 PIC 配置为电平触发，只要电平为高，就认为 IRQ 处于激活状态。第二个中断请求(step2)本身并不会产生新的中断，中断一直被认为处于激活状态，即使最初引起中断的中断源已经删除(step3)。直到最后一个中断源被清除，该中断才会被认为处于未激活状态。</p>
+<p>如果是边沿触发模式，中断只会被“注意”一次，即 step1 。只有当中断线被清除，然后被再次请求，PIC 才会认为有新的中断产生。</p>
+<p>QNX 允许多个中断服务程序关联一个中断号。这样的话，每个服务程序必须找到自己关联的硬件并且判断是否是由该硬件引起的中断。这项工作在电平触发环境下是可靠的，边沿触发环境就不一定了。</p>
+</li>
+<li>
+<p>处理硬件</p>
+<p>通常是读写硬件寄存器。</p>
+<p>需要注意的是，在 ISR 中不能使用大部分内核调用。在使用库函数时也要小心，因为它们的底层实现可能使用了系统调用，例如 <code>printf()</code> 函数。</p>
+<p>在 ISR 中可以使用的内核调用有：</p>
+<pre><code> * InterruptMask()
+ * InterruptUnmask()
+ * TraceEvent()
+</code></pre>
+<p><code>InterruptMask()</code> 和 <code>InterruptUnmask()</code> 用于关闭和使能一个特定的中断号。
+<code>TraceEvent()</code> 用于跟踪内核事件。</p>
+</li>
+<li>
+<p>更新数据结构</p>
+<p>另一个问题是如何安全的更新 ISR 和软件线程共同使用的数据结构。有两个特点值得重申：</p>
+<ul>
+<li>ISR 拥有比任何软件线程都高的优先级</li>
+<li>ISR 不能使用内核调用(特别声明的除外)</li>
+</ul>
+<p>这意味着不能在 ISR 中使用线程级别的同步(例如互斥)。</p>
+</li>
+<li>
+<p>唤醒应用层代码</p>
+<p>因为 ISR 中的操作受到很大限制，通常需要将大量的操作放在线程级别运行</p>
+<p>为了做到这一点，有两个选择：</p>
+<ul>
+<li>在 ISR 中完成一些对时限要求严格的工作，其他的安排给唤醒的线程来处理</li>
+<li>在 ISR 中什么都不做，只是唤醒一个线程</li>
+</ul>
+<p>这也是 <code>InterruptAttach()</code> 和 <code>InterruptAttachEvent()</code> 的区别。</p>
+</li>
+</ol>
+<h2 id="使用-interruptattach" class="relative group">使用 InterruptAttach <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#%e4%bd%bf%e7%94%a8-interruptattach" aria-label="锚点">#</a></span></h2><p><code>InterruptAttach()</code> 函数的原型：</p>
+<pre><code>#include &lt;sys/neutrino.h&gt;
 
 int InterruptAttach( int intr,
        const struct sigevent * (* handler)(void *, int),
        const void * area,
        int size,
        unsigned flags );
-</code></pre><p>参数：</p><ul><li>intr : 中断号</li><li>handler : 中断服务函数</li><li>area : 线程与中断服务函数进行通讯的空间，如果不需要可以设为NULL</li><li>size : 通讯空间的大小</li><li><p>flags : 表示捆绑中断服务函数的方式，有三个可选值：</p><ul><li><p>_NTO_INTR_FLAGS_END : 将新的中断服务函数放在该中断的处理函数队列的尾部。</p></li><li><p>_NTO_INTR_FLAGS_PROCESS : 将中断服务函数关联到进程，而不是当前线程.</p></li><li><p>_NTO_INTR_FLAGS_TRK_MSK : 跟踪调用 <code>InterruptMask()</code> 和 <code>InterruptUnmask()</code> 来安全的分离中断服务函数。</p></li></ul></li></ul><p>调用成功的话会返回一个 id ，用于 <code>InterruptMask()</code> 和 <code>InterruptUnmask()</code> 等函数。失败返回-1。</p><p>中断服务函数(ISR)的原型是：</p><pre><code>const struct sigevent *handler (void *area, int id);
-</code></pre><p>参数：</p><ul><li>area : 即 <code>InterruptAttach()</code> 函数的 <code>area</code></li><li>id : 即 <code>InterruptAttach()</code> 函数的返回值</li></ul><p>在 <code>handler()</code> 函数中完成了相应的中断服务后，可以选择安排一个线程来完成后续的工作。为此，ISR 需要返回一个指向 <code>const struct sigevent</code> 结构的指针，当内核收到这个结构后，就会将 event 带到目的地。</p><p><code>struct sigevent</code> 定义在 <code>&lt;sys/siginfo.h&gt;</code> 头文件，结构成员 <code>sigev_notify</code> 指定了产生怎样的通知。该文件提供了一些宏来初始化这个结构，第一个参数都是 <code>struct sigevent</code> 类型的指针，中断服务函数中常用的宏有如下两个：</p><ul><li><p>SIGEV_INTR_INIT(&amp;event)</p><p>设置 <code>sigev_notify</code> 为 <code>SIGEV_INTR</code>，表示发送一个中断通知到指定的线程。</p></li><li><p>SIGEV_NONE_INIT(&amp;event)</p><p>设置 <code>sigev_notify</code> 为 <code>SIGEV_NONE</code>，表示不发送任何通知。</p></li></ul><p>典型的处理中断的方法是，在一个线程中调用 <code>InterruptAttach()</code> 绑定中断服务函数，然后调用 <code>InterruptWait()</code> 阻塞线程，直到 ISR 返回一个 <code>SIGEV_INTR</code> ，<code>InterruptWait()</code> 才会返回：</p><pre><code>main ()
+</code></pre>
+<p>参数：</p>
+<ul>
+<li>
+<p>intr : 中断号</p>
+</li>
+<li>
+<p>handler : 中断服务函数</p>
+</li>
+<li>
+<p>area : 线程与中断服务函数进行通讯的空间，如果不需要可以设为NULL</p>
+</li>
+<li>
+<p>size : 通讯空间的大小</p>
+</li>
+<li>
+<p>flags : 表示捆绑中断服务函数的方式，有三个可选值：</p>
+<ul>
+<li>
+<p>_NTO_INTR_FLAGS_END  : 将新的中断服务函数放在该中断的处理函数队列的尾部。</p>
+</li>
+<li>
+<p>_NTO_INTR_FLAGS_PROCESS  : 将中断服务函数关联到进程，而不是当前线程.</p>
+</li>
+<li>
+<p>_NTO_INTR_FLAGS_TRK_MSK  : 跟踪调用 <code>InterruptMask()</code> 和 <code>InterruptUnmask()</code> 来安全的分离中断服务函数。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>调用成功的话会返回一个 id ，用于 <code>InterruptMask()</code> 和 <code>InterruptUnmask()</code> 等函数。失败返回-1。</p>
+<p>中断服务函数(ISR)的原型是：</p>
+<pre><code>const struct sigevent *handler (void *area, int id);
+</code></pre>
+<p>参数：</p>
+<ul>
+<li>area : 即 <code>InterruptAttach()</code> 函数的 <code>area</code></li>
+<li>id : 即 <code>InterruptAttach()</code> 函数的返回值</li>
+</ul>
+<p>在 <code>handler()</code> 函数中完成了相应的中断服务后，可以选择安排一个线程来完成后续的工作。为此，ISR 需要返回一个指向 <code>const struct sigevent</code> 结构的指针，当内核收到这个结构后，就会将 event 带到目的地。</p>
+<p><code>struct sigevent</code> 定义在 <code>&lt;sys/siginfo.h&gt;</code> 头文件，结构成员 <code>sigev_notify</code> 指定了产生怎样的通知。该文件提供了一些宏来初始化这个结构，第一个参数都是 <code>struct sigevent</code> 类型的指针，中断服务函数中常用的宏有如下两个：</p>
+<ul>
+<li>
+<p>SIGEV_INTR_INIT(&amp;event)</p>
+<p>设置 <code>sigev_notify</code> 为 <code>SIGEV_INTR</code>，表示发送一个中断通知到指定的线程。</p>
+</li>
+<li>
+<p>SIGEV_NONE_INIT(&amp;event)</p>
+<p>设置 <code>sigev_notify</code> 为 <code>SIGEV_NONE</code>，表示不发送任何通知。</p>
+</li>
+</ul>
+<p>典型的处理中断的方法是，在一个线程中调用 <code>InterruptAttach()</code> 绑定中断服务函数，然后调用 <code>InterruptWait()</code> 阻塞线程，直到 ISR 返回一个 <code>SIGEV_INTR</code> ，<code>InterruptWait()</code> 才会返回：</p>
+<pre><code>main ()
 {
     // perform initializations, etc.
     …
@@ -98,16 +564,248 @@ isr_handler (void *arg, int id)
     // This causes the InterruptWait in &quot;int_thread&quot; to unblock.
     return (&amp;event);
 }
-</code></pre><p>这种方案相对于使用 <code>SIGEV_SIGNAL</code> 或 <code>SIGEV_PULSE</code> 类型有几个优点：</p><ul><li>应用程序无需调用 <code>MsgReceive()</code> 函数(用于等到一个pulse)。</li><li>应用程序无需一个 signal-handler 函数(用于等待一个signal)。</li><li>如果中断处理很急迫，可以定义一个具有高优先级的 <code>int_thread()</code> 线程；当 <code>isr_handler()</code> 返回 SIGEV_INTR 时，只要 <code>int_thread()</code> 的优先级足够高，它就会立即执行。</li></ul><p>使用 <code>InterruptWait()</code> 时需要注意一点，被绑定的中断必须产生 <code>SIGEV_INTR</code> 。</p><h2 id=使用-interruptattachevent>使用 InterruptAttachEvent</h2><p><code>InterruptAttachEvent()</code> 函数的原型：</p><pre><code>int InterruptAttachEvent( 
+</code></pre>
+<p>这种方案相对于使用 <code>SIGEV_SIGNAL</code> 或 <code>SIGEV_PULSE</code> 类型有几个优点：</p>
+<ul>
+<li>应用程序无需调用 <code>MsgReceive()</code> 函数(用于等到一个pulse)。</li>
+<li>应用程序无需一个 signal-handler 函数(用于等待一个signal)。</li>
+<li>如果中断处理很急迫，可以定义一个具有高优先级的 <code>int_thread()</code> 线程；当 <code>isr_handler()</code> 返回 SIGEV_INTR 时，只要 <code>int_thread()</code> 的优先级足够高，它就会立即执行。</li>
+</ul>
+<p>使用 <code>InterruptWait()</code> 时需要注意一点，被绑定的中断必须产生 <code>SIGEV_INTR</code> 。</p>
+<h2 id="使用-interruptattachevent" class="relative group">使用 InterruptAttachEvent <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#%e4%bd%bf%e7%94%a8-interruptattachevent" aria-label="锚点">#</a></span></h2><p><code>InterruptAttachEvent()</code> 函数的原型：</p>
+<pre><code>int InterruptAttachEvent( 
        int intr,
        const struct sigevent* event,
        unsigned flags );
-</code></pre><p>前面关于 <code>InterruptAttach()</code> 的讨论大部分都适用于 <code>InterruptAttachEvent()</code> ，除了 ISR 。这里不需要提供 ISR ,<code>InterruptAttachEvent()</code> 会自己处理中断，因为已经为中断号绑定了一个 <code>struct sigevetn</code> 结构，内核可以检查到这个事件。这样的好处是我们无需考虑进入 ISR 以及如何返回。</p><p>需要注意的是，使用该函数时，内核会在处理中断时自动调用 <code>InterruptMask()</code> 。因此，你应该在中断处理线程中调用 <code>InterruptUnmask()</code> 清除中断。</p></div></article><hr><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>579 Words</p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>2013-07-28 00:00 &#43;0000</p></div><div class=pagination><div class=pagination__title><span class=pagination__title-h></span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://shaocheng.li/posts/2013/09/15/><span class=button__icon>←</span>
-<span class=button__text>QNX 对触摸屏的支持</span></a></span>
-<span class="button next"><a href=https://shaocheng.li/posts/2013/06/09/><span class=button__text>QNX下的串口驱动——devc-ser8250</span>
-<span class=button__icon>→</span></a></span></div></div><div id=comments class=thin><div id=disqus_thread></div><script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return;}
-var d=document,s=d.createElement('script');s.async=true;s.src='//'+"shaocheng-li"+'.disqus.com/embed.js';s.setAttribute('data-timestamp',+new Date());(d.head||d.body).appendChild(s);})();</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></div></main></div><footer class=footer><div class=footer__inner><div class=footer__content><span>&copy; 2023</span>
-<span><a href=https://shaocheng.li>Shaocheng.Li</a></span>
-<span><a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>CC BY-NC 4.0</a></span>
-<span><a href=https://shaocheng.li/posts/index.xml target=_blank title=rss><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg></a></span></div></div><div class=footer__inner><div class=footer__content><span>Powered by <a href=http://gohugo.io>Hugo</a></span>
-<span>Made with &#10084; by <a href=https://github.com/rhazdon>rhazdon</a></span></div></div></footer></div><script type=text/javascript src=https://shaocheng.li/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script></body></html>
+</code></pre>
+<p>前面关于 <code>InterruptAttach()</code> 的讨论大部分都适用于 <code>InterruptAttachEvent()</code> ，除了 ISR 。这里不需要提供 ISR ,<code>InterruptAttachEvent()</code> 会自己处理中断，因为已经为中断号绑定了一个 <code>struct sigevetn</code> 结构，内核可以检查到这个事件。这样的好处是我们无需考虑进入 ISR 以及如何返回。</p>
+<p>需要注意的是，使用该函数时，内核会在处理中断时自动调用 <code>InterruptMask()</code> 。因此，你应该在中断处理线程中调用 <code>InterruptUnmask()</code> 清除中断。</p>
+
+      </div>
+    </section>
+    <footer class="pt-8 max-w-prose print:hidden">
+      
+  <div class="flex">
+    
+      
+      
+        
+        <img
+          class="!mb-0 !mt-0 me-4 h-24 w-24 rounded-full"
+          width="96"
+          height="96"
+          alt="Shaocheng.Li"
+          src="/img/author_hucdd16a8e5aab658b1bf3664f1886d7a1_71871_192x192_fill_box_center_3.png"
+          
+            loading="lazy"
+          
+        />
+      
+    
+    <div class="place-self-center">
+      
+        <div class="text-[0.6rem] uppercase leading-3 text-neutral-500 dark:text-neutral-400">
+          作者
+        </div>
+        <div class="font-semibold leading-6 text-neutral-800 dark:text-neutral-300">
+          Shaocheng.Li
+        </div>
+      
+      
+        <div class="text-sm text-neutral-700 dark:text-neutral-400">A Linux software engineer.</div>
+      
+      <div class="text-2xl sm:text-lg">
+  <div class="flex flex-wrap text-neutral-400 dark:text-neutral-500">
+    
+      
+        <a
+          class="px-1 transition-transform hover:scale-125 hover:text-primary-700 dark:hover:text-primary-400"
+          style="will-change:transform;"
+          href="https://github.com/exbob"
+          target="_blank"
+          aria-label="Github"
+          rel="me noopener noreferrer"
+          ><span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+</span></a
+        >
+      
+    
+  </div>
+
+</div>
+    </div>
+  </div>
+
+
+      
+
+      
+  
+    
+    
+    
+    <div class="pt-8">
+      <hr class="border-dotted border-neutral-300 dark:border-neutral-600" />
+      <div class="flex justify-between pt-3">
+        <span>
+          
+            <a class="group flex" href="/posts/2013/06/09/">
+              <span
+                class="me-2 text-neutral-700 transition-transform group-hover:-translate-x-[2px] group-hover:text-primary-600 dark:text-neutral dark:group-hover:text-primary-400"
+                ><span class="ltr:inline rtl:hidden">&larr;</span
+                ><span class="ltr:hidden rtl:inline">&rarr;</span></span
+              >
+              <span class="flex flex-col">
+                <span
+                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+                  >QNX下的串口驱动——devc-ser8250</span
+                >
+                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+                  
+                    <time datetime="2013-06-09 08:00:00 &#43;0800 CST">2013 June 9</time>
+                  
+                </span>
+              </span>
+            </a>
+          
+        </span>
+        <span>
+          
+            <a class="group flex text-right" href="/posts/2013/09/15/">
+              <span class="flex flex-col">
+                <span
+                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+                  >QNX 对触摸屏的支持</span
+                >
+                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+                  
+                    <time datetime="2013-09-15 08:00:00 &#43;0800 CST">2013 September 15</time>
+                  
+                </span>
+              </span>
+              <span
+                class="ms-2 text-neutral-700 transition-transform group-hover:-translate-x-[2px] group-hover:text-primary-600 dark:text-neutral dark:group-hover:text-primary-400"
+                ><span class="ltr:inline rtl:hidden">&rarr;</span
+                ><span class="ltr:hidden rtl:inline">&larr;</span></span
+              >
+            </a>
+          
+        </span>
+      </div>
+    </div>
+  
+
+
+      
+    </footer>
+  </article>
+
+        
+          <div class="pointer-events-none absolute bottom-0 end-0 top-[100vh] w-12">
+            <a
+              href="#the-top"
+              class="pointer-events-auto sticky top-[calc(100vh-5.5rem)] flex h-12 w-12 items-center justify-center rounded-full bg-neutral/50 text-xl text-neutral-700 backdrop-blur hover:text-primary-600 dark:bg-neutral-800/50 dark:text-neutral dark:hover:text-primary-400"
+              aria-label="回到顶部"
+              title="回到顶部"
+            >
+              &uarr;
+            </a>
+          </div>
+        
+      </main><footer class="py-10 print:hidden">
+  
+  
+  <div class="flex items-center justify-between">
+    <div>
+      
+      
+        <p class="text-sm text-neutral-500 dark:text-neutral-400">
+            &copy;
+            2024
+            Shaocheng.Li
+        </p>
+      
+      
+      
+        <p class="text-xs text-neutral-500 dark:text-neutral-400">
+          
+          
+          由 <a class="hover:underline hover:decoration-primary-400 hover:text-primary-500"
+            href="https://gohugo.io/" target="_blank" rel="noopener noreferrer">Hugo</a> &amp; <a class="hover:underline hover:decoration-primary-400 hover:text-primary-500" href="https://github.com/jpanther/congo" target="_blank" rel="noopener noreferrer">Congo</a> 强力驱动
+        </p>
+      
+    </div>
+    <div class="flex flex-row items-center">
+      
+      
+      
+      
+        <div
+          class="me-14 cursor-pointer text-sm text-neutral-700 hover:text-primary-600 dark:text-neutral dark:hover:text-primary-400"
+        >
+          <button id="appearance-switcher-0" type="button" aria-label="appearance switcher">
+            <div
+              class="flex items-center justify-center w-12 h-12 dark:hidden"
+              title="切换为深色模式"
+            >
+              <span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M32 256c0-123.8 100.3-224 223.8-224c11.36 0 29.7 1.668 40.9 3.746c9.616 1.777 11.75 14.63 3.279 19.44C245 86.5 211.2 144.6 211.2 207.8c0 109.7 99.71 193 208.3 172.3c9.561-1.805 16.28 9.324 10.11 16.95C387.9 448.6 324.8 480 255.8 480C132.1 480 32 379.6 32 256z"/></svg>
+</span>
+            </div>
+            <div
+              class="items-center justify-center hidden w-12 h-12 dark:flex"
+              title="切换为浅色模式"
+            >
+              <span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 159.1c-53.02 0-95.1 42.98-95.1 95.1S202.1 351.1 256 351.1s95.1-42.98 95.1-95.1S309 159.1 256 159.1zM509.3 347L446.1 255.1l63.15-91.01c6.332-9.125 1.104-21.74-9.826-23.72l-109-19.7l-19.7-109c-1.975-10.93-14.59-16.16-23.72-9.824L256 65.89L164.1 2.736c-9.125-6.332-21.74-1.107-23.72 9.824L121.6 121.6L12.56 141.3C1.633 143.2-3.596 155.9 2.736 164.1L65.89 256l-63.15 91.01c-6.332 9.125-1.105 21.74 9.824 23.72l109 19.7l19.7 109c1.975 10.93 14.59 16.16 23.72 9.824L256 446.1l91.01 63.15c9.127 6.334 21.75 1.107 23.72-9.822l19.7-109l109-19.7C510.4 368.8 515.6 356.1 509.3 347zM256 383.1c-70.69 0-127.1-57.31-127.1-127.1c0-70.69 57.31-127.1 127.1-127.1s127.1 57.3 127.1 127.1C383.1 326.7 326.7 383.1 256 383.1z"/></svg>
+</span>
+            </div>
+          </button>
+        </div>
+      
+    </div>
+  </div>
+  
+  
+</footer>
+<div
+  id="search-wrapper"
+  class="invisible fixed inset-0 z-50 flex h-screen w-screen cursor-default flex-col bg-neutral-500/50 p-4 backdrop-blur-sm dark:bg-neutral-900/50 sm:p-6 md:p-[10vh] lg:p-[12vh]"
+  data-url="https://shaocheng.li/"
+>
+  <div
+    id="search-modal"
+    class="flex flex-col w-full max-w-3xl min-h-0 mx-auto border rounded-md shadow-lg top-20 border-neutral-200 bg-neutral dark:border-neutral-700 dark:bg-neutral-800"
+  >
+    <header class="relative z-10 flex items-center justify-between flex-none px-2">
+      <form class="flex items-center flex-auto min-w-0">
+        <div class="flex items-center justify-center w-8 h-8 text-neutral-400">
+          <span class="relative inline-block align-text-bottom px-1 icon"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="svg-inline--fa fa-search fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
+</span>
+        </div>
+        <input
+          type="search"
+          id="search-query"
+          class="flex flex-auto h-12 mx-1 bg-transparent appearance-none focus:outline-dotted focus:outline-2 focus:outline-transparent"
+          placeholder="搜索"
+          tabindex="0"
+        />
+      </form>
+      <button
+        id="close-search-button"
+        class="flex items-center justify-center w-8 h-8 text-neutral-700 hover:text-primary-600 dark:text-neutral dark:hover:text-primary-400"
+        title="关闭 (Esc)"
+      >
+        <span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"/></svg>
+</span>
+      </button>
+    </header>
+    <section class="flex-auto px-2 overflow-auto">
+      <ul id="search-results">
+        
+      </ul>
+    </section>
+  </div>
+</div>
+
+    </div>
+  </body>
+</html>

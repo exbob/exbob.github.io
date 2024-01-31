@@ -1,129 +1,791 @@
-<!doctype html><html lang=en><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="ie=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=author content="Shaocheng.Li"><meta name=description content="有时我们需要连接不同局域网的两台主机，使其可以互相访问，比如用家里的电脑登录办公室电脑的某个服务。我们可以使用 OpenVPN 实现这个功能，它的原理是在两台电脑上安装 OpenVPN 客户端，同时连接公网上的 OpenVPN 服务器，OpenVPN 会将这两台电脑组成一个虚拟局域网，它们就可以像局域网内一样互相访问了。搭建 VPN 前的网络拓扑如下：
-家里的电脑是 Windows7 系统，办公室的电脑安装了 Ubuntu16.04 ，公网上的 VPS 安装了 Ubuntu16.04 。如果全部都是 Windows 系统，配置起来会更方便一点，Linux 下的文本操作略显繁琐，好在 SoftEther 提供了可以远程管理的 GUI 工具。
-1. 在 VPS 上安装 SoftEther SoftEther 这套软件其实是一个完整的夸平台 VPN 解决方案，在单一软件内集成了 OpenVPN 、L2TP 、IPsec 等 VPN 协议，我们可以用它在 VPS 上搭建一个 OpenVPN 的服务器，非常方便。
-首先在 SoftEther 下载中心 下载 X64-Linux 平台的 SoftEther VPN Server，我下载的版本是 softether-vpnserver-v4.29-9680-rtm-2019.02.28-linux-x64-64bit.tar.gz ，将其解压到 VPS 的用户根目录下，得到一个名为 vpnserver 的文件夹，在这个文件夹下执行 ./.install.sh ，根据提示依次输入三次数字 1 并按回车即可完成编译安装，所有的可执行文件还是在这个路径下，先执行 sudo ./vpnserver start 让服务器在后台运行，然后执行 ./vpncmd 开始初始化配置，按如下输入："><meta name=keywords content><meta name=robots content="noodp"><meta name=theme-color content="#252627"><link rel=canonical href=https://shaocheng.li/posts/2019/07/02/><title>使用 OpenVPN 实现远程访问 :: Shaocheng.Li — Hello Friends</title><link href=https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css rel=stylesheet type=text/css><link rel=stylesheet href=https://shaocheng.li/main.min.e9b3dfcc5ffe9d55eb281ecaf47cf6179d26eec497e087299934d581c987aa0b.css><link rel=stylesheet type=text/css href=https://shaocheng.li/css/custom.css><link rel=apple-touch-icon sizes=180x180 href=https://shaocheng.li/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=https://shaocheng.li/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=https://shaocheng.li/favicon-16x16.png><link rel=manifest href=https://shaocheng.li/site.webmanifest><link rel=mask-icon href=https://shaocheng.li/safari-pinned-tab.svg color=#252627><link rel="shortcut icon" href=https://shaocheng.li/favicon.ico><meta name=msapplication-TileColor content="#252627"><meta name=theme-color content="#252627"><meta itemprop=name content="使用 OpenVPN 实现远程访问"><meta itemprop=description content="有时我们需要连接不同局域网的两台主机，使其可以互相访问，比如用家里的电脑登录办公室电脑的某个服务。我们可以使用 OpenVPN 实现这个功能，它的原理是在两台电脑上安装 OpenVPN 客户端，同时连接公网上的 OpenVPN 服务器，OpenVPN 会将这两台电脑组成一个虚拟局域网，它们就可以像局域网内一样互相访问了。搭建 VPN 前的网络拓扑如下：
-家里的电脑是 Windows7 系统，办公室的电脑安装了 Ubuntu16.04 ，公网上的 VPS 安装了 Ubuntu16.04 。如果全部都是 Windows 系统，配置起来会更方便一点，Linux 下的文本操作略显繁琐，好在 SoftEther 提供了可以远程管理的 GUI 工具。
-1. 在 VPS 上安装 SoftEther SoftEther 这套软件其实是一个完整的夸平台 VPN 解决方案，在单一软件内集成了 OpenVPN 、L2TP 、IPsec 等 VPN 协议，我们可以用它在 VPS 上搭建一个 OpenVPN 的服务器，非常方便。
-首先在 SoftEther 下载中心 下载 X64-Linux 平台的 SoftEther VPN Server，我下载的版本是 softether-vpnserver-v4.29-9680-rtm-2019.02.28-linux-x64-64bit.tar.gz ，将其解压到 VPS 的用户根目录下，得到一个名为 vpnserver 的文件夹，在这个文件夹下执行 ./.install.sh ，根据提示依次输入三次数字 1 并按回车即可完成编译安装，所有的可执行文件还是在这个路径下，先执行 sudo ./vpnserver start 让服务器在后台运行，然后执行 ./vpncmd 开始初始化配置，按如下输入："><meta itemprop=datePublished content="2019-07-02T08:00:00&#43;08:00"><meta itemprop=dateModified content="2019-07-02T08:00:00&#43;08:00"><meta itemprop=wordCount content="1613"><meta itemprop=keywords content><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://shaocheng.li"><meta name=twitter:title content="使用 OpenVPN 实现远程访问"><meta name=twitter:description content="有时我们需要连接不同局域网的两台主机，使其可以互相访问，比如用家里的电脑登录办公室电脑的某个服务。我们可以使用 OpenVPN 实现这个功能，它的原理是在两台电脑上安装 OpenVPN 客户端，同时连接公网上的 OpenVPN 服务器，OpenVPN 会将这两台电脑组成一个虚拟局域网，它们就可以像局域网内一样互相访问了。搭建 VPN 前的网络拓扑如下：
-家里的电脑是 Windows7 系统，办公室的电脑安装了 Ubuntu16.04 ，公网上的 VPS 安装了 Ubuntu16.04 。如果全部都是 Windows 系统，配置起来会更方便一点，Linux 下的文本操作略显繁琐，好在 SoftEther 提供了可以远程管理的 GUI 工具。
-1. 在 VPS 上安装 SoftEther SoftEther 这套软件其实是一个完整的夸平台 VPN 解决方案，在单一软件内集成了 OpenVPN 、L2TP 、IPsec 等 VPN 协议，我们可以用它在 VPS 上搭建一个 OpenVPN 的服务器，非常方便。
-首先在 SoftEther 下载中心 下载 X64-Linux 平台的 SoftEther VPN Server，我下载的版本是 softether-vpnserver-v4.29-9680-rtm-2019.02.28-linux-x64-64bit.tar.gz ，将其解压到 VPS 的用户根目录下，得到一个名为 vpnserver 的文件夹，在这个文件夹下执行 ./.install.sh ，根据提示依次输入三次数字 1 并按回车即可完成编译安装，所有的可执行文件还是在这个路径下，先执行 sudo ./vpnserver start 让服务器在后台运行，然后执行 ./vpncmd 开始初始化配置，按如下输入："><meta property="article:published_time" content="2019-07-02 08:00:00 &#43;0800 &#43;0800"></head><body><div class=container><header class=header><span class=header__inner><a href=https://shaocheng.li/ style=text-decoration:none><div class=logo><span class=logo__mark>></span>
-<span class=logo__text>$ cd /home/</span>
-<span class=logo__cursor></span></div></a><span class=header__right><nav class=menu><ul class=menu__inner><li><a href=https://shaocheng.li/about/>About</a></li><li><a href=https://shaocheng.li/posts/>Posts</a></li></ul></nav><span class=menu-trigger><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></span><span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22 41C32.4934 41 41 32.4934 41 22 41 11.5066 32.4934 3 22 3 11.5066 3 3 11.5066 3 22s8.5066 19 19 19zM7 22C7 13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22z"/></svg></span></span></span></header><div class=content><main class=post><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>8 minutes</p></div><article><h1 class=post-title><a href=https://shaocheng.li/posts/2019/07/02/>使用 OpenVPN 实现远程访问</a></h1><hr><aside id=toc><div class=toc-title>Table of Contents</div><nav id=TableOfContents><ul><li><ul><li><a href=#1-在-vps-上安装-softether>1. 在 VPS 上安装 SoftEther</a></li><li><a href=#2-在家里电脑上安装-openvpn-客户端>2. 在家里电脑上安装 OpenVPN 客户端</a></li><li><a href=#3-在办公室电脑上安装-openvpn-客户端>3. 在办公室电脑上安装 OpenVPN 客户端</a></li><li><a href=#4-测试>4. 测试</a></li><li><a href=#5-配置签名证书>5. 配置签名证书</a><ul><li><a href=#5-1-生成证书>5.1. 生成证书</a></li><li><a href=#5-2-服务器端配置>5.2. 服务器端配置</a></li><li><a href=#5-3-客户端配置>5.3. 客户端配置</a></li></ul></li></ul></li></ul></nav></aside><hr><div class=post-content><p>有时我们需要连接不同局域网的两台主机，使其可以互相访问，比如用家里的电脑登录办公室电脑的某个服务。我们可以使用 OpenVPN 实现这个功能，它的原理是在两台电脑上安装 OpenVPN 客户端，同时连接公网上的 OpenVPN 服务器，OpenVPN 会将这两台电脑组成一个虚拟局域网，它们就可以像局域网内一样互相访问了。搭建 VPN 前的网络拓扑如下：</p><p><img src=https://shaocheng.li/images/2019-07-02/2019-07-02_1.jpg alt></p><p>家里的电脑是 Windows7 系统，办公室的电脑安装了 Ubuntu16.04 ，公网上的 VPS 安装了 Ubuntu16.04 。如果全部都是 Windows 系统，配置起来会更方便一点，Linux 下的文本操作略显繁琐，好在 SoftEther 提供了可以远程管理的 GUI 工具。</p><h2 id=1-在-vps-上安装-softether>1. 在 VPS 上安装 SoftEther</h2><p>SoftEther 这套软件其实是一个完整的夸平台 VPN 解决方案，在单一软件内集成了 OpenVPN 、L2TP 、IPsec 等 VPN 协议，我们可以用它在 VPS 上搭建一个 OpenVPN 的服务器，非常方便。</p><p>首先在 <a href="https://www.softether-download.com/cn.aspx?product=softether" target=_blank>SoftEther 下载中心</a> 下载 X64-Linux 平台的 SoftEther VPN Server，我下载的版本是 <code>softether-vpnserver-v4.29-9680-rtm-2019.02.28-linux-x64-64bit.tar.gz</code> ，将其解压到 VPS 的用户根目录下，得到一个名为 vpnserver 的文件夹，在这个文件夹下执行 <code>./.install.sh</code> ，根据提示依次输入三次数字 <code>1</code> 并按回车即可完成编译安装，所有的可执行文件还是在这个路径下，先执行 <code>sudo ./vpnserver start</code> 让服务器在后台运行，然后执行 <code>./vpncmd</code> 开始初始化配置，按如下输入：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>ubuntu@VM-231-137-ubuntu:~/vpnserver$ sudo ./vpnserver start
-The SoftEther VPN Server service has been started.
-ubuntu@VM-231-137-ubuntu:~/vpnserver$ ./vpncmd
-vpncmd command - SoftEther VPN Command Line Management Utility
-SoftEther VPN Command Line Management Utility <span style=color:#f92672>(</span>vpncmd command<span style=color:#f92672>)</span>
-Version <span style=color:#ae81ff>4</span>.29 Build <span style=color:#ae81ff>9680</span>   <span style=color:#f92672>(</span>English<span style=color:#f92672>)</span>
-Compiled <span style=color:#ae81ff>2019</span>/02/28 <span style=color:#ae81ff>19</span>:22:54 by yagi at pc33
-Copyright <span style=color:#f92672>(</span>c<span style=color:#f92672>)</span> SoftEther VPN Project. All Rights Reserved.
 
-By using vpncmd program, the following can be achieved.
 
-<span style=color:#ae81ff>1</span>. Management of VPN Server or VPN Bridge
-<span style=color:#ae81ff>2</span>. Management of VPN Client
-<span style=color:#ae81ff>3</span>. Use of VPN Tools <span style=color:#f92672>(</span>certificate creation and Network Traffic Speed Test Tool<span style=color:#f92672>)</span>
 
-Select <span style=color:#ae81ff>1</span>, <span style=color:#ae81ff>2</span> or <span style=color:#ae81ff>3</span>: <span style=color:#f92672>[</span>在这里输入 <span style=color:#ae81ff>1</span> ，表示管理 VPN 服务器<span style=color:#f92672>]</span>
 
-Specify the host name or IP address of the computer that the destination VPN Server or VPN Bridge is operating on.
-By specifying according to the format ‘host name:port number’, you can also specify the port number.
-<span style=color:#f92672>(</span>When the port number is unspecified, <span style=color:#ae81ff>443</span> is used.<span style=color:#f92672>)</span>
-If nothing is input and the Enter key is pressed, the connection will be made to the port number <span style=color:#ae81ff>8888</span> of localhost <span style=color:#f92672>(</span>this computer<span style=color:#f92672>)</span>.
-Hostname of IP Address of Destination:<span style=color:#f92672>[</span>这里敲回车键，按默认配置使用 <span style=color:#ae81ff>443</span> 端口<span style=color:#f92672>]</span>
 
-If connecting to the server by Virtual Hub Admin Mode, please input the Virtual Hub name.
-If connecting by server admin mode, please press Enter without inputting anything.
-Specify Virtual Hub Name: <span style=color:#f92672>[</span>这里敲回车键<span style=color:#f92672>]</span>
 
-Connection has been established with VPN Server “localhost” <span style=color:#f92672>(</span>port <span style=color:#ae81ff>443</span><span style=color:#f92672>)</span>.You have administrator privileges <span style=color:#66d9ef>for</span> the entire VPN Server.
+<!DOCTYPE html>
+<html
+  lang="zh-cn"
+  dir="Chinese-Simplified"
+  class="scroll-smooth"
+  data-default-appearance="light"
+  data-auto-appearance="true"
+><head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="rgb(255,255,255)" />
+  
+  <title>使用 OpenVPN 实现远程访问 &middot; Shaocheng.Li</title>
+    <meta name="title" content="使用 OpenVPN 实现远程访问 &middot; Shaocheng.Li" />
+  
+  
+  
+  
+  
+  <script
+    type="text/javascript"
+    src="/js/appearance.min.022d0ebc3b46a335eb1c7ef79b7f2de143d7cd5156d433638592ef1ce5f8554e.js"
+    integrity="sha256-Ai0OvDtGozXrHH73m38t4UPXzVFW1DNjhZLvHOX4VU4="
+  ></script>
+  
+  
+  
+  
+  
+  
+  
+    
+  
+  
+  <link
+    type="text/css"
+    rel="stylesheet"
+    href="/css/main.bundle.min.569cc57d5993584135ff38133d1f599f8f8db0303a9e886172e4b5aabb177ac6.css"
+    integrity="sha256-VpzFfVmTWEE1/zgTPR9Zn4&#43;NsDA6nohhcuS1qrsXesY="
+  />
+  
+    
+    
+    
+  
+  
+    
+    
+  
+  
+  
+    
+    <script
+      defer
+      type="text/javascript"
+      id="script-bundle"
+      src="/js/main.bundle.min.f29ffdffd9ab4cc95250c3c7196b2d5dae8ee6ef0a4139451073f90183ae7e31.js"
+      integrity="sha256-8p/9/9mrTMlSUMPHGWstXa6O5u8KQTlFEHP5AYOufjE="
+      data-copy="复制"
+      data-copied="已复制"
+    ></script>
+  
+  
+  <meta
+    name="description"
+    content="
+      
+        有时我们需要连接不同局域网的两台主机，使其可以互相访问，比如用家里的电脑登录办公室电脑的某个服务。我们可以使用 OpenVPN 实现这个功能，它的原理是在两台电脑上安装 OpenVPN 客户端，同时连接公网上的 OpenVPN 服务器，OpenVPN 会将这两台电脑组成一个虚拟局域网，它们就可以像局域网内一样互相访问了。搭建 VPN 前的网络拓扑如下：
+      
+    "
+  />
+  
+  
+  
+  <link rel="canonical" href="https://shaocheng.li/posts/2019/07/02/" />
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  
+  
+  
+  
+  
+  
+  
+  <meta property="og:title" content="使用 OpenVPN 实现远程访问" />
+<meta property="og:description" content="有时我们需要连接不同局域网的两台主机，使其可以互相访问，比如用家里的电脑登录办公室电脑的某个服务。我们可以使用 OpenVPN 实现这个功能，它的原理是在两台电脑上安装 OpenVPN 客户端，同时连接公网上的 OpenVPN 服务器，OpenVPN 会将这两台电脑组成一个虚拟局域网，它们就可以像局域网内一样互相访问了。搭建 VPN 前的网络拓扑如下：" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://shaocheng.li/posts/2019/07/02/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2019-07-02T08:00:00+08:00" />
+<meta property="article:modified_time" content="2019-07-02T08:00:00+08:00" />
 
-VPN Server&gt;<span style=color:#f92672>[</span>输入 ServerPasswordSet ，表示设置一个密码<span style=color:#f92672>]</span>
 
-ServerPasswordSet command - Set VPN Server Administrator PasswordPlease enter the password. To cancel press the Ctrl+D key.
-Password: <span style=color:#f92672>[</span>输入你的密码<span style=color:#f92672>]</span>
-Confirm input: <span style=color:#f92672>[</span>再次输入你的密码<span style=color:#f92672>]</span></code></pre></div><p>之后的配置可以用 Windows 下的远程管理工具进行。</p><p>首先在 <a href="https://www.softether-download.com/cn.aspx?product=softether" target=_blank>SoftEther 下载中心</a> 下载 X64-Windows 平台的 SoftEther VPN Server ，把它安装在家里的笔记本上，安装时选择 <code>SoftEther VPN Server 管理工具（仅限管理工具）</code> ，我们只是用它来连接并配置 VPS 上的 VPN 服务器：</p><p><img src=https://shaocheng.li/images/2019-07-02/2019-07-02_2.jpg alt></p><p>安装完成后启动 <code>SoftEther VPN Server 管理器</code> ，在连接设置界面中点击 <code>新设置</code> 按钮，在弹出的对话框中按如下设置，新建一个指向 VPS 的连接：</p><p><img src=https://shaocheng.li/images/2019-07-02/2019-07-02_3.jpg alt></p><p>新建成功后，在连接设置界面双击这个设置，开始连接 VPS ，连接成功后会弹出一个管理对话框，这里会出现一个默认的虚拟 HUB ，先将其删除，然后点击 <code>创建虚拟 HUB</code> 按钮，按如下设置，然后点击 <code>确定</code> ，就可以新建一个虚拟 HUB ，其中名字和密码都可以自定义：</p><p><img src=https://shaocheng.li/images/2019-07-02/2019-07-02_4.jpg alt></p><p>回到管理界面，双击刚才新建的这个虚拟 HUB ，进入这个 HUB 的管理界面：</p><p><img src=https://shaocheng.li/images/2019-07-02/2019-07-02_5.jpg alt></p><p>点击 <code>管理用户</code> ，为这个 HUB 新建一个用户，按如下设置：</p><p><img src=https://shaocheng.li/images/2019-07-02/2019-07-02_6.jpg alt></p><p>回到这个 HUB 的管理界面，点击 <code>虚拟 NAT 和 虚拟 DHCP 服务器</code> ，在弹出的对话框中点击 <code>启动 SecureNAT</code> ，如果想修改配置，可以点击 <code>SecureNAT 配置</code> 。至此，VPN 服务器配置都结束了，我们需要导出相应的客户端配置，供后面的客户端使用。在管理界面的右下角点击 <code>OpenVPN/MS-SSTP 设置</code> 按钮，在弹出的对话框中按如下设置：</p><p><img src=https://shaocheng.li/images/2019-07-02/2019-07-02_7.jpg alt>
-然后点击 <code>为 OpenVPN Client 生成配置样本文件</code> 就可以导出一个保护配置文件的压缩包，压缩包里会有两个配置文件，我们使用 L3 用于远程访问的这个：</p><p><img src=https://shaocheng.li/images/2019-07-02/2019-07-02_8.jpg alt></p><blockquote><p>注意，VPS 上使用了默认的 TCP:443 和 UDP:1194 端口，要记得在 VPS 的防火墙上打开这两个端口，否则会造成客户端连接失败。</p></blockquote><h2 id=2-在家里电脑上安装-openvpn-客户端>2. 在家里电脑上安装 OpenVPN 客户端</h2><p>在 <a href=https://openvpn.net/community-downloads/ target=_blank>OpenVPN 下载中心</a> 下载 Win7 版的安装包，一路 Next 安装成功后启动 OpenVPN GUI ，首次启动会提示没有配置文件，这时需要在状态栏的 OpenVPN 图标上点击右键，选择 <code>导入配置文件...</code> :</p><p><img src=https://shaocheng.li/images/2019-07-02/2019-07-02_9.jpg alt></p><p>导入上一步得到的 <code>vm-231-137-ubunt_openvpn_remote_access_l3.ovpn</code> 配置文件，然后点击 <code>连接</code> ，按提示输入 OpenVPN 服务器中设置的用户名和密码：</p><p><img src=https://shaocheng.li/images/2019-07-02/2019-07-02_10.jpg alt></p><p>点击 <code>确定</code> 后开始连接，连接成功后会获得虚拟局域网为本机分配的 IP ：</p><p><img src=https://shaocheng.li/images/2019-07-02/2019-07-02_11.jpg alt></p><h2 id=3-在办公室电脑上安装-openvpn-客户端>3. 在办公室电脑上安装 OpenVPN 客户端</h2><p>在 Ubuntu 上用 <code>sudo apt-get install openvpn</code> 命令安装 OpenVPN ，然后把配置文件 <code>vm-231-137-ubunt_openvpn_remote_access_l3.ovpn</code> 复制到 <code>/etc/openvpn/</code> 路径下，并改名为 <code>client.conf</code> ，然后执行 <code>systemctl start openvpn@client</code> 启动连接：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>root@ubuntu:~# systemctl start openvpn@client
-Enter Auth Username: ****
-Enter Auth Password: ***********
-root@ubuntu:~# systemctl status openvpn@client
-● openvpn@client.service - OpenVPN connection to client
-   Loaded: loaded <span style=color:#f92672>(</span>/lib/systemd/system/openvpn@.service; disabled; vendor preset: enabled<span style=color:#f92672>)</span>
-   Active: active <span style=color:#f92672>(</span>running<span style=color:#f92672>)</span> since Wed <span style=color:#ae81ff>2019</span>-07-03 <span style=color:#ae81ff>10</span>:12:01 CST; 11s ago
-     Docs: man:openvpn<span style=color:#f92672>(</span><span style=color:#ae81ff>8</span><span style=color:#f92672>)</span>
-           https://community.openvpn.net/openvpn/wiki/Openvpn23ManPage
-           https://community.openvpn.net/openvpn/wiki/HOWTO
-  Process: <span style=color:#ae81ff>2409</span> ExecStart<span style=color:#f92672>=</span>/usr/sbin/openvpn --daemon ovpn-%i --status /run/openvpn/%i.status <span style=color:#ae81ff>10</span> --cd /etc/openvp
- Main PID: <span style=color:#ae81ff>2429</span> <span style=color:#f92672>(</span>openvpn<span style=color:#f92672>)</span>
-   CGroup: /system.slice/system-openvpn.slice/openvpn@client.service
-           └─2429 /usr/sbin/openvpn --daemon ovpn-client --status /run/openvpn/client.status <span style=color:#ae81ff>10</span> --cd /etc/openvp
+  <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="使用 OpenVPN 实现远程访问"/>
+<meta name="twitter:description" content="有时我们需要连接不同局域网的两台主机，使其可以互相访问，比如用家里的电脑登录办公室电脑的某个服务。我们可以使用 OpenVPN 实现这个功能，它的原理是在两台电脑上安装 OpenVPN 客户端，同时连接公网上的 OpenVPN 服务器，OpenVPN 会将这两台电脑组成一个虚拟局域网，它们就可以像局域网内一样互相访问了。搭建 VPN 前的网络拓扑如下："/>
 
-Jul <span style=color:#ae81ff>03</span> <span style=color:#ae81ff>10</span>:12:04 ubuntu ovpn-client<span style=color:#f92672>[</span><span style=color:#ae81ff>2429</span><span style=color:#f92672>]</span>: ROUTE_GATEWAY <span style=color:#ae81ff>10</span>.231.222.129/255.255.255.248 IFACE<span style=color:#f92672>=</span>enp0s29u1u3u1c2 HWA
-Jul <span style=color:#ae81ff>03</span> <span style=color:#ae81ff>10</span>:12:04 ubuntu ovpn-client<span style=color:#f92672>[</span><span style=color:#ae81ff>2429</span><span style=color:#f92672>]</span>: TUN/TAP device tun0 opened
-Jul <span style=color:#ae81ff>03</span> <span style=color:#ae81ff>10</span>:12:04 ubuntu ovpn-client<span style=color:#f92672>[</span><span style=color:#ae81ff>2429</span><span style=color:#f92672>]</span>: TUN/TAP TX queue length set to <span style=color:#ae81ff>100</span>
-Jul <span style=color:#ae81ff>03</span> <span style=color:#ae81ff>10</span>:12:04 ubuntu ovpn-client<span style=color:#f92672>[</span><span style=color:#ae81ff>2429</span><span style=color:#f92672>]</span>: do_ifconfig, tt-&gt;ipv6<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>, tt-&gt;did_ifconfig_ipv6_setup<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span>
-Jul <span style=color:#ae81ff>03</span> <span style=color:#ae81ff>10</span>:12:04 ubuntu ovpn-client<span style=color:#f92672>[</span><span style=color:#ae81ff>2429</span><span style=color:#f92672>]</span>: /sbin/ip link set dev tun0 up mtu <span style=color:#ae81ff>1500</span>
-Jul <span style=color:#ae81ff>03</span> <span style=color:#ae81ff>10</span>:12:04 ubuntu ovpn-client<span style=color:#f92672>[</span><span style=color:#ae81ff>2429</span><span style=color:#f92672>]</span>: /sbin/ip addr add dev tun0 local <span style=color:#ae81ff>192</span>.168.30.13 peer <span style=color:#ae81ff>192</span>.168.30.14
-Jul <span style=color:#ae81ff>03</span> <span style=color:#ae81ff>10</span>:12:04 ubuntu ovpn-client<span style=color:#f92672>[</span><span style=color:#ae81ff>2429</span><span style=color:#f92672>]</span>: /sbin/ip route add <span style=color:#ae81ff>118</span>.89.16.2/32 via <span style=color:#ae81ff>10</span>.231.222.129
-Jul <span style=color:#ae81ff>03</span> <span style=color:#ae81ff>10</span>:12:04 ubuntu ovpn-client<span style=color:#f92672>[</span><span style=color:#ae81ff>2429</span><span style=color:#f92672>]</span>: /sbin/ip route add <span style=color:#ae81ff>0</span>.0.0.0/1 via <span style=color:#ae81ff>192</span>.168.30.14
-Jul <span style=color:#ae81ff>03</span> <span style=color:#ae81ff>10</span>:12:04 ubuntu ovpn-client<span style=color:#f92672>[</span><span style=color:#ae81ff>2429</span><span style=color:#f92672>]</span>: /sbin/ip route add <span style=color:#ae81ff>128</span>.0.0.0/1 via <span style=color:#ae81ff>192</span>.168.30.14
-Jul <span style=color:#ae81ff>03</span> <span style=color:#ae81ff>10</span>:12:04 ubuntu ovpn-client<span style=color:#f92672>[</span><span style=color:#ae81ff>2429</span><span style=color:#f92672>]</span>: Initialization Sequence Completed
-root@ubuntu:~# ps -ef | grep openvpn
-root      <span style=color:#ae81ff>2429</span>     <span style=color:#ae81ff>1</span>  <span style=color:#ae81ff>0</span> <span style=color:#ae81ff>10</span>:12 ?        <span style=color:#ae81ff>00</span>:00:00 /usr/sbin/openvpn --daemon ovpn-client --status /run/openvpn/client.status <span style=color:#ae81ff>10</span> --cd /etc/openvpn --script-security <span style=color:#ae81ff>2</span> --config /etc/openvpn/client.conf --writepid /run/openvpn/client.pid
-root      <span style=color:#ae81ff>2503</span>  <span style=color:#ae81ff>1858</span>  <span style=color:#ae81ff>0</span> <span style=color:#ae81ff>10</span>:12 pts/0    <span style=color:#ae81ff>00</span>:00:00 grep --color<span style=color:#f92672>=</span>auto openvpn</code></pre></div><p>连接成功后会出现 tun0 网络接口，并获得一个 IP ：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>root@ubuntu:~# ifconfig tun0
-tun0      Link encap:UNSPEC  HWaddr <span style=color:#ae81ff>00</span>-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
-          inet addr:192.168.30.13  P-t-P:192.168.30.14  Mask:255.255.255.255
-          UP POINTOPOINT RUNNING NOARP MULTICAST  MTU:1500  Metric:1
-          RX packets:6 errors:0 dropped:0 overruns:0 frame:0
-          TX packets:6 errors:0 dropped:0 overruns:0 carrier:0
-          collisions:0 txqueuelen:100
-          RX bytes:396 <span style=color:#f92672>(</span><span style=color:#ae81ff>396</span>.0 B<span style=color:#f92672>)</span>  TX bytes:396 <span style=color:#f92672>(</span><span style=color:#ae81ff>396</span>.0 B<span style=color:#f92672>)</span>
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "articleSection": "Posts",
+    "name": "使用 OpenVPN 实现远程访问",
+    "headline": "使用 OpenVPN 实现远程访问",
+    
+    "abstract": "有时我们需要连接不同局域网的两台主机，使其可以互相访问，比如用家里的电脑登录办公室电脑的某个服务。我们可以使用 OpenVPN 实现这个功能，它的原理是在两台电脑上安装 OpenVPN 客户端，同时连接公网上的 OpenVPN 服务器，OpenVPN 会将这两台电脑组成一个虚拟局域网，它们就可以像局域网内一样互相访问了。搭建 VPN 前的网络拓扑如下：",
+    "inLanguage": "zh-cn",
+    "url" : "https:\/\/shaocheng.li\/posts\/2019\/07\/02\/",
+    "author" : {
+      "@type": "Person",
+      "name": "Shaocheng.Li"
+    },
+    "copyrightYear": "2019",
+    "dateCreated": "2019-07-02T08:00:00\u002b08:00",
+    "datePublished": "2019-07-02T08:00:00\u002b08:00",
+    
+    "dateModified": "2019-07-02T08:00:00\u002b08:00",
+    
+    
+    
+    "mainEntityOfPage": "true",
+    "wordCount": "1613"
+  }
+  </script>
 
-root@ubuntu:~# cat /run/openvpn/client.status
-OpenVPN STATISTICS
-Updated,Wed Jul  <span style=color:#ae81ff>3</span> <span style=color:#ae81ff>10</span>:12:52 <span style=color:#ae81ff>2019</span>
-TUN/TAP read bytes,594
-TUN/TAP write bytes,594
-TCP/UDP read bytes,4196
-TCP/UDP write bytes,2725
-Auth read bytes,850
-END</code></pre></div><h2 id=4-测试>4. 测试</h2><p>连接成功后的网络拓扑如下：</p><p><img src=https://shaocheng.li/images/2019-07-02/2019-07-02_12.jpg alt></p><p>客户端通过 VPN 隧道连接到了服务器的虚拟 HUB 上，共同组成了一个 <code>192.168.30.0/24</code> 的局域网，客户端直接可以想局域网内一样相互访问，在家里电脑上 ping 办公室内的电脑：</p><p><img src=https://shaocheng.li/images/2019-07-02/2019-07-02_13.jpg alt></p><h2 id=5-配置签名证书>5. 配置签名证书</h2><p>上面建立的 VPN 服务器支持的是密码验证，如果要使用签名证书认证，需要用 OpenVPN 搭建服务器，因为 SoftEther 对签名证书认证支持不够完善。签名证书由服务器端签发，需要制作三个证书： CA 证书、服务器端证书和客户端证书。</p><h3 id=5-1-生成证书>5.1. 生成证书</h3><p>先在服务器端使用 <code>sudo apt-get install openvpn easy-rsa</code> 命令安装 OpenVPN 和证书制作工具 easy-rsa 。然后把 <code>/usr/share/easy-rsa/</code> 文件夹及其内容复制到 <code>/etc/openvpn/</code> 路径下，然后编辑其中的 <code>vars</code> 文件，这个文件是 easy-rsa 的配置文件，包含了生成证书和密钥时使用的选项，可以使用默认值，或者根据实际情况修改如下选项：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell><span style=color:#75715e># These are the default values for fields</span>
-<span style=color:#75715e># which will be placed in the certificate.</span>
-<span style=color:#75715e># Don&#39;t leave any of these fields blank.</span>
-export KEY_COUNTRY<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;CN&#34;</span>   <span style=color:#75715e>#国家</span>
-export KEY_PROVINCE<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;GD&#34;</span>  <span style=color:#75715e>#省份</span>
-export KEY_CITY<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;Shenzhen&#34;</span>  <span style=color:#75715e>#城市</span>
-export KEY_ORG<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;Fort-Funston&#34;</span>  <span style=color:#75715e>#组织/公司</span>
-export KEY_EMAIL<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;me@myhost.mydomain&#34;</span>  <span style=color:#75715e>#Email</span>
-export KEY_OU<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;MyOrganizationalUnit&#34;</span>  <span style=color:#75715e>#部门名称</span>
 
-<span style=color:#75715e># X509 Subject Field</span>
-export KEY_NAME<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;EasyRSA&#34;</span> <span style=color:#75715e>#密钥的名称</span></code></pre></div><p>然后使这项选项生效，并初始化，需要先切换到 root 用户：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>ubuntu@VM-231-137-ubuntu:~$ sudo su
-root@VM-231-137-ubuntu:~# cd /etc/openvpn/easy-rsa
-root@VM-231-137-ubuntu:/etc/openvpn/easy-rsa# source vars
-NOTE: If you run ./clean-all, I will be doing a rm -rf on /etc/openvpn/easy-rsa/keys
-root@VM-231-137-ubuntu:/etc/openvpn/easy-rsa# ./clean-all</code></pre></div><p>执行 <code>./build-ca</code> 新建 CA 证书，一路回车即可，生成的证书和密钥在 keys 文件夹下，把证书复制到 <code>/etc/openvpn/</code> 目录下：</p><pre><code>root@VM-231-137-ubuntu:/etc/openvpn/easy-rsa# ls keys/
+  
+  <meta name="author" content="Shaocheng.Li" />
+  
+    
+      <link href="https://github.com/exbob" rel="me" />
+    
+  
+  
+  
+
+
+
+
+
+
+  
+  
+  
+  
+  
+
+  
+  
+</head>
+<body
+    class="flex flex-col h-screen px-6 m-auto text-lg leading-7 max-w-7xl bg-neutral text-neutral-900 dark:bg-neutral-800 dark:text-neutral sm:px-14 md:px-24 lg:px-32"
+  >
+    <div id="the-top" class="absolute flex self-center">
+      <a
+        class="px-3 py-1 text-sm -translate-y-8 rounded-b-lg bg-primary-200 focus:translate-y-0 dark:bg-neutral-600"
+        href="#main-content"
+        ><span class="font-bold pe-2 text-primary-600 dark:text-primary-400">&darr;</span
+        >跳到主要内容</a
+      >
+    </div>
+    
+    
+      <header class="py-6 font-semibold text-neutral-900 dark:text-neutral print:hidden sm:py-10">
+  <nav class="flex items-start justify-between sm:items-center">
+    
+    <div class="flex flex-row items-center">
+      
+  <a
+    class="decoration-primary-500 hover:underline hover:decoration-2 hover:underline-offset-2"
+    rel="me"
+    href="/"
+    >Shaocheng.Li</a
+  >
+
+    </div>
+    
+    
+      <ul class="flex flex-col list-none text-end sm:flex-row">
+        
+          
+            
+            <li class="group mb-1 sm:mb-0 sm:me-7 sm:last:me-0.5">
+              
+                <a
+                  href="/posts/"
+                  title="Posts"
+                  
+                  ><span
+                      class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                      >文章列表</span
+                    >
+                  </a
+                >
+              
+            </li>
+          
+            
+            <li class="group mb-1 sm:mb-0 sm:me-7 sm:last:me-0.5">
+              
+                
+                
+                  <button
+                    id="search-button-1"
+                    title="搜索 (/)"
+                  >
+                    
+                      <span
+                        class="transition-colors group-dark:hover:text-primary-400 group-hover:text-primary-600"
+                      ><span class="relative inline-block align-text-bottom px-1 icon"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="svg-inline--fa fa-search fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
+</span></span><span
+                        class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                        ></span
+                      >
+                    
+                  </button>
+                
+              
+            </li>
+          
+            
+            <li class="group mb-1 sm:mb-0 sm:me-7 sm:last:me-0.5">
+              
+                
+                <button
+                  id="appearance-switcher-1"
+                  type="button"
+                  aria-label="appearance switcher"
+                >
+                  <span
+                    class="inline transition-colors group-dark:hover:text-primary-400 group-hover:text-primary-600 dark:hidden"
+                    title="切换为深色模式"
+                  >
+                    <span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M32 256c0-123.8 100.3-224 223.8-224c11.36 0 29.7 1.668 40.9 3.746c9.616 1.777 11.75 14.63 3.279 19.44C245 86.5 211.2 144.6 211.2 207.8c0 109.7 99.71 193 208.3 172.3c9.561-1.805 16.28 9.324 10.11 16.95C387.9 448.6 324.8 480 255.8 480C132.1 480 32 379.6 32 256z"/></svg>
+</span><span
+                        class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                        ></span
+                      >
+                    
+                  </span>
+                  <span
+                    class="hidden transition-colors group-dark:hover:text-primary-400 group-hover:text-primary-600 dark:inline"
+                    title="切换为浅色模式"
+                  >
+                    
+                      <span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 159.1c-53.02 0-95.1 42.98-95.1 95.1S202.1 351.1 256 351.1s95.1-42.98 95.1-95.1S309 159.1 256 159.1zM509.3 347L446.1 255.1l63.15-91.01c6.332-9.125 1.104-21.74-9.826-23.72l-109-19.7l-19.7-109c-1.975-10.93-14.59-16.16-23.72-9.824L256 65.89L164.1 2.736c-9.125-6.332-21.74-1.107-23.72 9.824L121.6 121.6L12.56 141.3C1.633 143.2-3.596 155.9 2.736 164.1L65.89 256l-63.15 91.01c-6.332 9.125-1.105 21.74 9.824 23.72l109 19.7l19.7 109c1.975 10.93 14.59 16.16 23.72 9.824L256 446.1l91.01 63.15c9.127 6.334 21.75 1.107 23.72-9.822l19.7-109l109-19.7C510.4 368.8 515.6 356.1 509.3 347zM256 383.1c-70.69 0-127.1-57.31-127.1-127.1c0-70.69 57.31-127.1 127.1-127.1s127.1 57.3 127.1 127.1C383.1 326.7 326.7 383.1 256 383.1z"/></svg>
+</span>
+                    
+                    
+                      <span
+                        class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                        ></span
+                      >
+                    
+                  </span>
+                </button>
+              
+            </li>
+          
+          
+        
+      </ul>
+    
+  </nav>
+</header>
+
+    
+    <div class="relative flex flex-col grow">
+      <main id="main-content" class="grow">
+        
+  <article>
+    <header class="max-w-prose">
+      
+      <h1 class="mt-0 text-4xl font-extrabold text-neutral-900 dark:text-neutral">
+        使用 OpenVPN 实现远程访问
+      </h1>
+      <div class="mt-8 mb-12 text-base text-neutral-500 dark:text-neutral-400 print:hidden">
+        
+
+
+
+
+
+  
+  
+
+
+
+  
+
+  
+  
+    
+  
+
+  
+
+  
+    
+  
+
+  
+    
+  
+
+  
+
+
+  <div class="flex flex-row flex-wrap items-center">
+    
+    
+      <time datetime="2019-07-02 08:00:00 &#43;0800 CST">2019 July 2</time><span class="px-2 text-primary-500">&middot;</span><span>1613 字</span><span class="px-2 text-primary-500">&middot;</span><span title="预计阅读">8 分钟</span>
+    
+
+    
+    
+  </div>
+
+  
+  
+
+
+      </div>
+      
+    </header>
+    <section class="flex flex-col max-w-full mt-0 prose dark:prose-invert lg:flex-row">
+      
+        <div class="order-first px-0 lg:order-last lg:max-w-xs lg:ps-8">
+          <div class="toc pe-5 print:hidden lg:sticky lg:top-10">
+            <details open class="-ms-5 mt-0 overflow-hidden rounded-lg ps-5">
+  <summary
+    class="-ms-5 block cursor-pointer bg-neutral-100 py-1 ps-5 text-lg font-semibold text-neutral-800 dark:bg-neutral-700 dark:text-neutral-100 lg:hidden"
+  >
+    目录
+  </summary>
+  <div class="-ms-5 border-s border-dotted border-neutral-300 py-2 ps-5 dark:border-neutral-600">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-在-vps-上安装-softether">1. 在 VPS 上安装 SoftEther</a></li>
+    <li><a href="#2-在家里电脑上安装-openvpn-客户端">2. 在家里电脑上安装 OpenVPN 客户端</a></li>
+    <li><a href="#3-在办公室电脑上安装-openvpn-客户端">3. 在办公室电脑上安装 OpenVPN 客户端</a></li>
+    <li><a href="#4-测试">4. 测试</a></li>
+    <li><a href="#5-配置签名证书">5. 配置签名证书</a>
+      <ul>
+        <li><a href="#51-生成证书">5.1. 生成证书</a></li>
+        <li><a href="#52-服务器端配置">5.2. 服务器端配置</a></li>
+        <li><a href="#53-客户端配置">5.3. 客户端配置</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</details>
+
+          </div>
+        </div>
+      
+      <div class="min-w-0 min-h-0 max-w-prose grow">
+        <p>有时我们需要连接不同局域网的两台主机，使其可以互相访问，比如用家里的电脑登录办公室电脑的某个服务。我们可以使用 OpenVPN 实现这个功能，它的原理是在两台电脑上安装 OpenVPN 客户端，同时连接公网上的 OpenVPN 服务器，OpenVPN 会将这两台电脑组成一个虚拟局域网，它们就可以像局域网内一样互相访问了。搭建 VPN 前的网络拓扑如下：</p>
+<p>
+
+
+
+
+  
+  
+  
+    <figure>
+      <img
+        class="mx-auto my-0 rounded-md"
+        src="./pics_1.jpg"
+        alt=""
+        
+          loading="lazy"
+        
+      />
+      
+    </figure>
+  
+</p>
+<p>家里的电脑是 Windows7 系统，办公室的电脑安装了 Ubuntu16.04 ，公网上的 VPS 安装了 Ubuntu16.04 。如果全部都是 Windows 系统，配置起来会更方便一点，Linux 下的文本操作略显繁琐，好在 SoftEther 提供了可以远程管理的 GUI 工具。</p>
+<h2 id="1-在-vps-上安装-softether" class="relative group">1. 在 VPS 上安装 SoftEther <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#1-%e5%9c%a8-vps-%e4%b8%8a%e5%ae%89%e8%a3%85-softether" aria-label="锚点">#</a></span></h2><p>SoftEther 这套软件其实是一个完整的夸平台 VPN 解决方案，在单一软件内集成了 OpenVPN 、L2TP 、IPsec 等 VPN 协议，我们可以用它在 VPS 上搭建一个 OpenVPN 的服务器，非常方便。</p>
+<p>首先在 <a href="https://www.softether-download.com/cn.aspx?product=softether" target="_blank" rel="noreferrer">SoftEther 下载中心</a> 下载 X64-Linux 平台的 SoftEther VPN Server，我下载的版本是 <code>softether-vpnserver-v4.29-9680-rtm-2019.02.28-linux-x64-64bit.tar.gz</code> ，将其解压到 VPS 的用户根目录下，得到一个名为 vpnserver 的文件夹，在这个文件夹下执行 <code>./.install.sh</code> ，根据提示依次输入三次数字 <code>1</code> 并按回车即可完成编译安装，所有的可执行文件还是在这个路径下，先执行 <code>sudo ./vpnserver start</code> 让服务器在后台运行，然后执行 <code>./vpncmd</code> 开始初始化配置，按如下输入：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">ubuntu@VM-231-137-ubuntu:~/vpnserver$ sudo ./vpnserver start
+</span></span><span class="line"><span class="cl">The SoftEther VPN Server service has been started.
+</span></span><span class="line"><span class="cl">ubuntu@VM-231-137-ubuntu:~/vpnserver$ ./vpncmd
+</span></span><span class="line"><span class="cl">vpncmd <span class="nb">command</span> - SoftEther VPN Command Line Management Utility
+</span></span><span class="line"><span class="cl">SoftEther VPN Command Line Management Utility <span class="o">(</span>vpncmd <span class="nb">command</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">Version 4.29 Build <span class="m">9680</span>   <span class="o">(</span>English<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Compiled 2019/02/28 19:22:54 by yagi at pc33
+</span></span><span class="line"><span class="cl">Copyright <span class="o">(</span>c<span class="o">)</span> SoftEther VPN Project. All Rights Reserved.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">By using vpncmd program, the following can be achieved.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">1. Management of VPN Server or VPN Bridge
+</span></span><span class="line"><span class="cl">2. Management of VPN Client
+</span></span><span class="line"><span class="cl">3. Use of VPN Tools <span class="o">(</span>certificate creation and Network Traffic Speed Test Tool<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Select 1, <span class="m">2</span> or 3: <span class="o">[</span>在这里输入 <span class="m">1</span> ，表示管理 VPN 服务器<span class="o">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Specify the host name or IP address of the computer that the destination VPN Server or VPN Bridge is operating on.
+</span></span><span class="line"><span class="cl">By specifying according to the format ‘host name:port number’, you can also specify the port number.
+</span></span><span class="line"><span class="cl"><span class="o">(</span>When the port number is unspecified, <span class="m">443</span> is used.<span class="o">)</span>
+</span></span><span class="line"><span class="cl">If nothing is input and the Enter key is pressed, the connection will be made to the port number <span class="m">8888</span> of localhost <span class="o">(</span>this computer<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">Hostname of IP Address of Destination:<span class="o">[</span>这里敲回车键，按默认配置使用 <span class="m">443</span> 端口<span class="o">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">If connecting to the server by Virtual Hub Admin Mode, please input the Virtual Hub name.
+</span></span><span class="line"><span class="cl">If connecting by server admin mode, please press Enter without inputting anything.
+</span></span><span class="line"><span class="cl">Specify Virtual Hub Name: <span class="o">[</span>这里敲回车键<span class="o">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Connection has been established with VPN Server “localhost” <span class="o">(</span>port 443<span class="o">)</span>.You have administrator privileges <span class="k">for</span> the entire VPN Server.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">VPN Server&gt;<span class="o">[</span>输入 ServerPasswordSet ，表示设置一个密码<span class="o">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">ServerPasswordSet <span class="nb">command</span> - Set VPN Server Administrator PasswordPlease enter the password. To cancel press the Ctrl+D key.
+</span></span><span class="line"><span class="cl">Password: <span class="o">[</span>输入你的密码<span class="o">]</span>
+</span></span><span class="line"><span class="cl">Confirm input: <span class="o">[</span>再次输入你的密码<span class="o">]</span>
+</span></span></code></pre></div><p>之后的配置可以用 Windows 下的远程管理工具进行。</p>
+<p>首先在 <a href="https://www.softether-download.com/cn.aspx?product=softether" target="_blank" rel="noreferrer">SoftEther 下载中心</a> 下载 X64-Windows 平台的 SoftEther VPN Server ，把它安装在家里的笔记本上，安装时选择 <code>SoftEther VPN Server 管理工具（仅限管理工具）</code> ，我们只是用它来连接并配置 VPS 上的 VPN 服务器：</p>
+<p>
+
+
+
+
+  
+  
+  
+    <figure>
+      <img
+        class="mx-auto my-0 rounded-md"
+        src="./pics_2.jpg"
+        alt=""
+        
+          loading="lazy"
+        
+      />
+      
+    </figure>
+  
+</p>
+<p>安装完成后启动 <code>SoftEther VPN Server 管理器</code> ，在连接设置界面中点击 <code>新设置</code> 按钮，在弹出的对话框中按如下设置，新建一个指向 VPS 的连接：</p>
+<p>
+
+
+
+
+  
+  
+  
+    <figure>
+      <img
+        class="mx-auto my-0 rounded-md"
+        src="./pics_3.jpg"
+        alt=""
+        
+          loading="lazy"
+        
+      />
+      
+    </figure>
+  
+</p>
+<p>新建成功后，在连接设置界面双击这个设置，开始连接 VPS ，连接成功后会弹出一个管理对话框，这里会出现一个默认的虚拟 HUB ，先将其删除，然后点击 <code>创建虚拟 HUB</code> 按钮，按如下设置，然后点击 <code>确定</code> ，就可以新建一个虚拟 HUB ，其中名字和密码都可以自定义：</p>
+<p>
+
+
+
+
+  
+  
+  
+    <figure>
+      <img
+        class="mx-auto my-0 rounded-md"
+        src="./pics_4.jpg"
+        alt=""
+        
+          loading="lazy"
+        
+      />
+      
+    </figure>
+  
+</p>
+<p>回到管理界面，双击刚才新建的这个虚拟 HUB ，进入这个 HUB 的管理界面：</p>
+<p>
+
+
+
+
+  
+  
+  
+    <figure>
+      <img
+        class="mx-auto my-0 rounded-md"
+        src="./pics_5.jpg"
+        alt=""
+        
+          loading="lazy"
+        
+      />
+      
+    </figure>
+  
+</p>
+<p>点击 <code>管理用户</code> ，为这个 HUB 新建一个用户，按如下设置：</p>
+<p>
+
+
+
+
+  
+  
+  
+    <figure>
+      <img
+        class="mx-auto my-0 rounded-md"
+        src="./pics_6.jpg"
+        alt=""
+        
+          loading="lazy"
+        
+      />
+      
+    </figure>
+  
+</p>
+<p>回到这个 HUB 的管理界面，点击 <code>虚拟 NAT 和 虚拟 DHCP 服务器</code> ，在弹出的对话框中点击 <code>启动 SecureNAT</code> ，如果想修改配置，可以点击  <code>SecureNAT 配置</code>  。至此，VPN 服务器配置都结束了，我们需要导出相应的客户端配置，供后面的客户端使用。在管理界面的右下角点击 <code>OpenVPN/MS-SSTP 设置</code> 按钮，在弹出的对话框中按如下设置：</p>
+<p>
+
+
+
+
+  
+  
+  
+    <figure>
+      <img
+        class="mx-auto my-0 rounded-md"
+        src="./pics_7.jpg"
+        alt=""
+        
+          loading="lazy"
+        
+      />
+      
+    </figure>
+  
+
+然后点击 <code>为 OpenVPN Client 生成配置样本文件</code> 就可以导出一个保护配置文件的压缩包，压缩包里会有两个配置文件，我们使用 L3 用于远程访问的这个：</p>
+<p>
+
+
+
+
+  
+  
+  
+    <figure>
+      <img
+        class="mx-auto my-0 rounded-md"
+        src="./pics_8.jpg"
+        alt=""
+        
+          loading="lazy"
+        
+      />
+      
+    </figure>
+  
+</p>
+<blockquote>
+<p>注意，VPS 上使用了默认的 TCP:443 和 UDP:1194 端口，要记得在 VPS 的防火墙上打开这两个端口，否则会造成客户端连接失败。</p>
+</blockquote>
+<h2 id="2-在家里电脑上安装-openvpn-客户端" class="relative group">2. 在家里电脑上安装 OpenVPN 客户端 <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#2-%e5%9c%a8%e5%ae%b6%e9%87%8c%e7%94%b5%e8%84%91%e4%b8%8a%e5%ae%89%e8%a3%85-openvpn-%e5%ae%a2%e6%88%b7%e7%ab%af" aria-label="锚点">#</a></span></h2><p>在 <a href="https://openvpn.net/community-downloads/" target="_blank" rel="noreferrer">OpenVPN 下载中心</a> 下载 Win7 版的安装包，一路 Next 安装成功后启动 OpenVPN GUI ，首次启动会提示没有配置文件，这时需要在状态栏的 OpenVPN 图标上点击右键，选择 <code>导入配置文件...</code> :</p>
+<p>
+
+
+
+
+  
+  
+  
+    <figure>
+      <img
+        class="mx-auto my-0 rounded-md"
+        src="./pics_9.jpg"
+        alt=""
+        
+          loading="lazy"
+        
+      />
+      
+    </figure>
+  
+</p>
+<p>导入上一步得到的 <code>vm-231-137-ubunt_openvpn_remote_access_l3.ovpn</code> 配置文件，然后点击 <code>连接</code> ，按提示输入 OpenVPN 服务器中设置的用户名和密码：</p>
+<p>
+
+
+
+
+  
+  
+  
+    <figure>
+      <img
+        class="mx-auto my-0 rounded-md"
+        src="./pics_10.jpg"
+        alt=""
+        
+          loading="lazy"
+        
+      />
+      
+    </figure>
+  
+</p>
+<p>点击 <code>确定</code> 后开始连接，连接成功后会获得虚拟局域网为本机分配的 IP ：</p>
+<p>
+
+
+
+
+  
+  
+  
+    <figure>
+      <img
+        class="mx-auto my-0 rounded-md"
+        src="./pics_11.jpg"
+        alt=""
+        
+          loading="lazy"
+        
+      />
+      
+    </figure>
+  
+</p>
+<h2 id="3-在办公室电脑上安装-openvpn-客户端" class="relative group">3. 在办公室电脑上安装 OpenVPN 客户端 <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#3-%e5%9c%a8%e5%8a%9e%e5%85%ac%e5%ae%a4%e7%94%b5%e8%84%91%e4%b8%8a%e5%ae%89%e8%a3%85-openvpn-%e5%ae%a2%e6%88%b7%e7%ab%af" aria-label="锚点">#</a></span></h2><p>在 Ubuntu 上用 <code>sudo apt-get install openvpn</code> 命令安装 OpenVPN ，然后把配置文件 <code>vm-231-137-ubunt_openvpn_remote_access_l3.ovpn</code> 复制到 <code>/etc/openvpn/</code> 路径下，并改名为 <code>client.conf</code> ，然后执行 <code>systemctl start openvpn@client</code> 启动连接：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">root@ubuntu:~# systemctl start openvpn@client
+</span></span><span class="line"><span class="cl">Enter Auth Username: ****
+</span></span><span class="line"><span class="cl">Enter Auth Password: ***********
+</span></span><span class="line"><span class="cl">root@ubuntu:~# systemctl status openvpn@client
+</span></span><span class="line"><span class="cl">● openvpn@client.service - OpenVPN connection to client
+</span></span><span class="line"><span class="cl">   Loaded: loaded <span class="o">(</span>/lib/systemd/system/openvpn@.service<span class="p">;</span> disabled<span class="p">;</span> vendor preset: enabled<span class="o">)</span>
+</span></span><span class="line"><span class="cl">   Active: active <span class="o">(</span>running<span class="o">)</span> since Wed 2019-07-03 10:12:01 CST<span class="p">;</span> 11s ago
+</span></span><span class="line"><span class="cl">     Docs: man:openvpn<span class="o">(</span>8<span class="o">)</span>
+</span></span><span class="line"><span class="cl">           https://community.openvpn.net/openvpn/wiki/Openvpn23ManPage
+</span></span><span class="line"><span class="cl">           https://community.openvpn.net/openvpn/wiki/HOWTO
+</span></span><span class="line"><span class="cl">  Process: <span class="m">2409</span> <span class="nv">ExecStart</span><span class="o">=</span>/usr/sbin/openvpn --daemon ovpn-%i --status /run/openvpn/%i.status <span class="m">10</span> --cd /etc/openvp
+</span></span><span class="line"><span class="cl"> Main PID: <span class="m">2429</span> <span class="o">(</span>openvpn<span class="o">)</span>
+</span></span><span class="line"><span class="cl">   CGroup: /system.slice/system-openvpn.slice/openvpn@client.service
+</span></span><span class="line"><span class="cl">           └─2429 /usr/sbin/openvpn --daemon ovpn-client --status /run/openvpn/client.status <span class="m">10</span> --cd /etc/openvp
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Jul <span class="m">03</span> 10:12:04 ubuntu ovpn-client<span class="o">[</span>2429<span class="o">]</span>: ROUTE_GATEWAY 10.231.222.129/255.255.255.248 <span class="nv">IFACE</span><span class="o">=</span>enp0s29u1u3u1c2 HWA
+</span></span><span class="line"><span class="cl">Jul <span class="m">03</span> 10:12:04 ubuntu ovpn-client<span class="o">[</span>2429<span class="o">]</span>: TUN/TAP device tun0 opened
+</span></span><span class="line"><span class="cl">Jul <span class="m">03</span> 10:12:04 ubuntu ovpn-client<span class="o">[</span>2429<span class="o">]</span>: TUN/TAP TX queue length <span class="nb">set</span> to <span class="m">100</span>
+</span></span><span class="line"><span class="cl">Jul <span class="m">03</span> 10:12:04 ubuntu ovpn-client<span class="o">[</span>2429<span class="o">]</span>: do_ifconfig, tt-&gt;ipv6<span class="o">=</span>0, tt-&gt;did_ifconfig_ipv6_setup<span class="o">=</span><span class="m">0</span>
+</span></span><span class="line"><span class="cl">Jul <span class="m">03</span> 10:12:04 ubuntu ovpn-client<span class="o">[</span>2429<span class="o">]</span>: /sbin/ip link <span class="nb">set</span> dev tun0 up mtu <span class="m">1500</span>
+</span></span><span class="line"><span class="cl">Jul <span class="m">03</span> 10:12:04 ubuntu ovpn-client<span class="o">[</span>2429<span class="o">]</span>: /sbin/ip addr add dev tun0 <span class="nb">local</span> 192.168.30.13 peer 192.168.30.14
+</span></span><span class="line"><span class="cl">Jul <span class="m">03</span> 10:12:04 ubuntu ovpn-client<span class="o">[</span>2429<span class="o">]</span>: /sbin/ip route add 118.89.16.2/32 via 10.231.222.129
+</span></span><span class="line"><span class="cl">Jul <span class="m">03</span> 10:12:04 ubuntu ovpn-client<span class="o">[</span>2429<span class="o">]</span>: /sbin/ip route add 0.0.0.0/1 via 192.168.30.14
+</span></span><span class="line"><span class="cl">Jul <span class="m">03</span> 10:12:04 ubuntu ovpn-client<span class="o">[</span>2429<span class="o">]</span>: /sbin/ip route add 128.0.0.0/1 via 192.168.30.14
+</span></span><span class="line"><span class="cl">Jul <span class="m">03</span> 10:12:04 ubuntu ovpn-client<span class="o">[</span>2429<span class="o">]</span>: Initialization Sequence Completed
+</span></span><span class="line"><span class="cl">root@ubuntu:~# ps -ef <span class="p">|</span> grep openvpn
+</span></span><span class="line"><span class="cl">root      <span class="m">2429</span>     <span class="m">1</span>  <span class="m">0</span> 10:12 ?        00:00:00 /usr/sbin/openvpn --daemon ovpn-client --status /run/openvpn/client.status <span class="m">10</span> --cd /etc/openvpn --script-security <span class="m">2</span> --config /etc/openvpn/client.conf --writepid /run/openvpn/client.pid
+</span></span><span class="line"><span class="cl">root      <span class="m">2503</span>  <span class="m">1858</span>  <span class="m">0</span> 10:12 pts/0    00:00:00 grep --color<span class="o">=</span>auto openvpn
+</span></span></code></pre></div><p>连接成功后会出现 tun0 网络接口，并获得一个 IP ：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">root@ubuntu:~# ifconfig tun0
+</span></span><span class="line"><span class="cl">tun0      Link encap:UNSPEC  HWaddr 00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
+</span></span><span class="line"><span class="cl">          inet addr:192.168.30.13  P-t-P:192.168.30.14  Mask:255.255.255.255
+</span></span><span class="line"><span class="cl">          UP POINTOPOINT RUNNING NOARP MULTICAST  MTU:1500  Metric:1
+</span></span><span class="line"><span class="cl">          RX packets:6 errors:0 dropped:0 overruns:0 frame:0
+</span></span><span class="line"><span class="cl">          TX packets:6 errors:0 dropped:0 overruns:0 carrier:0
+</span></span><span class="line"><span class="cl">          collisions:0 txqueuelen:100
+</span></span><span class="line"><span class="cl">          RX bytes:396 <span class="o">(</span>396.0 B<span class="o">)</span>  TX bytes:396 <span class="o">(</span>396.0 B<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">root@ubuntu:~# cat /run/openvpn/client.status
+</span></span><span class="line"><span class="cl">OpenVPN STATISTICS
+</span></span><span class="line"><span class="cl">Updated,Wed Jul  <span class="m">3</span> 10:12:52 <span class="m">2019</span>
+</span></span><span class="line"><span class="cl">TUN/TAP <span class="nb">read</span> bytes,594
+</span></span><span class="line"><span class="cl">TUN/TAP write bytes,594
+</span></span><span class="line"><span class="cl">TCP/UDP <span class="nb">read</span> bytes,4196
+</span></span><span class="line"><span class="cl">TCP/UDP write bytes,2725
+</span></span><span class="line"><span class="cl">Auth <span class="nb">read</span> bytes,850
+</span></span><span class="line"><span class="cl">END
+</span></span></code></pre></div><h2 id="4-测试" class="relative group">4. 测试 <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#4-%e6%b5%8b%e8%af%95" aria-label="锚点">#</a></span></h2><p>连接成功后的网络拓扑如下：</p>
+<p>
+
+
+
+
+  
+  
+  
+    <figure>
+      <img
+        class="mx-auto my-0 rounded-md"
+        src="./pics_12.jpg"
+        alt=""
+        
+          loading="lazy"
+        
+      />
+      
+    </figure>
+  
+</p>
+<p>客户端通过 VPN 隧道连接到了服务器的虚拟 HUB 上，共同组成了一个 <code>192.168.30.0/24</code> 的局域网，客户端直接可以想局域网内一样相互访问，在家里电脑上 ping 办公室内的电脑：</p>
+<p>
+
+
+
+
+  
+  
+  
+    <figure>
+      <img
+        class="mx-auto my-0 rounded-md"
+        src="./pics_13.jpg"
+        alt=""
+        
+          loading="lazy"
+        
+      />
+      
+    </figure>
+  
+</p>
+<h2 id="5-配置签名证书" class="relative group">5. 配置签名证书 <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#5-%e9%85%8d%e7%bd%ae%e7%ad%be%e5%90%8d%e8%af%81%e4%b9%a6" aria-label="锚点">#</a></span></h2><p>上面建立的 VPN 服务器支持的是密码验证，如果要使用签名证书认证，需要用 OpenVPN 搭建服务器，因为 SoftEther 对签名证书认证支持不够完善。签名证书由服务器端签发，需要制作三个证书： CA 证书、服务器端证书和客户端证书。</p>
+<h3 id="51-生成证书" class="relative group">5.1. 生成证书 <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#51-%e7%94%9f%e6%88%90%e8%af%81%e4%b9%a6" aria-label="锚点">#</a></span></h3><p>先在服务器端使用 <code>sudo apt-get install openvpn easy-rsa</code> 命令安装 OpenVPN 和证书制作工具 easy-rsa 。然后把 <code>/usr/share/easy-rsa/</code> 文件夹及其内容复制到 <code>/etc/openvpn/</code> 路径下，然后编辑其中的 <code>vars</code> 文件，这个文件是 easy-rsa 的配置文件，包含了生成证书和密钥时使用的选项，可以使用默认值，或者根据实际情况修改如下选项：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># These are the default values for fields</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># which will be placed in the certificate.</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Don&#39;t leave any of these fields blank.</span>
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">KEY_COUNTRY</span><span class="o">=</span><span class="s2">&#34;CN&#34;</span>   <span class="c1">#国家</span>
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">KEY_PROVINCE</span><span class="o">=</span><span class="s2">&#34;GD&#34;</span>  <span class="c1">#省份</span>
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">KEY_CITY</span><span class="o">=</span><span class="s2">&#34;Shenzhen&#34;</span>  <span class="c1">#城市</span>
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">KEY_ORG</span><span class="o">=</span><span class="s2">&#34;Fort-Funston&#34;</span>  <span class="c1">#组织/公司</span>
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">KEY_EMAIL</span><span class="o">=</span><span class="s2">&#34;me@myhost.mydomain&#34;</span>  <span class="c1">#Email</span>
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">KEY_OU</span><span class="o">=</span><span class="s2">&#34;MyOrganizationalUnit&#34;</span>  <span class="c1">#部门名称</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># X509 Subject Field</span>
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">KEY_NAME</span><span class="o">=</span><span class="s2">&#34;EasyRSA&#34;</span> <span class="c1">#密钥的名称</span>
+</span></span></code></pre></div><p>然后使这项选项生效，并初始化，需要先切换到 root 用户：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">ubuntu@VM-231-137-ubuntu:~$ sudo su
+</span></span><span class="line"><span class="cl">root@VM-231-137-ubuntu:~# <span class="nb">cd</span> /etc/openvpn/easy-rsa
+</span></span><span class="line"><span class="cl">root@VM-231-137-ubuntu:/etc/openvpn/easy-rsa# <span class="nb">source</span> vars
+</span></span><span class="line"><span class="cl">NOTE: If you run ./clean-all, I will be doing a rm -rf on /etc/openvpn/easy-rsa/keys
+</span></span><span class="line"><span class="cl">root@VM-231-137-ubuntu:/etc/openvpn/easy-rsa# ./clean-all
+</span></span></code></pre></div><p>执行 <code>./build-ca</code> 新建 CA 证书，一路回车即可，生成的证书和密钥在 keys 文件夹下，把证书复制到 <code>/etc/openvpn/</code> 目录下：</p>
+<pre tabindex="0"><code>root@VM-231-137-ubuntu:/etc/openvpn/easy-rsa# ls keys/
 ca.crt  ca.key  index.txt  serial
 root@VM-231-137-ubuntu:/etc/openvpn/easy-rsa# cp -rf keys/ca.crt  /etc/openvpn/
-</code></pre><p>执行 <code>./build-key-server EasyRSA</code> 新建服务器端证书，其中 <code>EasyRSA</code> 是 vars 文件中设置的 <code>KEY_NAME</code> 的值，再执行 <code>./build-dh</code> 生成密钥交换所需的 Diffe-Hellman 文件，一路回车后，生成的证书和密钥等都在 keys 文件夹下，把他们复制到 <code>/etc/openvpn/</code> 目录下：</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-shell data-lang=shell>root@VM-231-137-ubuntu:/etc/openvpn/easy-rsa# ll keys/
-total <span style=color:#ae81ff>60</span>
-drwx------ <span style=color:#ae81ff>2</span> root root <span style=color:#ae81ff>4096</span> Jul  <span style=color:#ae81ff>3</span> <span style=color:#ae81ff>17</span>:51 ./
-drwxr-xr-x <span style=color:#ae81ff>3</span> root root <span style=color:#ae81ff>4096</span> Jul  <span style=color:#ae81ff>3</span> <span style=color:#ae81ff>17</span>:43 ../
--rw-r--r-- <span style=color:#ae81ff>1</span> root root <span style=color:#ae81ff>5702</span> Jul  <span style=color:#ae81ff>3</span> <span style=color:#ae81ff>17</span>:45 <span style=color:#ae81ff>01</span>.pem
--rw-r--r-- <span style=color:#ae81ff>1</span> root root <span style=color:#ae81ff>5702</span> Jul  <span style=color:#ae81ff>3</span> <span style=color:#ae81ff>17</span>:45 EasyRSA.crt
--rw-r--r-- <span style=color:#ae81ff>1</span> root root <span style=color:#ae81ff>1094</span> Jul  <span style=color:#ae81ff>3</span> <span style=color:#ae81ff>17</span>:45 EasyRSA.csr
--rw------- <span style=color:#ae81ff>1</span> root root <span style=color:#ae81ff>1704</span> Jul  <span style=color:#ae81ff>3</span> <span style=color:#ae81ff>17</span>:45 EasyRSA.key
--rw-r--r-- <span style=color:#ae81ff>1</span> root root <span style=color:#ae81ff>1801</span> Jul  <span style=color:#ae81ff>3</span> <span style=color:#ae81ff>17</span>:27 ca.crt
--rw------- <span style=color:#ae81ff>1</span> root root <span style=color:#ae81ff>1704</span> Jul  <span style=color:#ae81ff>3</span> <span style=color:#ae81ff>17</span>:27 ca.key
--rw-r--r-- <span style=color:#ae81ff>1</span> root root  <span style=color:#ae81ff>424</span> Jul  <span style=color:#ae81ff>3</span> <span style=color:#ae81ff>17</span>:51 dh2048.pem
--rw-r--r-- <span style=color:#ae81ff>1</span> root root  <span style=color:#ae81ff>146</span> Jul  <span style=color:#ae81ff>3</span> <span style=color:#ae81ff>17</span>:45 index.txt
--rw-r--r-- <span style=color:#ae81ff>1</span> root root   <span style=color:#ae81ff>21</span> Jul  <span style=color:#ae81ff>3</span> <span style=color:#ae81ff>17</span>:45 index.txt.attr
--rw-r--r-- <span style=color:#ae81ff>1</span> root root    <span style=color:#ae81ff>0</span> Jul  <span style=color:#ae81ff>3</span> <span style=color:#ae81ff>17</span>:23 index.txt.old
--rw-r--r-- <span style=color:#ae81ff>1</span> root root    <span style=color:#ae81ff>3</span> Jul  <span style=color:#ae81ff>3</span> <span style=color:#ae81ff>17</span>:45 serial
--rw-r--r-- <span style=color:#ae81ff>1</span> root root    <span style=color:#ae81ff>3</span> Jul  <span style=color:#ae81ff>3</span> <span style=color:#ae81ff>17</span>:23 serial.old
-root@VM-231-137-ubuntu:/etc/openvpn/easy-rsa# cp -rf keys/EasyRSA.crt /etc/openvpn/
-root@VM-231-137-ubuntu:/etc/openvpn/easy-rsa# cp -rf keys/EasyRSA.key /etc/openvpn/
-root@VM-231-137-ubuntu:/etc/openvpn/easy-rsa# cp -rf keys/dh2048.pem /etc/openvpn/</code></pre></div><p>执行 <code>./build-key client</code> 新建客户端证书，client 是证书名称，可以自定义，生成的客户端证书和密钥等都在 keys 文件夹下：</p><pre><code>root@VM-231-137-ubuntu:/etc/openvpn/easy-rsa# ll keys/
+</code></pre><p>执行 <code>./build-key-server EasyRSA</code> 新建服务器端证书，其中 <code>EasyRSA</code> 是 vars 文件中设置的 <code>KEY_NAME</code> 的值，再执行 <code>./build-dh</code> 生成密钥交换所需的 Diffe-Hellman 文件，一路回车后，生成的证书和密钥等都在 keys 文件夹下，把他们复制到 <code>/etc/openvpn/</code> 目录下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">root@VM-231-137-ubuntu:/etc/openvpn/easy-rsa# ll keys/
+</span></span><span class="line"><span class="cl">total <span class="m">60</span>
+</span></span><span class="line"><span class="cl">drwx------ <span class="m">2</span> root root <span class="m">4096</span> Jul  <span class="m">3</span> 17:51 ./
+</span></span><span class="line"><span class="cl">drwxr-xr-x <span class="m">3</span> root root <span class="m">4096</span> Jul  <span class="m">3</span> 17:43 ../
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root <span class="m">5702</span> Jul  <span class="m">3</span> 17:45 01.pem
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root <span class="m">5702</span> Jul  <span class="m">3</span> 17:45 EasyRSA.crt
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root <span class="m">1094</span> Jul  <span class="m">3</span> 17:45 EasyRSA.csr
+</span></span><span class="line"><span class="cl">-rw------- <span class="m">1</span> root root <span class="m">1704</span> Jul  <span class="m">3</span> 17:45 EasyRSA.key
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root <span class="m">1801</span> Jul  <span class="m">3</span> 17:27 ca.crt
+</span></span><span class="line"><span class="cl">-rw------- <span class="m">1</span> root root <span class="m">1704</span> Jul  <span class="m">3</span> 17:27 ca.key
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root  <span class="m">424</span> Jul  <span class="m">3</span> 17:51 dh2048.pem
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root  <span class="m">146</span> Jul  <span class="m">3</span> 17:45 index.txt
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root   <span class="m">21</span> Jul  <span class="m">3</span> 17:45 index.txt.attr
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root    <span class="m">0</span> Jul  <span class="m">3</span> 17:23 index.txt.old
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root    <span class="m">3</span> Jul  <span class="m">3</span> 17:45 serial
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root    <span class="m">3</span> Jul  <span class="m">3</span> 17:23 serial.old
+</span></span><span class="line"><span class="cl">root@VM-231-137-ubuntu:/etc/openvpn/easy-rsa# cp -rf keys/EasyRSA.crt /etc/openvpn/
+</span></span><span class="line"><span class="cl">root@VM-231-137-ubuntu:/etc/openvpn/easy-rsa# cp -rf keys/EasyRSA.key /etc/openvpn/
+</span></span><span class="line"><span class="cl">root@VM-231-137-ubuntu:/etc/openvpn/easy-rsa# cp -rf keys/dh2048.pem /etc/openvpn/
+</span></span></code></pre></div><p>执行 <code>./build-key client</code> 新建客户端证书，client 是证书名称，可以自定义，生成的客户端证书和密钥等都在 keys 文件夹下：</p>
+<pre tabindex="0"><code>root@VM-231-137-ubuntu:/etc/openvpn/easy-rsa# ll keys/
 total 92
 drwx------ 2 root root 4096 Jul  3 17:57 ./
 drwxr-xr-x 3 root root 4096 Jul  3 17:43 ../
@@ -144,10 +806,12 @@ drwxr-xr-x 3 root root 4096 Jul  3 17:43 ../
 -rw-r--r-- 1 root root  146 Jul  3 17:45 index.txt.old
 -rw-r--r-- 1 root root    3 Jul  3 17:57 serial
 -rw-r--r-- 1 root root    3 Jul  3 17:45 serial.old
-</code></pre><h3 id=5-2-服务器端配置>5.2. 服务器端配置</h3><p>服务器端可以复制 OpenVPN 自带的配置文件模板，得到 server.conf ，然后进行修改：</p><pre><code>root@VM-231-137-ubuntu:~# cp -rf /usr/share/doc/openvpn/examples/sample-config-files/server.conf.gz /etc/openvpn/
+</code></pre><h3 id="52-服务器端配置" class="relative group">5.2. 服务器端配置 <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#52-%e6%9c%8d%e5%8a%a1%e5%99%a8%e7%ab%af%e9%85%8d%e7%bd%ae" aria-label="锚点">#</a></span></h3><p>服务器端可以复制 OpenVPN 自带的配置文件模板，得到 server.conf ，然后进行修改：</p>
+<pre tabindex="0"><code>root@VM-231-137-ubuntu:~# cp -rf /usr/share/doc/openvpn/examples/sample-config-files/server.conf.gz /etc/openvpn/
 root@VM-231-137-ubuntu:~# cd /etc/openvpn/
 root@VM-231-137-ubuntu:/etc/openvpn# gzip -d server.conf.gz
-</code></pre><p>注意如下几个选项：</p><pre><code>port 1194   # 监听的端口，使用默认的 1194 就行
+</code></pre><p>注意如下几个选项：</p>
+<pre tabindex="0"><code>port 1194   # 监听的端口，使用默认的 1194 就行
 proto udp  # 使用的传输层协议，默认使用 UDP
 dev tun  # 这里设置了虚拟网卡的类型，tun 表示网络层设备，它操作 IP 数据包，tap 表示以太网设备，它操作链路层的以太网数据帧。
 ca ca.crt  # 指定 CA 证书
@@ -157,7 +821,8 @@ dh dh2048.pem  # 指定 Diffe-Hellman 文件
 server 10.8.0.0 255.255.255.0  # 设置虚拟局域网的网段，10.8.0.1 会留给服务器自用
 client-to-client  # 允许客户端之间相互可见，否则多个客户端只能看到服务器，而看不到彼此
 duplicate-cn  # 这个选项允许多个客户端使用相同的证书和密钥进行连接，并分配不同的 IP 
-</code></pre><p>保存后切回普通用户，然后启动 OpenVPN 服务器：</p><pre><code>root@VM-231-137-ubuntu:~# exit
+</code></pre><p>保存后切回普通用户，然后启动 OpenVPN 服务器：</p>
+<pre tabindex="0"><code>root@VM-231-137-ubuntu:~# exit
 exit
 ubuntu@VM-231-137-ubuntu:~$ cd
 ubuntu@VM-231-137-ubuntu:~$ systemctl start openvpn@server
@@ -191,13 +856,16 @@ tun0      Link encap:UNSPEC  HWaddr 00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
           TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
           collisions:0 txqueuelen:100
           RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
-</code></pre><h3 id=5-3-客户端配置>5.3. 客户端配置</h3><p>客户端的认证需要三个文件：ca.crt 、client.crt 和 client.key ，它们都在服务器 <code>/etc/openvpn/easy-rsa/keys/</code> 目录下已经生成了，客户端的配置文件也可用 OpenVPN 提供的模板 <code>/usr/share/doc/openvpn/examples/sample-config-files/client.conf</code> 进行修改。</p><p>以 Ubuntu 系统为例，把以上四个文件复制到客户端的 <code>/etc/openvpn/</code> 目录下，然后修改配置文件 <code>/etc/openvpn/</code> ，注意如下几个选项。</p><pre><code>dev tun   # 虚拟网卡类型，与服务器保持一致
+</code></pre><h3 id="53-客户端配置" class="relative group">5.3. 客户端配置 <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#53-%e5%ae%a2%e6%88%b7%e7%ab%af%e9%85%8d%e7%bd%ae" aria-label="锚点">#</a></span></h3><p>客户端的认证需要三个文件：ca.crt 、client.crt 和 client.key ，它们都在服务器 <code>/etc/openvpn/easy-rsa/keys/</code> 目录下已经生成了，客户端的配置文件也可用 OpenVPN 提供的模板 <code>/usr/share/doc/openvpn/examples/sample-config-files/client.conf</code> 进行修改。</p>
+<p>以 Ubuntu 系统为例，把以上四个文件复制到客户端的 <code>/etc/openvpn/</code> 目录下，然后修改配置文件 <code>/etc/openvpn/</code> ，注意如下几个选项。</p>
+<pre tabindex="0"><code>dev tun   # 虚拟网卡类型，与服务器保持一致
 proto udp   # 传输层协议类型，与服务器保持一致
 remote 118.89.16.2 1194   # 服务器的 IP 和端口
 ca ca.crt   # CA 证书的文件名，因为在同一目录下，所以不用加路径
 cert client.crt  # 客户端证书
 key client.key  # 客户端密钥
-</code></pre><p>保存后启动 OpenVPN 客户端连接，这次就不用再输入用户名和密码了：</p><pre><code>root@ubuntu:~# systemctl start openvpn@client
+</code></pre><p>保存后启动 OpenVPN 客户端连接，这次就不用再输入用户名和密码了：</p>
+<pre tabindex="0"><code>root@ubuntu:~# systemctl start openvpn@client
 root@ubuntu:~# ifconfig tun0
 tun0      Link encap:UNSPEC  HWaddr 00-00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
           inet addr:10.8.0.6  P-t-P:10.8.0.5  Mask:255.255.255.255
@@ -206,12 +874,233 @@ tun0      Link encap:UNSPEC  HWaddr 00-00-00-00-00-00-00-00-00-00-00-00-00-00-00
           TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
           collisions:0 txqueuelen:100
           RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
-</code></pre><p>如果是 Windows 客户端，配置文件的后缀要改成 <code>.ovpn</code> ，其他都是一样的。</p></div></article><hr><div class=post-info><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>1613 Words</p><p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>2019-07-02 00:00 &#43;0000</p></div><div class=pagination><div class=pagination__title><span class=pagination__title-h></span><hr></div><div class=pagination__buttons><span class="button previous"><a href=https://shaocheng.li/posts/2019/08/18/><span class=button__icon>←</span>
-<span class=button__text>使用 openssl 进行 AES 加密</span></a></span>
-<span class="button next"><a href=https://shaocheng.li/posts/2018/12/20/><span class=button__text>UDP socket 编程实践</span>
-<span class=button__icon>→</span></a></span></div></div><div id=comments class=thin><div id=disqus_thread></div><script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return;}
-var d=document,s=d.createElement('script');s.async=true;s.src='//'+"shaocheng-li"+'.disqus.com/embed.js';s.setAttribute('data-timestamp',+new Date());(d.head||d.body).appendChild(s);})();</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></div></main></div><footer class=footer><div class=footer__inner><div class=footer__content><span>&copy; 2023</span>
-<span><a href=https://shaocheng.li>Shaocheng.Li</a></span>
-<span><a href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank rel=noopener>CC BY-NC 4.0</a></span>
-<span><a href=https://shaocheng.li/posts/index.xml target=_blank title=rss><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1"/></svg></a></span></div></div><div class=footer__inner><div class=footer__content><span>Powered by <a href=http://gohugo.io>Hugo</a></span>
-<span>Made with &#10084; by <a href=https://github.com/rhazdon>rhazdon</a></span></div></div></footer></div><script type=text/javascript src=https://shaocheng.li/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script></body></html>
+</code></pre><p>如果是 Windows 客户端，配置文件的后缀要改成 <code>.ovpn</code> ，其他都是一样的。</p>
+
+      </div>
+    </section>
+    <footer class="pt-8 max-w-prose print:hidden">
+      
+  <div class="flex">
+    
+      
+      
+        
+        <img
+          class="!mb-0 !mt-0 me-4 h-24 w-24 rounded-full"
+          width="96"
+          height="96"
+          alt="Shaocheng.Li"
+          src="/img/author_hucdd16a8e5aab658b1bf3664f1886d7a1_71871_192x192_fill_box_center_3.png"
+          
+            loading="lazy"
+          
+        />
+      
+    
+    <div class="place-self-center">
+      
+        <div class="text-[0.6rem] uppercase leading-3 text-neutral-500 dark:text-neutral-400">
+          作者
+        </div>
+        <div class="font-semibold leading-6 text-neutral-800 dark:text-neutral-300">
+          Shaocheng.Li
+        </div>
+      
+      
+        <div class="text-sm text-neutral-700 dark:text-neutral-400">A Linux software engineer.</div>
+      
+      <div class="text-2xl sm:text-lg">
+  <div class="flex flex-wrap text-neutral-400 dark:text-neutral-500">
+    
+      
+        <a
+          class="px-1 transition-transform hover:scale-125 hover:text-primary-700 dark:hover:text-primary-400"
+          style="will-change:transform;"
+          href="https://github.com/exbob"
+          target="_blank"
+          aria-label="Github"
+          rel="me noopener noreferrer"
+          ><span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+</span></a
+        >
+      
+    
+  </div>
+
+</div>
+    </div>
+  </div>
+
+
+      
+
+      
+  
+    
+    
+    
+    <div class="pt-8">
+      <hr class="border-dotted border-neutral-300 dark:border-neutral-600" />
+      <div class="flex justify-between pt-3">
+        <span>
+          
+            <a class="group flex" href="/posts/2018/12/20/">
+              <span
+                class="me-2 text-neutral-700 transition-transform group-hover:-translate-x-[2px] group-hover:text-primary-600 dark:text-neutral dark:group-hover:text-primary-400"
+                ><span class="ltr:inline rtl:hidden">&larr;</span
+                ><span class="ltr:hidden rtl:inline">&rarr;</span></span
+              >
+              <span class="flex flex-col">
+                <span
+                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+                  >UDP socket 编程实践</span
+                >
+                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+                  
+                    <time datetime="2018-12-20 08:00:00 &#43;0800 CST">2018 December 20</time>
+                  
+                </span>
+              </span>
+            </a>
+          
+        </span>
+        <span>
+          
+            <a class="group flex text-right" href="/posts/2019/08/18/">
+              <span class="flex flex-col">
+                <span
+                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+                  >使用 openssl 进行 AES 加密</span
+                >
+                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+                  
+                    <time datetime="2019-08-18 08:00:00 &#43;0800 CST">2019 August 18</time>
+                  
+                </span>
+              </span>
+              <span
+                class="ms-2 text-neutral-700 transition-transform group-hover:-translate-x-[2px] group-hover:text-primary-600 dark:text-neutral dark:group-hover:text-primary-400"
+                ><span class="ltr:inline rtl:hidden">&rarr;</span
+                ><span class="ltr:hidden rtl:inline">&larr;</span></span
+              >
+            </a>
+          
+        </span>
+      </div>
+    </div>
+  
+
+
+      
+    </footer>
+  </article>
+
+        
+          <div class="pointer-events-none absolute bottom-0 end-0 top-[100vh] w-12">
+            <a
+              href="#the-top"
+              class="pointer-events-auto sticky top-[calc(100vh-5.5rem)] flex h-12 w-12 items-center justify-center rounded-full bg-neutral/50 text-xl text-neutral-700 backdrop-blur hover:text-primary-600 dark:bg-neutral-800/50 dark:text-neutral dark:hover:text-primary-400"
+              aria-label="回到顶部"
+              title="回到顶部"
+            >
+              &uarr;
+            </a>
+          </div>
+        
+      </main><footer class="py-10 print:hidden">
+  
+  
+  <div class="flex items-center justify-between">
+    <div>
+      
+      
+        <p class="text-sm text-neutral-500 dark:text-neutral-400">
+            &copy;
+            2024
+            Shaocheng.Li
+        </p>
+      
+      
+      
+        <p class="text-xs text-neutral-500 dark:text-neutral-400">
+          
+          
+          由 <a class="hover:underline hover:decoration-primary-400 hover:text-primary-500"
+            href="https://gohugo.io/" target="_blank" rel="noopener noreferrer">Hugo</a> &amp; <a class="hover:underline hover:decoration-primary-400 hover:text-primary-500" href="https://github.com/jpanther/congo" target="_blank" rel="noopener noreferrer">Congo</a> 强力驱动
+        </p>
+      
+    </div>
+    <div class="flex flex-row items-center">
+      
+      
+      
+      
+        <div
+          class="me-14 cursor-pointer text-sm text-neutral-700 hover:text-primary-600 dark:text-neutral dark:hover:text-primary-400"
+        >
+          <button id="appearance-switcher-0" type="button" aria-label="appearance switcher">
+            <div
+              class="flex items-center justify-center w-12 h-12 dark:hidden"
+              title="切换为深色模式"
+            >
+              <span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M32 256c0-123.8 100.3-224 223.8-224c11.36 0 29.7 1.668 40.9 3.746c9.616 1.777 11.75 14.63 3.279 19.44C245 86.5 211.2 144.6 211.2 207.8c0 109.7 99.71 193 208.3 172.3c9.561-1.805 16.28 9.324 10.11 16.95C387.9 448.6 324.8 480 255.8 480C132.1 480 32 379.6 32 256z"/></svg>
+</span>
+            </div>
+            <div
+              class="items-center justify-center hidden w-12 h-12 dark:flex"
+              title="切换为浅色模式"
+            >
+              <span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 159.1c-53.02 0-95.1 42.98-95.1 95.1S202.1 351.1 256 351.1s95.1-42.98 95.1-95.1S309 159.1 256 159.1zM509.3 347L446.1 255.1l63.15-91.01c6.332-9.125 1.104-21.74-9.826-23.72l-109-19.7l-19.7-109c-1.975-10.93-14.59-16.16-23.72-9.824L256 65.89L164.1 2.736c-9.125-6.332-21.74-1.107-23.72 9.824L121.6 121.6L12.56 141.3C1.633 143.2-3.596 155.9 2.736 164.1L65.89 256l-63.15 91.01c-6.332 9.125-1.105 21.74 9.824 23.72l109 19.7l19.7 109c1.975 10.93 14.59 16.16 23.72 9.824L256 446.1l91.01 63.15c9.127 6.334 21.75 1.107 23.72-9.822l19.7-109l109-19.7C510.4 368.8 515.6 356.1 509.3 347zM256 383.1c-70.69 0-127.1-57.31-127.1-127.1c0-70.69 57.31-127.1 127.1-127.1s127.1 57.3 127.1 127.1C383.1 326.7 326.7 383.1 256 383.1z"/></svg>
+</span>
+            </div>
+          </button>
+        </div>
+      
+    </div>
+  </div>
+  
+  
+</footer>
+<div
+  id="search-wrapper"
+  class="invisible fixed inset-0 z-50 flex h-screen w-screen cursor-default flex-col bg-neutral-500/50 p-4 backdrop-blur-sm dark:bg-neutral-900/50 sm:p-6 md:p-[10vh] lg:p-[12vh]"
+  data-url="https://shaocheng.li/"
+>
+  <div
+    id="search-modal"
+    class="flex flex-col w-full max-w-3xl min-h-0 mx-auto border rounded-md shadow-lg top-20 border-neutral-200 bg-neutral dark:border-neutral-700 dark:bg-neutral-800"
+  >
+    <header class="relative z-10 flex items-center justify-between flex-none px-2">
+      <form class="flex items-center flex-auto min-w-0">
+        <div class="flex items-center justify-center w-8 h-8 text-neutral-400">
+          <span class="relative inline-block align-text-bottom px-1 icon"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="svg-inline--fa fa-search fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
+</span>
+        </div>
+        <input
+          type="search"
+          id="search-query"
+          class="flex flex-auto h-12 mx-1 bg-transparent appearance-none focus:outline-dotted focus:outline-2 focus:outline-transparent"
+          placeholder="搜索"
+          tabindex="0"
+        />
+      </form>
+      <button
+        id="close-search-button"
+        class="flex items-center justify-center w-8 h-8 text-neutral-700 hover:text-primary-600 dark:text-neutral dark:hover:text-primary-400"
+        title="关闭 (Esc)"
+      >
+        <span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"/></svg>
+</span>
+      </button>
+    </header>
+    <section class="flex-auto px-2 overflow-auto">
+      <ul id="search-results">
+        
+      </ul>
+    </section>
+  </div>
+</div>
+
+    </div>
+  </body>
+</html>
