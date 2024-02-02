@@ -1,841 +1,185 @@
-
-
-
-
-
-
-<!DOCTYPE html>
-<html
-  lang="zh-cn"
-  dir="Chinese-Simplified"
-  class="scroll-smooth"
-  data-default-appearance="light"
-  data-auto-appearance="true"
-><head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="rgb(255,255,255)" />
-  
-  <title>CMake 学习笔记 &middot; Shaocheng.Li</title>
-    <meta name="title" content="CMake 学习笔记 &middot; Shaocheng.Li" />
-  
-  
-  
-  
-  
-  <script
-    type="text/javascript"
-    src="/js/appearance.min.022d0ebc3b46a335eb1c7ef79b7f2de143d7cd5156d433638592ef1ce5f8554e.js"
-    integrity="sha256-Ai0OvDtGozXrHH73m38t4UPXzVFW1DNjhZLvHOX4VU4="
-  ></script>
-  
-  
-  
-  
-  
-  
-  
-    
-  
-  
-  <link
-    type="text/css"
-    rel="stylesheet"
-    href="/css/main.bundle.min.569cc57d5993584135ff38133d1f599f8f8db0303a9e886172e4b5aabb177ac6.css"
-    integrity="sha256-VpzFfVmTWEE1/zgTPR9Zn4&#43;NsDA6nohhcuS1qrsXesY="
-  />
-  
-    
-    
-    
-  
-  
-    
-    
-  
-  
-  
-    
-    <script
-      defer
-      type="text/javascript"
-      id="script-bundle"
-      src="/js/main.bundle.min.f29ffdffd9ab4cc95250c3c7196b2d5dae8ee6ef0a4139451073f90183ae7e31.js"
-      integrity="sha256-8p/9/9mrTMlSUMPHGWstXa6O5u8KQTlFEHP5AYOufjE="
-      data-copy="复制"
-      data-copied="已复制"
-    ></script>
-  
-  
-  <meta
-    name="description"
-    content="
+<!doctype html><html lang=zh-cn dir=Chinese-Simplified class=scroll-smooth data-default-appearance=light data-auto-appearance=true><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=theme-color content="rgb(255,255,255)"><title>CMake 学习笔记 &#183; Shaocheng.Li</title>
+<meta name=title content="CMake 学习笔记 &#183; Shaocheng.Li"><script type=text/javascript src=/js/appearance.min.022d0ebc3b46a335eb1c7ef79b7f2de143d7cd5156d433638592ef1ce5f8554e.js integrity="sha256-Ai0OvDtGozXrHH73m38t4UPXzVFW1DNjhZLvHOX4VU4="></script><link type=text/css rel=stylesheet href=/css/main.bundle.min.569cc57d5993584135ff38133d1f599f8f8db0303a9e886172e4b5aabb177ac6.css integrity="sha256-VpzFfVmTWEE1/zgTPR9Zn4+NsDA6nohhcuS1qrsXesY="><script defer type=text/javascript id=script-bundle src=/js/main.bundle.min.f29ffdffd9ab4cc95250c3c7196b2d5dae8ee6ef0a4139451073f90183ae7e31.js integrity="sha256-8p/9/9mrTMlSUMPHGWstXa6O5u8KQTlFEHP5AYOufjE=" data-copy=复制 data-copied=已复制></script><meta name=description content="
       
         本教程提供了一个渐进式的指导，参考的是官方教程 CMake Tutorial ，然后加入学习过程的笔记。涵盖了使用 CMake 构建一个工程时经常遇到的问题 。通过一个示例项目，展示各种功能是如何一起工作的，这对理解 CMake 非常有用。
       
-    "
-  />
-  
-  
-  
-  <link rel="canonical" href="https://shaocheng.li/posts/2020/06/29/" />
-  
-  
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-    <link rel="manifest" href="/site.webmanifest" />
-  
-  
-  
-  
-  
-  
-  
-  <meta property="og:title" content="CMake 学习笔记" />
-<meta property="og:description" content="本教程提供了一个渐进式的指导，参考的是官方教程 CMake Tutorial ，然后加入学习过程的笔记。涵盖了使用 CMake 构建一个工程时经常遇到的问题 。通过一个示例项目，展示各种功能是如何一起工作的，这对理解 CMake 非常有用。" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://shaocheng.li/posts/2020/06/29/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2020-06-29T22:25:11+08:00" />
-<meta property="article:modified_time" content="2020-06-29T22:25:11+08:00" />
-
-
-  <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="CMake 学习笔记"/>
-<meta name="twitter:description" content="本教程提供了一个渐进式的指导，参考的是官方教程 CMake Tutorial ，然后加入学习过程的笔记。涵盖了使用 CMake 构建一个工程时经常遇到的问题 。通过一个示例项目，展示各种功能是如何一起工作的，这对理解 CMake 非常有用。"/>
-
-  
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "articleSection": "Posts",
-    "name": "CMake 学习笔记",
-    "headline": "CMake 学习笔记",
-    
-    "abstract": "本教程提供了一个渐进式的指导，参考的是官方教程 CMake Tutorial ，然后加入学习过程的笔记。涵盖了使用 CMake 构建一个工程时经常遇到的问题 。通过一个示例项目，展示各种功能是如何一起工作的，这对理解 CMake 非常有用。",
-    "inLanguage": "zh-cn",
-    "url" : "https:\/\/shaocheng.li\/posts\/2020\/06\/29\/",
-    "author" : {
-      "@type": "Person",
-      "name": "Shaocheng.Li"
-    },
-    "copyrightYear": "2020",
-    "dateCreated": "2020-06-29T22:25:11\u002b08:00",
-    "datePublished": "2020-06-29T22:25:11\u002b08:00",
-    
-    "dateModified": "2020-06-29T22:25:11\u002b08:00",
-    
-    "keywords": ["untagged"],
-    
-    "mainEntityOfPage": "true",
-    "wordCount": "832"
-  }
-  </script>
-
-
-  
-  <meta name="author" content="Shaocheng.Li" />
-  
-    
-      <link href="https://github.com/exbob" rel="me" />
-    
-  
-  
-  
-
-
-
-
-
-
-  
-  
-  
-  
-  
-
-  
-  
-</head>
-<body
-    class="flex flex-col h-screen px-6 m-auto text-lg leading-7 max-w-7xl bg-neutral text-neutral-900 dark:bg-neutral-800 dark:text-neutral sm:px-14 md:px-24 lg:px-32"
-  >
-    <div id="the-top" class="absolute flex self-center">
-      <a
-        class="px-3 py-1 text-sm -translate-y-8 rounded-b-lg bg-primary-200 focus:translate-y-0 dark:bg-neutral-600"
-        href="#main-content"
-        ><span class="font-bold pe-2 text-primary-600 dark:text-primary-400">&darr;</span
-        >跳到主要内容</a
-      >
-    </div>
-    
-    
-      <header class="py-6 font-semibold text-neutral-900 dark:text-neutral print:hidden sm:py-10">
-  <nav class="flex items-start justify-between sm:items-center">
-    
-    <div class="flex flex-row items-center">
-      
-  <a
-    class="decoration-primary-500 hover:underline hover:decoration-2 hover:underline-offset-2"
-    rel="me"
-    href="/"
-    >Shaocheng.Li</a
-  >
-
-    </div>
-    
-    
-      <ul class="flex flex-col list-none text-end sm:flex-row">
-        
-          
-            
-            <li class="group mb-1 sm:mb-0 sm:me-7 sm:last:me-0.5">
-              
-                <a
-                  href="/posts/"
-                  title="Posts"
-                  
-                  ><span
-                      class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
-                      >文章列表</span
-                    >
-                  </a
-                >
-              
-            </li>
-          
-            
-            <li class="group mb-1 sm:mb-0 sm:me-7 sm:last:me-0.5">
-              
-                
-                
-                  <button
-                    id="search-button-1"
-                    title="搜索 (/)"
-                  >
-                    
-                      <span
-                        class="transition-colors group-dark:hover:text-primary-400 group-hover:text-primary-600"
-                      ><span class="relative inline-block align-text-bottom px-1 icon"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="svg-inline--fa fa-search fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
-</span></span><span
-                        class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
-                        ></span
-                      >
-                    
-                  </button>
-                
-              
-            </li>
-          
-            
-            <li class="group mb-1 sm:mb-0 sm:me-7 sm:last:me-0.5">
-              
-                
-                <button
-                  id="appearance-switcher-1"
-                  type="button"
-                  aria-label="appearance switcher"
-                >
-                  <span
-                    class="inline transition-colors group-dark:hover:text-primary-400 group-hover:text-primary-600 dark:hidden"
-                    title="切换为深色模式"
-                  >
-                    <span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M32 256c0-123.8 100.3-224 223.8-224c11.36 0 29.7 1.668 40.9 3.746c9.616 1.777 11.75 14.63 3.279 19.44C245 86.5 211.2 144.6 211.2 207.8c0 109.7 99.71 193 208.3 172.3c9.561-1.805 16.28 9.324 10.11 16.95C387.9 448.6 324.8 480 255.8 480C132.1 480 32 379.6 32 256z"/></svg>
-</span><span
-                        class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
-                        ></span
-                      >
-                    
-                  </span>
-                  <span
-                    class="hidden transition-colors group-dark:hover:text-primary-400 group-hover:text-primary-600 dark:inline"
-                    title="切换为浅色模式"
-                  >
-                    
-                      <span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 159.1c-53.02 0-95.1 42.98-95.1 95.1S202.1 351.1 256 351.1s95.1-42.98 95.1-95.1S309 159.1 256 159.1zM509.3 347L446.1 255.1l63.15-91.01c6.332-9.125 1.104-21.74-9.826-23.72l-109-19.7l-19.7-109c-1.975-10.93-14.59-16.16-23.72-9.824L256 65.89L164.1 2.736c-9.125-6.332-21.74-1.107-23.72 9.824L121.6 121.6L12.56 141.3C1.633 143.2-3.596 155.9 2.736 164.1L65.89 256l-63.15 91.01c-6.332 9.125-1.105 21.74 9.824 23.72l109 19.7l19.7 109c1.975 10.93 14.59 16.16 23.72 9.824L256 446.1l91.01 63.15c9.127 6.334 21.75 1.107 23.72-9.822l19.7-109l109-19.7C510.4 368.8 515.6 356.1 509.3 347zM256 383.1c-70.69 0-127.1-57.31-127.1-127.1c0-70.69 57.31-127.1 127.1-127.1s127.1 57.3 127.1 127.1C383.1 326.7 326.7 383.1 256 383.1z"/></svg>
-</span>
-                    
-                    
-                      <span
-                        class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
-                        ></span
-                      >
-                    
-                  </span>
-                </button>
-              
-            </li>
-          
-          
-        
-      </ul>
-    
-  </nav>
-</header>
-
-    
-    <div class="relative flex flex-col grow">
-      <main id="main-content" class="grow">
-        
-  <article>
-    <header class="max-w-prose">
-      
-      <h1 class="mt-0 text-4xl font-extrabold text-neutral-900 dark:text-neutral">
-        CMake 学习笔记
-      </h1>
-      <div class="mt-8 mb-12 text-base text-neutral-500 dark:text-neutral-400 print:hidden">
-        
-
-
-
-
-
-  
-  
-
-
-
-  
-
-  
-  
-    
-  
-
-  
-
-  
-    
-  
-
-  
-    
-  
-
-  
-
-
-  <div class="flex flex-row flex-wrap items-center">
-    
-    
-      <time datetime="2020-06-29 22:25:11 &#43;0800 CST">2020 June 29</time><span class="px-2 text-primary-500">&middot;</span><span>832 字</span><span class="px-2 text-primary-500">&middot;</span><span title="预计阅读">4 分钟</span>
-    
-
-    
-    
-  </div>
-
-  
-  
-
-
-      </div>
-      
-    </header>
-    <section class="flex flex-col max-w-full mt-0 prose dark:prose-invert lg:flex-row">
-      
-        <div class="order-first px-0 lg:order-last lg:max-w-xs lg:ps-8">
-          <div class="toc pe-5 print:hidden lg:sticky lg:top-10">
-            <details open class="-ms-5 mt-0 overflow-hidden rounded-lg ps-5">
-  <summary
-    class="-ms-5 block cursor-pointer bg-neutral-100 py-1 ps-5 text-lg font-semibold text-neutral-800 dark:bg-neutral-700 dark:text-neutral-100 lg:hidden"
-  >
-    目录
-  </summary>
-  <div class="-ms-5 border-s border-dotted border-neutral-300 py-2 ps-5 dark:border-neutral-600">
-    <nav id="TableOfContents">
-  <ul>
-    <li><a href="#1-最简单的工程">1. 最简单的工程</a>
-      <ul>
-        <li><a href="#添加一个版本号">添加一个版本号</a></li>
-        <li><a href="#测试">测试</a></li>
-      </ul>
-    </li>
-    <li><a href="#2-添加一个库">2. 添加一个库</a>
-      <ul>
-        <li><a href="#提供可选项">提供可选项</a></li>
-        <li><a href="#设置库文件的使用要求">设置库文件的使用要求</a></li>
-      </ul>
-    </li>
-    <li><a href="#3-安装和测试">3. 安装和测试</a></li>
-  </ul>
-</nav>
-  </div>
-</details>
-
-          </div>
-        </div>
-      
-      <div class="min-w-0 min-h-0 max-w-prose grow">
-        <p>本教程提供了一个渐进式的指导，参考的是官方教程 <a href="https://cmake.org/cmake/help/latest/guide/tutorial/index.html#id1" target="_blank" rel="noreferrer">CMake Tutorial</a> ，然后加入学习过程的笔记。涵盖了使用 CMake 构建一个工程时经常遇到的问题 。通过一个示例项目，展示各种功能是如何一起工作的，这对理解 CMake 非常有用。</p>
-<h2 id="1-最简单的工程" class="relative group">1. 最简单的工程 <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#1-%e6%9c%80%e7%ae%80%e5%8d%95%e7%9a%84%e5%b7%a5%e7%a8%8b" aria-label="锚点">#</a></span></h2><p>最简单工程是从源码文件直接编译生成一个可执行的问题，最简单的解决方案只需要在 CMakeLists.txt 文件中添加三行。</p>
-<p>新建一个工程目录，在目录下新建一个源文件 <code>Tutorial.c</code> ：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
-</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span> <span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Hello World!</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><p>新建一个 <code>CMakeLists.txt</code> ：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmake" data-lang="cmake"><span class="line"><span class="cl"><span class="nb">cmake_minimum_required</span><span class="p">(</span><span class="s">VERSION</span> <span class="s">3.1</span><span class="p">)</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nb">project</span><span class="p">(</span><span class="s">Tutorial</span><span class="p">)</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nb">add_executable</span><span class="p">(</span><span class="s">Tutorial</span> <span class="s">Tutorial.c</span><span class="p">)</span><span class="err">
-</span></span></span></code></pre></div><p><code>CMakeLists.txt</code> 是 cmake 生成 Makefile 所依赖的描述性文件，文件内容由一行一行的命令组成，命令不区分大小写。</p>
-<ul>
-<li>cmake_minimum_required 表示该项目对 CMake 的最低版本要求。</li>
-<li>project 用于设置项目名称。</li>
-<li>add_executable 添加了一个生成的可执行文件，和依赖的源码。</li>
-</ul>
-<p>这样的话，执行 <code>cmake .</code> 生成 Makefile ，再执行 <code>make</code> 开始编译，就可以使用 <code>Tutorial.c</code> 生成的可执行文件 <code>Tutorial </code> 。</p>
-<p>cmake 执行过程中会生成大量的缓存文件，又没有提供类似 <code>cmake clean</code> 的命令来清除生成的文件，有一个简单的方法可以解决这个问题。在工程目录下新建一个名为 <code>build</code> 的子目录，进入这个子目录中执行 <code>cmake ..</code> ，这样生成的文件都会输出到 <code>build</code> 子目录中，方便清理。</p>
-<h3 id="添加一个版本号" class="relative group">添加一个版本号 <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#%e6%b7%bb%e5%8a%a0%e4%b8%80%e4%b8%aa%e7%89%88%e6%9c%ac%e5%8f%b7" aria-label="锚点">#</a></span></h3><p>一个软件工程通常需要版本号，可以直接写在源码里，但是 CMake 提供了更便捷的方法。可以在 <a href="https://cmake.org/cmake/help/latest/command/project.html#command:project" target="_blank" rel="noreferrer"><code>project()</code></a> 命令中添加版本号，例如：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmake" data-lang="cmake"><span class="line"><span class="cl"><span class="nb">project</span><span class="p">(</span><span class="s">Tutorial</span> <span class="s">VERSION</span> <span class="s">1.0</span><span class="p">)</span><span class="err">
-</span></span></span></code></pre></div><p>其实，还可以在该命令中添加项目的描述等，它的语法是：</p>
-<pre tabindex="0"><code>project(&lt;PROJECT-NAME&gt;
+    "><link rel=canonical href=https://shaocheng.li/posts/2020/06/29/><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/site.webmanifest><meta property="og:title" content="CMake 学习笔记"><meta property="og:description" content="本教程提供了一个渐进式的指导，参考的是官方教程 CMake Tutorial ，然后加入学习过程的笔记。涵盖了使用 CMake 构建一个工程时经常遇到的问题 。通过一个示例项目，展示各种功能是如何一起工作的，这对理解 CMake 非常有用。"><meta property="og:type" content="article"><meta property="og:url" content="https://shaocheng.li/posts/2020/06/29/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2020-06-29T22:25:11+08:00"><meta property="article:modified_time" content="2020-06-29T22:25:11+08:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="CMake 学习笔记"><meta name=twitter:description content="本教程提供了一个渐进式的指导，参考的是官方教程 CMake Tutorial ，然后加入学习过程的笔记。涵盖了使用 CMake 构建一个工程时经常遇到的问题 。通过一个示例项目，展示各种功能是如何一起工作的，这对理解 CMake 非常有用。"><script type=application/ld+json>{"@context":"https://schema.org","@type":"Article","articleSection":"Posts","name":"CMake 学习笔记","headline":"CMake 学习笔记","abstract":"本教程提供了一个渐进式的指导，参考的是官方教程 CMake Tutorial ，然后加入学习过程的笔记。涵盖了使用 CMake 构建一个工程时经常遇到的问题 。通过一个示例项目，展示各种功能是如何一起工作的，这对理解 CMake 非常有用。","inLanguage":"zh-cn","url":"https:\/\/shaocheng.li\/posts\/2020\/06\/29\/","author":{"@type":"Person","name":"Shaocheng.Li"},"copyrightYear":"2020","dateCreated":"2020-06-29T22:25:11\u002b08:00","datePublished":"2020-06-29T22:25:11\u002b08:00","dateModified":"2020-06-29T22:25:11\u002b08:00","keywords":["untagged"],"mainEntityOfPage":"true","wordCount":"832"}</script><meta name=author content="Shaocheng.Li"><link href=https://github.com/exbob rel=me></head><body class="flex flex-col h-screen px-6 m-auto text-lg leading-7 max-w-7xl bg-neutral text-neutral-900 dark:bg-neutral-800 dark:text-neutral sm:px-14 md:px-24 lg:px-32"><div id=the-top class="absolute flex self-center"><a class="px-3 py-1 text-sm -translate-y-8 rounded-b-lg bg-primary-200 focus:translate-y-0 dark:bg-neutral-600" href=#main-content><span class="font-bold pe-2 text-primary-600 dark:text-primary-400">&darr;</span>跳到主要内容</a></div><header class="py-6 font-semibold text-neutral-900 dark:text-neutral print:hidden sm:py-10"><nav class="flex items-start justify-between sm:items-center"><div class="flex flex-row items-center"><a class="decoration-primary-500 hover:underline hover:decoration-2 hover:underline-offset-2" rel=me href=/>Shaocheng.Li</a></div><ul class="flex flex-col list-none text-end sm:flex-row"><li class="group mb-1 sm:mb-0 sm:me-7 sm:last:me-0.5"><a href=/posts/ title=Posts><span class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2">文章列表</span></a></li><li class="group mb-1 sm:mb-0 sm:me-7 sm:last:me-0.5"><button id=search-button-1 title="搜索 (/)">
+<span class="transition-colors group-dark:hover:text-primary-400 group-hover:text-primary-600"><span class="relative inline-block align-text-bottom px-1 icon"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="svg-inline--fa fa-search fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentcolor" d="M505 442.7 405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9.0 208 0S0 93.1.0 208s93.1 208 208 208c48.3.0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9.0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7.0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7.0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg></span></span><span class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"></span></button></li><li class="group mb-1 sm:mb-0 sm:me-7 sm:last:me-0.5"><button id=appearance-switcher-1 type=button aria-label="appearance switcher">
+<span class="inline transition-colors group-dark:hover:text-primary-400 group-hover:text-primary-600 dark:hidden" title=切换为深色模式><span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentcolor" d="M32 256C32 132.2 132.3 32 255.8 32c11.36.0 29.7 1.668 40.9 3.746 9.616 1.777 11.75 14.63 3.279 19.44C245 86.5 211.2 144.6 211.2 207.8c0 109.7 99.71 193 208.3 172.3 9.561-1.805 16.28 9.324 10.11 16.95C387.9 448.6 324.8 480 255.8 480 132.1 480 32 379.6 32 256z"/></svg></span><span class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"></span>
+</span><span class="hidden transition-colors group-dark:hover:text-primary-400 group-hover:text-primary-600 dark:inline" title=切换为浅色模式><span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentcolor" d="M256 159.1c-53.02.0-95.1 42.98-95.1 95.1s41.2 96.9 95.1 96.9 95.1-42.98 95.1-95.1S309 159.1 256 159.1zM509.3 347l-63.2-91.9 63.15-91.01c6.332-9.125 1.104-21.74-9.826-23.72l-109-19.7-19.7-109c-1.975-10.93-14.59-16.16-23.72-9.824L256 65.89 164.1 2.736c-9.125-6.332-21.74-1.107-23.72 9.824L121.6 121.6 12.56 141.3C1.633 143.2-3.596 155.9 2.736 164.1L65.89 256 2.74 347.01c-6.332 9.125-1.105 21.74 9.824 23.72l109 19.7 19.7 109c1.975 10.93 14.59 16.16 23.72 9.824L256 446.1l91.01 63.15c9.127 6.334 21.75 1.107 23.72-9.822l19.7-109 109-19.7C510.4 368.8 515.6 356.1 509.3 347zM256 383.1c-70.69.0-127.1-57.31-127.1-127.1.0-70.69 57.31-127.1 127.1-127.1S383.1 186.2 383.1 256c0 70.7-56.4 127.1-127.1 127.1z"/></svg></span><span class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"></span></span></button></li></ul></nav></header><div class="relative flex flex-col grow"><main id=main-content class=grow><article><header class=max-w-prose><h1 class="mt-0 text-4xl font-extrabold text-neutral-900 dark:text-neutral">CMake 学习笔记</h1><div class="mt-8 mb-12 text-base text-neutral-500 dark:text-neutral-400 print:hidden"><div class="flex flex-row flex-wrap items-center"><time datetime="2020-06-29 22:25:11 +0800 +0800">2020 June 29</time><span class="px-2 text-primary-500">&#183;</span><span>832 字</span><span class="px-2 text-primary-500">&#183;</span><span title=预计阅读>4 分钟</span></div></div></header><section class="flex flex-col max-w-full mt-0 prose dark:prose-invert lg:flex-row"><div class="order-first px-0 lg:order-last lg:max-w-xs lg:ps-8"><div class="toc pe-5 print:hidden lg:sticky lg:top-10"><details open class="-ms-5 mt-0 overflow-hidden rounded-lg ps-5"><summary class="-ms-5 block cursor-pointer bg-neutral-100 py-1 ps-5 text-lg font-semibold text-neutral-800 dark:bg-neutral-700 dark:text-neutral-100 lg:hidden">目录</summary><div class="-ms-5 border-s border-dotted border-neutral-300 py-2 ps-5 dark:border-neutral-600"><nav id=TableOfContents><ul><li><a href=#1-最简单的工程>1. 最简单的工程</a><ul><li><a href=#添加一个版本号>添加一个版本号</a></li><li><a href=#测试>测试</a></li></ul></li><li><a href=#2-添加一个库>2. 添加一个库</a><ul><li><a href=#提供可选项>提供可选项</a></li><li><a href=#设置库文件的使用要求>设置库文件的使用要求</a></li></ul></li><li><a href=#3-安装和测试>3. 安装和测试</a></li></ul></nav></div></details></div></div><div class="min-w-0 min-h-0 max-w-prose grow"><p>本教程提供了一个渐进式的指导，参考的是官方教程 <a href=https://cmake.org/cmake/help/latest/guide/tutorial/index.html#id1 target=_blank rel=noreferrer>CMake Tutorial</a> ，然后加入学习过程的笔记。涵盖了使用 CMake 构建一个工程时经常遇到的问题 。通过一个示例项目，展示各种功能是如何一起工作的，这对理解 CMake 非常有用。</p><h2 id=1-最简单的工程 class="relative group">1. 最简单的工程 <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style=text-decoration-line:none!important href=#1-%e6%9c%80%e7%ae%80%e5%8d%95%e7%9a%84%e5%b7%a5%e7%a8%8b aria-label=锚点>#</a></span></h2><p>最简单工程是从源码文件直接编译生成一个可执行的问题，最简单的解决方案只需要在 CMakeLists.txt 文件中添加三行。</p><p>新建一个工程目录，在目录下新建一个源文件 <code>Tutorial.c</code> ：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;stdio.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>main</span> <span class=p>(</span><span class=kt>int</span> <span class=n>argc</span><span class=p>,</span> <span class=kt>char</span> <span class=o>*</span><span class=n>argv</span><span class=p>[])</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;Hello World!</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></div><p>新建一个 <code>CMakeLists.txt</code> ：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-cmake data-lang=cmake><span class=line><span class=cl><span class=nb>cmake_minimum_required</span><span class=p>(</span><span class=s>VERSION</span> <span class=s>3.1</span><span class=p>)</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nb>project</span><span class=p>(</span><span class=s>Tutorial</span><span class=p>)</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nb>add_executable</span><span class=p>(</span><span class=s>Tutorial</span> <span class=s>Tutorial.c</span><span class=p>)</span><span class=err>
+</span></span></span></code></pre></div><p><code>CMakeLists.txt</code> 是 cmake 生成 Makefile 所依赖的描述性文件，文件内容由一行一行的命令组成，命令不区分大小写。</p><ul><li>cmake_minimum_required 表示该项目对 CMake 的最低版本要求。</li><li>project 用于设置项目名称。</li><li>add_executable 添加了一个生成的可执行文件，和依赖的源码。</li></ul><p>这样的话，执行 <code>cmake .</code> 生成 Makefile ，再执行 <code>make</code> 开始编译，就可以使用 <code>Tutorial.c</code> 生成的可执行文件 <code>Tutorial </code>。</p><p>cmake 执行过程中会生成大量的缓存文件，又没有提供类似 <code>cmake clean</code> 的命令来清除生成的文件，有一个简单的方法可以解决这个问题。在工程目录下新建一个名为 <code>build</code> 的子目录，进入这个子目录中执行 <code>cmake ..</code> ，这样生成的文件都会输出到 <code>build</code> 子目录中，方便清理。</p><h3 id=添加一个版本号 class="relative group">添加一个版本号 <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style=text-decoration-line:none!important href=#%e6%b7%bb%e5%8a%a0%e4%b8%80%e4%b8%aa%e7%89%88%e6%9c%ac%e5%8f%b7 aria-label=锚点>#</a></span></h3><p>一个软件工程通常需要版本号，可以直接写在源码里，但是 CMake 提供了更便捷的方法。可以在 <a href=https://cmake.org/cmake/help/latest/command/project.html#command:project target=_blank rel=noreferrer><code>project()</code></a> 命令中添加版本号，例如：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-cmake data-lang=cmake><span class=line><span class=cl><span class=nb>project</span><span class=p>(</span><span class=s>Tutorial</span> <span class=s>VERSION</span> <span class=s>1.0</span><span class=p>)</span><span class=err>
+</span></span></span></code></pre></div><p>其实，还可以在该命令中添加项目的描述等，它的语法是：</p><pre tabindex=0><code>project(&lt;PROJECT-NAME&gt;
         [VERSION &lt;major&gt;[.&lt;minor&gt;[.&lt;patch&gt;[.&lt;tweak&gt;]]]]
         [DESCRIPTION &lt;project-description-string&gt;]
         [HOMEPAGE_URL &lt;url-string&gt;]
         [LANGUAGES &lt;language-name&gt;...])
-</code></pre><p>这样添加的版本号，被 cmake 存放在特定的变量中：</p>
-<ul>
-<li><code>&lt;PROJECT-NAME&gt;_VERSION</code> ，存放完整的版本号 。</li>
-<li><code>&lt;PROJECT-NAME&gt;_VERSION_MAJOR</code> ，存放 major 。</li>
-<li><code>&lt;PROJECT-NAME&gt;_VERSION_MINOR</code> ，存放 minor 。</li>
-<li><code>&lt;PROJECT-NAME&gt;_VERSION_PATCH</code> ， 存放 patch 。</li>
-<li><code>&lt;PROJECT-NAME&gt;_VERSION_TWEAK</code> ，存放 tweak 。</li>
-</ul>
-<p><code>&lt;PROJECT-NAME&gt;</code>表示工程的名称，这里的值为 Tutorial ，所以 <code>Tutorial_VERSION_MAJOR</code> 的值就是 <code>1</code> ， <code>Tutorial_VERSION_MINOR</code> 的值就是 <code>0</code> 。我们需要新建一个名为 <code>TutorialConfig.h.in</code> 的文件传递这些变量：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#define Tutorial_VERSION_MAJOR @Tutorial_VERSION_MAJOR@ 
-</span></span></span><span class="line"><span class="cl"><span class="cp">#define Tutorial_VERSION_MINOR @Tutorial_VERSION_MINOR@ 
-</span></span></span></code></pre></div><p>然后，在 <code>CMakeLists.txt</code> 中添加一条命令：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmake" data-lang="cmake"><span class="line"><span class="cl"><span class="nb">configure_file</span><span class="p">(</span><span class="s">TutorialConfig.h.in</span> <span class="s">TutorialConfig.h</span><span class="p">)</span><span class="err">
-</span></span></span></code></pre></div><p>cmake 执行这条命令的时候，会读取 <code>TutorialConfig.h.in</code> 文件，并将其中的变量替换成真实的值，然后在执行目录下生成头文件 <code>TutorialConfig.h</code> ：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#define Tutorial_VERSION_MAJOR 1
-</span></span></span><span class="line"><span class="cl"><span class="cp">#define Tutorial_VERSION_MINOR 0
-</span></span></span></code></pre></div><p>下一步，我们需要在源码文件 <code>Tutorial.c</code> 中导入头文件，然后使用头文件里定义的宏打印版本号：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
-</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;TutorialConfig.h&#34; # 导入头文件</span><span class="cp">
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
-</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span> <span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Hello World!</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;MAJOR Version is %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">Tutorial_VERSION_MAJOR</span><span class="p">);</span> <span class="err">#</span> <span class="err">引用版本号的宏定义</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;MINOR Version is %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">Tutorial_VERSION_MINOR</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><p>如果你是在源码目录下执行 cmake ，这样修改就可以了。如果是在 <code>build</code> 目录下执行 cmake ，生成的 <code>TutorialConfig.h</code> 文件位于 <code>build</code> 目录下，源文件中的 <code>#include &quot;TutorialConfig.h&quot;</code> 语句会找不到头文件，这时，需要将 <code>build</code> 目录页加入到头文件的检索路径中，可以在 <code>CMakeLists.txt</code> 的末尾加一行：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmake" data-lang="cmake"><span class="line"><span class="cl"><span class="nb">target_include_directories</span><span class="p">(</span><span class="s">Tutorial</span> <span class="s">PUBLIC</span> <span class="s2">&#34;${PROJECT_BINARY_DIR}&#34;</span><span class="p">)</span><span class="err">
-</span></span></span></code></pre></div><p><code>target_include_directories()</code> 的语法是：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmake" data-lang="cmake"><span class="line"><span class="cl"><span class="nb">target_include_directories</span><span class="p">(</span><span class="s">&lt;target&gt;</span> <span class="s">[SYSTEM]</span> <span class="s">[BEFORE]</span>
-</span></span><span class="line"><span class="cl">  <span class="s">&lt;INTERFACE|PUBLIC|PRIVATE&gt;</span> <span class="s">[items1...]</span>
-</span></span><span class="line"><span class="cl">  <span class="s">[&lt;INTERFACE|PUBLIC|PRIVATE&gt;</span> <span class="s">[items2...]</span> <span class="s">...]</span><span class="p">)</span><span class="err">
-</span></span></span></code></pre></div><p>它的作用是向目标文件添加头文件检索路径。当编译 <code>target</code> 目标文件时，去指定的 <code>iters*</code> 路径下检索头文件。<code>target</code> 的值必须是通过  <a href="https://cmake.org/cmake/help/latest/command/add_executable.html#command:add_executable" target="_blank" rel="noreferrer"><code>add_executable()</code></a> 或 <a href="https://cmake.org/cmake/help/latest/command/add_library.html#command:add_library" target="_blank" rel="noreferrer"><code>add_library()</code></a> 命令添加的目标文件名称。</p>
-<p><code>PROJECT_BINARY_DIR</code> 是指 cmake 提供的一个变量，表示目标文件输出的路径，通常就是执行 cmake 命令时的路径。还有一个变量 <code>PROJECT_SOURCE_DIR</code> ，表示源码的路径。它们的值都是由 <code>project()</code> 命令自动设置的。在 cmake 中，应用变量的语法是 <code>${variable-name}</code> 。</p>
-<h3 id="测试" class="relative group">测试 <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#%e6%b5%8b%e8%af%95" aria-label="锚点">#</a></span></h3><p>修改完毕后，<code>CMakeLists.txt</code> 的完整内容是：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmake" data-lang="cmake"><span class="line"><span class="cl"><span class="nb">cmake_minimum_required</span><span class="p">(</span><span class="s">VERSION</span> <span class="s">3.1</span><span class="p">)</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nb">project</span><span class="p">(</span><span class="s">Tutorial</span> <span class="s">VERSION</span> <span class="s">1.0</span><span class="p">)</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nb">configure_file</span><span class="p">(</span><span class="s">TutorialConfig.h.in</span> <span class="s">TutorialConfig.h</span><span class="p">)</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nb">add_executable</span><span class="p">(</span><span class="s">Tutorial</span> <span class="s">Tutorial.c</span><span class="p">)</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nb">target_include_directories</span><span class="p">(</span><span class="s">Tutorial</span> <span class="s">PUBLIC</span> <span class="s2">&#34;${PROJECT_BINARY_DIR}&#34;</span><span class="p">)</span><span class="err">
-</span></span></span></code></pre></div><p>然后，我们在 <code>build</code> 子目录下依次执行 <code>cmake ..</code> 和 <code>make</code> （或者 <code>cmake --build .</code>） ，生成的文件如下：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">~$ ls
-</span></span><span class="line"><span class="cl">CMakeCache.txt      Tutorial            inc
-</span></span><span class="line"><span class="cl">CMakeFiles          TutorialConfig.h
-</span></span><span class="line"><span class="cl">Makefile            cmake_install.cmake
-</span></span><span class="line"><span class="cl">~$ ./Tutorial
-</span></span><span class="line"><span class="cl">Hello World!
-</span></span><span class="line"><span class="cl">MAJOR Version is <span class="m">1</span>
-</span></span><span class="line"><span class="cl">MINOR Version is <span class="m">0</span>
-</span></span></code></pre></div><h2 id="2-添加一个库" class="relative group">2. 添加一个库 <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#2-%e6%b7%bb%e5%8a%a0%e4%b8%80%e4%b8%aa%e5%ba%93" aria-label="锚点">#</a></span></h2><p>下面我们在工程中添加一个用于数学计算的链接库，把库的源码放在 <code>MathFunctions</code> 子目录中，工程结构如下：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">~$ tree
-</span></span><span class="line"><span class="cl">.
-</span></span><span class="line"><span class="cl">├── CMakeLists.txt
-</span></span><span class="line"><span class="cl">├── MathFunctions
-</span></span><span class="line"><span class="cl">│   ├── MathFunctions.h
-</span></span><span class="line"><span class="cl">│   └── mysqrt.c
-</span></span><span class="line"><span class="cl">├── Tutorial.c
-</span></span><span class="line"><span class="cl">└── TutorialConfig.h.in
-</span></span></code></pre></div><p>头文件 <code>MathFunctions.h</code> 中声明了一个计算平方根的函数 <code>mysqrt()</code> ：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="kt">double</span> <span class="nf">mysqrt</span><span class="p">(</span><span class="kt">double</span> <span class="n">x</span><span class="p">);</span>
-</span></span></code></pre></div><p>它定义在 <code>mysqrt.c</code> 文件中：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
-</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;MathFunctions.h&#34;</span><span class="cp">
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
-</span></span><span class="line"><span class="cl"><span class="c1">// a hack square root calculation using simple operations
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">double</span> <span class="nf">mysqrt</span><span class="p">(</span><span class="kt">double</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kt">double</span> <span class="n">result</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="c1">// do ten iterations
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="p">(</span><span class="n">result</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">            <span class="n">result</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="p">}</span>
-</span></span><span class="line"><span class="cl">        <span class="kt">double</span> <span class="n">delta</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="p">(</span><span class="n">result</span> <span class="o">*</span> <span class="n">result</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">delta</span> <span class="o">/</span> <span class="n">result</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Computing sqrt of %f to be %f .</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">result</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><p>然后，我们在 <code>Tutorial.c</code> 文件中调用这个函数计算一个数的平方根：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
-</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;TutorialConfig.h&#34;</span><span class="cp">
-</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;MathFunctions/MathFunctions.h&#34;</span><span class="cp">
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
-</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span> <span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="kt">double</span> <span class="n">input</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Hello World!</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;Version %d.%d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">Tutorial_VERSION_MAJOR</span><span class="p">,</span> <span class="n">Tutorial_VERSION_MINOR</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="kt">double</span> <span class="n">output</span> <span class="o">=</span> <span class="nf">mysqrt</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;The square root of %f is %f .</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">input</span><span class="p">,</span> <span class="n">output</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><p>编译的时候，我们希望将 <code>mysqrt.c</code> 生成一个共享库，再连接到 <code>Tutorial</code> 目标中。所以，需要对 CMake 的描述文件做如下修改：</p>
-<ol>
-<li>在 <code>MathFunctions</code> 子目录下新建一个 <code>CMakeLists.txt</code> ，内容是 <code>add_library(MathFunctions mysqrt.c)</code> ，表示将 <code>mysqrt.c</code> 编译为库文件。</li>
-<li>在顶层目录的 <code>CMakeLists.txt</code> 文件中如下内容：
-<ol>
-<li><code>add_subdirectory(MathFunctions)</code> ，表示向 CMake 工程添加一个子目录，执行时会调用子目录中的 <code>CMakeLists.txt</code> 。</li>
-<li><code>target_link_libraries(Tutorial PUBLIC MathFunctions)</code> ，表示目标文件 <code>Tutorial</code> 要链接 <code>MathFunctions</code> 。</li>
-<li>因为 <code>Tutorial.c</code> 文件中导入了 <code>MathFunctions</code> 子目录下的头文件，所以，要用 <code>target_include_directories()</code> 命令将这个子目录也加入头文件检索路径。</li>
-</ol>
-</li>
-</ol>
-<p>完整的顶层目录 <code>CMakeLists.txt</code> 文件内容如下：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmake" data-lang="cmake"><span class="line"><span class="cl"><span class="nb">cmake_minimum_required</span><span class="p">(</span><span class="s">VERSION</span> <span class="s">3.1</span><span class="p">)</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nb">project</span><span class="p">(</span><span class="s">Tutorial</span> <span class="s">VERSION</span> <span class="s">1.0</span><span class="p">)</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nb">add_subdirectory</span><span class="p">(</span><span class="s">MathFunctions</span><span class="p">)</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nb">configure_file</span><span class="p">(</span><span class="s">TutorialConfig.h.in</span> <span class="s">TutorialConfig.h</span><span class="p">)</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nb">add_executable</span><span class="p">(</span><span class="s">Tutorial</span> <span class="s">Tutorial.c</span><span class="p">)</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">Tutorial</span> <span class="s">PUBLIC</span> <span class="s">MathFunctions</span><span class="p">)</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nb">target_include_directories</span><span class="p">(</span><span class="s">Tutorial</span> <span class="s">PUBLIC</span> 
-</span></span><span class="line"><span class="cl">                            <span class="s2">&#34;${PROJECT_BINARY_DIR}&#34;</span>
-</span></span><span class="line"><span class="cl">                            <span class="s2">&#34;${PROJECT_SOURCE_DIR}/MathFunctions&#34;</span>
-</span></span><span class="line"><span class="cl">                            <span class="p">)</span><span class="err">
-</span></span></span></code></pre></div><p>然后，在 <code>build</code> 目录下依次执行 <code>cmake ..</code> 和 <code>cmake --build .</code> ，编译生成可执行文件 <code>Tutorial</code> ，执行：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">~$ ./Tutorial
-</span></span><span class="line"><span class="cl">Hello World!
-</span></span><span class="line"><span class="cl">Version 1.0
-</span></span><span class="line"><span class="cl">Computing sqrt of 4.000000 to be 2.500000 .
-</span></span><span class="line"><span class="cl">Computing sqrt of 4.000000 to be 2.050000 .
-</span></span><span class="line"><span class="cl">Computing sqrt of 4.000000 to be 2.000610 .
-</span></span><span class="line"><span class="cl">Computing sqrt of 4.000000 to be 2.000000 .
-</span></span><span class="line"><span class="cl">Computing sqrt of 4.000000 to be 2.000000 .
-</span></span><span class="line"><span class="cl">Computing sqrt of 4.000000 to be 2.000000 .
-</span></span><span class="line"><span class="cl">Computing sqrt of 4.000000 to be 2.000000 .
-</span></span><span class="line"><span class="cl">Computing sqrt of 4.000000 to be 2.000000 .
-</span></span><span class="line"><span class="cl">Computing sqrt of 4.000000 to be 2.000000 .
-</span></span><span class="line"><span class="cl">Computing sqrt of 4.000000 to be 2.000000 .
-</span></span><span class="line"><span class="cl">The square root of 4.000000 is 2.000000 .
-</span></span></code></pre></div><h3 id="提供可选项" class="relative group">提供可选项 <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#%e6%8f%90%e4%be%9b%e5%8f%af%e9%80%89%e9%a1%b9" aria-label="锚点">#</a></span></h3><p>上一步添加的 <code>MathFunctions</code> 库可以做成一个可选的模块，这是大型工程里的常见做法。</p>
-<p>首先需要用 <code>option()</code> 命令设置一个选项：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmake" data-lang="cmake"><span class="line"><span class="cl"><span class="nb">option</span><span class="p">(</span><span class="s">USE_MYMATH,</span> <span class="s2">&#34;Use tutorial provided math implementation&#34;</span><span class="s">,</span> <span class="s">ON</span><span class="p">)</span><span class="err">
-</span></span></span></code></pre></div><p>这样就设置了一个名为 <code>USE_MYMATH</code> 的选项，初始值是 <code>ON</code> 。<code>option()</code> 的作用是新建一个用户可以选择的选项，语法很简单：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmake" data-lang="cmake"><span class="line"><span class="cl"><span class="nb">option</span><span class="p">(</span><span class="s">&lt;variable&gt;</span> <span class="s2">&#34;&lt;help_text&gt;&#34;</span> <span class="s">[value]</span><span class="p">)</span><span class="err">
-</span></span></span></code></pre></div><p>三个参数依次是选项的变量名，选项的描述，选项的初始值。选项的值只有两个：<code>ON</code> 和 <code>OFF</code> ，如果没有设置初始值，默认就是 <code>OFF</code> 。</p>
-<p>然后可以通过这个选项，把模块相关的语句包裹在一个选择语句中：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmake" data-lang="cmake"><span class="line"><span class="cl"><span class="nb">option</span><span class="p">(</span><span class="s">USE_MYMATH</span> <span class="s2">&#34;Use tutorial provided math implementation&#34;</span> <span class="s">ON</span><span class="p">)</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nb">if</span><span class="p">(</span><span class="s">USE_MYMATH</span><span class="p">)</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="nb">add_subdirectory</span><span class="p">(</span><span class="s">MathFunctions</span><span class="p">)</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="nb">list</span><span class="p">(</span><span class="s">APPEND</span> <span class="s">EXTRA_LIBS</span> <span class="s">MathFunctions</span><span class="p">)</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="nb">list</span><span class="p">(</span><span class="s">APPEND</span> <span class="s">EXTRA_INCLUDES</span> <span class="s2">&#34;${PROJECT_SOURCE_DIR}/MathFunctions&#34;</span><span class="p">)</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nb">endif</span><span class="p">()</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">Tutorial</span> <span class="s">PUBLIC</span> <span class="o">${</span><span class="nv">EXTRA_LIBS</span><span class="o">}</span><span class="p">)</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nb">target_include_directories</span><span class="p">(</span><span class="s">Tutorial</span> <span class="s">PUBLIC</span> 
-</span></span><span class="line"><span class="cl">                            <span class="s2">&#34;${PROJECT_BINARY_DIR}&#34;</span>
-</span></span><span class="line"><span class="cl">                            <span class="s2">&#34;${EXTRA_INCLUDES}&#34;</span>
-</span></span><span class="line"><span class="cl">                            <span class="p">)</span><span class="err">
-</span></span></span></code></pre></div><p><code>list()</code> 命令用于操作列表，<code>APPEND</code> 可以将一个元素追加到一个列表的尾部。后面通过新建的列表调用模块，这样的话，只有 <code>USE_MYMATH </code> 的值为 <code>ON</code> 时，才会将模块包含在编译过程中。</p>
-<p>源码中的修改比较简单，只需修改 <code>Tutorial.c</code> 文件，通过宏定义将模块相关的语句做成可选项：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#ifdef USE_MYMATH
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>    <span class="cp">#include</span> <span class="cpf">&#34;MathFunctions/MathFunctions.h&#34;</span><span class="cp">
-</span></span></span><span class="line"><span class="cl"><span class="cp">#endif
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
-</span></span><span class="line"><span class="cl"><span class="cp">#ifdef USE_MYMATH
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>    <span class="kt">double</span> <span class="n">output</span> <span class="o">=</span> <span class="nf">mysqrt</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">printf</span><span class="p">(</span><span class="s">&#34;The square root of %f is %f .</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">input</span><span class="p">,</span> <span class="n">output</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="cp">#endif
-</span></span></span></code></pre></div><p>这个宏定义的值也需要通过 <code>TutorialConfig.h.in</code> 文件传递给源码：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmake" data-lang="cmake"><span class="line"><span class="cl"><span class="c">#cmakedefine USE_MYMATH
-</span></span></span></code></pre></div><p>执行到 <code>configure_file()</code> 命令的时候，如果 <code>USE_MYMATH</code> 的值是 <code>ON</code> ，这条语句会被替换为  <code>#define USE_MYMATH</code> ；如果  <code>USE_MYMATH</code> 的值是 <code>OFF</code> ，这条语句会被替换为一行注释 <code>/* #undef USE_MYMATH */</code> 。</p>
-<h3 id="设置库文件的使用要求" class="relative group">设置库文件的使用要求 <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#%e8%ae%be%e7%bd%ae%e5%ba%93%e6%96%87%e4%bb%b6%e7%9a%84%e4%bd%bf%e7%94%a8%e8%a6%81%e6%b1%82" aria-label="锚点">#</a></span></h3><p>构建 C 语言的工程时，应该清晰的规划模块之间的关系，在编译时，先编译出子模块的目标文件，再由这些目标文件链接起来生成上一层的目标文件，层层递进，最终编译出可执行文件。目标文件包括 <a href="https://cmake.org/cmake/help/latest/command/add_executable.html#command:add_executable" target="_blank" rel="noreferrer"><code>add_executable()</code></a> 和 <a href="https://cmake.org/cmake/help/latest/command/add_library.html#command:add_library" target="_blank" rel="noreferrer"><code>add_library()</code></a> 命令生成的可执行文件和库。目标文件的依赖关系是通过两条命令控制的：</p>
-<ul>
-<li><a href="https://cmake.org/cmake/help/latest/command/target_include_directories.html#command:target_include_directories" target="_blank" rel="noreferrer"><code>target_include_directories()</code></a> ，向目标文件添加编译时的头文件检索目录。</li>
-<li><a href="https://cmake.org/cmake/help/latest/command/target_link_libraries.html#command:target_link_libraries" target="_blank" rel="noreferrer"><code>target_link_libraries()</code></a> ，向目标文件添加编译时依赖的库。</li>
-</ul>
-<p>这两条命令需要一个控制传递属性的参数，可选三种关键字：</p>
-<ul>
-<li><code>PRIVATE</code> ，私有。库文件提供的方法只供目标文件使用，不会暴露给更上层目标文件。即生产者需要，消费者不需要。</li>
-<li><code>INTERFACE</code> ，接口。库文件提供的方法会暴露给上层文件使用，本目标文件只用到了库文件提供的一些数据结构和声明等。即生产者不需要，消费者需要。</li>
-<li><code>PUBLIC</code> ，公开。库文件提供的方法可以供所有目标文件使用。即生产者和消费者都需要。</li>
-</ul>
-<p>以上一节的工程为例，目录结果是：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">.
-</span></span><span class="line"><span class="cl">├── build
-</span></span><span class="line"><span class="cl">├── CMakeLists.txt
-</span></span><span class="line"><span class="cl">├── MathFunctions      <span class="c1"># 生成 libMathFunctions.a</span>
-</span></span><span class="line"><span class="cl">│   ├── CMakeLists.txt
-</span></span><span class="line"><span class="cl">│   ├── MathFunctions.h
-</span></span><span class="line"><span class="cl">│   └── mysqrt.c
-</span></span><span class="line"><span class="cl">├── Tutorial.c
-</span></span><span class="line"><span class="cl">└── TutorialConfig.h.in
-</span></span></code></pre></div><p>目标 <code>MathFunctions</code> 需要的头文件 <code>MathFunctions.h</code> 中的声明，并将方法暴露给上一层的 <code>Tutorial.c</code> 使用。所以，目标 <code>MathFunctions</code> 对头文件  <code>MathFunctions.h</code> 的使用要求就是 <code>INTERFACE</code> ，目标 <code>Tutrial</code> 对目标 <code>MathFunctions</code> 的使用要求是 <code>PRIVATE</code> 。</p>
-<p>那么，可以在 <code>MathFunctions/CMakeLists.txt</code> 中添加一行：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmake" data-lang="cmake"><span class="line"><span class="cl"><span class="nb">target_include_directories</span><span class="p">(</span><span class="s">MathFunctions</span>
-</span></span><span class="line"><span class="cl">        <span class="s">INTERFACE</span> <span class="o">${</span><span class="nv">CMAKE_CURRENT_SOURCE_DIR</span><span class="o">}</span>
-</span></span><span class="line"><span class="cl">        <span class="p">)</span><span class="err">
-</span></span></span></code></pre></div><p>然后就可以把顶层 <code>CMakeLists.txt</code> 中包含头文件的部分删除，并将库文件的使用要求改为私有：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmake" data-lang="cmake"><span class="line"><span class="cl"><span class="nb">if</span><span class="p">(</span><span class="s">USE_MYMATH</span><span class="p">)</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="nb">add_subdirectory</span><span class="p">(</span><span class="s">MathFunctions</span><span class="p">)</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="nb">list</span><span class="p">(</span><span class="s">APPEND</span> <span class="s">EXTRA_LIBS</span> <span class="s">MathFunctions</span><span class="p">)</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nb">endif</span><span class="p">()</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">Tutorial</span> <span class="s">PRIVATE</span> <span class="o">${</span><span class="nv">EXTRA_LIBS</span><span class="o">}</span><span class="p">)</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nb">target_include_directories</span><span class="p">(</span><span class="s">Tutorial</span> <span class="s">PRIVATE</span> 
-</span></span><span class="line"><span class="cl">                            <span class="s2">&#34;${PROJECT_BINARY_DIR}&#34;</span>
-</span></span><span class="line"><span class="cl">                            <span class="p">)</span><span class="err">
-</span></span></span></code></pre></div><h2 id="3-安装和测试" class="relative group">3. 安装和测试 <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#3-%e5%ae%89%e8%a3%85%e5%92%8c%e6%b5%8b%e8%af%95" aria-label="锚点">#</a></span></h2><p>这个工程只需要把可执行文件安装到指定的目录，所以，在顶层 <code>CMakeLists.txt</code> 目录下添加一行：</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cmake" data-lang="cmake"><span class="line"><span class="cl"><span class="nb">install</span><span class="p">(</span><span class="s">TARGETS</span> <span class="s">Tutorial</span> <span class="s">DESTINATION</span> <span class="s">bin</span><span class="p">)</span><span class="err">
-</span></span></span></code></pre></div><p>这样，在执行 <code>make install</code> 时，就会把 <code>Tutorial</code> 文件安装到 <code>/usr/local/bin/</code> 目录下，默认的前缀是 <code>/usr/local/</code> ，如果要换别的目录，可以写上绝对路径。</p>
-
-      </div>
-    </section>
-    <footer class="pt-8 max-w-prose print:hidden">
-      
-  <div class="flex">
-    
-      
-      
-        
-        <img
-          class="!mb-0 !mt-0 me-4 h-24 w-24 rounded-full"
-          width="96"
-          height="96"
-          alt="Shaocheng.Li"
-          src="/img/author_hucdd16a8e5aab658b1bf3664f1886d7a1_71871_192x192_fill_box_center_3.png"
-          
-            loading="lazy"
-          
-        />
-      
-    
-    <div class="place-self-center">
-      
-        <div class="text-[0.6rem] uppercase leading-3 text-neutral-500 dark:text-neutral-400">
-          作者
-        </div>
-        <div class="font-semibold leading-6 text-neutral-800 dark:text-neutral-300">
-          Shaocheng.Li
-        </div>
-      
-      
-        <div class="text-sm text-neutral-700 dark:text-neutral-400">A Linux software engineer.</div>
-      
-      <div class="text-2xl sm:text-lg">
-  <div class="flex flex-wrap text-neutral-400 dark:text-neutral-500">
-    
-      
-        <a
-          class="px-1 transition-transform hover:scale-125 hover:text-primary-700 dark:hover:text-primary-400"
-          style="will-change:transform;"
-          href="https://github.com/exbob"
-          target="_blank"
-          aria-label="Github"
-          rel="me noopener noreferrer"
-          ><span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
-</span></a
-        >
-      
-    
-  </div>
-
-</div>
-    </div>
-  </div>
-
-
-      
-
-      
-  
-    
-    
-    
-    <div class="pt-8">
-      <hr class="border-dotted border-neutral-300 dark:border-neutral-600" />
-      <div class="flex justify-between pt-3">
-        <span>
-          
-            <a class="group flex" href="/posts/2020/04/12/">
-              <span
-                class="me-2 text-neutral-700 transition-transform group-hover:-translate-x-[2px] group-hover:text-primary-600 dark:text-neutral dark:group-hover:text-primary-400"
-                ><span class="ltr:inline rtl:hidden">&larr;</span
-                ><span class="ltr:hidden rtl:inline">&rarr;</span></span
-              >
-              <span class="flex flex-col">
-                <span
-                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
-                  >tcpdump 使用笔记</span
-                >
-                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
-                  
-                    <time datetime="2020-04-12 22:25:11 &#43;0800 CST">2020 April 12</time>
-                  
-                </span>
-              </span>
-            </a>
-          
-        </span>
-        <span>
-          
-            <a class="group flex text-right" href="/posts/2020/07/16/">
-              <span class="flex flex-col">
-                <span
-                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
-                  >libubox 学习笔记</span
-                >
-                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
-                  
-                    <time datetime="2020-07-16 21:23:11 &#43;0800 CST">2020 July 16</time>
-                  
-                </span>
-              </span>
-              <span
-                class="ms-2 text-neutral-700 transition-transform group-hover:-translate-x-[2px] group-hover:text-primary-600 dark:text-neutral dark:group-hover:text-primary-400"
-                ><span class="ltr:inline rtl:hidden">&rarr;</span
-                ><span class="ltr:hidden rtl:inline">&larr;</span></span
-              >
-            </a>
-          
-        </span>
-      </div>
-    </div>
-  
-
-
-      
-    </footer>
-  </article>
-
-        
-          <div class="pointer-events-none absolute bottom-0 end-0 top-[100vh] w-12">
-            <a
-              href="#the-top"
-              class="pointer-events-auto sticky top-[calc(100vh-5.5rem)] flex h-12 w-12 items-center justify-center rounded-full bg-neutral/50 text-xl text-neutral-700 backdrop-blur hover:text-primary-600 dark:bg-neutral-800/50 dark:text-neutral dark:hover:text-primary-400"
-              aria-label="回到顶部"
-              title="回到顶部"
-            >
-              &uarr;
-            </a>
-          </div>
-        
-      </main><footer class="py-10 print:hidden">
-  
-  
-  <div class="flex items-center justify-between">
-    <div>
-      
-      
-        <p class="text-sm text-neutral-500 dark:text-neutral-400">
-            &copy;
-            2024
-            Shaocheng.Li
-        </p>
-      
-      
-      
-        <p class="text-xs text-neutral-500 dark:text-neutral-400">
-          
-          
-          由 <a class="hover:underline hover:decoration-primary-400 hover:text-primary-500"
-            href="https://gohugo.io/" target="_blank" rel="noopener noreferrer">Hugo</a> &amp; <a class="hover:underline hover:decoration-primary-400 hover:text-primary-500" href="https://github.com/jpanther/congo" target="_blank" rel="noopener noreferrer">Congo</a> 强力驱动
-        </p>
-      
-    </div>
-    <div class="flex flex-row items-center">
-      
-      
-      
-      
-        <div
-          class="me-14 cursor-pointer text-sm text-neutral-700 hover:text-primary-600 dark:text-neutral dark:hover:text-primary-400"
-        >
-          <button id="appearance-switcher-0" type="button" aria-label="appearance switcher">
-            <div
-              class="flex items-center justify-center w-12 h-12 dark:hidden"
-              title="切换为深色模式"
-            >
-              <span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M32 256c0-123.8 100.3-224 223.8-224c11.36 0 29.7 1.668 40.9 3.746c9.616 1.777 11.75 14.63 3.279 19.44C245 86.5 211.2 144.6 211.2 207.8c0 109.7 99.71 193 208.3 172.3c9.561-1.805 16.28 9.324 10.11 16.95C387.9 448.6 324.8 480 255.8 480C132.1 480 32 379.6 32 256z"/></svg>
-</span>
-            </div>
-            <div
-              class="items-center justify-center hidden w-12 h-12 dark:flex"
-              title="切换为浅色模式"
-            >
-              <span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 159.1c-53.02 0-95.1 42.98-95.1 95.1S202.1 351.1 256 351.1s95.1-42.98 95.1-95.1S309 159.1 256 159.1zM509.3 347L446.1 255.1l63.15-91.01c6.332-9.125 1.104-21.74-9.826-23.72l-109-19.7l-19.7-109c-1.975-10.93-14.59-16.16-23.72-9.824L256 65.89L164.1 2.736c-9.125-6.332-21.74-1.107-23.72 9.824L121.6 121.6L12.56 141.3C1.633 143.2-3.596 155.9 2.736 164.1L65.89 256l-63.15 91.01c-6.332 9.125-1.105 21.74 9.824 23.72l109 19.7l19.7 109c1.975 10.93 14.59 16.16 23.72 9.824L256 446.1l91.01 63.15c9.127 6.334 21.75 1.107 23.72-9.822l19.7-109l109-19.7C510.4 368.8 515.6 356.1 509.3 347zM256 383.1c-70.69 0-127.1-57.31-127.1-127.1c0-70.69 57.31-127.1 127.1-127.1s127.1 57.3 127.1 127.1C383.1 326.7 326.7 383.1 256 383.1z"/></svg>
-</span>
-            </div>
-          </button>
-        </div>
-      
-    </div>
-  </div>
-  
-  
-</footer>
-<div
-  id="search-wrapper"
-  class="invisible fixed inset-0 z-50 flex h-screen w-screen cursor-default flex-col bg-neutral-500/50 p-4 backdrop-blur-sm dark:bg-neutral-900/50 sm:p-6 md:p-[10vh] lg:p-[12vh]"
-  data-url="https://shaocheng.li/"
->
-  <div
-    id="search-modal"
-    class="flex flex-col w-full max-w-3xl min-h-0 mx-auto border rounded-md shadow-lg top-20 border-neutral-200 bg-neutral dark:border-neutral-700 dark:bg-neutral-800"
-  >
-    <header class="relative z-10 flex items-center justify-between flex-none px-2">
-      <form class="flex items-center flex-auto min-w-0">
-        <div class="flex items-center justify-center w-8 h-8 text-neutral-400">
-          <span class="relative inline-block align-text-bottom px-1 icon"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="svg-inline--fa fa-search fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg>
-</span>
-        </div>
-        <input
-          type="search"
-          id="search-query"
-          class="flex flex-auto h-12 mx-1 bg-transparent appearance-none focus:outline-dotted focus:outline-2 focus:outline-transparent"
-          placeholder="搜索"
-          tabindex="0"
-        />
-      </form>
-      <button
-        id="close-search-button"
-        class="flex items-center justify-center w-8 h-8 text-neutral-700 hover:text-primary-600 dark:text-neutral dark:hover:text-primary-400"
-        title="关闭 (Esc)"
-      >
-        <span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"/></svg>
-</span>
-      </button>
-    </header>
-    <section class="flex-auto px-2 overflow-auto">
-      <ul id="search-results">
-        
-      </ul>
-    </section>
-  </div>
-</div>
-
-    </div>
-  </body>
-</html>
+</code></pre><p>这样添加的版本号，被 cmake 存放在特定的变量中：</p><ul><li><code>&lt;PROJECT-NAME>_VERSION</code> ，存放完整的版本号 。</li><li><code>&lt;PROJECT-NAME>_VERSION_MAJOR</code> ，存放 major 。</li><li><code>&lt;PROJECT-NAME>_VERSION_MINOR</code> ，存放 minor 。</li><li><code>&lt;PROJECT-NAME>_VERSION_PATCH</code> ， 存放 patch 。</li><li><code>&lt;PROJECT-NAME>_VERSION_TWEAK</code> ，存放 tweak 。</li></ul><p><code>&lt;PROJECT-NAME></code>表示工程的名称，这里的值为 Tutorial ，所以 <code>Tutorial_VERSION_MAJOR</code> 的值就是 <code>1</code> ， <code>Tutorial_VERSION_MINOR</code> 的值就是 <code>0</code> 。我们需要新建一个名为 <code>TutorialConfig.h.in</code> 的文件传递这些变量：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cp>#define Tutorial_VERSION_MAJOR @Tutorial_VERSION_MAJOR@ 
+</span></span></span><span class=line><span class=cl><span class=cp>#define Tutorial_VERSION_MINOR @Tutorial_VERSION_MINOR@ 
+</span></span></span></code></pre></div><p>然后，在 <code>CMakeLists.txt</code> 中添加一条命令：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-cmake data-lang=cmake><span class=line><span class=cl><span class=nb>configure_file</span><span class=p>(</span><span class=s>TutorialConfig.h.in</span> <span class=s>TutorialConfig.h</span><span class=p>)</span><span class=err>
+</span></span></span></code></pre></div><p>cmake 执行这条命令的时候，会读取 <code>TutorialConfig.h.in</code> 文件，并将其中的变量替换成真实的值，然后在执行目录下生成头文件 <code>TutorialConfig.h</code> ：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cp>#define Tutorial_VERSION_MAJOR 1
+</span></span></span><span class=line><span class=cl><span class=cp>#define Tutorial_VERSION_MINOR 0
+</span></span></span></code></pre></div><p>下一步，我们需要在源码文件 <code>Tutorial.c</code> 中导入头文件，然后使用头文件里定义的宏打印版本号：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;stdio.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&#34;TutorialConfig.h&#34; # 导入头文件</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>main</span> <span class=p>(</span><span class=kt>int</span> <span class=n>argc</span><span class=p>,</span> <span class=kt>char</span> <span class=o>*</span><span class=n>argv</span><span class=p>[])</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;Hello World!</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;MAJOR Version is %d</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>Tutorial_VERSION_MAJOR</span><span class=p>);</span> <span class=err>#</span> <span class=err>引用版本号的宏定义</span>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;MINOR Version is %d</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>Tutorial_VERSION_MINOR</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></div><p>如果你是在源码目录下执行 cmake ，这样修改就可以了。如果是在 <code>build</code> 目录下执行 cmake ，生成的 <code>TutorialConfig.h</code> 文件位于 <code>build</code> 目录下，源文件中的 <code>#include "TutorialConfig.h"</code> 语句会找不到头文件，这时，需要将 <code>build</code> 目录页加入到头文件的检索路径中，可以在 <code>CMakeLists.txt</code> 的末尾加一行：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-cmake data-lang=cmake><span class=line><span class=cl><span class=nb>target_include_directories</span><span class=p>(</span><span class=s>Tutorial</span> <span class=s>PUBLIC</span> <span class=s2>&#34;${PROJECT_BINARY_DIR}&#34;</span><span class=p>)</span><span class=err>
+</span></span></span></code></pre></div><p><code>target_include_directories()</code> 的语法是：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-cmake data-lang=cmake><span class=line><span class=cl><span class=nb>target_include_directories</span><span class=p>(</span><span class=s>&lt;target&gt;</span> <span class=s>[SYSTEM]</span> <span class=s>[BEFORE]</span>
+</span></span><span class=line><span class=cl>  <span class=s>&lt;INTERFACE|PUBLIC|PRIVATE&gt;</span> <span class=s>[items1...]</span>
+</span></span><span class=line><span class=cl>  <span class=s>[&lt;INTERFACE|PUBLIC|PRIVATE&gt;</span> <span class=s>[items2...]</span> <span class=s>...]</span><span class=p>)</span><span class=err>
+</span></span></span></code></pre></div><p>它的作用是向目标文件添加头文件检索路径。当编译 <code>target</code> 目标文件时，去指定的 <code>iters*</code> 路径下检索头文件。<code>target</code> 的值必须是通过 <a href=https://cmake.org/cmake/help/latest/command/add_executable.html#command:add_executable target=_blank rel=noreferrer><code>add_executable()</code></a> 或 <a href=https://cmake.org/cmake/help/latest/command/add_library.html#command:add_library target=_blank rel=noreferrer><code>add_library()</code></a> 命令添加的目标文件名称。</p><p><code>PROJECT_BINARY_DIR</code> 是指 cmake 提供的一个变量，表示目标文件输出的路径，通常就是执行 cmake 命令时的路径。还有一个变量 <code>PROJECT_SOURCE_DIR</code> ，表示源码的路径。它们的值都是由 <code>project()</code> 命令自动设置的。在 cmake 中，应用变量的语法是 <code>${variable-name}</code> 。</p><h3 id=测试 class="relative group">测试 <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style=text-decoration-line:none!important href=#%e6%b5%8b%e8%af%95 aria-label=锚点>#</a></span></h3><p>修改完毕后，<code>CMakeLists.txt</code> 的完整内容是：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-cmake data-lang=cmake><span class=line><span class=cl><span class=nb>cmake_minimum_required</span><span class=p>(</span><span class=s>VERSION</span> <span class=s>3.1</span><span class=p>)</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nb>project</span><span class=p>(</span><span class=s>Tutorial</span> <span class=s>VERSION</span> <span class=s>1.0</span><span class=p>)</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nb>configure_file</span><span class=p>(</span><span class=s>TutorialConfig.h.in</span> <span class=s>TutorialConfig.h</span><span class=p>)</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nb>add_executable</span><span class=p>(</span><span class=s>Tutorial</span> <span class=s>Tutorial.c</span><span class=p>)</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nb>target_include_directories</span><span class=p>(</span><span class=s>Tutorial</span> <span class=s>PUBLIC</span> <span class=s2>&#34;${PROJECT_BINARY_DIR}&#34;</span><span class=p>)</span><span class=err>
+</span></span></span></code></pre></div><p>然后，我们在 <code>build</code> 子目录下依次执行 <code>cmake ..</code> 和 <code>make</code> （或者 <code>cmake --build .</code>） ，生成的文件如下：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>~$ ls
+</span></span><span class=line><span class=cl>CMakeCache.txt      Tutorial            inc
+</span></span><span class=line><span class=cl>CMakeFiles          TutorialConfig.h
+</span></span><span class=line><span class=cl>Makefile            cmake_install.cmake
+</span></span><span class=line><span class=cl>~$ ./Tutorial
+</span></span><span class=line><span class=cl>Hello World!
+</span></span><span class=line><span class=cl>MAJOR Version is <span class=m>1</span>
+</span></span><span class=line><span class=cl>MINOR Version is <span class=m>0</span>
+</span></span></code></pre></div><h2 id=2-添加一个库 class="relative group">2. 添加一个库 <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style=text-decoration-line:none!important href=#2-%e6%b7%bb%e5%8a%a0%e4%b8%80%e4%b8%aa%e5%ba%93 aria-label=锚点>#</a></span></h2><p>下面我们在工程中添加一个用于数学计算的链接库，把库的源码放在 <code>MathFunctions</code> 子目录中，工程结构如下：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>~$ tree
+</span></span><span class=line><span class=cl>.
+</span></span><span class=line><span class=cl>├── CMakeLists.txt
+</span></span><span class=line><span class=cl>├── MathFunctions
+</span></span><span class=line><span class=cl>│   ├── MathFunctions.h
+</span></span><span class=line><span class=cl>│   └── mysqrt.c
+</span></span><span class=line><span class=cl>├── Tutorial.c
+</span></span><span class=line><span class=cl>└── TutorialConfig.h.in
+</span></span></code></pre></div><p>头文件 <code>MathFunctions.h</code> 中声明了一个计算平方根的函数 <code>mysqrt()</code> ：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=kt>double</span> <span class=nf>mysqrt</span><span class=p>(</span><span class=kt>double</span> <span class=n>x</span><span class=p>);</span>
+</span></span></code></pre></div><p>它定义在 <code>mysqrt.c</code> 文件中：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;stdio.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&#34;MathFunctions.h&#34;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl><span class=c1>// a hack square root calculation using simple operations
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=kt>double</span> <span class=nf>mysqrt</span><span class=p>(</span><span class=kt>double</span> <span class=n>x</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>x</span> <span class=o>&lt;=</span> <span class=mi>0</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=kt>double</span> <span class=n>result</span> <span class=o>=</span> <span class=n>x</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>// do ten iterations
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=mi>10</span><span class=p>;</span> <span class=o>++</span><span class=n>i</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=p>(</span><span class=n>result</span> <span class=o>&lt;=</span> <span class=mi>0</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=n>result</span> <span class=o>=</span> <span class=mf>0.1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=kt>double</span> <span class=n>delta</span> <span class=o>=</span> <span class=n>x</span> <span class=o>-</span> <span class=p>(</span><span class=n>result</span> <span class=o>*</span> <span class=n>result</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=n>result</span> <span class=o>=</span> <span class=n>result</span> <span class=o>+</span> <span class=mf>0.5</span> <span class=o>*</span> <span class=n>delta</span> <span class=o>/</span> <span class=n>result</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;Computing sqrt of %f to be %f .</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>x</span><span class=p>,</span> <span class=n>result</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>result</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></div><p>然后，我们在 <code>Tutorial.c</code> 文件中调用这个函数计算一个数的平方根：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;stdio.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&#34;TutorialConfig.h&#34;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&#34;MathFunctions/MathFunctions.h&#34;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl><span class=kt>int</span> <span class=nf>main</span> <span class=p>(</span><span class=kt>int</span> <span class=n>argc</span><span class=p>,</span> <span class=kt>char</span> <span class=o>*</span><span class=n>argv</span><span class=p>[])</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kt>double</span> <span class=n>input</span> <span class=o>=</span> <span class=mi>4</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;Hello World!</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;Version %d.%d</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>Tutorial_VERSION_MAJOR</span><span class=p>,</span> <span class=n>Tutorial_VERSION_MINOR</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=kt>double</span> <span class=n>output</span> <span class=o>=</span> <span class=nf>mysqrt</span><span class=p>(</span><span class=n>input</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;The square root of %f is %f .</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>input</span><span class=p>,</span> <span class=n>output</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></div><p>编译的时候，我们希望将 <code>mysqrt.c</code> 生成一个共享库，再连接到 <code>Tutorial</code> 目标中。所以，需要对 CMake 的描述文件做如下修改：</p><ol><li>在 <code>MathFunctions</code> 子目录下新建一个 <code>CMakeLists.txt</code> ，内容是 <code>add_library(MathFunctions mysqrt.c)</code> ，表示将 <code>mysqrt.c</code> 编译为库文件。</li><li>在顶层目录的 <code>CMakeLists.txt</code> 文件中如下内容：<ol><li><code>add_subdirectory(MathFunctions)</code> ，表示向 CMake 工程添加一个子目录，执行时会调用子目录中的 <code>CMakeLists.txt</code> 。</li><li><code>target_link_libraries(Tutorial PUBLIC MathFunctions)</code> ，表示目标文件 <code>Tutorial</code> 要链接 <code>MathFunctions</code> 。</li><li>因为 <code>Tutorial.c</code> 文件中导入了 <code>MathFunctions</code> 子目录下的头文件，所以，要用 <code>target_include_directories()</code> 命令将这个子目录也加入头文件检索路径。</li></ol></li></ol><p>完整的顶层目录 <code>CMakeLists.txt</code> 文件内容如下：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-cmake data-lang=cmake><span class=line><span class=cl><span class=nb>cmake_minimum_required</span><span class=p>(</span><span class=s>VERSION</span> <span class=s>3.1</span><span class=p>)</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nb>project</span><span class=p>(</span><span class=s>Tutorial</span> <span class=s>VERSION</span> <span class=s>1.0</span><span class=p>)</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nb>add_subdirectory</span><span class=p>(</span><span class=s>MathFunctions</span><span class=p>)</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nb>configure_file</span><span class=p>(</span><span class=s>TutorialConfig.h.in</span> <span class=s>TutorialConfig.h</span><span class=p>)</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nb>add_executable</span><span class=p>(</span><span class=s>Tutorial</span> <span class=s>Tutorial.c</span><span class=p>)</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>Tutorial</span> <span class=s>PUBLIC</span> <span class=s>MathFunctions</span><span class=p>)</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nb>target_include_directories</span><span class=p>(</span><span class=s>Tutorial</span> <span class=s>PUBLIC</span> 
+</span></span><span class=line><span class=cl>                            <span class=s2>&#34;${PROJECT_BINARY_DIR}&#34;</span>
+</span></span><span class=line><span class=cl>                            <span class=s2>&#34;${PROJECT_SOURCE_DIR}/MathFunctions&#34;</span>
+</span></span><span class=line><span class=cl>                            <span class=p>)</span><span class=err>
+</span></span></span></code></pre></div><p>然后，在 <code>build</code> 目录下依次执行 <code>cmake ..</code> 和 <code>cmake --build .</code> ，编译生成可执行文件 <code>Tutorial</code> ，执行：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>~$ ./Tutorial
+</span></span><span class=line><span class=cl>Hello World!
+</span></span><span class=line><span class=cl>Version 1.0
+</span></span><span class=line><span class=cl>Computing sqrt of 4.000000 to be 2.500000 .
+</span></span><span class=line><span class=cl>Computing sqrt of 4.000000 to be 2.050000 .
+</span></span><span class=line><span class=cl>Computing sqrt of 4.000000 to be 2.000610 .
+</span></span><span class=line><span class=cl>Computing sqrt of 4.000000 to be 2.000000 .
+</span></span><span class=line><span class=cl>Computing sqrt of 4.000000 to be 2.000000 .
+</span></span><span class=line><span class=cl>Computing sqrt of 4.000000 to be 2.000000 .
+</span></span><span class=line><span class=cl>Computing sqrt of 4.000000 to be 2.000000 .
+</span></span><span class=line><span class=cl>Computing sqrt of 4.000000 to be 2.000000 .
+</span></span><span class=line><span class=cl>Computing sqrt of 4.000000 to be 2.000000 .
+</span></span><span class=line><span class=cl>Computing sqrt of 4.000000 to be 2.000000 .
+</span></span><span class=line><span class=cl>The square root of 4.000000 is 2.000000 .
+</span></span></code></pre></div><h3 id=提供可选项 class="relative group">提供可选项 <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style=text-decoration-line:none!important href=#%e6%8f%90%e4%be%9b%e5%8f%af%e9%80%89%e9%a1%b9 aria-label=锚点>#</a></span></h3><p>上一步添加的 <code>MathFunctions</code> 库可以做成一个可选的模块，这是大型工程里的常见做法。</p><p>首先需要用 <code>option()</code> 命令设置一个选项：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-cmake data-lang=cmake><span class=line><span class=cl><span class=nb>option</span><span class=p>(</span><span class=s>USE_MYMATH,</span> <span class=s2>&#34;Use tutorial provided math implementation&#34;</span><span class=s>,</span> <span class=s>ON</span><span class=p>)</span><span class=err>
+</span></span></span></code></pre></div><p>这样就设置了一个名为 <code>USE_MYMATH</code> 的选项，初始值是 <code>ON</code> 。<code>option()</code> 的作用是新建一个用户可以选择的选项，语法很简单：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-cmake data-lang=cmake><span class=line><span class=cl><span class=nb>option</span><span class=p>(</span><span class=s>&lt;variable&gt;</span> <span class=s2>&#34;&lt;help_text&gt;&#34;</span> <span class=s>[value]</span><span class=p>)</span><span class=err>
+</span></span></span></code></pre></div><p>三个参数依次是选项的变量名，选项的描述，选项的初始值。选项的值只有两个：<code>ON</code> 和 <code>OFF</code> ，如果没有设置初始值，默认就是 <code>OFF</code> 。</p><p>然后可以通过这个选项，把模块相关的语句包裹在一个选择语句中：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-cmake data-lang=cmake><span class=line><span class=cl><span class=nb>option</span><span class=p>(</span><span class=s>USE_MYMATH</span> <span class=s2>&#34;Use tutorial provided math implementation&#34;</span> <span class=s>ON</span><span class=p>)</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nb>if</span><span class=p>(</span><span class=s>USE_MYMATH</span><span class=p>)</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>    <span class=nb>add_subdirectory</span><span class=p>(</span><span class=s>MathFunctions</span><span class=p>)</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>    <span class=nb>list</span><span class=p>(</span><span class=s>APPEND</span> <span class=s>EXTRA_LIBS</span> <span class=s>MathFunctions</span><span class=p>)</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>    <span class=nb>list</span><span class=p>(</span><span class=s>APPEND</span> <span class=s>EXTRA_INCLUDES</span> <span class=s2>&#34;${PROJECT_SOURCE_DIR}/MathFunctions&#34;</span><span class=p>)</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nb>endif</span><span class=p>()</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>Tutorial</span> <span class=s>PUBLIC</span> <span class=o>${</span><span class=nv>EXTRA_LIBS</span><span class=o>}</span><span class=p>)</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nb>target_include_directories</span><span class=p>(</span><span class=s>Tutorial</span> <span class=s>PUBLIC</span> 
+</span></span><span class=line><span class=cl>                            <span class=s2>&#34;${PROJECT_BINARY_DIR}&#34;</span>
+</span></span><span class=line><span class=cl>                            <span class=s2>&#34;${EXTRA_INCLUDES}&#34;</span>
+</span></span><span class=line><span class=cl>                            <span class=p>)</span><span class=err>
+</span></span></span></code></pre></div><p><code>list()</code> 命令用于操作列表，<code>APPEND</code> 可以将一个元素追加到一个列表的尾部。后面通过新建的列表调用模块，这样的话，只有 <code>USE_MYMATH </code>的值为 <code>ON</code> 时，才会将模块包含在编译过程中。</p><p>源码中的修改比较简单，只需修改 <code>Tutorial.c</code> 文件，通过宏定义将模块相关的语句做成可选项：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=cp>#ifdef USE_MYMATH
+</span></span></span><span class=line><span class=cl><span class=cp></span>    <span class=cp>#include</span> <span class=cpf>&#34;MathFunctions/MathFunctions.h&#34;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#endif
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl><span class=cp>#ifdef USE_MYMATH
+</span></span></span><span class=line><span class=cl><span class=cp></span>    <span class=kt>double</span> <span class=n>output</span> <span class=o>=</span> <span class=nf>mysqrt</span><span class=p>(</span><span class=n>input</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>printf</span><span class=p>(</span><span class=s>&#34;The square root of %f is %f .</span><span class=se>\n</span><span class=s>&#34;</span><span class=p>,</span> <span class=n>input</span><span class=p>,</span> <span class=n>output</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=cp>#endif
+</span></span></span></code></pre></div><p>这个宏定义的值也需要通过 <code>TutorialConfig.h.in</code> 文件传递给源码：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-cmake data-lang=cmake><span class=line><span class=cl><span class=c>#cmakedefine USE_MYMATH
+</span></span></span></code></pre></div><p>执行到 <code>configure_file()</code> 命令的时候，如果 <code>USE_MYMATH</code> 的值是 <code>ON</code> ，这条语句会被替换为 <code>#define USE_MYMATH</code> ；如果 <code>USE_MYMATH</code> 的值是 <code>OFF</code> ，这条语句会被替换为一行注释 <code>/* #undef USE_MYMATH */</code> 。</p><h3 id=设置库文件的使用要求 class="relative group">设置库文件的使用要求 <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style=text-decoration-line:none!important href=#%e8%ae%be%e7%bd%ae%e5%ba%93%e6%96%87%e4%bb%b6%e7%9a%84%e4%bd%bf%e7%94%a8%e8%a6%81%e6%b1%82 aria-label=锚点>#</a></span></h3><p>构建 C 语言的工程时，应该清晰的规划模块之间的关系，在编译时，先编译出子模块的目标文件，再由这些目标文件链接起来生成上一层的目标文件，层层递进，最终编译出可执行文件。目标文件包括 <a href=https://cmake.org/cmake/help/latest/command/add_executable.html#command:add_executable target=_blank rel=noreferrer><code>add_executable()</code></a> 和 <a href=https://cmake.org/cmake/help/latest/command/add_library.html#command:add_library target=_blank rel=noreferrer><code>add_library()</code></a> 命令生成的可执行文件和库。目标文件的依赖关系是通过两条命令控制的：</p><ul><li><a href=https://cmake.org/cmake/help/latest/command/target_include_directories.html#command:target_include_directories target=_blank rel=noreferrer><code>target_include_directories()</code></a> ，向目标文件添加编译时的头文件检索目录。</li><li><a href=https://cmake.org/cmake/help/latest/command/target_link_libraries.html#command:target_link_libraries target=_blank rel=noreferrer><code>target_link_libraries()</code></a> ，向目标文件添加编译时依赖的库。</li></ul><p>这两条命令需要一个控制传递属性的参数，可选三种关键字：</p><ul><li><code>PRIVATE</code> ，私有。库文件提供的方法只供目标文件使用，不会暴露给更上层目标文件。即生产者需要，消费者不需要。</li><li><code>INTERFACE</code> ，接口。库文件提供的方法会暴露给上层文件使用，本目标文件只用到了库文件提供的一些数据结构和声明等。即生产者不需要，消费者需要。</li><li><code>PUBLIC</code> ，公开。库文件提供的方法可以供所有目标文件使用。即生产者和消费者都需要。</li></ul><p>以上一节的工程为例，目录结果是：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>.
+</span></span><span class=line><span class=cl>├── build
+</span></span><span class=line><span class=cl>├── CMakeLists.txt
+</span></span><span class=line><span class=cl>├── MathFunctions      <span class=c1># 生成 libMathFunctions.a</span>
+</span></span><span class=line><span class=cl>│   ├── CMakeLists.txt
+</span></span><span class=line><span class=cl>│   ├── MathFunctions.h
+</span></span><span class=line><span class=cl>│   └── mysqrt.c
+</span></span><span class=line><span class=cl>├── Tutorial.c
+</span></span><span class=line><span class=cl>└── TutorialConfig.h.in
+</span></span></code></pre></div><p>目标 <code>MathFunctions</code> 需要的头文件 <code>MathFunctions.h</code> 中的声明，并将方法暴露给上一层的 <code>Tutorial.c</code> 使用。所以，目标 <code>MathFunctions</code> 对头文件 <code>MathFunctions.h</code> 的使用要求就是 <code>INTERFACE</code> ，目标 <code>Tutrial</code> 对目标 <code>MathFunctions</code> 的使用要求是 <code>PRIVATE</code> 。</p><p>那么，可以在 <code>MathFunctions/CMakeLists.txt</code> 中添加一行：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-cmake data-lang=cmake><span class=line><span class=cl><span class=nb>target_include_directories</span><span class=p>(</span><span class=s>MathFunctions</span>
+</span></span><span class=line><span class=cl>        <span class=s>INTERFACE</span> <span class=o>${</span><span class=nv>CMAKE_CURRENT_SOURCE_DIR</span><span class=o>}</span>
+</span></span><span class=line><span class=cl>        <span class=p>)</span><span class=err>
+</span></span></span></code></pre></div><p>然后就可以把顶层 <code>CMakeLists.txt</code> 中包含头文件的部分删除，并将库文件的使用要求改为私有：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-cmake data-lang=cmake><span class=line><span class=cl><span class=nb>if</span><span class=p>(</span><span class=s>USE_MYMATH</span><span class=p>)</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>    <span class=nb>add_subdirectory</span><span class=p>(</span><span class=s>MathFunctions</span><span class=p>)</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span>    <span class=nb>list</span><span class=p>(</span><span class=s>APPEND</span> <span class=s>EXTRA_LIBS</span> <span class=s>MathFunctions</span><span class=p>)</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nb>endif</span><span class=p>()</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nb>target_link_libraries</span><span class=p>(</span><span class=s>Tutorial</span> <span class=s>PRIVATE</span> <span class=o>${</span><span class=nv>EXTRA_LIBS</span><span class=o>}</span><span class=p>)</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=nb>target_include_directories</span><span class=p>(</span><span class=s>Tutorial</span> <span class=s>PRIVATE</span> 
+</span></span><span class=line><span class=cl>                            <span class=s2>&#34;${PROJECT_BINARY_DIR}&#34;</span>
+</span></span><span class=line><span class=cl>                            <span class=p>)</span><span class=err>
+</span></span></span></code></pre></div><h2 id=3-安装和测试 class="relative group">3. 安装和测试 <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style=text-decoration-line:none!important href=#3-%e5%ae%89%e8%a3%85%e5%92%8c%e6%b5%8b%e8%af%95 aria-label=锚点>#</a></span></h2><p>这个工程只需要把可执行文件安装到指定的目录，所以，在顶层 <code>CMakeLists.txt</code> 目录下添加一行：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-cmake data-lang=cmake><span class=line><span class=cl><span class=nb>install</span><span class=p>(</span><span class=s>TARGETS</span> <span class=s>Tutorial</span> <span class=s>DESTINATION</span> <span class=s>bin</span><span class=p>)</span><span class=err>
+</span></span></span></code></pre></div><p>这样，在执行 <code>make install</code> 时，就会把 <code>Tutorial</code> 文件安装到 <code>/usr/local/bin/</code> 目录下，默认的前缀是 <code>/usr/local/</code> ，如果要换别的目录，可以写上绝对路径。</p></div></section><footer class="pt-8 max-w-prose print:hidden"><div class=flex><img class="!mb-0 !mt-0 me-4 h-24 w-24 rounded-full" width=96 height=96 alt=Shaocheng.Li src=/img/author_hucdd16a8e5aab658b1bf3664f1886d7a1_71871_192x192_fill_box_center_3.png loading=lazy><div class=place-self-center><div class="text-[0.6rem] uppercase leading-3 text-neutral-500 dark:text-neutral-400">作者</div><div class="font-semibold leading-6 text-neutral-800 dark:text-neutral-300">Shaocheng.Li</div><div class="text-sm text-neutral-700 dark:text-neutral-400">A Linux software engineer.</div><div class="text-2xl sm:text-lg"><div class="flex flex-wrap text-neutral-400 dark:text-neutral-500"><a class="px-1 transition-transform hover:scale-125 hover:text-primary-700 dark:hover:text-primary-400" style=will-change:transform href=https://github.com/exbob target=_blank aria-label=Github rel="me noopener noreferrer"><span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path fill="currentcolor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6.0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6.0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3.0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1.0-6.2-.3-40.4-.3-61.4.0.0-70 15-84.7-29.8.0.0-11.4-29.1-27.8-36.6.0.0-22.9-15.7 1.6-15.4.0.0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5.0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9.0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4.0 33.7-.3 75.4-.3 83.6.0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6.0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9.0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span></a></div></div></div></div><div class=pt-8><hr class="border-dotted border-neutral-300 dark:border-neutral-600"><div class="flex justify-between pt-3"><span><a class="group flex" href=/posts/2020/04/12/><span class="me-2 text-neutral-700 transition-transform group-hover:-translate-x-[2px] group-hover:text-primary-600 dark:text-neutral dark:group-hover:text-primary-400"><span class="ltr:inline rtl:hidden">&larr;</span><span class="ltr:hidden rtl:inline">&rarr;</span></span>
+<span class="flex flex-col"><span class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500">tcpdump 使用笔记</span>
+<span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400"><time datetime="2020-04-12 22:25:11 +0800 +0800">2020 April 12</time>
+</span></span></a></span><span><a class="group flex text-right" href=/posts/2020/07/16/><span class="flex flex-col"><span class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500">libubox 学习笔记</span>
+<span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400"><time datetime="2020-07-16 21:23:11 +0800 +0800">2020 July 16</time>
+</span></span><span class="ms-2 text-neutral-700 transition-transform group-hover:-translate-x-[2px] group-hover:text-primary-600 dark:text-neutral dark:group-hover:text-primary-400"><span class="ltr:inline rtl:hidden">&rarr;</span><span class="ltr:hidden rtl:inline">&larr;</span></span></a></span></div></div></footer></article><div class="pointer-events-none absolute bottom-0 end-0 top-[100vh] w-12"><a href=#the-top class="pointer-events-auto sticky top-[calc(100vh-5.5rem)] flex h-12 w-12 items-center justify-center rounded-full bg-neutral/50 text-xl text-neutral-700 backdrop-blur hover:text-primary-600 dark:bg-neutral-800/50 dark:text-neutral dark:hover:text-primary-400" aria-label=回到顶部 title=回到顶部>&uarr;</a></div></main><footer class="py-10 print:hidden"><div class="flex items-center justify-between"><div><p class="text-sm text-neutral-500 dark:text-neutral-400">&copy;
+2024
+Shaocheng.Li</p><p class="text-xs text-neutral-500 dark:text-neutral-400">由 <a class="hover:underline hover:decoration-primary-400 hover:text-primary-500" href=https://gohugo.io/ target=_blank rel="noopener noreferrer">Hugo</a> & <a class="hover:underline hover:decoration-primary-400 hover:text-primary-500" href=https://github.com/jpanther/congo target=_blank rel="noopener noreferrer">Congo</a> 强力驱动</p></div><div class="flex flex-row items-center"><div class="me-14 cursor-pointer text-sm text-neutral-700 hover:text-primary-600 dark:text-neutral dark:hover:text-primary-400"><button id=appearance-switcher-0 type=button aria-label="appearance switcher"><div class="flex items-center justify-center w-12 h-12 dark:hidden" title=切换为深色模式><span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentcolor" d="M32 256C32 132.2 132.3 32 255.8 32c11.36.0 29.7 1.668 40.9 3.746 9.616 1.777 11.75 14.63 3.279 19.44C245 86.5 211.2 144.6 211.2 207.8c0 109.7 99.71 193 208.3 172.3 9.561-1.805 16.28 9.324 10.11 16.95C387.9 448.6 324.8 480 255.8 480 132.1 480 32 379.6 32 256z"/></svg></span></div><div class="items-center justify-center hidden w-12 h-12 dark:flex" title=切换为浅色模式><span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentcolor" d="M256 159.1c-53.02.0-95.1 42.98-95.1 95.1s41.2 96.9 95.1 96.9 95.1-42.98 95.1-95.1S309 159.1 256 159.1zM509.3 347l-63.2-91.9 63.15-91.01c6.332-9.125 1.104-21.74-9.826-23.72l-109-19.7-19.7-109c-1.975-10.93-14.59-16.16-23.72-9.824L256 65.89 164.1 2.736c-9.125-6.332-21.74-1.107-23.72 9.824L121.6 121.6 12.56 141.3C1.633 143.2-3.596 155.9 2.736 164.1L65.89 256 2.74 347.01c-6.332 9.125-1.105 21.74 9.824 23.72l109 19.7 19.7 109c1.975 10.93 14.59 16.16 23.72 9.824L256 446.1l91.01 63.15c9.127 6.334 21.75 1.107 23.72-9.822l19.7-109 109-19.7C510.4 368.8 515.6 356.1 509.3 347zM256 383.1c-70.69.0-127.1-57.31-127.1-127.1.0-70.69 57.31-127.1 127.1-127.1S383.1 186.2 383.1 256c0 70.7-56.4 127.1-127.1 127.1z"/></svg></span></div></button></div></div></div></footer><div id=search-wrapper class="invisible fixed inset-0 z-50 flex h-screen w-screen cursor-default flex-col bg-neutral-500/50 p-4 backdrop-blur-sm dark:bg-neutral-900/50 sm:p-6 md:p-[10vh] lg:p-[12vh]" data-url=https://shaocheng.li/><div id=search-modal class="flex flex-col w-full max-w-3xl min-h-0 mx-auto border rounded-md shadow-lg top-20 border-neutral-200 bg-neutral dark:border-neutral-700 dark:bg-neutral-800"><header class="relative z-10 flex items-center justify-between flex-none px-2"><form class="flex items-center flex-auto min-w-0"><div class="flex items-center justify-center w-8 h-8 text-neutral-400"><span class="relative inline-block align-text-bottom px-1 icon"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" class="svg-inline--fa fa-search fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentcolor" d="M505 442.7 405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9.0 208 0S0 93.1.0 208s93.1 208 208 208c48.3.0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9.0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7.0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7.0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/></svg></span></div><input type=search id=search-query class="flex flex-auto h-12 mx-1 bg-transparent appearance-none focus:outline-dotted focus:outline-2 focus:outline-transparent" placeholder=搜索 tabindex=0></form><button id=close-search-button class="flex items-center justify-center w-8 h-8 text-neutral-700 hover:text-primary-600 dark:text-neutral dark:hover:text-primary-400" title="关闭 (Esc)">
+<span class="relative inline-block align-text-bottom px-1 icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentcolor" d="M310.6 361.4c12.5 12.5 12.5 32.75.0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3 54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75.0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75.0-45.25s32.75-12.5 45.25.0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25.0s12.5 32.75.0 45.25l-105.4 105.4L310.6 361.4z"/></svg></span></button></header><section class="flex-auto px-2 overflow-auto"><ul id=search-results></ul></section></div></div></div></body></html>
